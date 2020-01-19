@@ -17,16 +17,23 @@ async function sendData(dta, hst="", obj){
 	v = await fetch(host(hst), {method:'POST', body: fd})
 	.then(function(x){return x.text()}).then(function(x){obj.update(x)});//YES doing a .then(function).then(function{call function}) is needed as far as I can figure.
 };
-window.x="fuck off";
 class timeOutput extends React.Component{ //this is to support the clock, go ahead and skip down to testForm, I just kinda got hung up on this idea and couldn't stop.
 	constructor(props){
 		super(props);
-		this.state={tme:0};
+		this.state={tme:0, tst:"tick"};
 	}
-	advnceClk(){ //remember helpers go before their calls. This isn't compiled so putting this below it's call results in bad things.
+	advnceClk(){ 
 		//debug is commented out here because of the below error where I didn't have the spare brain cells to add a "return" to my render method.
 		//window.x=new Date().toLocaleTimeString()
-		this.setState({tme:new Date().toLocaleTimeString()});//window.x}); //yeah this method is pointless I could just roll it into the below call on mount but I'm not deleting it now it's to late lmao.
+		var tmp = this.state; //This is a shallow copy if I remember right, so editing it pulls the whole thing out of the react chain by circumventing reacts whole "monitor the states for changes" thing
+		tmp.tme=new Date().toLocaleTimeString(); //But we're going to set the actual state to the value used in this temporary one and hopefully that'll be a-ok.
+		if(tmp.tst=="tick"){ //tick tock.
+			tmp.tst="tock";
+		}
+		else{
+			tmp.tst="tick";
+		}
+		this.setState(tmp);//yeah this method is pointless I could just roll it into the below call on mount but I'm not deleting it now it's to late lmao.
 		//console.log(window.x);
 	}
 	//Some code for a clock that I wanted to add for the sake of having a clock
@@ -41,17 +48,50 @@ class timeOutput extends React.Component{ //this is to support the clock, go ahe
 		clearInterval(this.timerID);
 	}
 	render(){
-		return ce('p', null, `${this.state.tme}`);//DO YOU HAVE ANY IDEA HOW LONG I DROVE MYSELF INSANE BECAUSE I FORGOT TO ADD 'RETURN?' DON'T DO THAT HOURS. THAT'S HOW LONG
+		return ce('p', null, [`${this.state.tme}`, ce('br', null,null), `${this.state.tst}`]);//DO YOU HAVE ANY IDEA HOW LONG I DROVE MYSELF INSANE BECAUSE I FORGOT TO ADD 'RETURN?' DON'T DO THAT HOURS. THAT'S HOW LONG
 	}
 }
 //end of the clock stuff. IDK why I added it tbh.
+
+//WINDOW VARIABLE FOR TESTING THAT I'M MAKING STUFF DEPENDENT ON
+//Options:
+//""
+//hw
+//dataTest
+//sql/add
+//sql/get
+window.sendoff="";
+//using this to just set that sendoff variable for ease of use
+class sov extends React.Component{
+	constructor(props){
+		super(props);
+		this.state={value:"", crnt:" "};
+		this.handleSubmit=this.handleSubmit.bind(this);
+		this.handleChange=this.handleChange.bind(this);
+		console.log('build');
+	}
+	handleChange(event){//These HAVE to be named handle change and handle submit as far as I know. Else bad things happen
+		this.setState({value:event.target.value, crnt:this.state.crnt});
+		event.preventDefault();
+	}
+	handleSubmit(event){
+		var tmp = this.state;
+		tmp.crnt=tmp.value;
+		this.setState(tmp);
+		window.sendoff=this.state.value;
+		event.preventDefault();
+	}
+	render(){
+		return ce('form', {onSubmit:this.handleSubmit, className:"bname"},	[`Will send to /${this.state.crnt} `, ce('br',null,null), "New link: ", ce("input", {type:'text', onChange:this.handleChange}, null)]);
+	}
+}
 
 //Note: if react objects crash they just refresh the page silently from what I've seen, so "nothing happens" but your code is broke
 class testForm extends React.Component{
 	constructor(props){
 		super(props);
-		this.state={value:"text box default", dscrptnVle:"description default"};//This must always be an object for the purpose of setState. In an actual component use values from properties
-		this.time=0; //You can just add new variables if you need them. That makes state management easier I guess if you use multipart stuff like I think I said not to at some point due to messyness.
+		this.state={value:"text box default", dscrptnVle:""};//This must always be an object for the purpose of setState. In an actual component use values from properties
+		//this.extra; //You can just add new variables if you need them. That makes state management easier I guess if you use multipart stuff like I think I said not to at some point due to messyness.
 		this.handleChange=this.handleChange.bind(this);
 		this.handleSubmit=this.handleSubmit.bind(this);
 		//btw I name things in general by taking out all vowels (a, e, i, o, u, y) that do not being and/or end a word, and camel casing multiple words. "Tree" becomes "tre" and "big cheese" becomes "bgChse"
@@ -64,7 +104,7 @@ class testForm extends React.Component{
 	}
 	handleSubmit(event){
 		//window.alert('submission made: ' + this.state.value); //Alert for testing
-		sendData(this.state.value, "dataTest", this); //Note that I pass an OBJECT here. OBJECTS are pass by reference.
+		sendData(this.state.value, window.sendoff, this); //Note that I pass an OBJECT here. OBJECTS SHOULD BE pass by reference.
 		event.preventDefault(); //This handles stuff after submission happens. YOU ALWAYS NEED TO PREVENT DEFAULT, BE IT HERE OR IN YOUR HANDLER UNLESS YOU LIKE ENDLESS PAIN AND ETERNAL SUFFERING AND ACTUALLY WANT TO REFRESH THE PAGE YOU MAD LAD
 	}
 	update(dta){//used by sendData to update whatever needs to be updated. Can be whatever really.
@@ -76,9 +116,15 @@ class testForm extends React.Component{
 			//The JSX code here would be different, see: https://reactjs.org/docs/react-without-jsx.html
 				[ce(timeOutput,null, null)],
 				ce('p', null, `Last response recieved: ${this.state.dscrptnVle}`),//Note HTML doesn't seem to work inside the `[text]` syntax, JSX exists to solve this I think.
+				ce('p', null, 'Sent to subdomain: ' + window.sendoff),
 				ce('input', {type: 'text', value:this.state.value, onChange:this.handleChange}, null)
 			]
 		)
 	}
 }
-ReactDOM.render([ce(testForm, null, null)], document.getElementById('main'));
+
+ReactDOM.render([
+	ce(sov, null, null),
+	ce(testForm, null, null)],
+	document.getElementById('main')
+);
