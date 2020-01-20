@@ -6,7 +6,7 @@ export default class ViewApiCall extends Component {
     project: []
   };
   async componentDidMount() {
-    const url = "http://localhost:8080/api/project";
+    const url = "http://localhost:8080/api/auth/viewusers";
     const response = await fetch(url);
     const data = await response.json();
     this.setState({ project: data, loading: false });
@@ -22,16 +22,11 @@ export default class ViewApiCall extends Component {
             <ul>
               {project.map(display => {
                 console.log(display);
-                const {
-                  id,
-                  projectName,
-                  projectIdentifier,
-                  description
-                } = display;
+                const { id, firstName, email, lastName, userName } = display;
                 return (
                   <div key={id}>
-                    <p>Project Name: {projectName}</p>
-                    <p>Description: {description}</p>
+                    <p>User Name: {userName}</p>
+                    <p>Email: {email}</p>
                     <hr />
                   </div>
                 );
