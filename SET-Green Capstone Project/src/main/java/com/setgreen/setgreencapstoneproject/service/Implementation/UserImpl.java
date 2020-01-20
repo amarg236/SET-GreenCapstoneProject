@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -113,6 +114,11 @@ public class UserImpl implements UserDetailsService, UserService {
 
 
         return new ResponseBody(HttpStatus.FORBIDDEN.value(),"Please verify via email", new Login());
+    }
+
+    @Override
+    public List<User> ViewUsers() {
+        return userRepo.findAll();
     }
 
 

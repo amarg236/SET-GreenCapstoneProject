@@ -17,6 +17,8 @@ install the maven
 run
 ```
 
+\_While running backend , make sure that XAMPP server is running because it needs to make a connection to mysql database.
+
 How to run front-end:
 
 ```
