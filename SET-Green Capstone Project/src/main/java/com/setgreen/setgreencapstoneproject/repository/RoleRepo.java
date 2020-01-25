@@ -1,7 +1,8 @@
 package com.setgreen.setgreencapstoneproject.repository;
 
-import com.setgreen.setgreencapstoneproject.model.Role;
 import com.setgreen.setgreencapstoneproject.model.RoleName;
+import com.setgreen.setgreencapstoneproject.model.userbase.Role;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -2,7 +2,8 @@ package com.setgreen.setgreencapstoneproject.config.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.setgreen.setgreencapstoneproject.model.Login;
-import com.setgreen.setgreencapstoneproject.model.User;
+import com.setgreen.setgreencapstoneproject.model.userbase.User;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -51,7 +52,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             Authentication auth) throws IOException, ServletException {
 
         String token = Jwts.builder()
-                .setSubject(((User) auth.getPrincipal()).getUserName())
+                .setSubject(((User) auth.getPrincipal()).getEmail()) //changed to getemail since usernames are no longer a factor
                 .setExpiration(new Date(System.currentTimeMillis() + JwtConstants.EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, JwtConstants.SECRET.getBytes())
                 .compact();

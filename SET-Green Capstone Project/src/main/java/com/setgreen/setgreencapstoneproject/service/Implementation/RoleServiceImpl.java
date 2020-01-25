@@ -1,7 +1,7 @@
 package com.setgreen.setgreencapstoneproject.service.Implementation;
 
-import com.setgreen.setgreencapstoneproject.model.Role;
 import com.setgreen.setgreencapstoneproject.model.RoleName;
+import com.setgreen.setgreencapstoneproject.model.userbase.Role;
 import com.setgreen.setgreencapstoneproject.repository.RoleRepo;
 import com.setgreen.setgreencapstoneproject.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
