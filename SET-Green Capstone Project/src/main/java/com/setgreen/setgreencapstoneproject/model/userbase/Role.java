@@ -1,8 +1,9 @@
-package com.setgreen.setgreencapstoneproject.model;
+package com.setgreen.setgreencapstoneproject.model.userbase;
 
 import lombok.Data;
 import org.hibernate.annotations.NaturalId;
 
+import com.setgreen.setgreencapstoneproject.model.RoleName;
 
 import javax.persistence.*;
 
@@ -11,7 +12,7 @@ import javax.persistence.*;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long Id;
 
     @Enumerated(EnumType.STRING)

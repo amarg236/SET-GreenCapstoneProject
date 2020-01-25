@@ -1,7 +1,8 @@
 package com.setgreen.setgreencapstoneproject.model.Authentication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.setgreen.setgreencapstoneproject.model.User;
+import com.setgreen.setgreencapstoneproject.model.userbase.User;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,11 +40,11 @@ public class UserPrinciple implements UserDetails {
     }
 
 
-    public static UserPrinciple build(User user){
-        //to retrive list of roles for particular user
-        List<GrantedAuthority> authorities = user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRole().name())).collect(Collectors.toList());
-        return new UserPrinciple(user.getId(), (user.getFirstName()+" "+user.getLastName()),user.getUserName(),user.getEmail(),user.getPassWord(),authorities);
-    }
+//    public static UserPrinciple build(User user){
+//        //to retrive list of roles for particular user
+//        List<GrantedAuthority> authorities = user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRole().name())).collect(Collectors.toList());
+//        return new UserPrinciple(user.getId(), (user.getFirstName()+" "+user.getLastName()),user.getUserName(),user.getEmail(),user.getPassWord(),authorities);
+//    }
 
 
     @Override

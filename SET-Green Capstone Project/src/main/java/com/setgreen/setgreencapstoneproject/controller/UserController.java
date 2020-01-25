@@ -3,15 +3,14 @@ package com.setgreen.setgreencapstoneproject.controller;
 
 import com.setgreen.setgreencapstoneproject.model.Login;
 import com.setgreen.setgreencapstoneproject.model.ResponseBody;
-import com.setgreen.setgreencapstoneproject.model.SignUpForm;
-import com.setgreen.setgreencapstoneproject.model.User;
+import com.setgreen.setgreencapstoneproject.model.userbase.User;
 import com.setgreen.setgreencapstoneproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -23,9 +22,9 @@ public class UserController {
 
 
     @PostMapping("signUp")
-    public ResponseBody Register(@Valid @RequestBody SignUpForm signUpForm){
+    public ResponseBody Register(@Valid @RequestBody User usr){
 
-        return userService.Register(signUpForm);
+        return userService.Register(usr);
 
     }
 

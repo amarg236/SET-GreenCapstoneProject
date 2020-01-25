@@ -1,3 +1,5 @@
+/*
+ *Depricated in favor of handling raw user objects. -Brendon
 package com.setgreen.setgreencapstoneproject.model;
 
 
@@ -11,18 +13,18 @@ import java.util.Set;
 public class SignUpForm {
 
 
-    @NotEmpty(message= "Name must not be empty!")
-    private String name;
+//    @NotEmpty(message= "Name must not be empty!")
+//    private String name;
 
-    @NotEmpty(message= "UserName must not be empty!")
-    private String username;
+//    @NotEmpty(message= "UserName must not be empty!")
+//    private String username;
 
     @NotEmpty(message= "Email must not be empty!")
     private String email;
 
-    @NotEmpty(message= "Password must not be empty!")
-    @Size(min= 6, max = 30)
-    private String password;
+//    @NotEmpty(message= "Password must not be empty!")
+//    @Size(min= 6, max = 30)
+//    private String password;
 
     private Set<String> role;
 
@@ -30,3 +32,4 @@ public class SignUpForm {
 
 
 }
+*/

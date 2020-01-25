@@ -1,4 +1,4 @@
-package com.setgreen.setgreencapstoneproject.model;
+package com.setgreen.setgreencapstoneproject.model.userbase;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,41 +18,42 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-
-    @JsonIgnore
-    @NotEmpty(message= "First Name is required")
-    @Column(length = 50)
-    private String FirstName;
-
-    @JsonIgnore
-    @NotEmpty(message = "Last Name is required")
-    @Column(length = 50)
-    private String LastName;
-
+    
+    @NaturalId
     @JsonIgnore
     @NotEmpty(message = "Email is required")
     @Column(length = 50)
     private String Email;
 
-    @NaturalId
-    @JsonIgnore
-    @NotEmpty(message = "Username is required")
-    @Column(length = 50)
-    private String UserName;
+//    @NaturalId
+//    @JsonIgnore
+//    @NotEmpty(message = "Username is required")
+//    @Column(length = 50)
+//    private String UserName;
 
     @JsonIgnore
     @NotEmpty(message = "Password is required")
     private String PassWord;
 
     @JsonIgnore
-    @ManyToMany(targetEntity = Role.class)
-    private Set<Role> roles = new HashSet<>();
-
+    @NotEmpty(message = "Clearance Level Required")
+    private int clearance;
+    
     @JsonIgnore
     private Boolean Verified;
 
-    public User() {
-
+    /** Constructor for when ADMIN goes to make a new user
+     * @param eml
+     * @param clrnce
+     */
+    public User(String eml, int clrnce) {
+    	Email = eml;
+    	PassWord = "12345";
+    	Verified = false;
     }
+
+	public User() {
+		// TODO Auto-generated constructor stub
+	}
 }
 
