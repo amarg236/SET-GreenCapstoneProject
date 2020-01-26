@@ -21,9 +21,8 @@ function App() {
         <Route exact path="/viewApiCall" component={ViewApiCall} />
         <Route exact path="/addProject" component={AddProject} />
         <Route exact path="/signIn" component={SignIn} />
+        <Route exact path="/home" component={Home} />
         
-
-        <Cal />
       </div>
     </Router>
   );
