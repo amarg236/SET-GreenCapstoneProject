@@ -6,7 +6,7 @@ class Home extends Component {
   render() {
     return (
       <div className="projects text-center"
-      style={{position:'absolute', left:'550px'}}>
+      style={{position:'absolute', left:'550px', top:'100px'}}>
           <UpcomingGames />
           <br/>
           <br/>

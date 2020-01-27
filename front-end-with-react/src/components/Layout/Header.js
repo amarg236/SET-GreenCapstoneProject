@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import "../../stylesheets/header.css";
 
 class Header extends Component {
   render() {
     return (
-      <div style={{borderBottomColor:'#3DF42D'}}>
+      <div style={{borderBottomStyle:'solid', borderBottomColor:'#3DF42D', height:'60px',}}>
         <nav className="navbar navbar-expand-sm navbar-light bg-white mb-4">
           <div className="container">
             <a className="navbar-brand nav-link" href="/home">
@@ -36,11 +37,6 @@ class Header extends Component {
 
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
-                  <a className="nav-link " href="register.html">
-                    Sign Up
-                  </a>
-                </li>
-                <li className="nav-item">
                   <a className="nav-link" href="/signIn">
                     Login
                   </a>
@@ -50,6 +46,7 @@ class Header extends Component {
           </div>
         </nav>
       </div>
+      
     );
   }
 }
