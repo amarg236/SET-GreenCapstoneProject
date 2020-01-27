@@ -10,7 +10,7 @@ class Cal extends Component {
      
       render() {
         return (
-          <div>
+          <div >
             <Calendar
               onChange={this.onChange}
               value={this.state.date}

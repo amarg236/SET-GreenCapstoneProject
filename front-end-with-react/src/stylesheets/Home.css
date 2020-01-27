@@ -2,3 +2,9 @@
     position:fixed;
     bottom: 50px;
 }
+
+.flexbox {
+    border: 1px solid #ccc;
+    display: flex;
+   
+  }
