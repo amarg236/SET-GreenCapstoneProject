@@ -3,11 +3,13 @@ import React, { Component } from "react";
 class Header extends Component {
   render() {
     return (
-      <div>
-        <nav className="navbar navbar-expand-sm navbar-dark bg-success mb-4">
+      <div style={{borderBottomColor:'#3DF42D'}}>
+        <nav className="navbar navbar-expand-sm navbar-light bg-white mb-4">
           <div className="container">
             <a className="navbar-brand nav-link" href="/home">
-              SET-Green Capstone Project
+              SET-
+              <span style={{color:'#67D05E'}}> Green </span>
+              Capstone Project
             </a>
             <button
               className="navbar-toggler"

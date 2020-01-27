@@ -5,8 +5,8 @@ import UpcomingGames from "./Project/UpcomingGames";
 class Home extends Component {
   render() {
     return (
-      <div className="projects"
-      style={{position:'absolute', left:'500px'}}>
+      <div className="projects text-center"
+      style={{position:'absolute', left:'550px'}}>
           <UpcomingGames />
           <br/>
           <br/>
