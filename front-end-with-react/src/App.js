@@ -8,6 +8,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import AddProject from "./components/Project/AddProject";
 import ViewApiCall from "./components/Project/ViewApiCall";
 import SignIn from "./components/Project/SignIn";
+import CreateGame from "./components/Game/CreateGame";
+import ViewGame from "./components/Game/ViewGame";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
 
         <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/viewApiCall" component={ViewApiCall} />
+        <Route exact path="/createGame" component={CreateGame} />
+        <Route exact path="/viewGame" component={ViewGame} />
         <Route exact path="/addProject" component={AddProject} />
         <Route exact path="/signIn" component={SignIn} />
       </div>

@@ -30,6 +30,16 @@ class Header extends Component {
                     Work with API
                   </a>
                 </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="/createGame">
+                    Add Game
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="/viewGame">
+                    View Game
+                  </a>
+                </li>
               </ul>
 
               <ul className="navbar-nav ml-auto">
