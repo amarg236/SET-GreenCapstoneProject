@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import Dashboard from "./components/Dashboard";
+import MySchedule from "./components/MySchedule";
 import Header from "./components/Layout/Header";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,7 +22,7 @@ function App() {
         <Header />
         
         <Switch> 
-        <Route exact path="/dashboard" component={Dashboard} />
+        <Route exact path="/mySchedule" component={MySchedule} />
         <Route exact path="/viewApiCall" component={ViewApiCall} />
         <Route exact path="/addProject" component={AddProject} />
         <Route exact path="/signIn" component={SignIn} />

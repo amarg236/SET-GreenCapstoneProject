@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import "../../stylesheets/header.css";
+import * as ReactBootstrap from 'react-bootstrap';
 
 class Header extends Component {
   render() {
     return (
-      <div style={{borderBottomStyle:'solid', borderBottomColor:'#3DF42D', height:'80px',}}>
-        <nav className="navbar navbar-expand-sm navbar-light bg-white mb-4">
-          <div className="container">
+      
+        <ReactBootstrap.Navbar sticky="top"className="navbar navbar-expand-sm navbar-light bg-white mb-4">
+          
 
             {/* SET-Green Home link and logo */}
             <a className="navbar-brand nav-link" href="/home"
-            style={{fontWeight:'bold', fontSize:'25pt'}}>
+            style={{fontWeight:'bold', fontSize:'25pt',}}>
               SET-
               <span style={{color:'#67D05E'}}> Green </span>
             </a>
@@ -28,7 +29,7 @@ class Header extends Component {
 
                 {/* My Schedule button */}
                 <li className="nav-item">
-                  <a className="nav-link" href="/dashboard">
+                  <a className="nav-link" href="/mySchedule">
                     My Schedule
                   </a>
                 </li>
@@ -50,9 +51,8 @@ class Header extends Component {
                 </li>
               </ul>
             </div>
-          </div>
-        </nav>
-      </div>
+        </ReactBootstrap.Navbar>
+      
       
     );
   }

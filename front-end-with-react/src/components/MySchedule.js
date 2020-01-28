@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import ProjectItem from "./Project/ProjectItem";
 import CreateProjectButton from "./Project/CreateProjectButton";
 
-class Dashboard extends Component {
+class MySchedule extends Component {
   render() {
     return (
       <div className="projects">
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <h1 className="display-4 text-center">Projects</h1>
+              <h1 className="display-4 text-center">My Schedule</h1>
               <br />
               <CreateProjectButton />
               <br />
@@ -23,4 +23,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default MySchedule;

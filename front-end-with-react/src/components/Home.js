@@ -8,7 +8,7 @@ class Home extends Component {
     return (
       //Green Background box
       <div
-        style={{backgroundColor:'#00cc00', width:'100%', height:'254px'}}> 
+        style={{backgroundColor:'#67D05E', width:'100%', height:'254px'}}> 
         
         {/* Insert Welcome side bar */}
         <div className="projects">
