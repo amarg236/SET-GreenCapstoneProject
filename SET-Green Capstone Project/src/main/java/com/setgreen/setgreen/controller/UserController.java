@@ -1,14 +1,12 @@
 package com.setgreen.setgreen.controller;
 
+import com.setgreen.setgreen.model.*;
 import com.setgreen.setgreen.model.ResponseBody;
-import com.setgreen.setgreen.model.Role;
-import com.setgreen.setgreen.model.RoleName;
-import com.setgreen.setgreen.model.SignUpForm;
-import com.setgreen.setgreen.model.User;
 import com.setgreen.setgreen.payload.JWTLoginSuccessResponse;
 import com.setgreen.setgreen.payload.LoginRequest;
 import com.setgreen.setgreen.repositories.UserRepo;
 import com.setgreen.setgreen.security.JwtTokenProvider;
+import com.setgreen.setgreen.services.GameService;
 import com.setgreen.setgreen.services.MapValidationErrorService;
 import com.setgreen.setgreen.services.UserService;
 import com.setgreen.setgreen.services.ViewUserService;
@@ -53,6 +51,10 @@ public class UserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+
+    @Autowired
+    private GameService gameService;
 
 
     @GetMapping("viewusers")
@@ -129,4 +131,22 @@ public class UserController {
     public String hellousers(){
         return "This is nothing but just test of other controller";
     }
+
+
+
+
+    //we should not keep our controller here but this controller is just for the purpose of POC. Got to remove after POC
+    @PostMapping("creategame")
+    public ResponseBody createGame(@RequestBody Game game){
+        //There is no validation in the controller
+        gameService.createGame(game);
+            return new ResponseBody(HttpStatus.CREATED.value(),"Game successfully created",new Game());
+    }
+
+    @GetMapping("viewgame")
+    public List<Game> viewGame()
+    {
+        return gameService.viewGame();
+    }
+
 }
