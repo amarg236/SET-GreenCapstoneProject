@@ -5,12 +5,18 @@ import UpcomingGames from "./Project/UpcomingGames";
 class Home extends Component {
   render() {
     return (
-      <div className="projects text-center"
-      style={{position:'absolute', left:'550px', top:'100px'}}>
-          <UpcomingGames />
-          <br/>
-          <br/>
-          <Cal />
+      //Green Background box
+      <div
+        style={{backgroundColor:'#00cc00', width:'100%', height:'100px'}}> 
+        
+        <div className="projects text-center"
+          style={{position:'absolute', left:'550px', top:'100px'}}>
+            <UpcomingGames />
+            <br/>
+            <br/>
+            <Cal />
+        
+        </div>
       </div>
     );
   }

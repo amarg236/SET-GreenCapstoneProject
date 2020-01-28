@@ -5,7 +5,7 @@ class UpcomingGames extends Component {
       render() {
         return (
           <div style={{height: '300px', borderStyle:'solid', borderColor:'#A09C9C',
-            width:'600px', fontSize:'35pt', padding:'5px'}}> 
+            width:'600px', fontSize:'35pt', padding:'5px', backgroundColor:'white'}}> 
             <span style={{textDecoration:'underline',}}>Upcoming Games </span>
             <br/>
             <div style={{fontSize:'20pt', textAlign:'left'}}> 

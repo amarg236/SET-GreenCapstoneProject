@@ -4,10 +4,11 @@ import "../../stylesheets/header.css";
 class Header extends Component {
   render() {
     return (
-      <div style={{borderBottomStyle:'solid', borderBottomColor:'#3DF42D', height:'60px',}}>
+      <div style={{borderBottomStyle:'solid', borderBottomColor:'#3DF42D', height:'70px',}}>
         <nav className="navbar navbar-expand-sm navbar-light bg-white mb-4">
           <div className="container">
-            <a className="navbar-brand nav-link" href="/home">
+            <a className="navbar-brand nav-link" href="/home"
+            style={{fontWeight:'bold', fontSize:'20pt'}}>
               SET-
               <span style={{color:'#67D05E'}}> Green </span>
               Capstone Project
