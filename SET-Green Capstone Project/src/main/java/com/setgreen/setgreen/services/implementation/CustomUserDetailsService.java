@@ -27,10 +27,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     //We need this when we find user by id while filtering
     @Transactional
-    public User loadUserById(Long id){
+    public UserDetails loadUserById(Long id){
         User user = userRepo.getById(id);
         if(user==null) new UsernameNotFoundException("User not found");
-        return user;
+        return UserPrinciple.build(user);
 
     }
 }

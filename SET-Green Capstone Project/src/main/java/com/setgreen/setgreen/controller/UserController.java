@@ -6,7 +6,6 @@ import com.setgreen.setgreen.payload.JWTLoginSuccessResponse;
 import com.setgreen.setgreen.payload.LoginRequest;
 import com.setgreen.setgreen.repositories.UserRepo;
 import com.setgreen.setgreen.security.JwtTokenProvider;
-import com.setgreen.setgreen.services.GameService;
 import com.setgreen.setgreen.services.MapValidationErrorService;
 import com.setgreen.setgreen.services.UserService;
 import com.setgreen.setgreen.services.ViewUserService;
@@ -26,6 +25,7 @@ import java.util.*;
 
 import static com.setgreen.setgreen.security.SecurityConstants.TOKEN_PREFIX;
 
+@CrossOrigin
 @RestController
 @RequestMapping("api/auth/")
 public class UserController {
@@ -53,10 +53,7 @@ public class UserController {
     private AuthenticationManager authenticationManager;
 
 
-    @Autowired
-    private GameService gameService;
-
-
+   
     @GetMapping("viewusers")
     public List<User> getUser(){
         return viewUserService.ViewUsers();
@@ -135,18 +132,5 @@ public class UserController {
 
 
 
-    //we should not keep our controller here but this controller is just for the purpose of POC. Got to remove after POC
-    @PostMapping("creategame")
-    public ResponseBody createGame(@RequestBody Game game){
-        //There is no validation in the controller
-        gameService.createGame(game);
-            return new ResponseBody(HttpStatus.CREATED.value(),"Game successfully created",new Game());
-    }
-
-    @GetMapping("viewgame")
-    public List<Game> viewGame()
-    {
-        return gameService.viewGame();
-    }
 
 }
