@@ -65,24 +65,30 @@ public class UserController {
 
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) return errorMap;
-        User user = userValid.findByUserNameIgnoreCase(loginRequest.getUsername());
 
-        if(user.getVerified()) {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getUsername(),
-                            loginRequest.getPassword()
-                    )
-            );
+         User   user = userValid.findByUserNameIgnoreCase(loginRequest.getUsername());
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
+         if(user == null) return new ResponseEntity<>("Username not found. Please enter correct username.",HttpStatus.BAD_REQUEST);
+            if (user.getVerified()) {
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                loginRequest.getUsername(),
+                                loginRequest.getPassword()
+                        )
+                );
 
-            return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, authentication.getAuthorities().toArray()));
-        }
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
+
+                return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, authentication.getAuthorities().toArray()));
+            }
+
+            return new ResponseEntity<>("Please verify your email first",HttpStatus.BAD_REQUEST);
 
 
-        return new ResponseEntity<>("Please verify your email first",HttpStatus.BAD_REQUEST);
+
+
+
 
     }
 
