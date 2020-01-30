@@ -1,15 +1,13 @@
 import React, { Component } from "react";
-import "../../stylesheets/login.css";
 
-
-export default class SignIn extends Component {
+class Dashboard extends Component {
   render() {
     return (
-      <div className='wrapper '>
+      <div className='wrapper'>
         <form className="form-signin">
-          <h3 className="form-signin-heading text-center webk"
+          <h3 className="form-signin-heading text-center"
           style={{backgroundColor:'#739608', color:'white',
-          height:'7vh'}}>
+          height:'40px'}}>
             Login</h3>
 
           <div className="form-group"
@@ -51,7 +49,8 @@ export default class SignIn extends Component {
           </div>
 
           <button className="btn btn-lg btn-block" type="submit"
-          style={{backgroundColor:'#739608', color:'white', textAlign:'center', margin:'0', }}>
+          style={{backgroundColor:'#739608', color:'white', textAlign:'center', margin:'0', width:'100px',
+          position:'relative', left:'100px', bottom:'10px'}}>
             LOGIN
           </button>
         </form>
@@ -59,3 +58,5 @@ export default class SignIn extends Component {
     );
   }
 }
+
+export default Dashboard;

@@ -5,18 +5,30 @@ body {
 .wrapper {
   margin-top: 80px;
   margin-bottom: 80px;
+  display: flex;
+}
+
+.btn{
+  align-items: center;
+  background-color:'#739608';
+  color:'white'; 
+  margin:'0'; 
+  width:'100px';
 }
 
 .form-signin {
-  max-width: 380px;
-  padding: 15px 35px 45px;
   margin: 0 auto;
   background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 50vh ;
+  height: 50vh;
+  border: none;
+ 
 
-  .form-signin-heading,
+  
   .checkbox {
     margin-bottom: 30px;
+    
+    
   }
 
   .checkbox {
