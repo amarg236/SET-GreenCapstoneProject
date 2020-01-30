@@ -7,13 +7,11 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 import AddProject from "./components/Project/AddProject";
 import ApproveGame from "./components/Project/ApproveGame";
 import SignIn from "./components/Project/SignIn";
 import Home from "./components/Layout/Home";
-import * as Chart from "./components/Project/Chart";
 import CreateGame from "./components/Project/CreateGame";
 
 function App() {
@@ -31,7 +29,6 @@ function App() {
         <Route path="/">
             <Home />
           </Route>
-          <Chart />
         </Switch>
       </div>
     </Router>

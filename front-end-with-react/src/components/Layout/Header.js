@@ -4,26 +4,20 @@ import GreenBackground from "./GreenBackground";
 import ProfileButton from "../Buttons/ProfileButton";
 import SettingsButton from "../Buttons/SettingsButton";
 import NotificationButton from "../Buttons/NotificationButton";
+import * as ReactBootstrap from 'react-bootstrap';
 
 class Header extends Component {
   render() {
     return (
-      <div>
-        <nav className="navbar navbar-expand-sm mb-4">
+      <sticky >
+        <ReactBootstrap.Navbar sticky='top' 
+        className="navbar fixed-top navbar-expand-sm mb-4">
           
           <div className='dashboard'>
             <a className="navbar-brand dashboardNames" href="Dashboard.html">
               DASHBOARD
             </a>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#mobile-nav"
-            >
-              <span className="navbar-toggler-icon" />
-            </button> 
-            </div>
+          </div>
 
             <div className="collapse navbar-collapse" id="mobile-nav">
               <ul className="navbar-nav mr-auto">
@@ -68,9 +62,9 @@ class Header extends Component {
                 </li>
               </ul>
             </div>
-        </nav>
+        </ReactBootstrap.Navbar>
         <GreenBackground />
-      </div>
+      </sticky>
     );
   }
 }

@@ -12,7 +12,7 @@ class Cal extends React.Component {
     });
 
      render() {
-        return <ScheduleComponent height='400vh' currentView='Month' 
+        return <ScheduleComponent  currentView='Month' 
         eventSettings={{ dataSource: this.remoteData }} style={{maxHeight:'200vh'}}>
         <Inject services={[Day, Week, WorkWeek, Month]} />
       </ScheduleComponent>      
