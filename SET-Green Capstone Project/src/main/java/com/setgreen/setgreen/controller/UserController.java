@@ -1,14 +1,13 @@
 package com.setgreen.setgreen.controller;
 
-import com.setgreen.setgreen.model.*;
 import com.setgreen.setgreen.model.ResponseBody;
+import com.setgreen.setgreen.model.*;
 import com.setgreen.setgreen.payload.JWTLoginSuccessResponse;
 import com.setgreen.setgreen.payload.LoginRequest;
 import com.setgreen.setgreen.repositories.UserRepo;
 import com.setgreen.setgreen.security.JwtTokenProvider;
 import com.setgreen.setgreen.services.MapValidationErrorService;
 import com.setgreen.setgreen.services.UserService;
-import com.setgreen.setgreen.services.ViewUserService;
 import com.setgreen.setgreen.services.implementation.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.setgreen.setgreen.security.SecurityConstants.TOKEN_PREFIX;
 
@@ -29,9 +29,9 @@ import static com.setgreen.setgreen.security.SecurityConstants.TOKEN_PREFIX;
 @RestController
 @RequestMapping("api/auth/")
 public class UserController {
-
-    @Autowired
-    private ViewUserService viewUserService;
+//
+//    @Autowired
+//    private ViewUserService viewUserService;
 
     @Autowired
     UserRepo userValid;
@@ -53,12 +53,12 @@ public class UserController {
     private AuthenticationManager authenticationManager;
 
 
-   
-    @GetMapping("viewusers")
-    public List<User> getUser(){
-        return viewUserService.ViewUsers();
-
-    }
+//
+//    @GetMapping("viewusers")
+//    public List<User> getUser(){
+//        return viewUserService.ViewUsers();
+//
+//    }
 
     @PostMapping("login")
     public ResponseEntity<?> authenticateuser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
@@ -130,10 +130,6 @@ public class UserController {
     }
 
 
-    @GetMapping("showUser")
-    public String hellousers(){
-        return "This is nothing but just test of other controller";
-    }
 
 
 
