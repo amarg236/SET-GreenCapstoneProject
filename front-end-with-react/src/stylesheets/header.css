@@ -1,0 +1,22 @@
+.dashboard{
+    background-color: #EBEBEB;
+    object-fit: contain;
+}
+
+.navbar{
+    border-bottom: 2px solid #91BF04;
+    background-color: #DDDDDD; 
+}
+
+.nav-button{
+    width: 60px;
+}
+
+.dashboardNames{
+    color: #868982;
+    font-weight: 500;
+}
+
+.dashboardSeperator{
+    border-right: solid 1px black;
+}
