@@ -4,21 +4,27 @@ import Cal from "../Project/Cal";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import "../../stylesheets/home.css";
 
 class Home extends Component {
   render() {
     return (
-        <Container style={{position:'absolute', top:'125px', maxWidth:"100%", maxHeight:"100%"}}>
+      <div style={{position:'absolute', top:'125px', 
+      maxWidth:"100%", maxHeight:"100%",}} 
+      className='layout'>
+        <Container>
           <Row>
-            <Col md = {{span: '3', offset: '1'}} style={{height:'100vh', backgroundColor:'purple'}}>
+            <Col sm = {{span: '4',}}>
               <SignIn />
             </Col>
-            <Col> </Col>
-            <Col md = {{span: '7', }}>
+            
+            <Col sm = {{span: '8', }} style={{alignContent: 'right'}}>
               <Cal />
             </Col>
             </Row> 
         </Container>
+        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        </div>
     );
   }
 }
