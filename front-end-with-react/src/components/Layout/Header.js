@@ -11,8 +11,9 @@ class Header extends Component {
     return (
       <sticky >
         <ReactBootstrap.Navbar sticky='top' 
-        className="navbar fixed-top navbar-expand-sm mb-4">
+        className="navbar hdr fixed-top navbar-expand-sm mb-4 ">
           
+          {/* Brand/logo */}
           <div className='dashboard'>
             <a className="navbar-brand dashboardNames" href="Dashboard.html">
               DASHBOARD

@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import Header from "./components/Layout/Header";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   BrowserRouter as Router,
@@ -13,6 +12,7 @@ import ApproveGame from "./components/Project/ApproveGame";
 import SignIn from "./components/Project/SignIn";
 import Home from "./components/Layout/Home";
 import CreateGame from "./components/Project/CreateGame";
+import Footer from "./components/Layout/Footer";
 
 function App() {
   return (
@@ -30,6 +30,8 @@ function App() {
             <Home />
           </Route>
         </Switch>
+        
+        <Footer />
       </div>
     </Router>
   );
