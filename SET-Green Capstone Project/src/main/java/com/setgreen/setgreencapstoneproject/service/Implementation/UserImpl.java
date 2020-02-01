@@ -131,10 +131,10 @@ public class UserImpl implements UserDetailsService, UserService {
 //                }
 //
 //            }
-
+        	usr.setVerified(false);
             userRepo.save(usr);
 
-            return new ResponseBody(HttpStatus.CREATED.value(),"User Successfully Created",new User());
+            return new ResponseBody(HttpStatus.CREATED.value(),"User Successfully Created",usr);
         }
         catch (Exception ex )
         {
@@ -149,7 +149,7 @@ public class UserImpl implements UserDetailsService, UserService {
     public ResponseBody verifyUser(UserProfile usr) {
     	try {
     		User ref = userRepo.findByEmail(usr.getEmail()).get();
-    		ref.setPassWord(usr.getPassWord());
+    		ref.setPassword(usr.getPassword());
     		ref.setVerified(true);
     		userRepo.save(ref);
     		uProfileRepo.save(usr);
@@ -160,11 +160,25 @@ public class UserImpl implements UserDetailsService, UserService {
     		return new ResponseBody(HttpStatus.BAD_REQUEST.value(),"Account Could Not Be Verified",new User());
     	}
     }
+   
     
-    public ResponseBody Login(Login login) {
-    	return null; //TODO get rid of this stub
+    
+    /**For login
+     *@param User usr user data passed to loginto the system
+     */
+    public ResponseBody Login(User usr) {
+    	try {
+    		User ref = userRepo.findByEmail(usr.getEmail()).get();
+    		if(!ref.getPassword().equals(usr.getPassword())) {
+    			throw new Exception("Bad Password");
+    		}
+    		return new ResponseBody(HttpStatus.ACCEPTED.value(), "Logged in", new User());
+    	}
+    	catch(Exception e) {
+    		return new ResponseBody(HttpStatus.BAD_REQUEST.value(), "Bad Request", new User());
+    	}
     }
-	/*TODO fix this.
+	/*TODO fix this. EDIT: Should be fixed see above
 	 * 
 	 * @Override
 	 * public ResponseBody Login(Login login) { User user =

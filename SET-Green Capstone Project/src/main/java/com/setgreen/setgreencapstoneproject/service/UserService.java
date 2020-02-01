@@ -10,7 +10,7 @@ import javax.validation.Valid;
 
 public interface UserService {
     ResponseBody Register(@Valid User usr);
-    ResponseBody Login(Login login);
+    ResponseBody Login(User usr);
     List<User> ViewUsers();
 
 }
