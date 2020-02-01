@@ -9,21 +9,20 @@ import "../../stylesheets/home.css";
 class Home extends Component {
   render() {
     return (
-      <div style={{position:'absolute', top:'125px', 
-      maxWidth:"100%", maxHeight:"100%",}} 
-      className='layout'>
+      <div className='layout'>
         <Container>
           <Row>
             <Col sm = {{span: '4',}}>
               <SignIn />
             </Col>
             
-            <Col sm = {{span: '8', }} style={{alignContent: 'right'}}>
+            <Col sm = {{span: '8', }}
+            style={{paddingLeft:'10vh'}}>
               <Cal />
             </Col>
             </Row> 
+            
         </Container>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
         </div>
     );
   }
