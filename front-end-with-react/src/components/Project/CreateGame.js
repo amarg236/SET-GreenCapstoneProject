@@ -4,8 +4,10 @@ import "../../stylesheets/createGame.css";
 class CreateGame extends Component {
   render() {
     return (
+    <div className='gameLayout'>
       <form className='auth-inner'>
-                <h3>Sign Up</h3>
+                <h3 style={{textAlign:'center'}}>
+                    Create Game</h3>
 
                 <div className="form-group">
                     <label>First name</label>
@@ -32,7 +34,7 @@ class CreateGame extends Component {
                     Already registered <a href="#">sign in?</a>
                 </p>
             </form>
-      
+            </div>
     );
   }
 }

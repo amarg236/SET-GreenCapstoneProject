@@ -8,18 +8,30 @@ body {
 }
 
 .btn{
-  align-items: center;
-  background-color:'#739608';
-  color:'white'; 
-  margin:'0'; 
-  width:'100px';
+  background-color:#739608;
+  color:white;  
+}
+
+input.SignIn.placeholder{
+  color: white;
+}
+
+.form-signin-heading{
+  background-color:#739608; 
+  color:white;
+  height:7vh;
+}
+
+.form-group{
+  padding-left:2vh; 
+  padding-right:2vh;
 }
 
 .form-signin {
   margin: 0 auto;
   background-color: #fff;
   width: 50vh ;
-  height: 50vh;
+  height: 48vh;
   border: none;
  
 
@@ -57,4 +69,9 @@ body {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
+}
+
+.forget{
+  text-align: center;
+  font-size: 10pt;
 }
