@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import "../../stylesheets/home.css";
+import ManageBox from "../Project/ManageBox";
 
 class Home extends Component {
   render() {
@@ -14,6 +15,7 @@ class Home extends Component {
           <Row>
             <Col sm = {{span: '4',}}>
               <SignIn />
+              <ManageBox />
             </Col>
             
             <Col sm = {{span: '8', }}

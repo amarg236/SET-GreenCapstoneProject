@@ -7,13 +7,12 @@ export default class SignIn extends Component {
     return (
       <div className='wrapper '>
         <form className="form-signin">
-          <h3 className="form-signin-heading text-center webk"
-          style={{backgroundColor:'#739608', color:'white',
-          height:'7vh'}}>
+
+          {/*Log in Heading  */}
+          <h3 className="form-signin-heading text-center">
             Login</h3>
 
-          <div className="form-group"
-          style={{paddingLeft:'10px', paddingRight:'10px'}}>
+          <div className="form-group">
             <input
               name="username"
               type="text"
@@ -25,9 +24,8 @@ export default class SignIn extends Component {
             />
           </div>
 
-          <div className="form-group"
-          style={{paddingLeft:'10px', paddingRight:'10px'}}>
-            <input
+          <div className="form-group">
+            <input 
               name="password"
               type="password"
               className="form-control"
@@ -37,8 +35,7 @@ export default class SignIn extends Component {
               autoFocus=""
             />
           </div>
-          <div className="form-group"
-          style={{paddingLeft:'10px'}}>
+          <div className="form-group">
             <label className="checkbox">
               <input
                 type="checkbox"
@@ -50,10 +47,15 @@ export default class SignIn extends Component {
             </label>
           </div>
 
-          <button className="btn btn-lg btn-block" type="submit"
-          style={{backgroundColor:'#739608', color:'white', textAlign:'center', margin:'0', }}>
-            LOGIN
-          </button>
+          <div className='pos'> 
+            <button className="btn btn-lg btn-block" type="submit">
+              LOGIN
+            </button>
+          </div>
+          
+          <div className='forget'> 
+            Forget Username/Password?
+          </div>
         </form>
         </div>
     );
