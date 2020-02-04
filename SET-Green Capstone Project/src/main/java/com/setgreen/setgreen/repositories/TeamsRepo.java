@@ -1,8 +1,7 @@
-package com.setgreen.setgreencapstoneproject.repository;
+package com.setgreen.setgreen.repositories;
 
 import org.springframework.data.repository.CrudRepository;
-
-import com.setgreen.setgreencapstoneproject.model.userbase.Teams;
+import com.setgreen.setgreen.model.Teams;
 
 public interface TeamsRepo extends CrudRepository<Teams, Long> {
 

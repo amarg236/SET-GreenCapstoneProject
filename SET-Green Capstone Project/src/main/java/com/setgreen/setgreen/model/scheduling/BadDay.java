@@ -1,4 +1,4 @@
-package com.setgreen.setgreencapstoneproject.model.scheduling;
+package com.setgreen.setgreen.model.scheduling;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package com.setgreen.setgreencapstoneproject.model.userbase;
+package com.setgreen.setgreen.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * @author Brendon
  *	Data structure for teams
+ *	Uses tmName = name of team, tmClass = teams classification, internalName = internal name of team 
  */
 @Entity
 public class Teams {
