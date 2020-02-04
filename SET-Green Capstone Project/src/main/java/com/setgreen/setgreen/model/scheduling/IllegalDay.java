@@ -1,20 +1,20 @@
-package com.setgreen.setgreencapstoneproject.model.scheduling;
+package com.setgreen.setgreen.model.scheduling;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author Brendon
- *Days that are good for a team
+ * Days that are marked off by admin
+ *
  */
 @Entity
-public class IdealDay{
+public class IllegalDay{
 	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -22,6 +22,7 @@ public class IdealDay{
 	@JsonIgnore
 	@NotEmpty(message = "Must have date")
 	private String dte;
-	@JoinColumn(name = "id", table = "teams")
-	long teamId;
+	@JsonIgnore
+	private String reason;
+	
 }
