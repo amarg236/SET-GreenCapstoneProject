@@ -23,5 +23,4 @@ public class ViewUserServiceImpl implements ViewUserService {
         return userRepo.findAll();
     }
 
-
 }
