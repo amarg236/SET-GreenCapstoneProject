@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-=======
-body{
-  min-height: 100vh;
-  height: 100vh;
-}
-
-.App{
-  min-height: 100%;
-  height:100%;
-}
-
->>>>>>> e505ed2037c1514a6da0dcc3408858c573ca45ef
 img {
   width: 100%;
 }
@@ -43,10 +30,7 @@ img {
 
 .landing {
   position: relative;
-<<<<<<< HEAD
   /* background: url("../img/showcase.jpg") no-repeat; */
-=======
->>>>>>> e505ed2037c1514a6da0dcc3408858c573ca45ef
   background-size: cover;
   background-position: center;
   height: 100vh;
