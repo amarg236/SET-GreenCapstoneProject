@@ -1,4 +1,4 @@
-package com.setgreen.setgreen.services.MailService;
+package com.setgreen.setgreen.services.MailService; //FIXME Is this the same as mailing.MailHandler?
 
 import com.setgreen.setgreen.model.Mail.Mail;
 import org.springframework.beans.factory.annotation.Autowired;

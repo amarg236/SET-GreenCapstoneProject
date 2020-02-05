@@ -27,4 +27,12 @@ public interface UserRepo extends JpaRepository<User, Id> {
     @Modifying
     @Query("UPDATE user u set u.password = :newPass WHERE u.email == :who")
     public void updatePassword(@Param("who") String who, @Param("newPass") String newPass);
+    
+    /** Sets a user to be verified.
+     * @param who String email of the user we want to update (as email is assumed to be a key value)
+     * @param tf boolean true or false, false "un-regestering" the user, and true verifiying them.
+     */
+    @Modifying
+    @Query("UPDATE user u set u.verified = :tf WHERE u.email == :who")
+    public void updateVerify(@Param("who") String who, @Param("tf") boolean tf);
 }
