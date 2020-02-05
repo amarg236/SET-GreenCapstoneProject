@@ -1,0 +1,21 @@
+.auth-inner {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 200px;
+    width: 100vh;
+    height: 90vh;
+    margin: auto;
+    background: #ffffff;
+    box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+    padding: 10px 55px 45px 55px;
+    border-radius: 15px;
+    transition: all .3s;
+    position: absolute;
+    top:18vh; 
+  }
+
+.gameLayout{
+  display:flex;
+  justify-content: center;
+  height: 50vh;
+}
