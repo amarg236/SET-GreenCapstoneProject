@@ -9,63 +9,86 @@ import * as ReactBootstrap from 'react-bootstrap';
 class Header extends Component {
   render() {
     return (
-      <sticky >
-        <ReactBootstrap.Navbar sticky='top' 
-        className="navbar hdr fixed-top navbar-expand-sm mb-4 ">
-          
+      <div>
+        <nav class="fixed-top navbar navbar-expand-lg navbar-light hdr">
+
           {/* Brand/logo */}
-          <div className='dashboard'>
-            <a className="navbar-brand dashboardNames" href="Dashboard.html">
-              DASHBOARD
-            </a>
-          </div>
+          <a class="navbar-brand dashboardNames" href="Dashboard.html">
+            DASHBOARD <span class="sr-only">(current)</span></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-            <div className="collapse navbar-collapse" id="mobile-nav">
-              <ul className="navbar-nav mr-auto">
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
 
-                {/* Request Game link */}
-                <li className="nav-item">
-                  <a className="nav-link dashboardNames dashboardSeperator" href="/createGame">
-                    Request Game
-                  </a>
-                </li>
-                
-                {/* Approve Game link */}
-                <li className="nav-item">
-                  <a className="nav-link dashboardNames dashboardSeperator" href="/viewApiCall">
-                    Approve Game
-                  </a>
-                </li>
+              {/* Request Game link */}
+              <li class="nav-item">
+                <a class="nav-link dashboardNames"
+                  href="/createGame">
+                  Create Game </a>
+              </li>
 
-                {/* Manage Team link */}
-                <li className="nav-item">
-                  <a className="nav-link dashboardNames" href="/createGame">
-                    Manage Team
-                  </a>
-                </li>
-              </ul>
+              {/* Approve Game link */}
+              <li class="nav-item">
+                <a class="nav-link dashboardNames"
+                  href="/viewApiCall">
+                  Approve Game</a>
+              </li>
 
-              <ul className="navbar-nav ml-auto">
+              {/* Manage Game link */}
+              <li class="nav-item">
+                <a class="nav-link dashboardNames"
+                  href="//createGame">
+                  Manage Game</a>
+              </li>
+            </ul>
 
-                {/* Notification bell icon */}
-              <li className="nav-item nav-button">
+
+            <ul className="navbar-nav ml-auto">
+              {/* Notification bell icon */}
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-button" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <NotificationButton />
-                </li>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+              </li>
 
-                {/* Settings icon */}
-              <li className="nav-item nav-button">
+              {/* Settings icon */}
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-button" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <SettingsButton />
-                </li>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+              </li>
 
-                {/* Userprofile icon */}
-                <li className="nav-item nav-button">
+              {/* Userprofile icon */}
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-button" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <ProfileButton />
-                </li>
-              </ul>
-            </div>
-        </ReactBootstrap.Navbar>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
         <GreenBackground />
-      </sticky>
+      </div>
     );
   }
 }

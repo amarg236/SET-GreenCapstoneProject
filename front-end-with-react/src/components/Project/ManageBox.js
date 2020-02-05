@@ -4,22 +4,25 @@ import "../../stylesheets/manageBox.css";
 class ManageBox extends Component {
     render() {
       return (
-            <div className='mngeLayout'>
-                <button className='btn btn-block' 
-                type='button'
-                style={{height:'35%', marginTop:'5%', marginBottom:'0'}}> 
-                  MANAGE USER
-                </button>
-                <br/>
-                <button className='btn btn-block' 
-                type='button'
-                style={{height:'35%', marginTop:'0'}}> 
-                  MANAGE TEAM
-                </button>
+        <div className='wrapper'>
+        <form className="mngeLayout" style={{width:'80%', marginLeft:'10%'}}>
 
-            </div>
-      );
-    }
+          <div className='pos' style={{marginBottom:'5%'}}> 
+            <button className="btn btn-lg btn-block" type="submit">
+              MANAGE USER
+            </button>
+          </div>
+        
+          <div className='pos'> 
+            <button className="btn btn-lg btn-block" type="submit">
+              MANAGE TEAM
+            </button>
+          </div>
+        </form>
+        </div>
+    );
   }
+}
+
   
   export default ManageBox;
