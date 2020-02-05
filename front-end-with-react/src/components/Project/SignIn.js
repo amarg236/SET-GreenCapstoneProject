@@ -1,12 +1,23 @@
 import React, { Component } from "react";
 import "../../stylesheets/login.css";
-
+import axios from 'axios';
 
 export default class SignIn extends Component {
+  state = { username: '',
+            password: ''};
+
+  //prevent auto submission of form
+  onFormSubmit = (event) => {
+    event.preventDefault();
+
+     console.log(this.state.username);
+     console.log(this.state.password);
+   }
+
   render() {
     return (
       <div className='wrapper '>
-        <form className="form-signin">
+        <form onSubmit={this.onFormSubmit} className="form-signin">
 
           {/*Log in Heading  */}
           <h3 className="form-signin-heading text-center">
@@ -16,11 +27,12 @@ export default class SignIn extends Component {
             <input
               name="username"
               type="text"
+              value={this.state.username}
+              onChange={e => this.setState({username: e.target.value})}
               className="form-control"
               aria-describedby="emailHelp"
               placeholder="Enter username"
-              required=""
-              autoFocus=""
+              id='usrnme'
             />
           </div>
 
@@ -28,11 +40,12 @@ export default class SignIn extends Component {
             <input 
               name="password"
               type="password"
+              autoComplete="on"
+              value={this.state.password}
+              onChange={e => this.setState({password: e.target.value})}
               className="form-control"
               id="exampleInputPassword1"
               placeholder="Password"
-              required=""
-              autoFocus=""
             />
           </div>
           <div className="form-group">
