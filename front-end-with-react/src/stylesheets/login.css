@@ -3,7 +3,7 @@ body {
 }
 
 .wrapper {
-  margin-bottom: 80px;
+  margin-top: 20px;
   display: flex;
 }
 
@@ -19,7 +19,8 @@ input.SignIn.placeholder {
 .form-signin-heading {
   background-color: #739608;
   color: white;
-  height: 7vh;
+  /* padding: 10px; */
+  /* height: 7vh; */
 }
 
 .form-group {
@@ -33,7 +34,6 @@ input.SignIn.placeholder {
   width: 50vh;
   height: auto;
   padding-bottom: 5%;
-  border-radius: 10px;
 
   .checkbox {
     margin-bottom: 30px;

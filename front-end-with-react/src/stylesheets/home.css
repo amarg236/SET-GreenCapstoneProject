@@ -1,11 +1,18 @@
 .layout {
-    position:absolute; 
-    top:18vh; 
-    max-width:100%; 
-    max-height:100%;
-    padding-left: 10vh;
-    display: block;
+  position: absolute;
+  top: 18vh;
+  max-width: 100%;
+  max-height: 100%;
+  padding-left: 10vh;
+  display: block;
 }
-body{
-    max-height: 100%;
+body {
+  max-height: 100%;
+}
+
+.login-column {
+  background-color: #ffffff;
+  padding-bottom: 10px;
+  padding: 0%;
+  /* border-radius: 5px; */
 }

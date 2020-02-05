@@ -7,14 +7,7 @@ export default class SignIn extends Component {
       <div className="wrapper">
         <form className="form-signin">
           {/*Log in Heading  */}
-          <h3
-            className="form-signin-heading text-center"
-            style={{
-              paddingTop: "3%"
-            }}
-          >
-            Login
-          </h3>
+
           <div className="form-group">
             <input
               name="username"
