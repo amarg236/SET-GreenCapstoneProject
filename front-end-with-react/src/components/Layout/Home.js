@@ -1,3 +1,4 @@
+import "../../stylesheets/home.css";
 import React, { Component } from "react";
 import SignIn from "../Project/SignIn";
 import Cal from "../Project/Cal";
@@ -13,8 +14,25 @@ class Home extends Component {
       <div className="layout">
         <Container>
           <Row>
-            <Col sm={{ span: "4" }}>
+            <Col sm={{ span: "4" }} className="login-column">
+              {/*Log in Heading  */}
+              <div
+                style={{
+                  backgroundColor: "#6B9712",
+                  textAlign: "center",
+                  color: "#ffffff"
+                }}
+              >
+                <h3
+                  style={{
+                    padding: "3%"
+                  }}
+                >
+                  Login
+                </h3>
+              </div>
               <SignIn />
+              <hr />
               <ManageBox />
             </Col>
 

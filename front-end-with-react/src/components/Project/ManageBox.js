@@ -5,19 +5,11 @@ class ManageBox extends Component {
   render() {
     return (
       <div className="manageLayout">
-        <button
-          className="btn btn-block"
-          type="button"
-          style={{ height: "35%", marginTop: "5%", marginBottom: "0" }}
-        >
+        <button className="btn btn-block" type="button">
           MANAGE USER
         </button>
         <br />
-        <button
-          className="btn btn-block"
-          type="button"
-          style={{ height: "35%", marginTop: "0" }}
-        >
+        <button className="btn btn-block" type="button">
           MANAGE TEAM
         </button>
       </div>
