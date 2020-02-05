@@ -3,6 +3,7 @@ body {
 }
 
 .wrapper {
+<<<<<<< HEAD
   margin-top: 80px;
   margin-bottom: 80px;
 }
@@ -17,6 +18,45 @@ body {
   .form-signin-heading,
   .checkbox {
     margin-bottom: 30px;
+=======
+  margin-bottom: 80px;
+  display: flex;
+}
+
+.btn{
+  background-color:#739608;
+  color:white;  
+}
+
+input.SignIn.placeholder{
+  color: white;
+}
+
+.form-signin-heading{
+  background-color:#739608; 
+  color:white;
+  height:7vh;
+}
+
+.form-group{
+  padding-left:2vh; 
+  padding-right:2vh;
+}
+
+.form-signin {
+  margin: 0 auto;
+  background-color: #fff;
+  width: 50vh ;
+  height: 48vh;
+  border: none;
+ 
+
+  
+  .checkbox {
+    margin-bottom: 30px;
+    
+    
+>>>>>>> e505ed2037c1514a6da0dcc3408858c573ca45ef
   }
 
   .checkbox {
@@ -47,3 +87,11 @@ body {
     border-top-right-radius: 0;
   }
 }
+<<<<<<< HEAD
+=======
+
+.forget{
+  text-align: center;
+  font-size: 10pt;
+}
+>>>>>>> e505ed2037c1514a6da0dcc3408858c573ca45ef
