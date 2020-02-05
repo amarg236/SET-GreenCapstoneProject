@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "../../stylesheets/login.css";
-<<<<<<< HEAD
 import axios from "axios";
 
 export default class SignIn extends Component {
@@ -90,20 +89,6 @@ export default class SignIn extends Component {
       <div className="wrapper">
         <form className="form-signin">
           <h2 className="form-signin-heading text-center">Login</h2>
-=======
-import ProjectItem from './ProjectItem'
-import axios from 'axios';
-
-export default class SignIn extends Component {
-  render() {
-    return (
-      <div className='wrapper '>
-        <form className="form-signin">
-
-          {/*Log in Heading  */}
-          <h3 className="form-signin-heading text-center">
-            Login</h3>
->>>>>>> e505ed2037c1514a6da0dcc3408858c573ca45ef
 
           <div className="form-group">
             <input
@@ -114,20 +99,11 @@ export default class SignIn extends Component {
               placeholder="Enter username"
               required=""
               autoFocus=""
-<<<<<<< HEAD
-=======
-              onChange = {(event,newValue) =>
-              this.setState({username:newValue})}
->>>>>>> e505ed2037c1514a6da0dcc3408858c573ca45ef
             />
           </div>
 
           <div className="form-group">
-<<<<<<< HEAD
             <input
-=======
-            <input 
->>>>>>> e505ed2037c1514a6da0dcc3408858c573ca45ef
               name="password"
               type="password"
               className="form-control"
@@ -135,11 +111,6 @@ export default class SignIn extends Component {
               placeholder="Password"
               required=""
               autoFocus=""
-<<<<<<< HEAD
-=======
-              onChange = {(event,newValue) =>
-                this.setState({password:newValue})}
->>>>>>> e505ed2037c1514a6da0dcc3408858c573ca45ef
             />
           </div>
           <div className="form-group">
@@ -154,26 +125,11 @@ export default class SignIn extends Component {
             </label>
           </div>
 
-<<<<<<< HEAD
           <button className="btn btn-lg btn-primary btn-block" type="submit">
             Login
           </button>
         </form>
       </div>
-=======
-          <div className='pos'> 
-            <button className="btn btn-lg btn-block" type="submit"
-            onClick={(event) => this.handleClick(event)}>
-              LOGIN
-            </button>
-          </div>
-          
-          <div className='forget'> 
-            Forget Username/Password?
-          </div>
-        </form>
-        </div>
->>>>>>> e505ed2037c1514a6da0dcc3408858c573ca45ef
     );
   }
 }
