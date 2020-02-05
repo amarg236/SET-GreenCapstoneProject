@@ -63,7 +63,6 @@ public class UserController {
 
 
 
-
     @PostMapping("login")
     public ResponseEntity<?> authenticateuser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
 
@@ -73,7 +72,7 @@ public class UserController {
          User   user = userValid.findByUserNameIgnoreCase(loginRequest.getUsername());
 
          if(user == null) return new ResponseEntity<>("Username not found. Please enter correct username.",HttpStatus.BAD_REQUEST);
-            if (user.getVerified()) {
+            if (user.getVerified()) {//TODO Can we make all this authentication  part of a private method?
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 loginRequest.getUsername(),
@@ -84,7 +83,7 @@ public class UserController {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
 
-                return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, authentication.getAuthorities().toArray()));
+                return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, authentication.getAuthorities().toArray()));//End the TODO mentioned above
             }
 
             return new ResponseEntity<>("Please verify your email first",HttpStatus.BAD_REQUEST);
@@ -95,10 +94,37 @@ public class UserController {
 
 
     }
+    
+    @GetMapping("login")
+    public ResponseEntity<?> firstTimeLogin(@Valid @RequestBody LoginRequest loginRequest, BindingResult result) {
+    	ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);//TODO I'm just copying 90% of the stuff from the current login method, need to clean this up
+        if (errorMap != null) return errorMap;
+    	
+    	User usr = userValid.findByUsername(loginRequest.getUsername());
+    	if(!usr.getVerified()) {//TODO Can we make all this authentication  part of a private method?
+    		Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
+                    )
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
+
+            return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, authentication.getAuthorities().toArray()));
+    	}
+    	return new ResponseEntity<>("Email already verified",HttpStatus.BAD_REQUEST);
+    }
+    
+    @PostMapping("setPassword")
+    public ResponseEntity<?> updatePassword(User u){
+    	return null; //TODO this method
+    }
 
 
     @PostMapping("createuser")
-    public ResponseBody addNewUser(@Valid @RequestBody SignUpForm newUser, BindingResult result)
+    public ResponseEntity<?> addNewUser(@Valid @RequestBody SignUpForm newUser, BindingResult result)
     {
 
 
@@ -118,7 +144,7 @@ public class UserController {
                 roles.add(roleService.getRoleByRoleName(RoleName.USER));
             }
             else{
-                return new ResponseBody(HttpStatus.BAD_REQUEST.value(),"Role not valid", new SignUpForm());
+                return new ResponseEntity<>("Role not valid", HttpStatus.BAD_REQUEST);
 
             }
         }
@@ -129,8 +155,8 @@ public class UserController {
         userData.setEmail(newUser.getEmail());
         userData.setRoles(roles);
 
-        User createUser = userService.saveUser(userData);
-        return new ResponseBody(HttpStatus.CREATED.value(),"User has been registered successfully!", new SignUpForm());
+        //User createUser = userService.saveUser(userData);
+        return new ResponseEntity<>("User has been registered successfully!", HttpStatus.CREATED);
     }
 
 
