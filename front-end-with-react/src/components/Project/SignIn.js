@@ -1,17 +1,20 @@
 import React, { Component } from "react";
 import "../../stylesheets/login.css";
 
-
 export default class SignIn extends Component {
   render() {
     return (
-      <div className='wrapper '>
+      <div className="wrapper">
         <form className="form-signin">
-
           {/*Log in Heading  */}
-          <h3 className="form-signin-heading text-center">
-            Login</h3>
-
+          <h3
+            className="form-signin-heading text-center"
+            style={{
+              paddingTop: "3%"
+            }}
+          >
+            Login
+          </h3>
           <div className="form-group">
             <input
               name="username"
@@ -25,7 +28,7 @@ export default class SignIn extends Component {
           </div>
 
           <div className="form-group">
-            <input 
+            <input
               name="password"
               type="password"
               className="form-control"
@@ -47,17 +50,29 @@ export default class SignIn extends Component {
             </label>
           </div>
 
-          <div className='pos'> 
-            <button className="btn btn-lg btn-block" type="submit">
+          <div
+            className="pos"
+            style={{
+              paddingLeft: "10%",
+              paddingRight: "10%"
+            }}
+          >
+            <button
+              className="btn btn-block"
+              style={{
+                height: "35%",
+                marginTop: "5%",
+                marginBottom: "5%"
+              }}
+              type="submit"
+            >
               LOGIN
             </button>
           </div>
-          
-          <div className='forget'> 
-            Forget Username/Password?
-          </div>
+
+          <div className="forget">Forget Username/Password?</div>
         </form>
-        </div>
+      </div>
     );
   }
 }

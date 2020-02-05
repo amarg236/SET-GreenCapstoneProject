@@ -7,39 +7,36 @@ body {
   display: flex;
 }
 
-.btn{
-  background-color:#739608;
-  color:white;  
-}
-
-input.SignIn.placeholder{
+.btn {
+  background-color: #739608;
   color: white;
 }
 
-.form-signin-heading{
-  background-color:#739608; 
-  color:white;
-  height:7vh;
+input.SignIn.placeholder {
+  color: white;
 }
 
-.form-group{
-  padding-left:2vh; 
-  padding-right:2vh;
+.form-signin-heading {
+  background-color: #739608;
+  color: white;
+  height: 7vh;
+}
+
+.form-group {
+  padding-left: 2vh;
+  padding-right: 2vh;
 }
 
 .form-signin {
   margin: 0 auto;
   background-color: #fff;
-  width: 50vh ;
-  height: 48vh;
-  border: none;
- 
+  width: 50vh;
+  height: auto;
+  padding-bottom: 5%;
+  border-radius: 10px;
 
-  
   .checkbox {
     margin-bottom: 30px;
-    
-    
   }
 
   .checkbox {
@@ -71,7 +68,7 @@ input.SignIn.placeholder{
   }
 }
 
-.forget{
+.forget {
   text-align: center;
   font-size: 10pt;
 }
