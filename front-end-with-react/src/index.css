@@ -5,6 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+<<<<<<< HEAD
+=======
+  max-height: 100vh;
+>>>>>>> e505ed2037c1514a6da0dcc3408858c573ca45ef
 }
 
 code {
