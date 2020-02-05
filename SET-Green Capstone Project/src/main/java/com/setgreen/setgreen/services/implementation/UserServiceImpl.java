@@ -33,11 +33,21 @@ public class UserServiceImpl implements UserService {
 
     }
     
-    /**
+    @Override
+    /** Updates a password for a user u
      * @param u User object that you most likely created exclusively to update another already existing user object
      */
     public void updatePassword(User u) {
     	userRepo.updatePassword(u.getEmail(), u.getPassword());
+    	
+    }
+    
+    /** Updates the password for a user AND sets the user to be verified
+     * @param u User object, already possessing the new password.
+     */
+    public void updatePassAndVerify(User u) {
+    	updatePassword(u);
+    	userRepo.updateVerify(u.getEmail(), true);
     }
 
 
