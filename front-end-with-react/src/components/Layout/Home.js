@@ -11,37 +11,19 @@ import ManageBox from "../Project/ManageBox";
 class Home extends Component {
   render() {
     return (
-      <div className="layout">
-        <Container>
-          <Row>
-            <Col sm={{ span: "4" }} className="login-column">
-              {/*Log in Heading  */}
-              <div
-                style={{
-                  backgroundColor: "#6B9712",
-                  textAlign: "center",
-                  color: "#ffffff"
-                }}
-              >
-                <h3
-                  style={{
-                    padding: "3%"
-                  }}
-                >
-                  Login
-                </h3>
-              </div>
-              <SignIn />
-              <hr />
-              <ManageBox />
-            </Col>
+      <Container fluid={true} className="body-container-style">
+        <Row noGutters={true}>
+          <Col md={2} sm={3} className="login-column">
+            <SignIn />
+            <hr />
+            <ManageBox />
+          </Col>
 
-            <Col sm={{ span: "8" }} style={{ paddingLeft: "10vh" }}>
-              <Cal />
-            </Col>
-          </Row>
-        </Container>
-      </div>
+          <Col md={10} sm={9} style={{ paddingLeft: "1%" }}>
+            <Cal />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
