@@ -12,7 +12,7 @@ class Home extends Component {
   render() {
     return (
       <Container fluid={true} className="body-container-style">
-        <Row noGutters={true}>
+        <Row noGutters={true} className="body-row-style">
           <Col md={2} sm={3} className="login-column">
             <SignIn />
             <hr />

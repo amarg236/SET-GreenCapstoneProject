@@ -69,6 +69,7 @@ class Header extends Component {
             </ul>
           </div>
         </ReactBootstrap.Navbar>
+        <GreenBackground />
       </sticky>
     );
   }
