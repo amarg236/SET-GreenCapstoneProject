@@ -15,6 +15,7 @@ import com.setgreen.setgreen.services.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -75,10 +76,10 @@ public class UserController {
          User   user = userValid.findByUserNameIgnoreCase(loginRequest.getUsername());
 
          if(user == null) return new ResponseEntity<>("Username not found. Please enter correct username.",HttpStatus.BAD_REQUEST);
-            if (user.getVerified()) {//TODO Can we make all this authentication part of a private method?
+            if (user.getVerified()) {//XXX ENCAPSULATE. This is shared here and the other login method, it should be its own method
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
-                                loginRequest.getUsername(),
+                                loginRequest.getUsername(), //FIXME USERNAME->EMAIL I do ***NOT*** want to login via a username, as we (should) key on emails (as one email can't have 2 accounts) and coaches do good to remember their email without needing a separate username.
                                 loginRequest.getPassword()
                         )
                 );
@@ -90,12 +91,6 @@ public class UserController {
             }
 
             return new ResponseEntity<>("Please verify your email first",HttpStatus.BAD_REQUEST);
-
-
-
-
-
-
     }
     
     /**
@@ -105,24 +100,32 @@ public class UserController {
      * @param result
      * @return
      */
-    @GetMapping("login")
-    public ResponseEntity<?> firstTimeLogin(@Valid @RequestBody LoginRequest loginRequest, BindingResult result) {
-    	ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);//TODO CLEAN THIS: I'm just copying 90% of the stuff from the current login method, need to clean this up
-        if (errorMap != null) return errorMap;
-    	
+    @GetMapping("login")//TODO REDIRECT this should really print out a redirect for html and have them go to a reset password place or something.
+    public ResponseEntity<?> firstTimeLogin(@RequestParam(value="u") String u, @RequestParam(value="p") String p) {
+    	LoginRequest loginRequest = new LoginRequest();//Hacks on hacks.
+    	loginRequest.setPassword(p);
+    	loginRequest.setUsername(u);
     	User usr = userValid.findByUsername(loginRequest.getUsername());
-    	if(!usr.getVerified()) {//TODO Can we make all this authentication  part of a private method?
-    		Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getUsername(),
-                            loginRequest.getPassword()
-                    )
-            );
+    	try {
+    		//To get around null checking we test to see if the user is not verified.
+    		//If the user is not verified or their value is null we throw an error and the catch allows them to log in.
+    		//XXX MAKE verified FALSE BY DEFAULT. Then I wouldn't have to do this hackass solution.
+    		if(!usr.getVerified()) {
+    			throw new Exception("User Not Verified");
+    		}
+    	}
+    	catch(Exception e) {
+    		 Authentication authentication = authenticationManager.authenticate(
+                     new UsernamePasswordAuthenticationToken(
+                             loginRequest.getUsername(),
+                             loginRequest.getPassword()
+                     )
+             );
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
+             SecurityContextHolder.getContext().setAuthentication(authentication);
+             String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
 
-            return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, authentication.getAuthorities().toArray()));
+             return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, authentication.getAuthorities().toArray()));
     	}
     	return new ResponseEntity<>("Email already verified",HttpStatus.BAD_REQUEST);
     }
@@ -164,6 +167,7 @@ public class UserController {
         Set<Role> roles = new HashSet<>();
         User userData = new User();
 
+        //TODO check for when no role present, also check that the typing is right on roles (admin can create anyone, assigner creates users, users aren't allowed)
         for(String s: newUser.getRole()){
             if(s.equals("ADMIN")){
                 roles.add(roleService.getRoleByRoleName(RoleName.ADMIN));
@@ -184,12 +188,13 @@ public class UserController {
         userData.setRoles(roles);
         
         try{
+        	MailHandler m = new MailHandler(new JavaMailSenderImpl());
+        	userData.setPassword(m.genLink());
+        	m.sendMailMessage(m.inviteUser(userData));
         	userService.saveUser(userData);
-        	MailHandler m = new MailHandler();
-        	m.inviteUser(userData.getEmail());
         }
         catch(Exception e) {
-        	return new ResponseEntity<>("Error saving user", HttpStatus.BAD_REQUEST);
+        	return new ResponseEntity<>("Error saving user"+e, HttpStatus.BAD_REQUEST);
         }
 
         //User createUser = userService.saveUser(userData);

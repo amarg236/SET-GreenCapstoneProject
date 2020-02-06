@@ -1,4 +1,6 @@
 package com.setgreen.setgreen.mailing; //FIXME Is this the same as MailService.MailHandlerService
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +14,12 @@ public class MailHandler {
 	private static final String EMAIL_SENDER = "Bbaronx@gmail.com";
 	private static final String HOSTNAME = "http://ec2-3-17-66-87.us-east-2.compute.amazonaws.com:8080/";
 	@Autowired
-	public MailHandler() {
-		mailSender.setHost("email-smtp.us-east-1.amazonaws.com");
-		mailSender.setPort(587);
-		mailSender.setUsername("AKIAXJKN3KOWCWAMOSPU");
-		mailSender.setPassword("BMWcww0kVhm4N0Kujxr6cf9vVkzQBmxakgSHP7rt4HL1");
+	public MailHandler(JavaMailSenderImpl ms) {
+		ms.setHost("email-smtp.us-east-1.amazonaws.com");
+		ms.setPort(587);
+		ms.setUsername("AKIAXJKN3KOWCWAMOSPU");
+		ms.setPassword("BMWcww0kVhm4N0Kujxr6cf9vVkzQBmxakgSHP7rt4HL1");
+		mailSender = ms;
 	}
 	
 	//TODO this method is kinda debug and can send any email message to anyone, that's a bit undesirable for security reasons.
@@ -29,14 +32,14 @@ public class MailHandler {
 		mailSender.send(msg);
 	}
 	
-	public Mail inviteUser(String toInvite) {
+	public Mail inviteUser(User toInvite) throws UnsupportedEncodingException {
 		Mail m = new Mail();
-		m.setSendTo(toInvite);
-		m.setSubjectLine("Invite to schedule games");
-		m.setEmailContent("You have been invited to join an email scheduling system.\nFollow this link to finish the sign up process: "+HOSTNAME+"api/auth?user="+toInvite+"&password="+genLink());
+		m.setSendTo(toInvite.getEmail());
+		m.setSubjectLine("Invite to schedule games");//XXX BETTER LINK SYSTEM
+		m.setEmailContent("You have been invited to join an email scheduling system.\nFollow this link to finish the sign up process: "+HOSTNAME+"api/auth/login?u="+URLEncoder.encode(toInvite.getUsername(), "UTF-8")+"&p="+toInvite.getPassword());//FIXME USES USERNAME if we switch to email, **this breaks**
 		return m;
 	}
-	public String genLink() {
+	public String genLink() {//XXX MOVE TO UTILITY CLASS. If we have time to do that. Also it should be named "genString()" and have an override of "genString(int lengthOfString)" if I find the time
 		String s = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		s = s+s.toLowerCase()+"0123456789";
 		Random r = new Random();

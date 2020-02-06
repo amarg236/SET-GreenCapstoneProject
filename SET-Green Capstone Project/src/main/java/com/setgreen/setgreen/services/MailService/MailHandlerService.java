@@ -1,6 +1,7 @@
+/*//TODO Depricate
 package com.setgreen.setgreen.services.MailService; //FIXME Is this the same as mailing.MailHandler?
 
-import com.setgreen.setgreen.model.Mail.Mail;
+import com.setgreen.setgreen.mailing.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -26,3 +27,4 @@ public class MailHandlerService {
         mailSender.send(msg);
     }
 }
+*/
