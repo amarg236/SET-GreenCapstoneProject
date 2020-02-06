@@ -1,7 +1,43 @@
 import React, { Component } from "react";
 import "../../stylesheets/login.css";
+import AuthService from "../../Utility/AuthService";
 
 export default class SignIn extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: "",
+      message: ""
+    };
+    this.login = this.login.bind(this);
+  }
+
+  componentDidMount() {
+    localStorage.clear();
+  }
+
+  login = e => {
+    e.preventDefault();
+    const credentials = {
+      username: this.state.username,
+      password: this.state.password
+    };
+
+    AuthService.login(credentials).then(res => {
+      console.log(res);
+      if (res.data.status === 200) {
+        localStorage.setItem("userInfo", JSON.stringify(res.data.result));
+
+        this.props.history.push("/api/user/showUser");
+      } else {
+        this.setState({ message: res.data.message });
+      }
+    });
+  };
+
+  onChange = e => this.setState({ [e.target.name]: e.target.value });
+
   render() {
     return (
       <div className="wrapper">
@@ -26,6 +62,8 @@ export default class SignIn extends Component {
               placeholder="Enter username"
               required=""
               autoFocus=""
+              value={this.state.username}
+              onChange={this.onChange}
             />
           </div>
 
@@ -38,6 +76,8 @@ export default class SignIn extends Component {
               placeholder="Password"
               required=""
               autoFocus=""
+              value={this.state.password}
+              onChange={this.onChange}
             />
           </div>
           <div className="form-group">
@@ -66,6 +106,7 @@ export default class SignIn extends Component {
                 marginTop: "5%",
                 marginBottom: "5%"
               }}
+              onClick={this.login}
               type="submit"
             >
               LOGIN
