@@ -3,7 +3,7 @@ body {
 }
 
 .wrapper {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   display: flex;
 }
 
@@ -19,6 +19,7 @@ input.SignIn.placeholder {
 .form-signin-heading {
   background-color: #739608;
   color: white;
+
   /* padding: 10px; */
   /* height: 7vh; */
 }
@@ -71,4 +72,14 @@ input.SignIn.placeholder {
 .forget {
   text-align: center;
   font-size: 10pt;
+}
+
+/* More from login section 
+It is for the login font title  */
+.sign-in-title {
+  background-color: #6b9712;
+  text-align: center;
+  color: #ffffff;
+  margin-top: 0;
+  margin-bottom: 25px;
 }

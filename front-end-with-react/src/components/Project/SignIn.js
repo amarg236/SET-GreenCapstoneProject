@@ -7,6 +7,15 @@ export default class SignIn extends Component {
       <div className="wrapper">
         <form className="form-signin">
           {/*Log in Heading  */}
+          <div className="sign-in-title">
+            <h3
+              style={{
+                padding: "3%"
+              }}
+            >
+              Login
+            </h3>
+          </div>
 
           <div className="form-group">
             <input
