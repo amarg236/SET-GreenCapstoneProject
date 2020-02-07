@@ -19,7 +19,7 @@ input.SignIn.placeholder {
 .form-signin-heading {
   background-color: #739608;
   color: white;
-
+  max-width: 100%;
   /* padding: 10px; */
   /* height: 7vh; */
 }
@@ -82,4 +82,5 @@ It is for the login font title  */
   color: #ffffff;
   margin-top: 0;
   margin-bottom: 25px;
+  
 }
