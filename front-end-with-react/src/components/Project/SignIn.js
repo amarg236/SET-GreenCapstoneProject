@@ -1,27 +1,57 @@
 import React, { Component } from "react";
 import "../../stylesheets/login.css";
-import axios from 'axios';
+import AuthService from "../../Utility/AuthService";
 
 export default class SignIn extends Component {
-  state = { username: '',
-            password: ''};
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: "",
+      message: ""
+    };
+    this.login = this.login.bind(this);
+  }
 
-  //prevent auto submission of form
-  onFormSubmit = (event) => {
-    event.preventDefault();
+  componentDidMount() {
+    localStorage.clear();
+  }
 
-     console.log(this.state.username);
-     console.log(this.state.password);
-   }
+  login = e => {
+    e.preventDefault();
+    const credentials = {
+      username: this.state.username,
+      password: this.state.password
+    };
+
+    AuthService.login(credentials).then(res => {
+      console.log(res);
+      if (res.data.status === 200) {
+        localStorage.setItem("userInfo", JSON.stringify(res.data.result));
+
+        this.props.history.push("/api/user/showUser");
+      } else {
+        this.setState({ message: res.data.message });
+      }
+    });
+  };
+
+  onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   render() {
     return (
-      <div className='wrapper '>
-        <form onSubmit={this.onFormSubmit} className="form-signin">
-
+      <div className="wrapper">
+        <form className="form-signin">
           {/*Log in Heading  */}
-          <h3 className="form-signin-heading text-center">
-            Login</h3>
+          <div className="sign-in-title">
+            <h3
+              style={{
+                padding: "3%"
+              }}
+            >
+              Login
+            </h3>
+          </div>
 
           <div className="form-group">
             <input
@@ -32,7 +62,10 @@ export default class SignIn extends Component {
               className="form-control"
               aria-describedby="emailHelp"
               placeholder="Enter username"
-              id='usrnme'
+              required=""
+              autoFocus=""
+              value={this.state.username}
+              onChange={this.onChange}
             />
           </div>
 
@@ -46,6 +79,10 @@ export default class SignIn extends Component {
               className="form-control"
               id="exampleInputPassword1"
               placeholder="Password"
+              required=""
+              autoFocus=""
+              value={this.state.password}
+              onChange={this.onChange}
             />
           </div>
           <div className="form-group">
@@ -60,15 +97,28 @@ export default class SignIn extends Component {
             </label>
           </div>
 
-          <div className='pos'> 
-            <button className="btn btn-lg btn-block" type="submit">
+          <div
+            className="pos"
+            style={{
+              paddingLeft: "10%",
+              paddingRight: "10%"
+            }}
+          >
+            <button
+              className="btn btn-block"
+              style={{
+                height: "35%",
+                marginTop: "5%",
+                marginBottom: "5%"
+              }}
+              onClick={this.login}
+              type="submit"
+            >
               LOGIN
             </button>
           </div>
-          
-          <div className='forget'> 
-            Forget Username/Password?
-          </div>
+
+          <div className="forget">Forget Username/Password?</div>
         </form>
         </div>
     );
