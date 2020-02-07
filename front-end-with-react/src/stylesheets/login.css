@@ -3,43 +3,35 @@ body {
 }
 
 .wrapper {
-  margin-bottom: 80px;
   display: flex;
 }
 
-.btn{
-  background-color:#739608;
-  color:white;  
-}
-
-input.SignIn.placeholder{
+.btn {
+  background-color: #739608;
   color: white;
 }
 
-.form-signin-heading{
-  background-color:#739608; 
-  color:white;
-  height:7vh;
+input.SignIn.placeholder {
+  color: white;
 }
 
-.form-group{
-  padding-left:2vh; 
-  padding-right:2vh;
+.form-signin-heading {
+  background-color: #739608;
+  color: white;
+  max-width: 100%;
+}
+
+.form-group {
+  padding-left: 2vh;
+  padding-right: 2vh;
 }
 
 .form-signin {
   margin: 0 auto;
   background-color: #fff;
-  width: 50vh ;
-  height: 48vh;
-  border: none;
- 
-
-  
-  .checkbox {
-    margin-bottom: 30px;
-    
-    
+  width: 50vh;
+  height: auto;
+  padding-bottom: 5%;
   }
 
   .checkbox {
@@ -51,11 +43,9 @@ input.SignIn.placeholder{
     font-size: 16px;
     height: auto;
     padding: 10px;
-    @include box-sizing(border-box);
+    box-sizing:(border-box);
 
-    &:focus {
-      z-index: 2;
-    }
+
   }
 
   input[type="text"] {
@@ -69,9 +59,20 @@ input.SignIn.placeholder{
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
-}
 
-.forget{
+
+.forget {
   text-align: center;
   font-size: 10pt;
+}
+
+/* More from login section 
+It is for the login font title  */
+.sign-in-title {
+  background-color: #6b9712;
+  text-align: center;
+  color: #ffffff;
+  margin-top: 0;
+  margin-bottom: 25px;
+  
 }

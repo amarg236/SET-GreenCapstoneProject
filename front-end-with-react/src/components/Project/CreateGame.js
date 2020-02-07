@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../../stylesheets/createGame.css";
+import "./SignIn"
 
 class CreateGame extends Component {
   render() {
@@ -29,9 +30,11 @@ class CreateGame extends Component {
                     <input type="password" className="form-control" placeholder="Enter password" />
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
+                <button type="submit" className="btn btn-primary btn-block"
+                style={{border:'none'}}>
+                    Sign Up</button>
                 <p className="forgot-password text-right">
-                    Already registered <a href="#">sign in?</a>
+                    Already registered <a href="./SignIn">sign in?</a>
                 </p>
             </form>
             </div>

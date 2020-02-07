@@ -1,10 +1,12 @@
-.fter{
-    color: #D1D2CF;
-    background-color: #ffffff; 
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    text-align: right;
-    padding: 1vh;
+.after {
+  margin-top: 20px;
+  color: #d1d2cf;
+  background-color: #ffffff;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  text-align: right;
+  padding: 1vh;
+  box-shadow: 0px -3px 3px #dddddd;
+  height: auto;
 }
-
