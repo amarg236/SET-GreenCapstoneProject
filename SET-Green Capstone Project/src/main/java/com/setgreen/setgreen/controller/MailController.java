@@ -1,9 +1,9 @@
 package com.setgreen.setgreen.controller;
 
-
 import com.setgreen.setgreen.mailing.Mail;
 import com.setgreen.setgreen.model.ResponseBody;
-import com.setgreen.setgreen.mailing.MailHandler;
+import com.setgreen.setgreen.services.MailService.MailHandler;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.bind.annotation.PostMapping;
