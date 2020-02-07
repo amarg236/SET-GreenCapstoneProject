@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "../../stylesheets/buttons.css";
 
 class NotificationButton extends Component {
   render() {

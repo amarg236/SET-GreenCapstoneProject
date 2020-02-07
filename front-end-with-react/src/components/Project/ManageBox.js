@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "../../stylesheets/manageBox.css";
 
 class ManageBox extends Component {
   render() {

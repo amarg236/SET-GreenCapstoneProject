@@ -93,3 +93,9 @@ It is for the login font title  */
   color: #868982;
   font-weight: 500;
 }
+
+.manageLayout {
+  padding-left: 2vh;
+  padding-right: 2vh;
+  padding-bottom: 10px;
+}
