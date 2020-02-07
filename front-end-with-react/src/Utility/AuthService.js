@@ -4,7 +4,6 @@ const USER_API_BASE_URL = "http://ec2-3-17-66-87.us-east-2.compute.amazonaws.com
 
 class AuthService {
   login(credentials) {
-    // console.log('success');
     return axios.post(USER_API_BASE_URL + "/api/auth/login", credentials);
   }
 
