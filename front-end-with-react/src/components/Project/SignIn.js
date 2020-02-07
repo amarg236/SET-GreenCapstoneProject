@@ -29,7 +29,7 @@ export default class SignIn extends Component {
       if (res.data.status === 200) {
         localStorage.setItem("userInfo", JSON.stringify(res.data.result));
 
-        this.props.history.push("/api/user/showUser");
+        this.props.history.push("/");
       } else {
         this.setState({ message: res.data.message });
       }
