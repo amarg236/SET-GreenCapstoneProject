@@ -31,7 +31,7 @@ class CreateGame extends Component {
                 </div>
 
                 <button type="submit" className="btn btn-primary btn-block"
-                style={{border:'nonertfffddddddddddr'}}>
+                style={{border:'none'}}>
                     Sign Up</button>
                 <p className="forgot-password text-right">
                     Already registered <a href="./SignIn">sign in?</a>
