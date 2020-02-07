@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "../../stylesheets/login.css";
 import AuthService from "../../Utility/AuthService";
 
 export default class SignIn extends Component {
@@ -57,6 +56,8 @@ export default class SignIn extends Component {
             <input
               name="username"
               type="text"
+              value={this.state.username}
+              onChange={e => this.setState({username: e.target.value})}
               className="form-control"
               aria-describedby="emailHelp"
               placeholder="Enter username"
@@ -68,9 +69,12 @@ export default class SignIn extends Component {
           </div>
 
           <div className="form-group">
-            <input
+            <input 
               name="password"
               type="password"
+              autoComplete="on"
+              value={this.state.password}
+              onChange={e => this.setState({password: e.target.value})}
               className="form-control"
               id="exampleInputPassword1"
               placeholder="Password"
@@ -115,7 +119,7 @@ export default class SignIn extends Component {
 
           <div className="forget">Forget Username/Password?</div>
         </form>
-      </div>
+        </div>
     );
   }
 }
