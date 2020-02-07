@@ -1,7 +1,6 @@
 package com.setgreen.setgreen.controller;
 
 import com.setgreen.setgreen.model.ResponseBody;
-import com.setgreen.setgreen.mailing.MailHandler;
 import com.setgreen.setgreen.model.*;
 import com.setgreen.setgreen.payload.JWTLoginSuccessResponse;
 import com.setgreen.setgreen.payload.LoginRequest;
@@ -9,9 +8,9 @@ import com.setgreen.setgreen.repositories.UserRepo;
 import com.setgreen.setgreen.security.JwtTokenProvider;
 import com.setgreen.setgreen.services.MapValidationErrorService;
 import com.setgreen.setgreen.services.UserService;
+import com.setgreen.setgreen.services.MailService.MailHandler;
 import com.setgreen.setgreen.services.implementation.RoleServiceImpl;
 import com.setgreen.setgreen.services.implementation.UserServiceImpl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,6 +36,7 @@ public class UserController {
 //    private ViewUserService viewUserService;
 
     @Autowired
+
     UserRepo userValid; //TODO The UserService should access the UserRepo on behalf of this class, so the security stuff I've marked below should most likely be rolled into the UserService
 
     @Autowired
@@ -63,9 +62,6 @@ public class UserController {
 //        return viewUserService.ViewUsers();
 //
 //    }
-
-
-
 
     @PostMapping("login")
     public ResponseEntity<?> authenticateuser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
@@ -157,17 +153,16 @@ public class UserController {
     @PostMapping("createuser")
     public ResponseEntity<?> addNewUser(@Valid @RequestBody SignUpForm newUser, BindingResult result) //TODO this may need to go in the mail controller
     {
-
-
         //TODO in future validate password match
-
 //        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 //        if(errorMap != null) return errorMap;
 
         Set<Role> roles = new HashSet<>();
         User userData = new User();
 
+
         //TODO check for when no role present, also check that the typing is right on roles (admin can create anyone, assigner creates users, users aren't allowed)
+
         for(String s: newUser.getRole()){
             if(s.equals("ADMIN")){
                 roles.add(roleService.getRoleByRoleName(RoleName.ADMIN));
@@ -176,8 +171,8 @@ public class UserController {
                 roles.add(roleService.getRoleByRoleName(RoleName.USER));
             }
             else{
-                return new ResponseEntity<>("Role not valid", HttpStatus.BAD_REQUEST);
 
+                return new ResponseEntity<>("Role not valid", HttpStatus.BAD_REQUEST);
             }
         }
         userData.setPassword(newUser.getPassword());

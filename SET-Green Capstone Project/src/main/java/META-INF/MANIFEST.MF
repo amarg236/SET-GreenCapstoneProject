@@ -1,3 +1,7 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Main-Class: com.setgreen.setgreen.SetgreenApplication0
+=======
+Main-Class: com.setgreen.setgreen.SetgreenApplication
+>>>>>>> 9280a7b052f21532c5d7b2f721adc88cd896a4df
 

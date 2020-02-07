@@ -9,5 +9,4 @@ public interface UserService {
 	void updatePassword(User u);
 
 	void updatePassAndVerify(User u);
-
 }
