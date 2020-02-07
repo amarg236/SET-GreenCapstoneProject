@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "../../stylesheets/login.css";
 import AuthService from "../../Utility/AuthService";
 
 export default class SignIn extends Component {
