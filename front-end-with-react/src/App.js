@@ -10,10 +10,12 @@ import Home from "./components/Layout/Home";
 import CreateGame from "./components/Project/CreateGame";
 import Footer from "./components/Layout/Footer";
 
-function App() {
+class App extends React.Component {
+  
+  render(){
   return (
     <Router>
-      <div className="App">
+      <div className="App"> 
         <Header />
         <Switch>
           <Route exact path="/createGame" component={CreateGame} />
@@ -30,6 +32,7 @@ function App() {
       </div>
     </Router>
   );
+}
 }
 
 export default App;
