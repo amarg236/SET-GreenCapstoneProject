@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import AuthService from "../../Utility/AuthService";
+import setAuthToken from "../../Utility/setAuthToken";
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ export default class SignIn extends Component {
       password: this.state.password
     };
 
-    AuthService.login(credentials).then(res => {
+    setAuthToken.login(credentials).then(res => {
       console.log(res);
       if (res.data.status === 200) {
         localStorage.setItem("userInfo", JSON.stringify(res.data.result));
@@ -57,7 +57,7 @@ export default class SignIn extends Component {
               name="username"
               type="text"
               value={this.state.username}
-              onChange={e => this.setState({username: e.target.value})}
+              onChange={e => this.setState({ username: e.target.value })}
               className="form-control"
               aria-describedby="emailHelp"
               placeholder="Enter username"
@@ -69,12 +69,12 @@ export default class SignIn extends Component {
           </div>
 
           <div className="form-group">
-            <input 
+            <input
               name="password"
               type="password"
               autoComplete="on"
               value={this.state.password}
-              onChange={e => this.setState({password: e.target.value})}
+              onChange={e => this.setState({ password: e.target.value })}
               className="form-control"
               id="exampleInputPassword1"
               placeholder="Password"
@@ -119,7 +119,7 @@ export default class SignIn extends Component {
 
           <div className="forget">Forget Username/Password?</div>
         </form>
-        </div>
+      </div>
     );
   }
 }
