@@ -1,0 +1,10 @@
+import React, { Component } from "react";
+import "../../stylesheets/footer.css";
+
+class Footer extends Component {
+  render() {
+    return <div className="after">Set-Green</div>;
+  }
+}
+
+export default Footer;
