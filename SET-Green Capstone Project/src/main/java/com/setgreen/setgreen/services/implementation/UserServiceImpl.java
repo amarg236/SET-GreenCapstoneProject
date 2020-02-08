@@ -7,6 +7,7 @@ import com.setgreen.setgreen.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,11 +39,13 @@ public class UserServiceImpl implements UserService {
     	userRepo.updatePassword(u.getEmail(), u.getPassword());
     	
     }
-    
+
+    @Transactional
     /** Updates the password for a user AND sets the user to be verified
      * @param u User object, already possessing the new password.
      */
     public void updatePassAndVerify(User u) {
+    	System.out.println(u);
     	updatePassword(u);
     	userRepo.updateVerify(u.getEmail(), true);
     }
