@@ -131,16 +131,16 @@ public class UserController {
      * @return ResponseEntity
      */
     @PostMapping("setPassword")
-    public ResponseEntity<?> updatePassword(User u){
-    	try {
-    		if(!u.getVerified().booleanValue()) 
-    			userService.updatePassAndVerify(u);
-    		else
-    			userService.updatePassword(u);
-    	}
-    	catch(Exception e) {
-    		return new ResponseEntity<>("Failure to update password", HttpStatus.BAD_REQUEST);
-    	}
+    public ResponseEntity<?> updatePassword(@RequestBody User u){
+    	//try {//If we don't send verified we crash, so we'd have to do a user query, and I'd rather just update the password and verify everyone.
+    		//if(!u.getVerified().booleanValue()) 
+    			userService.updatePassAndVerify(u);//TODO Add password checking (for security)
+    		//else
+    		//	userService.updatePassword(u);
+    	//}
+    	//catch(Exception e) {
+    	//	return new ResponseEntity<>("Failure to update password", HttpStatus.BAD_REQUEST);
+    	//}
     	return new ResponseEntity<>("Password Updated!", HttpStatus.ACCEPTED);
     }
 
