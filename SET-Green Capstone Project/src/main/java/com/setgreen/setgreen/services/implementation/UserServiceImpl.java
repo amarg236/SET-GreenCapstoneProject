@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
      * @param u User object that you most likely created exclusively to update another already existing user object
      */
     public void updatePassword(User u) {
-    	userRepo.updatePassword(u.getEmail(), u.getPassword());
+    	userRepo.updatePassword(u.getEmail(), bCryptPasswordEncoder.encode(u.getPassword()));
     	
     }
 
@@ -45,7 +45,6 @@ public class UserServiceImpl implements UserService {
      * @param u User object, already possessing the new password.
      */
     public void updatePassAndVerify(User u) {
-    	System.out.println(u);
     	updatePassword(u);
     	userRepo.updateVerify(u.getEmail(), true);
     }
