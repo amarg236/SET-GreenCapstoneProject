@@ -26,10 +26,10 @@
 
 // export default new Auth();
 
-import { createContext, useContext } from "react";
+// import { createContext, useContext } from "react";
 
-export const AuthContext = createContext();
+// export const AuthContext = createContext();
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+// export function useAuth() {
+//   return useContext(AuthContext);
+// }

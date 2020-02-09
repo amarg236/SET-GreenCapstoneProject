@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import setAuthToken from "../../Utility/setAuthToken";
+import { withRouter } from "react-router-dom";
+import AuthToken from "../../Utility/AuthToken";
+import AdminDashboard from "../Layout/Admindashboard";
 
-export default class SignIn extends Component {
+class SignIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,12 +25,13 @@ export default class SignIn extends Component {
       password: this.state.password
     };
 
-    setAuthToken.login(credentials).then(res => {
+    AuthToken.login(credentials).then(res => {
       console.log(res);
-      if (res.data.status === 200) {
-        localStorage.setItem("userInfo", JSON.stringify(res.data.result));
-
-        this.props.history.push("/");
+      if (res.data.success) {
+        console.log("i am done");
+        localStorage.setItem("userInfo", JSON.stringify(res.data));
+        console.log("i am done");
+        this.props.history.push("/adminDashboard");
       } else {
         this.setState({ message: res.data.message });
       }
@@ -123,3 +126,5 @@ export default class SignIn extends Component {
     );
   }
 }
+
+export default withRouter(SignIn);

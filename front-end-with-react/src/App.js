@@ -11,38 +11,31 @@ import CreateGame from "./components/Project/CreateGame";
 import Footer from "./components/Layout/Footer";
 import AdminDashboard from "./components/Layout/Admindashboard";
 import ProtectedRoute from "./Utility/protectedRoute";
-import { AuthContext } from "./Utility/auth";
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
-      <AuthContext.Provider value={false}>
-        <Router>
-          <div className="App">
-            <Header />
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <ProtectedRoute
-                exact
-                path="/adminDashboard"
-                component={AdminDashboard}
-              />
-              <Route exact path="/createGame" component={CreateGame} />
-              <Route exact path="/ApproveGame" component={ApproveGame} />
-              <Route exact path="/addProject" component={AddProject} />
-              <Route exact path="/signIn" component={SignIn} />
+      <Router>
+        <div className="App">
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <ProtectedRoute
+              exact
+              path="/adminDashboard"
+              component={AdminDashboard}
+            />
+            <Route exact path="/createGame" component={CreateGame} />
+            <Route exact path="/ApproveGame" component={ApproveGame} />
+            <Route exact path="/addProject" component={AddProject} />
+            <Route exact path="/signIn" component={SignIn} />
 
-              <Route path="*" component={() => "404 NOT FOUND"} />
-            </Switch>
+            <Route path="*" component={() => "404 NOT FOUND"} />
+          </Switch>
 
-            <Footer />
-          </div>
-        </Router>
-      </AuthContext.Provider>
+          <Footer />
+        </div>
+      </Router>
     );
   }
 }
