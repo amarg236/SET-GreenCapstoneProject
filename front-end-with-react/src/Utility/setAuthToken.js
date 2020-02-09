@@ -1,25 +1,27 @@
-import axios from "axios";
+// import axios from "axios";
 
-const USER_API_BASE_URL =
-  "http://ec2-3-17-66-87.us-east-2.compute.amazonaws.com:8080";
+// const USER_API_BASE_URL =
+//   "http://ec2-3-17-66-87.us-east-2.compute.amazonaws.com:8080";
 
-class setAuthToken {
-  login(credentials) {
-    return axios.post(USER_API_BASE_URL + "/api/auth/login", credentials);
-  }
+// class setAuthToken = (token) => {
 
-  getUserInfo() {
-    return JSON.parse(localStorage.getItem("userInfo"));
-  }
+//   login(credentials) {
+//     return axios.post(USER_API_BASE_URL + "/api/auth/login", credentials);
+//   }
 
-  getAuthHeader() {
-    return { headers: { Authorization: "Bearer " + this.getUserInfo().token } };
-  }
+//   getUserInfo() {
+//     return JSON.parse(localStorage.getItem("userInfo"));
+//   }
 
-  logOut() {
-    localStorage.removeItem("userInfo");
-    return axios.post(USER_API_BASE_URL + "logout", {}, this.getAuthHeader());
-  }
-}
+//   getAuthHeader() {
+//     return { headers: { Authorization: "Bearer " + this.getUserInfo().token } };
+//   }
 
-export default new setAuthToken();
+//   logOut() {
+//     localStorage.removeItem("userInfo");
+//     return axios.post(USER_API_BASE_URL + "logout", {}, this.getAuthHeader());
+//   }
+
+// }
+
+// export default setAuthToken;
