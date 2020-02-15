@@ -1,5 +1,7 @@
 package com.setgreen.setgreen.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +18,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  *	Uses tmName = name of team, tmClass = teams classification, internalName = internal name of team 
  */
 @Entity
-public class Teams {
+public class Teams implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -877221888835515046L;
+
 	@JsonIgnore
 	@NotEmpty(message = "Must have a team name")
 	@Column(length = 50)
@@ -35,4 +42,11 @@ public class Teams {
 	@JsonIgnore
 	@Column(length=50)
 	private String internalName;//internal name for teams for dumping to XML
+	
+	public Teams(long tid, String tclass, String tname, String tiname) {
+		id=tid;
+		tmClass=tclass;
+		tmName=tname;
+		internalName=tiname;
+	}
 }

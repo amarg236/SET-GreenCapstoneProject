@@ -52,14 +52,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(
                         "/",
-                        "/api/auth/**"
-//                        "/swagger-resources/**",
-//                        "/swagger-resources/**",
-//                        "/swagger-ui.html",
-//                        "/webjars/**",
-//                        "/swagger-resources/configuration/security",
-//                        "/v2/api-docs",
-//                        "/swagger-resources/configuration/ui"
+                        "/api/auth/**",
+                        //XXX REMOVE from release builds, matter of fact go ahead and remove swagger as well.
+                        "/spring-security-rest/**",
+                        "/swagger-resources/**",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html",
+                        "/webjars/**",
+                        "/swagger-resources/configuration/security",
+                        "/v2/api-docs",
+                        "/swagger-resources/configuration/ui"
                 ).permitAll()
                 .anyRequest().authenticated();
 

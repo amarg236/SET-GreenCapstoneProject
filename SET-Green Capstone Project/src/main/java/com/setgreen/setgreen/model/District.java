@@ -1,14 +1,25 @@
 package com.setgreen.setgreen.model;
 
-import javax.persistence.Entity;
+import java.io.Serializable;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
+import javax.persistence.Id;
 
 import lombok.Data;
 
-@Entity
 @Data
-public class District {
-    @Id
+@Entity
+public class District implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 26637590832680761L;
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+    //private Long id;
+	@Id
     private String districtName;
 }

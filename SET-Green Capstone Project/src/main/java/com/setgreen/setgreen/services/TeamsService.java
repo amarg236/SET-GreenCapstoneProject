@@ -1,7 +1,10 @@
 package com.setgreen.setgreen.services;
 
+import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.Teams;
 
 public interface TeamsService {
-	void saveTeam(Teams tm);
+	ResponseBody saveTeam(Teams tm);
+
+	Iterable<Teams> getTeams();
 }
