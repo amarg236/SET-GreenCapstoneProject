@@ -13,10 +13,10 @@ public class BadDay{
 	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	Long id;
+	private Long id;
 	@JsonIgnore
 	@NotEmpty(message = "Must have date")
 	private String dte;
 	@JoinColumn(name = "id", table = "teams")
-	long teamId;
+	private long teamId;
 }

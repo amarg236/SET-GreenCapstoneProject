@@ -1,7 +1,7 @@
 package com.setgreen.setgreen.controller;
 
-import com.setgreen.setgreen.mailing.Mail;
 import com.setgreen.setgreen.model.ResponseBody;
+import com.setgreen.setgreen.model.Mail.Mail;
 import com.setgreen.setgreen.services.MailService.MailHandler;
 
 import org.springframework.http.HttpStatus;

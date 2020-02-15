@@ -15,4 +15,6 @@ public abstract class EventDay {
 	@JsonIgnore
 	@NotEmpty(message = "Must have date")
 	private String dte;
+	@JsonIgnore
+	private String reason;
 }
