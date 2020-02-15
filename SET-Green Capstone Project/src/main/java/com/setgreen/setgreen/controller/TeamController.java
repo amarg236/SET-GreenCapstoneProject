@@ -1,5 +1,7 @@
 package com.setgreen.setgreen.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +26,11 @@ public class TeamController {
 	
 	private TeamsService tmRpo = new TeamsServiceImpl();
 	private DayHandlerImpl dh = new DayHandlerImpl();
+	
 	@PostMapping("add")
 	public ResponseBody addTeam(@RequestBody Teams t) {
-		tmRpo.saveTeam(t);
+		System.out.println(t);
+		//tmRpo.saveTeam(t);
 		return new ResponseBody(HttpStatus.CREATED.value(), "Team added!", t);
 	}
 	

@@ -12,11 +12,14 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Data;
+
 /**
  * @author Brendon
  *	Data structure for teams
  *	Uses tmName = name of team, tmClass = teams classification, internalName = internal name of team 
  */
+@Data
 @Entity
 public class Teams implements Serializable{
 	/**
