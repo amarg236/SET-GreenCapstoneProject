@@ -2,7 +2,10 @@ package com.setgreen.setgreen.controller;
 
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.User;
+import com.setgreen.setgreen.model.scheduling.EventDay;
 import com.setgreen.setgreen.services.AdminControlService;
+import com.setgreen.setgreen.services.implementation.DayHandlerImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,7 @@ public class AdminControlController {
 
     @Autowired
     private AdminControlService adminControlService;
+    private DayHandlerImpl dh = new DayHandlerImpl();
 
 
     @GetMapping("viewUnverifiedUser")
@@ -32,5 +36,13 @@ public class AdminControlController {
         }
         return new ResponseBody(HttpStatus.BAD_REQUEST.value(),"User not verified", new User() );
 
+    }
+    
+    @PostMapping("day/ban")
+    public ResponseBody banDay(@RequestBody EventDay d) {
+    	return dh.saveEventDay(d);
+    }
+    public ResponseBody unbanDay(@RequestBody EventDay d) {
+    	return dh.deleteEventDay(d);
     }
 }
