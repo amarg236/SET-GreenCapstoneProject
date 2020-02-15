@@ -6,8 +6,8 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import com.setgreen.setgreen.mailing.Mail;
 import com.setgreen.setgreen.model.User;
+import com.setgreen.setgreen.model.Mail.Mail;
 
 import org.springframework.mail.SimpleMailMessage;
 public class MailHandler {
@@ -37,7 +37,7 @@ public class MailHandler {
 		Mail m = new Mail();
 		m.setSendTo(toInvite.getEmail());
 		m.setSubjectLine("Invite to schedule games");//XXX BETTER LINK SYSTEM
-		m.setEmailContent("You have been invited to join an email scheduling system.\nFollow this link to finish the sign up process: "+HOSTNAME+"api/auth/login?u="+URLEncoder.encode(toInvite.getUsername(), "UTF-8")+"&p="+toInvite.getPassword());//FIXME USES USERNAME if we switch to email, **this breaks**
+		m.setEmailContent("You have been invited to join an email scheduling system.\nFollow this link to finish the sign up process: "+HOSTNAME+"api/auth/login?u="+URLEncoder.encode(toInvite.getEmail(), "UTF-8")+"&p="+toInvite.getPassword());//FIXME USES USERNAME if we switch to email, **this breaks**
 		return m;
 	}
 	public String genLink() {//XXX MOVE TO UTILITY CLASS. If we have time to do that. Also it should be named "genString()" and have an override of "genString(int lengthOfString)" if I find the time

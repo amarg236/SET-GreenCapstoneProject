@@ -19,7 +19,7 @@ public class UserPrinciple implements UserDetails {
     private static final long serialVersionUID = 1L;
     private Long id;
     private String name;
-    private String username;
+    //private String username;
 
     @JsonIgnore
     private String email;
@@ -36,11 +36,11 @@ public class UserPrinciple implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrinciple(Long id, String name, String username, String email, String password,
+    public UserPrinciple(Long id, String name, /*String username,*/ String email, String password,
                          Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
-        this.username = username;
+//        this.username = username;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
@@ -53,7 +53,7 @@ public class UserPrinciple implements UserDetails {
         return new UserPrinciple(
                 user.getId(),
                 user.getFirstname()+" "+ user.getLastname(),
-                user.getUsername(),
+//                user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities
@@ -69,11 +69,6 @@ public class UserPrinciple implements UserDetails {
     @Override
     public String getPassword() {
         return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
     }
 
     @Override
@@ -117,4 +112,10 @@ public class UserPrinciple implements UserDetails {
 
         return Objects.hash(id);
     }
+
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
 }

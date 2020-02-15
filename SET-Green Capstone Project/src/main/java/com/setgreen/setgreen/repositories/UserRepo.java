@@ -14,11 +14,14 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepo extends JpaRepository<User, Id> {
-    User findByUsername(String username);
+//    User findByUsername(String username);
     User getById(Long id);
 
-    @Query("Select u from User u where u.username =(:username)")
-    User findByUserNameIgnoreCase(String username);
+//    @Query("Select u from User u where u.username =(:username)")
+//    User findByUserNameIgnoreCase(String username);
+    
+    @Query("Select u from User u where u.email =(:email)")
+    User findByEmail(String email);
     
     /**
      * @param who String email of user you want to update (as email is assumed to be a singular key value)

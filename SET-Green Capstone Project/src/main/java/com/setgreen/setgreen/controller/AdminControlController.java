@@ -26,7 +26,7 @@ public class AdminControlController {
     @PostMapping("verifyUser")
     public ResponseBody verifyUser(@RequestBody User user)
     {
-        if(adminControlService.setVerified(user.getUsername()))
+        if(adminControlService.setVerified(user.getEmail()))
         {
             return new ResponseBody(HttpStatus.CREATED.value(),"Successfully verified user", new User() );
         }

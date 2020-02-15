@@ -22,11 +22,11 @@ public class UserServiceImpl implements UserService {
     public User saveUser(User newUser){
         try{
             newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-            newUser.setUsername(newUser.getUsername());
+            newUser.setEmail(newUser.getEmail());
             return userRepo.save(newUser);
         }
         catch (Exception e) {
-            throw new UsernameAlreadyExistsException("Username '" + newUser.getUsername() + "' already exists");
+            throw new UsernameAlreadyExistsException("Email '" + newUser.getEmail() + "' already exists"); //TODO TRACK DOWN USERNAME STUFF AND CHANGE IT TO EMAIL
         }
 
     }
