@@ -12,7 +12,11 @@ public class Role {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-
+    
+    String eml;
+    String schl;
+    String dst;
+    
     @Enumerated(EnumType.STRING)
     @NaturalId
     @Column(length = 20)

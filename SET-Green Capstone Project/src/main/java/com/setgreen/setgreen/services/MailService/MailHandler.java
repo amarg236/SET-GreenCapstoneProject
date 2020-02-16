@@ -33,6 +33,10 @@ public class MailHandler {
 		mailSender.send(msg);
 	}
 	
+	public String debugMessage(Mail m) {
+		return "To: " + m.getSendTo() + "\nSubject: " + m.getSubjectLine() + "\nMessage " + m.getEmailContent();
+	}
+	
 	public Mail inviteUser(User toInvite) throws UnsupportedEncodingException {
 		Mail m = new Mail();
 		m.setSendTo(toInvite.getEmail());
