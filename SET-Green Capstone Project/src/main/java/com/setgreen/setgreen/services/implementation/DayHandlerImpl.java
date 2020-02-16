@@ -2,6 +2,7 @@ package com.setgreen.setgreen.services.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.scheduling.BadDay;
@@ -10,8 +11,10 @@ import com.setgreen.setgreen.model.scheduling.IdealDay;
 import com.setgreen.setgreen.repositories.scheduling.BadDayRepo;
 import com.setgreen.setgreen.repositories.scheduling.EventDayRepo;
 import com.setgreen.setgreen.repositories.scheduling.IdealDayRepo;
+import com.setgreen.setgreen.services.DayHandler;
 
-public class DayHandlerImpl {
+@Service
+public class DayHandlerImpl implements DayHandler{
 	@Autowired
 	BadDayRepo bdr;
 	@Autowired

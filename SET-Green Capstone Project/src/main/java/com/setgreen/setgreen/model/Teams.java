@@ -27,12 +27,10 @@ public class Teams implements Serializable{
 	 */
 	private static final long serialVersionUID = -877221888835515046L;
 
-	@JsonIgnore
 	@NotEmpty(message = "Must have a team name")
 	@Column(length = 50)
 	private String tmName; //Good (display) name
 	
-	@JsonIgnore
 	@NotEmpty(message = "Must have a team classification")
 	@Column(length = 50)
 	private String tmClass; //Type of team (varsity, jr, ext)
@@ -42,9 +40,10 @@ public class Teams implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@JsonIgnore
 	@Column(length=50)
 	private String internalName;//internal name for teams for dumping to XML
+	
+	public Teams() {}
 	
 	public Teams(long tid, String tclass, String tname, String tiname) {
 		id=tid;

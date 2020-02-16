@@ -1,10 +1,12 @@
 package com.setgreen.setgreen.controller;
 
+import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.User;
 import com.setgreen.setgreen.model.scheduling.EventDay;
 import com.setgreen.setgreen.services.AdminControlService;
 import com.setgreen.setgreen.services.implementation.DayHandlerImpl;
+import com.setgreen.setgreen.services.implementation.GameHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,10 @@ public class AdminControlController {
 
     @Autowired
     private AdminControlService adminControlService;
+
     private DayHandlerImpl dh = new DayHandlerImpl();
+
+    private GameHandler gh = new GameHandler();
 
 
     @GetMapping("viewUnverifiedUser")
@@ -44,5 +49,10 @@ public class AdminControlController {
     }
     public ResponseBody unbanDay(@RequestBody EventDay d) {
     	return dh.deleteEventDay(d);
+    }
+    
+    //TODO Add verify game
+    public ResponseBody verifyGame(@RequestBody Game g) {
+    	return gh.verifyGame(g);
     }
 }
