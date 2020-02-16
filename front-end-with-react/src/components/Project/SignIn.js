@@ -31,7 +31,7 @@ class SignIn extends React.Component {
         console.log("i am done");
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         console.log("i am done");
-        this.props.history.push("/adminDashboard");
+        this.props.history.push("/");
       } else {
         this.setState({ message: res.data.message });
       }

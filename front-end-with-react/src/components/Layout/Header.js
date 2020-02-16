@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Authtoken from "../../Utility/AuthToken";
+import { withRouter } from "react-router-dom";
 import "../../stylesheets/header.css";
 import GreenBackground from "./GreenBackground";
 import ProfileButton from "../Buttons/ProfileButton";
@@ -6,6 +8,19 @@ import SettingsButton from "../Buttons/SettingsButton";
 import NotificationButton from "../Buttons/NotificationButton";
 
 class Header extends Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.logout = this.logout.bind(this);
+  // }
+
+  logout = async () => {
+    await Authtoken.logOut();
+    // localStorage.removeItem("UserInfo");
+    console.log("i am also working");
+    await this.props.history.push("/");
+    console.log("am i");
+  };
+
   render() {
     return (
       <div style={{ marginBottom: "5%" }}>
@@ -88,7 +103,7 @@ class Header extends Component {
                     Another action
                   </a>
                   <div className="dropdown-divider"></div>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="#" onClick={this.logout}>
                     Logout
                   </a>
                 </div>
@@ -102,4 +117,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);
