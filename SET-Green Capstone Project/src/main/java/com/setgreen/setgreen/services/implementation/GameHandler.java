@@ -2,26 +2,42 @@ package com.setgreen.setgreen.services.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
 import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.ResponseBody;
+import com.setgreen.setgreen.model.Role;
+import com.setgreen.setgreen.model.Mail.Mail;
 import com.setgreen.setgreen.repositories.GameRepo;
+import com.setgreen.setgreen.repositories.RoleRepo;
+import com.setgreen.setgreen.services.MailService.MailHandler;
 
 @Service
 public class GameHandler {
 	@Autowired
 	private GameRepo gr;
+	@Autowired
+	private RoleRepo rr;
 	
 	public ResponseBody saveGame(Game g){
-		//try{
-			System.out.println(g);
+		try{
+			Iterable<String> i = rr.findOver(g.getAwayteam(), g.getAwaydistrict());
+			Mail m = new Mail();
+			MailHandler snd = new MailHandler(new JavaMailSenderImpl());
+			for(String x : i) {
+				m.setSendTo(x);
+				m.setSubjectLine("Game against "+g.getAwayteam()+".");
+				m.setEmailContent(g.getAwayteam()+" has suggested a game to play.");
+				//snd.sendMailMessage(m);//TODO Switch from debug to deploy
+				System.out.println(snd.debugMessage(m));
+			}
 			gr.save(g);
 			return new ResponseBody(HttpStatus.ACCEPTED.value(), "Game Saved", g);
-		//}
-	//	catch(Exception e) {
-	//		return new ResponseBody(HttpStatus.NOT_ACCEPTABLE.value(), "Did not save game", g);
-	//	}
+		}
+		catch(Exception e) {
+			return new ResponseBody(HttpStatus.NOT_ACCEPTABLE.value(), "Did not save game", g);
+		}
 	}
 	
 	public ResponseBody deleteGame(Game g) {

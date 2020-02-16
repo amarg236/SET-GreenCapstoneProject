@@ -10,6 +10,10 @@ import javax.persistence.Id;
 
 import lombok.Data;
 
+/**
+ * @author Brendon LeBaron
+ *	District entity: has String districtName
+ */
 @Data
 @Entity
 public class District implements Serializable{

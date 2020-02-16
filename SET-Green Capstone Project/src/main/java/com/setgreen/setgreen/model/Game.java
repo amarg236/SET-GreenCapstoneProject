@@ -32,7 +32,9 @@ public class Game implements Serializable{
 	 */
 	private static final long serialVersionUID = 4946784525722445495L;
 	String hometeam;
+	String homedistrict;
 	String awayteam;//TODO verifiy this, most likely using setter methods.
+	String awaydistrict;
 	/*
 	@ManyToOne(optional=false)
 	Teams hometeam;

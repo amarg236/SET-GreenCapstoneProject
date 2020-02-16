@@ -1,6 +1,7 @@
 package com.setgreen.setgreen.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,8 @@ import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.services.implementation.GameHandler;
 
 @RestController
-@RequestMapping("game")
+@CrossOrigin
+@RequestMapping("api/game")
 public class GameController {
 	@Autowired
 	GameHandler gh = new GameHandler();

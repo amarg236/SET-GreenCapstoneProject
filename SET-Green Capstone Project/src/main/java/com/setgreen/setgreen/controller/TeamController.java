@@ -22,7 +22,7 @@ import com.setgreen.setgreen.services.implementation.TeamsServiceImpl;
 
 @CrossOrigin
 @RestController
-@RequestMapping("team/")
+@RequestMapping("api/team/")
 public class TeamController {
 	
 	@Autowired
