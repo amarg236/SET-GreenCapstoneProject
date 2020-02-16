@@ -16,16 +16,3 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
   />
 );
 export default ProtectedRoute;
-
-//   const isAuthenticated = useAuth();
-
-//   return (
-//     <Route
-//       {...rest}
-//       render={props =>
-//         isAuthenticated ? <Component {...props} /> : <Redirect to="/" />
-//       }
-//     />
-//   );
-// }
-// export default ProtectedRoute;

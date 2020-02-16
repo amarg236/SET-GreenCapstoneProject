@@ -7,14 +7,25 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "../../stylesheets/home.css";
 import ManageBox from "../Project/ManageBox";
+import AuthToken from "../../Utility/AuthToken";
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: AuthToken.getAuthenticationStatus
+    };
+  }
+
   render() {
+    const isLoggedIn = this.state.isLoggedIn;
+
     return (
       <Container fluid={true} className="body-container-style">
         <Row noGutters={true} className="body-row-style">
           <Col md={2} sm={3} className="login-column">
-            <SignIn />
+            {console.log(isLoggedIn)}
+            {this.state.isLoggedIn ? <SignIn /> : null}
             <hr />
             <ManageBox />
           </Col>
