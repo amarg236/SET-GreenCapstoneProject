@@ -1,5 +1,6 @@
 package com.setgreen.setgreen.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,12 +13,12 @@ import com.setgreen.setgreen.services.implementation.GameHandler;
 @RestController
 @RequestMapping("game")
 public class GameController {
-	
+	@Autowired
 	GameHandler gh = new GameHandler();
 	
 	@PostMapping("save")
 	public ResponseBody save(@RequestBody Game g){
-		return gh.saveGame(g);
+		return gh.saveGame(g); //TODO Add verify for other coach
 	}
 	
 	@PostMapping("delete")

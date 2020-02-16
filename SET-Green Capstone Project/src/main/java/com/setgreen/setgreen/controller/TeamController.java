@@ -2,6 +2,7 @@ package com.setgreen.setgreen.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,24 +15,25 @@ import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.Teams;
 import com.setgreen.setgreen.model.scheduling.BadDay;
 import com.setgreen.setgreen.model.scheduling.IdealDay;
+import com.setgreen.setgreen.services.DayHandler;
 import com.setgreen.setgreen.services.TeamsService;
 import com.setgreen.setgreen.services.implementation.DayHandlerImpl;
 import com.setgreen.setgreen.services.implementation.TeamsServiceImpl;
 
 @CrossOrigin
 @RestController
-@RequestMapping("team")
+@RequestMapping("team/")
 public class TeamController {
 	
-	
+	@Autowired
 	private TeamsService tmRpo = new TeamsServiceImpl();
-	private DayHandlerImpl dh = new DayHandlerImpl();
+	@Autowired
+	private DayHandler dh = new DayHandlerImpl();
 	
 	@PostMapping("add")
 	public ResponseBody addTeam(@RequestBody Teams t) {
 		System.out.println(t);
-		//tmRpo.saveTeam(t);
-		return new ResponseBody(HttpStatus.CREATED.value(), "Team added!", t);
+		return tmRpo.saveTeam(t);
 	}
 	
 	//TODO getTeams
