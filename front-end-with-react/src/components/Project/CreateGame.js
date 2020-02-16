@@ -1,60 +1,57 @@
 import React, { Component } from "react";
 import "../../stylesheets/createGame.css";
 import "./SignIn";
+import SearchBar from "./SearchBar";
+import ChooseDate from "./ChooseDate";
 
 class CreateGame extends Component {
+
   render() {
     return (
       <div className="gameLayout">
-        <form className="auth-inner">
-          <h3 style={{ textAlign: "center" }}>Create Game</h3>
-
-          <div className="form-group">
-            <label>First name</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="First name"
-            />
+        <form className="auth-inner" >
+          {/*Log in Heading  */}
+          <div class="form-signin" style={{justifyContent:'center'}}>
+            <h3>
+              Create New Game
+            </h3>
           </div>
 
           <div className="form-group">
-            <label>Last name</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Last name"
-            />
+            Home Team: <select>
+              <option value="null">Choose a Team</option>
+              <option value="teamA">Team A</option>
+              <option value="teamB">Team B</option>
+            </select>
           </div>
 
           <div className="form-group">
-            <label>Email address</label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Enter email"
-            />
+            Date: <ChooseDate />
           </div>
 
           <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Enter password"
-            />
+            Time: <SearchBar />
           </div>
 
-          <button
-            type="submit"
-            className="btn btn-primary btn-block"
-            style={{ border: "none" }}
+          <div
+            className="pos"
+            style={{
+              paddingLeft: "10%",
+              paddingRight: "10%"
+            }}
           >
-            Sign Up
-          </button>
-          <p className="forgot-password text-right">
-            Already registered <a href="./SignIn">sign in?</a>
-          </p>
+            <button
+              className="btn btn-block"
+              style={{
+                height: "35%",
+                marginTop: "5%",
+                marginBottom: "5%"
+              }}
+              type="submit"
+            >
+              CREATE GAME
+            </button>
+          </div>
         </form>
       </div>
     );

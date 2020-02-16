@@ -2,6 +2,7 @@ import "../../stylesheets/home.css";
 import React, { Component } from "react";
 import SignIn from "../Project/SignIn";
 import Cal from "../Project/Cal";
+import CreateGame from "../Project/CreateGame";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -17,7 +18,7 @@ class AdminDashboard extends Component {
             <ManageBox />
           </Col>
           <Col md={10} sm={9} style={{ paddingLeft: "1%" }}>
-            <Cal />
+            <CreateGame />
           </Col>
         </Row>
       </Container>
