@@ -44,15 +44,15 @@ public class AdminControlController {
 
     }
     
-    @PostMapping("day/ban")
+    @PostMapping("day/ban") //XXX TEST
     public ResponseBody banDay(@RequestBody EventDay d) {
     	return dh.saveEventDay(d);
     }
+    @PostMapping("day/allow") //XXX TEST
     public ResponseBody unbanDay(@RequestBody EventDay d) {
     	return dh.deleteEventDay(d);
     }
-    
-    //TODO Add verify game
+    @PostMapping("game/verify") //XXX TEST
     public ResponseBody verifyGame(@RequestBody Game g) {
     	return gh.verifyGame(g);
     }

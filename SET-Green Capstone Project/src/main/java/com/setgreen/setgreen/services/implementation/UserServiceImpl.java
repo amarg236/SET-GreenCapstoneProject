@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserService {
      * @param u User object, already possessing the new password.
      */
     public void updatePassAndVerify(User u) {
+
     	updatePassword(u);
     	userRepo.updateVerify(u.getEmail(), true);
     }
