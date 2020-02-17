@@ -6,6 +6,11 @@
   transition: all 0.3s;
 }
 
+.colPadding{
+  padding-left: 0%;
+}
+
+
 .btn:hover {
   background-color: #91bf04;
 }

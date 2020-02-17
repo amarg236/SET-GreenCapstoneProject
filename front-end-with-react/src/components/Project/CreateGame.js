@@ -3,8 +3,13 @@ import "../../stylesheets/createGame.css";
 import "./SignIn";
 import SearchBar from "./SearchBar";
 import ChooseDate from "./ChooseDate";
+import ChooseTime from "./ChooseTime";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import ManageBox from "../Project/ManageBox";
 
 class CreateGame extends Component {
   constructor(props) {
@@ -89,32 +94,57 @@ class CreateGame extends Component {
   }
 
   render() {
-    {
-      console.log(Authtoken.getUserInfo().token.split(" ")[1]);
-    }
+    // {
+    //   console.log(Authtoken.getUserInfo().token.split(" ")[1]);
+    // }
     return (
-      <div className="gameLayout">
-        <form className="auth-inner" onSubmit={this.gameSubmit}>
+      <Container>
+        <div>
+        <form className="auth-inner" onSubmit={this.gameSubmit} display='inline'>
           {/*Log in Heading  */}
           <div className="form-signin" style={{ justifyContent: "center" }}>
             <h3>Create New Game</h3>
           </div>
 
           <div className="form-group">
-            Home Team:{" "}
+          <Row>
+            <Col md={2} sm={2}> Home Team:{" "} </Col>
+            <Col className="colPadding" md={4} sm={3}>
+            <select>
+              <option value="null">Choose a Team</option>
+              <option value="teamA">Team A</option>
+              <option value="teamB">Team B</option>
+              
+            </select>
+            </Col>
+            <Col md={2} sm={2}> Away Team:{" "} </Col>
+            <Col className="colPadding" md={4} sm={3}>
             <select>
               <option value="null">Choose a Team</option>
               <option value="teamA">Team A</option>
               <option value="teamB">Team B</option>
             </select>
+            </Col>
+          </Row>
           </div>
-
+          
           <div className="form-group" onChange={this.onChangeGameDate}>
-            Date: <ChooseDate />
+          <Row>
+            <Col md={2} sm={2}>Date:</Col>
+            <Col className="colPadding" md={4} sm={3}> 
+            <ChooseDate /></Col>
+            <Col md={2} sm={2}>Time:</Col>
+            <Col className="colPadding" md={4} sm={3}> 
+            <ChooseTime /></Col>
+          </Row>
           </div>
 
           <div className="form-group">
-            Time: <SearchBar />
+          <Row>
+            <Col md={2} sm={2}>Location:</Col>
+            <Col className="colPadding" md={9} sm={8}> 
+            <SearchBar /></Col>
+          </Row>
           </div>
 
           <div
@@ -136,8 +166,10 @@ class CreateGame extends Component {
               CREATE GAME
             </button>
           </div>
+
         </form>
       </div>
+      </Container>
     );
   }
 }

@@ -22,7 +22,9 @@
     "react-resizable": "^1.10.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
+    "react-simple-timefield": "^3.0.0",
     "react-sizeme": "^2.6.12",
+    "reactstrap": "^8.4.1",
     "redux": "^4.0.5"
   },
   "scripts": {

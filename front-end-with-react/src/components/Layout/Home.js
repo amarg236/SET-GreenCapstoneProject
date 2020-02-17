@@ -14,12 +14,12 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // isLoggedIn: AuthToken.getAuthenticationStatus
+    // isLoggedIn: AuthToken.getAuthenticationStatus
     };
   }
 
   render() {
-    return <Cal />;
+    return <CreateGame />;
   }
 }
 
