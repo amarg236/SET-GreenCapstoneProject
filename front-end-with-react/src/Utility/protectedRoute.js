@@ -7,7 +7,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      Authtoken.getAuthenticationStatus ? (
+      Authtoken.getAuthenticationStatus() ? (
         <Component {...props} />
       ) : (
         <Redirect to="/" />

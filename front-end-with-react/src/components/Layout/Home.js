@@ -19,18 +19,7 @@ class Home extends Component {
   }
 
   render() {
-    return (
-      <Container fluid={true} className="body-container-style">
-        <Row noGutters={true} className="body-row-style">
-          <Col md={2} sm={3} className="login-column">
-            {AuthToken.getAuthenticationStatus() ? <ManageBox /> : <SignIn />}
-          </Col>
-          <Col md={10} sm={9} style={{ paddingLeft: "1%" }}>
-            <Cal />
-          </Col>
-        </Row>
-      </Container>
-    );
+    return <Cal />;
   }
 }
 

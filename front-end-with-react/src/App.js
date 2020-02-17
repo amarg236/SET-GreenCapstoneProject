@@ -11,6 +11,11 @@ import CreateGame from "./components/Project/CreateGame";
 import Footer from "./components/Layout/Footer";
 import AdminDashboard from "./components/Layout/Admindashboard";
 import ProtectedRoute from "./Utility/protectedRoute";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import AuthToken from "./Utility/AuthToken";
+import ManageBox from "./components/Project/ManageBox";
 
 class App extends React.Component {
   render() {
@@ -18,15 +23,31 @@ class App extends React.Component {
       <Router>
         <div className="App">
           <Header />
-          <Switch>
-            <ProtectedRoute exact path="/" component={Home} />
-            <Route exact path="/createGame" component={CreateGame} />
-            <Route exact path="/ApproveGame" component={ApproveGame} />
-            <Route exact path="/addProject" component={AddProject} />
-            <Route exact path="/signIn" component={SignIn} />
-            <Route path="*" component={() => "404 NOT FOUND"} />
-          </Switch>
-
+          <Container fluid={true} className="body-container-style">
+            <Row noGutters={true} className="body-row-style">
+              <Col md={2} sm={3} className="login-column">
+                {AuthToken.getAuthenticationStatus() ? (
+                  <ManageBox />
+                ) : (
+                  <SignIn />
+                )}
+              </Col>
+              <Col md={10} sm={9} style={{ paddingLeft: "1%" }}>
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <ProtectedRoute
+                    exact
+                    path="/createGame"
+                    component={CreateGame}
+                  />
+                  <Route exact path="/ApproveGame" component={ApproveGame} />
+                  <Route exact path="/addProject" component={AddProject} />
+                  <Route exact path="/signIn" component={SignIn} />
+                  <Route path="*" component={() => "404 NOT FOUND"} />
+                </Switch>
+              </Col>
+            </Row>
+          </Container>
           <Footer />
         </div>
       </Router>

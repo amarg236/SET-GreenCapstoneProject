@@ -29,6 +29,8 @@ class SignIn extends React.Component {
       if (res.data.success) {
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         this.props.history.push("/");
+        // @FIXME: dont do this, use redux/context api
+        window.location.reload();
       } else {
         this.setState({ message: res.data.message });
       }

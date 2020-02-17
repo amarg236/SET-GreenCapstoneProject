@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class ManageBox extends Component {
   render() {
@@ -11,8 +12,8 @@ class ManageBox extends Component {
         <button className="btn btn-block" type="button">
           MANAGE TEAM
         </button>
-        <button className="btn btn-block" type="button" href="/createGame">
-          CREATE GAME
+        <button className="btn btn-block" type="button">
+          <Link to="/createGame">CREATE GAME</Link>
         </button>
       </div>
     );
