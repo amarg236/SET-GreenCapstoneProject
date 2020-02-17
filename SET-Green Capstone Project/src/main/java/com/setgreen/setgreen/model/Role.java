@@ -18,7 +18,6 @@ public class Role {
     String dst;
     
     @Enumerated(EnumType.STRING)
-    @NaturalId
     @Column(length = 20)
     private RoleName role;
 

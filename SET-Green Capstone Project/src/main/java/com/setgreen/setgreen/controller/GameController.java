@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.setgreen.setgreen.model.District;
 import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.services.implementation.GameHandler;
@@ -32,4 +33,19 @@ public class GameController {
 	public ResponseBody modify(@RequestBody Game g) {
 		return gh.modifyGame(g);
 	}
+	
+	/** Gets all the verified games in a district
+	 * @param district String name of district for games
+	 * @return ResponseBody status of request
+	 */
+	@PostMapping("get")
+	public ResponseBody get(@RequestBody District d) {
+		return gh.getGames(d);
+	}
+	
+	@PostMapping("get/all")
+	public ResponseBody getAll() {
+		return gh.allGames();
+	}
+	
 }

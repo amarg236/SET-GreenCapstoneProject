@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
+import com.setgreen.setgreen.model.District;
 import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.Role;
@@ -20,9 +21,14 @@ public class GameHandler {
 	@Autowired
 	private RoleRepo rr;
 	
+	/**Attempts to save a game, and send an email to the involved coaches.
+	 * @param g Game to save
+	 * @return ResponseBody result of attempting to save game
+	 */
 	public ResponseBody saveGame(Game g){
 		try{
 			Iterable<String> i = rr.findOver(g.getAwayteam(), g.getAwaydistrict());
+			String str = "";
 			Mail m = new Mail();
 			MailHandler snd = new MailHandler(new JavaMailSenderImpl());
 			for(String x : i) {
@@ -30,10 +36,10 @@ public class GameHandler {
 				m.setSubjectLine("Game against "+g.getAwayteam()+".");
 				m.setEmailContent(g.getAwayteam()+" has suggested a game to play.");
 				//snd.sendMailMessage(m);//TODO Switch from debug to deploy
-				System.out.println(snd.debugMessage(m));
+				str+=snd.debugMessage(m)+"\n";
 			}
 			gr.save(g);
-			return new ResponseBody(HttpStatus.ACCEPTED.value(), "Game Saved", g);
+			return new ResponseBody(HttpStatus.ACCEPTED.value(), /*"Game Saved"*/ str, g);
 		}
 		catch(Exception e) {
 			return new ResponseBody(HttpStatus.NOT_ACCEPTABLE.value(), "Did not save game", g);
@@ -71,5 +77,22 @@ public class GameHandler {
 		catch(Exception e) {
 			return new ResponseBody(HttpStatus.NOT_ACCEPTABLE.value(), "Could not verify game", g);
 		}
+	}
+
+	public ResponseBody getGames(District d) {
+		try {
+			Iterable<Game> g;
+			
+				//g = gr.findInDistrictAll(d.getDistrictName());
+				g = gr.findInDistrictVerified(d.getDistrictName());
+			return new ResponseBody(HttpStatus.ACCEPTED.value(), "Found games", g);
+		}
+		catch(Exception e) {
+			return new ResponseBody(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games", null);
+		}
+	}
+	
+	public ResponseBody allGames() {
+		return new ResponseBody(HttpStatus.ACCEPTED.value(), "Found games", gr.findAll());
 	}
 }
