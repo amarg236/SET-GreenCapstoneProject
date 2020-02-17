@@ -6,6 +6,10 @@ const USER_API_BASE_URL =
 
 // @FIXME: use redux store instead
 class AuthToken {
+  getBaseUrl() {
+    return USER_API_BASE_URL;
+  }
+
   authentication = {
     isAuthenticated: localStorage.getItem("userInfo")
   };
