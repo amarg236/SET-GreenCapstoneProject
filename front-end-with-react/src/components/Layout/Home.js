@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import "../../stylesheets/home.css";
 import ManageBox from "../Project/ManageBox";
 import AuthToken from "../../Utility/AuthToken";
+import CreateGame from "../Project/CreateGame";
 
 class Home extends Component {
   constructor(props) {

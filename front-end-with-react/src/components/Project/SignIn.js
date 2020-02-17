@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import AuthToken from "../../Utility/AuthToken";
-import AdminDashboard from "../Layout/Admindashboard";
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -28,9 +27,7 @@ class SignIn extends React.Component {
     AuthToken.login(credentials).then(res => {
       console.log(res);
       if (res.data.success) {
-        console.log("i am done");
         localStorage.setItem("userInfo", JSON.stringify(res.data));
-        console.log("i am done");
         this.props.history.push("/");
       } else {
         this.setState({ message: res.data.message });

@@ -15,10 +15,7 @@ class Header extends Component {
 
   logout = async () => {
     await Authtoken.logOut();
-    // localStorage.removeItem("UserInfo");
-    console.log("i am also working");
     await this.props.history.push("/");
-    console.log("am i");
   };
 
   render() {

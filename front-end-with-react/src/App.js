@@ -19,17 +19,11 @@ class App extends React.Component {
         <div className="App">
           <Header />
           <Switch>
-            <Route exact path="/" component={Home} />
-            <ProtectedRoute
-              exact
-              path="/adminDashboard"
-              component={AdminDashboard}
-            />
+            <ProtectedRoute exact path="/" component={Home} />
             <Route exact path="/createGame" component={CreateGame} />
             <Route exact path="/ApproveGame" component={ApproveGame} />
             <Route exact path="/addProject" component={AddProject} />
             <Route exact path="/signIn" component={SignIn} />
-
             <Route path="*" component={() => "404 NOT FOUND"} />
           </Switch>
 

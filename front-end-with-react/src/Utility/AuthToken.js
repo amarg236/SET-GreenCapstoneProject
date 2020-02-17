@@ -6,7 +6,7 @@ const USER_API_BASE_URL =
 
 class AuthToken {
   authentication = {
-    isAuthenticated: false
+    isAuthenticated: localStorage.getItem("userInfo")
   };
 
   login(credentials) {
@@ -23,11 +23,8 @@ class AuthToken {
   }
 
   logOut() {
-    // localStorage.clear();
     localStorage.removeItem("userInfo");
     this.authentication.isAuthenticated = false;
-    // return axios.get(USER_API_BASE_URL);
-    // return axios.post(USER_API_BASE_URL + "logout", {}, this.getAuthHeader());
   }
 
   getAuthenticationStatus() {
