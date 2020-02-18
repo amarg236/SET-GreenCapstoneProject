@@ -1,20 +1,12 @@
 package com.setgreen.setgreen.model;
 
 import java.io.Serializable;
-import java.sql.Date;
-
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -50,10 +42,12 @@ public class Game implements Serializable{
 	@JsonIgnore
 	Long id;*/
 	@Id
+	@JsonIgnore
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 	String location;
-	String time;
+	@JsonFormat(pattern = "yyyy-mm-dd hh:mm")
+	Date time;
 	int duration;
 	@JsonIgnore
 	boolean approved;
