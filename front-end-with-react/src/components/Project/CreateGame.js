@@ -63,7 +63,7 @@ class CreateGame extends Component {
       // duration: 30,
       // location: this.state.gameLocation,
       // approve: true
-      approved: false,
+      approved: true,
       awayteam: this.state.againstTeam,
       // awaydistrict: "P1",
       duration: 30,

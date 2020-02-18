@@ -40,28 +40,28 @@ class Header extends Component {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav mr-auto">
-              {/* Request Game link */}
-              <li className="nav-item">
-                <a className="nav-link dashboardNames" href="/createGame">
-                  Create Game{" "}
-                </a>
-              </li>
-
-              {/* Approve Game link */}
-              <li className="nav-item">
-                <a className="nav-link dashboardNames" href="/viewApiCall">
-                  Approve Game
-                </a>
-              </li>
-
-              {/* Manage Game link */}
-              <li className="nav-item">
-                <a className="nav-link dashboardNames" href="/createGame">
-                  Manage Game
-                </a>
-              </li>
-            </ul>
+            {
+              // <ul className="navbar-nav mr-auto">
+              //   {/* Request Game link */}
+              //   <li className="nav-item">
+              //     <a className="nav-link dashboardNames" href="/createGame">
+              //       Create Game{" "}
+              //     </a>
+              //   </li>
+              //   {/* Approve Game link */}
+              //   <li className="nav-item">
+              //     <a className="nav-link dashboardNames" href="/viewApiCall">
+              //       Approve Game
+              //     </a>
+              //   </li>
+              //   {/* Manage Game link */}
+              //   <li className="nav-item">
+              //     <a className="nav-link dashboardNames" href="/createGame">
+              //       Manage Game
+              //     </a>
+              //   </li>
+              // </ul>
+            }
 
             <ul className="navbar-nav ml-auto">
               {/* Notification bell icon */}
