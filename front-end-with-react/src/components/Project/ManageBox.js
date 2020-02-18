@@ -12,8 +12,11 @@ class ManageBox extends Component {
         <button className="btn btn-block" type="button">
           MANAGE TEAM
         </button>
-        <button className="btn btn-block" type="button">
+        <button className="btn btn-block " type="button">
           <Link to="/createGame">CREATE GAME</Link>
+        </button>
+        <button className="btn btn-block " type="button">
+          <Link to="/gameRequests">GAME REQUESTS</Link>
         </button>
       </div>
     );

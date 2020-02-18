@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import "../../stylesheets/createGame.css";
 import "./SignIn";
-import SearchBar from "./SearchBar";
+import ChooseTime from "./ChooseTime";
 import ChooseDate from "./ChooseDate";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
+import TimePicker from "./ChooseTime";
 
 class CreateGame extends Component {
   constructor(props) {
@@ -14,10 +15,12 @@ class CreateGame extends Component {
     this.onChangeGameStartTime = this.onChangeGameStartTime.bind(this);
     this.onChangeGameEndTime = this.onChangeGameEndTime.bind(this);
     this.onChangeGameLocation = this.onChangeGameLocation.bind(this);
+    this.onChangeAgainstTeam = this.onChangeAgainstTeam.bind(this);
+    this.gameSubmit = this.gameSubmit.bind(this);
 
     this.state = {
       homeTeam: "",
-      gameDate: "",
+      gameDate: new Date(),
       gameStartTime: "",
       gameEndTime: "",
       gameLocation: "",
@@ -42,14 +45,15 @@ class CreateGame extends Component {
   onChangeGameLocation(e) {
     this.setState({ gameLocation: e.target.value });
   }
-
-  onChangegAinstTeam(e) {
+  onChangeAgainstTeam(e) {
     this.setState({ againstTeam: e.target.value });
   }
 
-  gameSubmit(event) {
-    event.preventDefault();
+  gameSubmit(e) {
+    e.preventDefault();
 
+    console.log(this.state.homeTeam);
+    console.log(this.state.gameDate);
     const gameObject = {
       // // hometeam: this.state.homeTeam,
       // hometeam: "teamA",
@@ -59,15 +63,22 @@ class CreateGame extends Component {
       // duration: 30,
       // location: this.state.gameLocation,
       // approve: true
-
-      approved: true,
-      awayteam: "test1",
-      awaydistrict: "P1",
-      duration: 0,
-      hometeam: "test2",
-      homedistrict: "P1",
-      location: "string",
-      time: "string"
+      approved: false,
+      awayteam: this.state.againstTeam,
+      // awaydistrict: "P1",
+      duration: 30,
+      hometeam: this.state.homeTeam,
+      // homedistrict: "P1",
+      location: this.state.gameLocation,
+      time: this.state.gameDate
+      // approved: true,
+      // awayteam: "test1",
+      // awaydistrict: "P1",
+      // duration: 0,
+      // hometeam: "test2",
+      // homedistrict: "P1",
+      // location: "string",
+      // time: "string"
     };
 
     axios
@@ -79,7 +90,6 @@ class CreateGame extends Component {
             Authorization:
               "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
           }
-          // Authtoken.getAuthHeader()
         }
       )
       .then(res => {
@@ -89,32 +99,76 @@ class CreateGame extends Component {
   }
 
   render() {
-    {
-      console.log(Authtoken.getUserInfo().token.split(" ")[1]);
-    }
     return (
       <div className="gameLayout">
-        <form className="auth-inner" onSubmit={this.gameSubmit}>
-          {/*Log in Heading  */}
+        <form className="auth-inner form-group " onSubmit={this.gameSubmit}>
           <div className="form-signin" style={{ justifyContent: "center" }}>
             <h3>Create New Game</h3>
           </div>
 
           <div className="form-group">
-            Home Team:{" "}
-            <select>
-              <option value="null">Choose a Team</option>
+            <label>Home Team</label>
+
+            <select
+              className="form-control"
+              value={this.state.homeTeam}
+              onChange={this.onChangeHomeTeam}
+            >
+              <option>Choose Home Team</option>
               <option value="teamA">Team A</option>
               <option value="teamB">Team B</option>
             </select>
           </div>
 
-          <div className="form-group" onChange={this.onChangeGameDate}>
-            Date: <ChooseDate />
+          <div className="form-inline">
+            <div className="form-group mb-2">
+              <label>Date: &nbsp;</label>
+              <ChooseDate
+                className="input-group"
+                value={this.state.gameDate}
+                onChange={this.onChangeGameDate}
+                showTimeSelect
+                dateFormat="Pp"
+              />
+            </div>
+            <div className="form-group mx-sm-3 mb-2">
+              <label>Start Time: &nbsp;</label>
+              <input
+                type="text"
+                className="form-control"
+                onChange={this.onChangeGameStartTime}
+                value={this.state.gameStartTime}
+                placeholder="HH:MM"
+              />
+            </div>
+            <div className="form-group mx-sm-3 mb-2">
+              <label>End Time: &nbsp;</label>
+              <input
+                type="text"
+                className="form-control"
+                onChange={this.onChangeGameEndTime}
+                value={this.state.gameEndTime}
+                placeholder="HH:MM"
+              />
+            </div>
           </div>
-
           <div className="form-group">
-            Time: <SearchBar />
+            <label>Game Location</label>
+            <input
+              className="form-control"
+              placeholder="Enter Game Location"
+              onChange={this.onChangeGameLocation}
+              value={this.state.gameLocation}
+            />
+          </div>
+          <div className="form-group">
+            <label>Opponent Team</label>
+            <input
+              className="form-control"
+              placeholder="Enter Opponent Team"
+              onChange={this.onChangeAgainstTeam}
+              value={this.state.againstTeam}
+            />
           </div>
 
           <div
@@ -133,7 +187,7 @@ class CreateGame extends Component {
               }}
               type="submit"
             >
-              CREATE GAME
+              REQUEST GAME
             </button>
           </div>
         </form>

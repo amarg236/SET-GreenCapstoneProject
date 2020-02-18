@@ -16,6 +16,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import AuthToken from "./Utility/AuthToken";
 import ManageBox from "./components/Project/ManageBox";
+import GameRequests from "./components/Project/GameRequests";
 
 class App extends React.Component {
   render() {
@@ -39,6 +40,11 @@ class App extends React.Component {
                     exact
                     path="/createGame"
                     component={CreateGame}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/gameRequests"
+                    component={GameRequests}
                   />
                   <Route exact path="/ApproveGame" component={ApproveGame} />
                   <Route exact path="/addProject" component={AddProject} />
