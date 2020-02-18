@@ -10,7 +10,7 @@ class ManageBox extends Component {
         </button>
         <br />
         <button className="btn btn-block" type="button">
-          MANAGE TEAM
+          <Link to="/userProfile">USER PROFILE</Link>
         </button>
         <button className="btn btn-block " type="button">
           <Link to="/createGame">CREATE GAME</Link>

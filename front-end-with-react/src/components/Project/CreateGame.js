@@ -101,7 +101,7 @@ class CreateGame extends Component {
   render() {
     return (
       <div className="gameLayout">
-        <form className="auth-inner form-group " onSubmit={this.gameSubmit}>
+        <form className="form-group " onSubmit={this.gameSubmit}>
           <div className="form-signin" style={{ justifyContent: "center" }}>
             <h3>Create New Game</h3>
           </div>

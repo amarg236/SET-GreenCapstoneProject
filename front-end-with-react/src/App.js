@@ -17,6 +17,7 @@ import Col from "react-bootstrap/Col";
 import AuthToken from "./Utility/AuthToken";
 import ManageBox from "./components/Project/ManageBox";
 import GameRequests from "./components/Project/GameRequests";
+import UserProfile from "./components/Project/UserProfile";
 
 class App extends React.Component {
   render() {
@@ -34,23 +35,30 @@ class App extends React.Component {
                 )}
               </Col>
               <Col md={10} sm={9} style={{ paddingLeft: "1%" }}>
-                <Switch>
-                  <Route exact path="/" component={Home} />
-                  <ProtectedRoute
-                    exact
-                    path="/createGame"
-                    component={CreateGame}
-                  />
-                  <ProtectedRoute
-                    exact
-                    path="/gameRequests"
-                    component={GameRequests}
-                  />
-                  <Route exact path="/ApproveGame" component={ApproveGame} />
-                  <Route exact path="/addProject" component={AddProject} />
-                  <Route exact path="/signIn" component={SignIn} />
-                  <Route path="*" component={() => "404 NOT FOUND"} />
-                </Switch>
+                <div className="auth-inner">
+                  <Switch>
+                    <Route exact path="/" component={Home} />
+                    <ProtectedRoute
+                      exact
+                      path="/createGame"
+                      component={CreateGame}
+                    />
+                    <ProtectedRoute
+                      exact
+                      path="/gameRequests"
+                      component={GameRequests}
+                    />
+                    <ProtectedRoute
+                      exact
+                      path="/userProfile"
+                      component={UserProfile}
+                    />
+                    <Route exact path="/ApproveGame" component={ApproveGame} />
+                    <Route exact path="/addProject" component={AddProject} />
+                    <Route exact path="/signIn" component={SignIn} />
+                    <Route path="*" component={() => "404 NOT FOUND"} />
+                  </Switch>
+                </div>
               </Col>
             </Row>
           </Container>

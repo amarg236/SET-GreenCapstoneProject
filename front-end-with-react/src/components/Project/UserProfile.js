@@ -7,7 +7,7 @@ import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import TimePicker from "./ChooseTime";
 
-class GameRequests extends Component {
+class UserProfile extends Component {
   constructor(props) {
     super(props);
   }
@@ -36,8 +36,8 @@ class GameRequests extends Component {
   }
 
   render() {
-    return <h1>Hello There</h1>;
+    return <h1>User Details here</h1>;
   }
 }
 
-export default GameRequests;
+export default UserProfile;
