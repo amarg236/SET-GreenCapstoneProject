@@ -34,6 +34,11 @@ public class GameController {
 		return gh.modifyGame(g);
 	}
 	
+	@PostMapping("accept")
+	public ResponseBody accept(@RequestBody Game g) {
+		return gh.acceptGame(g);
+	}
+	
 	/** Gets all the verified games in a district
 	 * @param district String name of district for games
 	 * @return ResponseBody status of request
