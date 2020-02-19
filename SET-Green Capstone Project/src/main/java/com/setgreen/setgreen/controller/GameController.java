@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.setgreen.setgreen.model.District;
 import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.ResponseBody;
+import com.setgreen.setgreen.model.School;
 import com.setgreen.setgreen.services.implementation.GameHandler;
 
 @RestController
@@ -25,8 +26,8 @@ public class GameController {
 	}
 	
 	@PostMapping("delete")
-	public ResponseBody delete(@RequestBody Game g) {
-		return gh.deleteGame(g);
+	public ResponseBody delete(@RequestBody Long id) {
+		return gh.deleteGame(id);
 	}
 	
 	@PostMapping("modify")
@@ -38,14 +39,28 @@ public class GameController {
 	 * @param district String name of district for games
 	 * @return ResponseBody status of request
 	 */
-	@PostMapping("get")
-	public ResponseBody get(@RequestBody District d) {
-		return gh.getGames(d);
+	@PostMapping("get/district")
+	public ResponseBody getDistrict(@RequestBody District d) {
+		return gh.getGames(d, false);
+	}
+	
+	@PostMapping("get/district/all")
+	public ResponseBody getDistrictAll(@RequestBody District d) {
+		return gh.getGames(d, true);
+	}
+	
+	@PostMapping("get/BySchool")
+	public ResponseBody getSchool(@RequestBody School s) {
+		return gh.getGames(s, false);
+	}
+	
+	@PostMapping("get/BySchool/all")
+	public ResponseBody getSchoolAll(@RequestBody School s) {
+		return gh.getGames(s, true);
 	}
 	
 	@PostMapping("get/all")
 	public ResponseBody getAll() {
 		return gh.allGames();
 	}
-	
 }

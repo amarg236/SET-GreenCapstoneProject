@@ -49,6 +49,7 @@ public class Game implements Serializable{
 	@JsonFormat(pattern = "yyyy-mm-dd hh:mm")
 	Date time;
 	int duration;
-	@JsonIgnore
+//	@JsonIgnore
 	boolean approved;
+	boolean awayAccepted;//TODO Implement more better
 }

@@ -53,7 +53,7 @@ public class AdminControlController {
     	return dh.deleteEventDay(d);
     }
     @PostMapping("game/verify") //XXX TEST
-    public ResponseBody verifyGame(@RequestBody Game g) {
+    public ResponseBody verifyGame(@RequestBody Long g) {
     	return gh.verifyGame(g);
     }
 }
