@@ -6,4 +6,7 @@ public interface UserService {
 
     User saveUser(User user);
 
+	void updatePassword(User u);
+
+	void updatePassAndVerify(User u);
 }

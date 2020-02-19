@@ -19,7 +19,7 @@ body {
 }
 
 .btn {
-  background-color: #739608;
+  /* background-color: #739608; */
   color: white;
 }
 
@@ -95,4 +95,7 @@ It is for the login font title  */
   padding-right: 2vh;
   padding-bottom: 10px;
   padding-top: 10px;
+}
+a {
+  color: #ffffff;
 }

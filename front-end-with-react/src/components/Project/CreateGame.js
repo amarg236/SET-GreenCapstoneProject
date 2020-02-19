@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 import "../../stylesheets/createGame.css";
 import "./SignIn";
-import SearchBar from "./SearchBar";
+import ChooseTime from "./ChooseTime";
 import ChooseDate from "./ChooseDate";
 import ChooseTime from "./ChooseTime";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import ManageBox from "../Project/ManageBox";
+import TimePicker from "./ChooseTime";
 
 class CreateGame extends Component {
   constructor(props) {
@@ -19,14 +16,21 @@ class CreateGame extends Component {
     this.onChangeGameStartTime = this.onChangeGameStartTime.bind(this);
     this.onChangeGameEndTime = this.onChangeGameEndTime.bind(this);
     this.onChangeGameLocation = this.onChangeGameLocation.bind(this);
+    this.onChangeAgainstTeam = this.onChangeAgainstTeam.bind(this);
+    this.onChangeAgainstTeamDistrict = this.onChangeAgainstTeamDistrict.bind(
+      this
+    );
+    this.gameSubmit = this.gameSubmit.bind(this);
 
     this.state = {
       homeTeam: "",
-      gameDate: "",
+      gameDate: new Date(),
       gameStartTime: "",
       gameEndTime: "",
       gameLocation: "",
-      againstTeam: ""
+      againstTeam: "",
+      againstTeamDistrict: ""
+      // timeFinal: ""
     };
   }
   onChangeHomeTeam(e) {
@@ -47,71 +51,66 @@ class CreateGame extends Component {
   onChangeGameLocation(e) {
     this.setState({ gameLocation: e.target.value });
   }
-
-  onChangegAinstTeam(e) {
+  onChangeAgainstTeam(e) {
     this.setState({ againstTeam: e.target.value });
   }
 
-  gameSubmit(event) {
-    event.preventDefault();
+  onChangeAgainstTeamDistrict(e) {
+    this.setState({ againstTeamDistrict: e.target.value });
+  }
 
+  // getTimeFinal(this.sate.Date,this.state.time)
+  // {
+  //   return "2020-02-13 12:30";
+  // }
+
+  gameSubmit(e) {
+    e.preventDefault();
+
+    console.log(this.state.homeTeam);
+    console.log(this.state.gameDate);
     const gameObject = {
-      // // hometeam: this.state.homeTeam,
-      // hometeam: "teamA",
-      // time: this.state.gameDate,
-      // // gameStartTime: this.state.gameStartTime,
-      // // gameEndTime: this.state.gameEndTime,
-      // duration: 30,
-      // location: this.state.gameLocation,
-      // approve: true
-
       approved: true,
-      awayteam: "test1",
-      awaydistrict: "P1",
-      duration: 0,
-      hometeam: "test2",
-      homedistrict: "P1",
-      location: "string",
-      time: "string"
+      awayteam: this.state.againstTeam,
+      awaydistrict: this.state.againstTeamDistrict,
+      duration: 30,
+      hometeam: this.state.homeTeam,
+      // homedistrict: "P1",
+      location: this.state.gameLocation,
+      time: "2020-02-13 12:30"
     };
 
     axios
-      .post(
-        "http://ec2-3-17-66-87.us-east-2.compute.amazonaws.com:8080/api/game/save",
-        gameObject,
-        {
-          headers: {
-            Authorization:
-              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-          }
-          // Authtoken.getAuthHeader()
+      .post(Authtoken.getBaseUrl() + "/api/game/save", gameObject, {
+        headers: {
+          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
         }
-      )
+      })
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        window.alert("The Game has been created successfully!!");
+        // window.location.reload();
+        // console.log(res);
+        // console.log(res.data);
       });
   }
 
   render() {
-    // {
-    //   console.log(Authtoken.getUserInfo().token.split(" ")[1]);
-    // }
     return (
-      <Container>
-        <div>
-        <form className="auth-inner" onSubmit={this.gameSubmit} display='inline'>
-          {/*Log in Heading  */}
+      <div className="gameLayout">
+        <form className="form-group " onSubmit={this.gameSubmit}>
           <div className="form-signin" style={{ justifyContent: "center" }}>
             <h3>Create New Game</h3>
           </div>
 
           <div className="form-group">
-          <Row>
-            <Col md={2} sm={2}> Home Team:{" "} </Col>
-            <Col className="colPadding" md={4} sm={3}>
-            <select>
-              <option value="null">Choose a Team</option>
+            <label>Home Team</label>
+
+            <select
+              className="form-control"
+              value={this.state.homeTeam}
+              onChange={this.onChangeHomeTeam}
+            >
+              <option>Choose Home Team</option>
               <option value="teamA">Team A</option>
               <option value="teamB">Team B</option>
               
@@ -127,24 +126,67 @@ class CreateGame extends Component {
             </Col>
           </Row>
           </div>
-          
-          <div className="form-group" onChange={this.onChangeGameDate}>
-          <Row>
-            <Col md={2} sm={2}>Date:</Col>
-            <Col className="colPadding" md={4} sm={3}> 
-            <ChooseDate /></Col>
-            <Col md={2} sm={2}>Time:</Col>
-            <Col className="colPadding" md={4} sm={3}> 
-            <ChooseTime /></Col>
-          </Row>
-          </div>
 
+          <div className="form-inline">
+            <div className="form-group mb-2">
+              <label>Date: &nbsp;</label>
+              <ChooseDate
+                className="input-group"
+                value={this.state.gameDate}
+                onChange={this.onChangeGameDate}
+                showTimeSelect
+                dateFormat="Pp"
+              />
+            </div>
+            <div className="form-group mx-sm-3 mb-2">
+              <label>Start Time: &nbsp;</label>
+              <input
+                type="text"
+                className="form-control"
+                onChange={this.onChangeGameStartTime}
+                value={this.state.gameStartTime}
+                placeholder="HH:MM"
+              />
+            </div>
+            <div className="form-group mx-sm-3 mb-2">
+              <label>End Time: &nbsp;</label>
+              <input
+                type="text"
+                className="form-control"
+                onChange={this.onChangeGameEndTime}
+                value={this.state.gameEndTime}
+                placeholder="HH:MM"
+              />
+            </div>
+          </div>
           <div className="form-group">
-          <Row>
-            <Col md={2} sm={2}>Location:</Col>
-            <Col className="colPadding" md={9} sm={8}> 
-            <SearchBar /></Col>
-          </Row>
+            <label>Game Location</label>
+            <input
+              className="form-control"
+              placeholder="Enter Game Location"
+              onChange={this.onChangeGameLocation}
+              value={this.state.gameLocation}
+            />
+          </div>
+          <div className="form-group row">
+            <div className="form-group col-sm">
+              <label>Opponent Team</label>
+              <input
+                className="form-control"
+                placeholder="Enter Opponent Team"
+                onChange={this.onChangeAgainstTeam}
+                value={this.state.againstTeam}
+              />
+            </div>
+            <div className="form-group col-sm">
+              <label>Opponent Team District</label>
+              <input
+                className="form-control"
+                placeholder="Enter Opponent Team District"
+                onChange={this.onChangeAgainstTeamDistrict}
+                value={this.state.againstTeamDistrict}
+              />
+            </div>
           </div>
 
           <div
@@ -155,15 +197,16 @@ class CreateGame extends Component {
             }}
           >
             <button
-              className="btn btn-block"
+              className="btn btn-block btn-success"
               style={{
                 height: "35%",
                 marginTop: "5%",
                 marginBottom: "5%"
               }}
               type="submit"
+              onClick={this.gameSubmit}
             >
-              CREATE GAME
+              REQUEST GAME
             </button>
           </div>
 

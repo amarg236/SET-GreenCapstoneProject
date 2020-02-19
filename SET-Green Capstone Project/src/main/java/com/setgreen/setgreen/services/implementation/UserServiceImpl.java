@@ -7,6 +7,7 @@ import com.setgreen.setgreen.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,6 +29,24 @@ public class UserServiceImpl implements UserService {
             throw new UsernameAlreadyExistsException("Username '" + newUser.getUsername() + "' already exists");
         }
 
+    }
+    
+    @Override
+    /** Updates a password for a user u
+     * @param u User object that you most likely created exclusively to update another already existing user object
+     */
+    public void updatePassword(User u) {
+    	userRepo.updatePassword(u.getEmail(), bCryptPasswordEncoder.encode(u.getPassword()));
+    	
+    }
+
+    @Transactional
+    /** Updates the password for a user AND sets the user to be verified
+     * @param u User object, already possessing the new password.
+     */
+    public void updatePassAndVerify(User u) {
+    	updatePassword(u);
+    	userRepo.updateVerify(u.getEmail(), true);
     }
 
 

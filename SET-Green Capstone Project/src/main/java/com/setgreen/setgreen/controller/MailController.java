@@ -1,10 +1,9 @@
 package com.setgreen.setgreen.controller;
 
-
-import com.setgreen.setgreen.model.Mail.Mail;
+import com.setgreen.setgreen.mailing.Mail;
 import com.setgreen.setgreen.model.ResponseBody;
-import com.setgreen.setgreen.model.User;
-import com.setgreen.setgreen.services.MailService.MailHandlerService;
+import com.setgreen.setgreen.services.MailService.MailHandler;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,7 @@ public class MailController {
 
     @PostMapping("sendEmail")
     public ResponseBody mailOut(@RequestBody Mail m) {
-        MailHandlerService mh = new MailHandlerService(new JavaMailSenderImpl());
+        MailHandler mh = new MailHandler(new JavaMailSenderImpl());
         mh.sendMailMessage(m);
         return new ResponseBody(HttpStatus.ACCEPTED.value(), "Email successfully sent to user.",new Mail());    }
 }
