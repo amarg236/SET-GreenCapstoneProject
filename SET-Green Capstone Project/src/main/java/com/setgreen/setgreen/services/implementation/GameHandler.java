@@ -1,10 +1,8 @@
 package com.setgreen.setgreen.services.implementation;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
-
 import com.setgreen.setgreen.model.District;
 import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.ResponseBody;

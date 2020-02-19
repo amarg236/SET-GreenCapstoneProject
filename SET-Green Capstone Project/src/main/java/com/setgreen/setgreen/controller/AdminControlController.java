@@ -1,6 +1,5 @@
 package com.setgreen.setgreen.controller;
 
-import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.User;
 import com.setgreen.setgreen.model.scheduling.EventDay;
