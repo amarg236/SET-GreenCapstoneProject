@@ -25,6 +25,7 @@ class CreateGame extends Component {
       gameEndTime: "",
       gameLocation: "",
       againstTeam: ""
+      // timeFinal: ""
     };
   }
   onChangeHomeTeam(e) {
@@ -49,20 +50,17 @@ class CreateGame extends Component {
     this.setState({ againstTeam: e.target.value });
   }
 
+  // getTimeFinal(this.sate.Date,this.state.time)
+  // {
+  //   return "2020-02-13 12:30";
+  // }
+
   gameSubmit(e) {
     e.preventDefault();
 
     console.log(this.state.homeTeam);
     console.log(this.state.gameDate);
     const gameObject = {
-      // // hometeam: this.state.homeTeam,
-      // hometeam: "teamA",
-      // time: this.state.gameDate,
-      // // gameStartTime: this.state.gameStartTime,
-      // // gameEndTime: this.state.gameEndTime,
-      // duration: 30,
-      // location: this.state.gameLocation,
-      // approve: true
       approved: true,
       awayteam: this.state.againstTeam,
       // awaydistrict: "P1",
@@ -70,31 +68,20 @@ class CreateGame extends Component {
       hometeam: this.state.homeTeam,
       // homedistrict: "P1",
       location: this.state.gameLocation,
-      time: this.state.gameDate
-      // approved: true,
-      // awayteam: "test1",
-      // awaydistrict: "P1",
-      // duration: 0,
-      // hometeam: "test2",
-      // homedistrict: "P1",
-      // location: "string",
-      // time: "string"
+      time: "2020-02-13 12:30"
     };
 
     axios
-      .post(
-        "http://ec2-3-17-66-87.us-east-2.compute.amazonaws.com:8080/api/game/save",
-        gameObject,
-        {
-          headers: {
-            Authorization:
-              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-          }
+      .post(Authtoken.getBaseUrl() + "/api/game/save", gameObject, {
+        headers: {
+          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
         }
-      )
+      })
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        window.alert("The Game has been created successfully!!");
+        // window.location.reload();
+        // console.log(res);
+        // console.log(res.data);
       });
   }
 
@@ -179,13 +166,14 @@ class CreateGame extends Component {
             }}
           >
             <button
-              className="btn btn-block"
+              className="btn btn-block btn-success"
               style={{
                 height: "35%",
                 marginTop: "5%",
                 marginBottom: "5%"
               }}
               type="submit"
+              onClick={this.gameSubmit}
             >
               REQUEST GAME
             </button>
