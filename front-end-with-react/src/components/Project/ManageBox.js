@@ -8,7 +8,6 @@ class ManageBox extends Component {
         <button className="btn btn-success btn-block" type="button">
           MANAGE USER
         </button>
-        <br />
         <button className="btn btn-success btn-block" type="button">
           <Link to="/userProfile">USER PROFILE</Link>
         </button>

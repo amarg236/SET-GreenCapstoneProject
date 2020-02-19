@@ -25,7 +25,6 @@ class SignIn extends React.Component {
     };
 
     AuthToken.login(credentials).then(res => {
-      console.log(res);
       if (res.data.success) {
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         this.props.history.push("/");

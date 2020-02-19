@@ -53,9 +53,6 @@ class App extends React.Component {
                       path="/userProfile"
                       component={UserProfile}
                     />
-                    <Route exact path="/ApproveGame" component={ApproveGame} />
-                    <Route exact path="/addProject" component={AddProject} />
-                    <Route exact path="/signIn" component={SignIn} />
                     <Route path="*" component={() => "404 NOT FOUND"} />
                   </Switch>
                 </div>

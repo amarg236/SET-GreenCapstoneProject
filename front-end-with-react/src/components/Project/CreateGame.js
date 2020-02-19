@@ -16,6 +16,9 @@ class CreateGame extends Component {
     this.onChangeGameEndTime = this.onChangeGameEndTime.bind(this);
     this.onChangeGameLocation = this.onChangeGameLocation.bind(this);
     this.onChangeAgainstTeam = this.onChangeAgainstTeam.bind(this);
+    this.onChangeAgainstTeamDistrict = this.onChangeAgainstTeamDistrict.bind(
+      this
+    );
     this.gameSubmit = this.gameSubmit.bind(this);
 
     this.state = {
@@ -24,7 +27,8 @@ class CreateGame extends Component {
       gameStartTime: "",
       gameEndTime: "",
       gameLocation: "",
-      againstTeam: ""
+      againstTeam: "",
+      againstTeamDistrict: ""
       // timeFinal: ""
     };
   }
@@ -50,6 +54,10 @@ class CreateGame extends Component {
     this.setState({ againstTeam: e.target.value });
   }
 
+  onChangeAgainstTeamDistrict(e) {
+    this.setState({ againstTeamDistrict: e.target.value });
+  }
+
   // getTimeFinal(this.sate.Date,this.state.time)
   // {
   //   return "2020-02-13 12:30";
@@ -63,7 +71,7 @@ class CreateGame extends Component {
     const gameObject = {
       approved: true,
       awayteam: this.state.againstTeam,
-      // awaydistrict: "P1",
+      awaydistrict: this.state.againstTeamDistrict,
       duration: 30,
       hometeam: this.state.homeTeam,
       // homedistrict: "P1",
@@ -148,14 +156,25 @@ class CreateGame extends Component {
               value={this.state.gameLocation}
             />
           </div>
-          <div className="form-group">
-            <label>Opponent Team</label>
-            <input
-              className="form-control"
-              placeholder="Enter Opponent Team"
-              onChange={this.onChangeAgainstTeam}
-              value={this.state.againstTeam}
-            />
+          <div className="form-group row">
+            <div className="form-group col-sm">
+              <label>Opponent Team</label>
+              <input
+                className="form-control"
+                placeholder="Enter Opponent Team"
+                onChange={this.onChangeAgainstTeam}
+                value={this.state.againstTeam}
+              />
+            </div>
+            <div className="form-group col-sm">
+              <label>Opponent Team District</label>
+              <input
+                className="form-control"
+                placeholder="Enter Opponent Team District"
+                onChange={this.onChangeAgainstTeamDistrict}
+                value={this.state.againstTeamDistrict}
+              />
+            </div>
           </div>
 
           <div
