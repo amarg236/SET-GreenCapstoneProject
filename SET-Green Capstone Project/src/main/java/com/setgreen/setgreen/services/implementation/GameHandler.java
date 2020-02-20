@@ -87,6 +87,17 @@ public class GameHandler {
 		}
 	}
 
+	public ResponseBody getGamesUserVerified(District d) {
+		try{
+			Iterable<Game> g;
+			g = gr.findInDistrictAccepted(d.getDistrictName());
+			return new ResponseBody(HttpStatus.ACCEPTED.value(), "Found games", g);
+		}
+		catch(Exception e) {
+			return new ResponseBody(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games", null);
+		}
+	}
+	
 	public ResponseBody getGames(School s, boolean findAll) {
 		try{
 			Iterable<Game> g;

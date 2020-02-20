@@ -22,8 +22,9 @@ public class District implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 26637590832680761L;
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
-    //private Long id;
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+//TODO TEST
     private String districtName;
 }
