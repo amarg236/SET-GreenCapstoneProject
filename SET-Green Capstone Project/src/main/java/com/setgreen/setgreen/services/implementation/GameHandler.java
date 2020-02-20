@@ -58,12 +58,12 @@ public class GameHandler {
 	//FIXME better implementation w/ a custom method, or at least do a "find game" check.
 	public ResponseBody modifyGame(Game g) {
 		try {
-			gr.delete(g);
-			gr.save(g);
-			return new ResponseBody(HttpStatus.ACCEPTED.value(), "Game Deleted", g);
+			gr.deleteById(g.getId());
+			Game ng = gr.save(g);
+			return new ResponseBody(HttpStatus.ACCEPTED.value(), "Game modified", ng);
 		}
 		catch(Exception e) {
-			return new ResponseBody(HttpStatus.NOT_ACCEPTABLE.value(), "Could Not Delete Game", g);
+			return new ResponseBody(HttpStatus.NOT_ACCEPTABLE.value(), "Could Not modify Game", g);
 		}
 	}
 	
