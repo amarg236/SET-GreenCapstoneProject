@@ -195,11 +195,9 @@ public class UserController {
         //User createUser = userService.saveUser(userData);
         return new ResponseEntity<>("User has been registered successfully!", HttpStatus.CREATED);
     }
-
-
-
-
-
-
-
+    
+    @PostMapping("find/email")
+    public ResponseBody getByEmail(@RequestBody String s) {
+    	return userService.fetchByEmail(s);
+    }
 }

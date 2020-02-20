@@ -20,8 +20,8 @@ public interface UserRepo extends JpaRepository<User, Id> {
 //    @Query("Select u from User u where u.username =(:username)")
 //    User findByUserNameIgnoreCase(String username);
     
-    @Query("Select u from User u where u.email =(:email)")
-    User findByEmail(String email);
+    @Query("SELECT u from User u where u.email =(:email)")
+    public User findByEmail(String email);
     
     /**
      * @param who String email of user you want to update (as email is assumed to be a singular key value)

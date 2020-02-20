@@ -1,5 +1,6 @@
 package com.setgreen.setgreen.services;
 
+import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.User;
 
 public interface UserService {
@@ -9,4 +10,6 @@ public interface UserService {
 	void updatePassword(User u);
 
 	void updatePassAndVerify(User u);
+	
+	public ResponseBody fetchByEmail(String s);
 }

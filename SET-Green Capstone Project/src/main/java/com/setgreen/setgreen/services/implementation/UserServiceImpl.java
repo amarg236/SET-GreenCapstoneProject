@@ -1,10 +1,15 @@
 package com.setgreen.setgreen.services.implementation;
 
 import com.setgreen.setgreen.exceptions.UsernameAlreadyExistsException;
+import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.User;
 import com.setgreen.setgreen.repositories.UserRepo;
 import com.setgreen.setgreen.services.UserService;
+
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +34,19 @@ public class UserServiceImpl implements UserService {
             throw new UsernameAlreadyExistsException("Email '" + newUser.getEmail() + "' already exists"); //TODO TRACK DOWN USERNAME STUFF AND CHANGE IT TO EMAIL
         }
 
+    }
+    
+    public ResponseBody fetchByEmail(String s) {
+    	try {
+    		System.out.println(s);
+    		User u = userRepo.findByEmail(s);
+    		System.out.println(u);
+    		u.setPassword("no dice m8");
+    		return new ResponseBody(HttpStatus.ACCEPTED.value(), "Found user", u);
+    	}
+    	catch(Exception e) {
+    		return new ResponseBody(HttpStatus.NOT_MODIFIED.value(), "No user found", new User());
+    	}
     }
     
     @Override
