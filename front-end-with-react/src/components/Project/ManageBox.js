@@ -13,6 +13,10 @@ class ManageBox extends Component {
   render() {
     return (
       <div className="manageLayout">
+        <div class="alert alert-primary" role="alert">
+          Hello, <u className="text-danger">{AuthToken.getUserRole()}</u> !
+          Welcome to the Dashboard!
+        </div>
         <button className="btn btn-success btn-block" type="button">
           MANAGE USER
         </button>
