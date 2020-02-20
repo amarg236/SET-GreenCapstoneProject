@@ -27,6 +27,9 @@ class CreateGame extends Component {
       againstTeam: ""
     };
   }
+
+  calculateDuration() {}
+
   onChangeHomeTeam(e) {
     this.setState({ homeTeam: e.target.value });
   }

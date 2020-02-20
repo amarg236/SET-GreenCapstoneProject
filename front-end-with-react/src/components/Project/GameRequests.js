@@ -17,6 +17,13 @@ class GameRequests extends Component {
     };
   }
 
+  // whileAccept = () => {
+  //   return this.state.game;
+  //   console.log(this.state.game);
+  // };
+
+  // whileDeny = () => {};
+
   componentDidMount() {
     const emptyBody = {};
     axios
@@ -74,12 +81,20 @@ class GameRequests extends Component {
                       <td>{time}</td>
                       <td>{location}</td>
                       <td>
-                        <button type="button" className="btn btn-success">
+                        <button
+                          onClick={this.whileAccept}
+                          type="button"
+                          className="btn btn-success"
+                        >
                           Accept
                         </button>
                       </td>
                       <td>
-                        <button type="button" className="btn btn-warning">
+                        <button
+                          onClick={this.whileDeny}
+                          type="button"
+                          className="btn btn-warning"
+                        >
                           Deny
                         </button>
                       </td>
