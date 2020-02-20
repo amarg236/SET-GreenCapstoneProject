@@ -21,7 +21,6 @@ class AuthToken {
 
   login(credentials) {
     this.authentication.isAuthenticated = true;
-
     return axios.post(USER_API_BASE_URL + "/api/auth/login", credentials);
   }
 

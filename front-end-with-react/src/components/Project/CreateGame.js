@@ -74,7 +74,7 @@ class CreateGame extends Component {
       awaydistrict: this.state.againstTeamDistrict,
       duration: 30,
       hometeam: this.state.homeTeam,
-      // homedistrict: "P1",
+      homedistrict: "Dummy Home District",
       location: this.state.gameLocation,
       time: "2020-02-13 12:30"
     };

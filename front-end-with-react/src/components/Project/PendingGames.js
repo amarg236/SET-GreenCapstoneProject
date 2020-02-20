@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import "../../stylesheets/createGame.css";
 import "./SignIn";
-import ChooseTime from "./ChooseTime";
-import ChooseDate from "./ChooseDate";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import TimePicker from "./ChooseTime";
 import { ListGroupItem, ListGroup, Table, Button } from "react-bootstrap";
 
 class PendingGame extends Component {
@@ -33,10 +30,28 @@ class PendingGame extends Component {
       });
   }
 
-  approveGame(id) {
-    console.log("i am here");
+  approveGame(
+    id,
+    hometeam,
+    homedistrict,
+    awayteam,
+    awaydistrict,
+    time,
+    duration,
+    location,
+    away_accepted
+  ) {
     const aemptyObj = {
-      id
+      id,
+      time,
+      away_accepted,
+      approved: true,
+      awayteam,
+      awaydistrict,
+      duration,
+      hometeam,
+      homedistrict,
+      location
     };
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/modify", aemptyObj, {
@@ -45,14 +60,13 @@ class PendingGame extends Component {
         }
       })
       .then(res => {
-        if (res.data.success) {
-          window.alert("The game has been approved!");
-          window.location.reload();
-        }
+        window.alert("The game has been approved!");
+        window.location.reload();
       });
   }
 
   denyGame(id) {
+    console.log("i am here");
     const emptyObj = {
       id
     };
@@ -64,10 +78,8 @@ class PendingGame extends Component {
         }
       })
       .then(res => {
-        if (res.data.success) {
-          window.alert("The game has been denied!");
-          window.location.reload();
-        }
+        window.alert("The game has been denied!");
+        window.location.reload();
       });
   }
 
@@ -103,7 +115,8 @@ class PendingGame extends Component {
                     time,
                     duration,
                     location,
-                    approved
+                    approved,
+                    away_accepted
                   } = display;
                   if (!approved) {
                     return (
@@ -116,7 +129,20 @@ class PendingGame extends Component {
                           <button
                             type="button"
                             className="btn btn-success"
-                            onClick={() => this.approveGame(id)}
+                            onClick={() =>
+                              this.approveGame(
+                                id,
+                                hometeam,
+                                homedistrict,
+                                awayteam,
+                                awaydistrict,
+                                time,
+                                duration,
+                                location,
+                                approved,
+                                away_accepted
+                              )
+                            }
                           >
                             Approve
                           </button>
