@@ -1,4 +1,5 @@
 package com.setgreen.setgreen.services.implementation;
+import com.setgreen.setgreen.repositories.scheduling.JsonRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -13,12 +14,17 @@ import com.setgreen.setgreen.repositories.GameRepo;
 import com.setgreen.setgreen.repositories.RoleRepo;
 import com.setgreen.setgreen.services.MailService.MailHandler;
 
+import java.util.List;
+
 @Service
 public class GameHandler {
 	@Autowired
 	private GameRepo gr;
 	@Autowired
 	private RoleRepo rr;
+
+	@Autowired
+	private JsonRepo jsonRepo;
 	
 	/**Attempts to save a game, and send an email to the involved coaches.
 	 * @param g Game to save
@@ -133,5 +139,9 @@ public class GameHandler {
 	
 	public ResponseBody allGames() {
 		return new ResponseBody(HttpStatus.ACCEPTED.value(), "Found games", gr.findAll());
+	}
+
+	public List<Game> JsonGetAll(){
+		return jsonRepo.findAllByAwayAcceptedTrue();
 	}
 }

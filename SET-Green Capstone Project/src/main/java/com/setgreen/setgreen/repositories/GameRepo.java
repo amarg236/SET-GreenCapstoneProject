@@ -33,4 +33,6 @@ public interface GameRepo extends CrudRepository<Game, Long>{
     @Modifying
     @Query("UPDATE Game g set awayAccepted = (:tf) WHERE g.time = (:time) AND g.location = (:location)")
 	public void updateAccept(Date time, String location, boolean tf);
+
+
 }

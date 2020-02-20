@@ -46,7 +46,7 @@ public class Game implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 	String location;
-	@JsonFormat(pattern = "yyyy-mm-dd hh:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	Date time;
 	int duration;
 //	@JsonIgnore

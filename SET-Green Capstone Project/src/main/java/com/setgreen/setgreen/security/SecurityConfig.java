@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/",
                         "/api/auth/**",
+                        "/api/public/**",
                         //XXX REMOVE from release builds, matter of fact go ahead and remove swagger as well.
                         "/spring-security-rest/**",
                         "/swagger-resources/**",

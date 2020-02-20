@@ -9,6 +9,7 @@ import com.setgreen.setgreen.security.JwtTokenProvider;
 import com.setgreen.setgreen.services.MapValidationErrorService;
 import com.setgreen.setgreen.services.UserService;
 import com.setgreen.setgreen.services.MailService.MailHandler;
+import com.setgreen.setgreen.services.implementation.GameHandler;
 import com.setgreen.setgreen.services.implementation.RoleServiceImpl;
 import com.setgreen.setgreen.services.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.setgreen.setgreen.security.SecurityConstants.TOKEN_PREFIX;
@@ -54,6 +56,9 @@ public class UserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private GameHandler gameHandler;
 
 
 //
@@ -92,9 +97,9 @@ public class UserController {
     /**
      * Login using a get request that only accepts non-verified users. After you do this you **REALLY** need to update the users password, but we don't force that to be done innately here.
      * Side note we could most likely do a "forgot password" by de-verifing and re-sending a verification email. It's a bit hacky/lazy, but it'd work.
-     * @param loginRequest
-     * @param result
-     * @return
+     * //@param loginRequest
+     * //@param result
+     * //@return
      */
     @GetMapping("login")//TODO REDIRECT this should really print out a redirect for html and have them go to a reset password place or something.
     public ResponseEntity<?> firstTimeLogin(@RequestParam(value="u") String u, @RequestParam(value="p") String p) {
@@ -199,5 +204,12 @@ public class UserController {
     @PostMapping("find/email")
     public ResponseBody getByEmail(@RequestBody String s) {
     	return userService.fetchByEmail(s);
+    }
+
+
+
+    @GetMapping("jsonData")
+    public List<Game> getJsonData(){
+        return gameHandler.JsonGetAll();
     }
 }

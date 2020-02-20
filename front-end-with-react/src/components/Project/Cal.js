@@ -1,5 +1,8 @@
 import React from "react";
-import * as dataSource from "../dummy.json";
+import axios from "axios";
+import moment from "moment";
+import Authtoken from "../../Utility/AuthToken";
+
 import {
   Inject,
   ScheduleComponent,
@@ -11,11 +14,38 @@ import {
 import { extend } from "@syncfusion/ej2-base";
 import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 
+function processData(rawEvents) {
+  return rawEvents.map(event => ({
+    Id: event.id,
+    StartTime: moment(event.time, "YYYY-MM-DD HH:mm").toISOString(),
+    EndTime: moment(event.time, "YYYY-MM-DD HH:mm")
+      .add(event.duration, "minute")
+      .toISOString(),
+    Subject: `${event.hometeam} vs ${event.awayteam}`,
+    Location: event.location
+  }));
+}
 class Cal extends React.Component {
   constructor(props) {
     super(props);
-    this.data = extend([], dataSource.EventsData, null, true);
+    this.state = {
+      jData: []
+    };
+    // this.data = extend([], localStorage.getItem("jsonFeed"), null, true);
   }
+
+  componentDidMount() {
+    axios
+      .get(Authtoken.getBaseUrl() + "/api/auth/jsonData")
+
+      .then(res => {
+        // this.setState({ jData: res.data });
+        // console.log(res.data, processData(res.data));
+        this.setState({ jData: extend([], processData(res.data), null, true) });
+      });
+  }
+
+  async fetchData() {}
 
   // Links that could be helpful
   // https://github.com/syncfusion/ej2-react-samples/blob/master/src/schedule/local-data.jsx
@@ -23,20 +53,21 @@ class Cal extends React.Component {
   // data = new DataManager([], dataSource.eventsData, null, true);
   // Schedule remote data
   // remoteData = new DataManager({
-  //   dataSource: "../dummy.json"
-  //   // url: " ",
-  //   // adaptor: new WebApiAdaptor(),
-  //   // crossDomain: true
+  //  dataSource: "../dummy.json",
+  // url: "http://localhost:8080/api/auth/jsonData",
+  // adaptor: new WebApiAdaptor(),
+  // crossDomain: true
   // });
 
   render() {
     return (
       <ScheduleComponent
         currentView="Month"
-        eventSettings={{ dataSource: this.data }}
+        eventSettings={{ dataSource: this.state.jData }}
         // selectedDate={new Date(2020, 2, 20)}
         style={{ maxHeight: "200vh", minHeight: "80vh" }}
       >
+        {console.log("i am good")}
         <Inject services={[Day, Week, WorkWeek, Month]} />
       </ScheduleComponent>
     );
