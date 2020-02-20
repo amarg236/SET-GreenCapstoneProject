@@ -27,6 +27,9 @@ public interface GameRepo extends CrudRepository<Game, Long>{
     @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d) AND g.approved = TRUE")
     public Iterable<Game> findInDistrictVerified(@Param("d") String d);
 
+    @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d) AND g.awayAccepted = TRUE")
+    public Iterable<Game> findInDistrictAccepted(@Param("d") String d);
+    
     @Modifying
     @Query("UPDATE Game g set awayAccepted = (:tf) WHERE g.time = (:time) AND g.location = (:location)")
 	public void updateAccept(Date time, String location, boolean tf);
