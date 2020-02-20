@@ -14,14 +14,6 @@ class ViewGames extends Component {
   render() {
     return (
       <div>
-        {
-          //   "ADMIN".equals(AuthToken.getUserRole()) ? (
-          //   <h1>Hello admin</h1>
-          // ) : (
-          //   <h1>Hello Non Admin</h1>
-          // )
-        }
-
         <PendingGame />
         <br />
         <ApprovedGames />
