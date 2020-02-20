@@ -69,7 +69,7 @@ class CreateGame extends Component {
     console.log(this.state.homeTeam);
     console.log(this.state.gameDate);
     const gameObject = {
-      approved: true,
+      approved: false,
       awayteam: this.state.againstTeam,
       awaydistrict: this.state.againstTeamDistrict,
       duration: 30,

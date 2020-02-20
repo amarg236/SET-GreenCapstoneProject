@@ -8,7 +8,8 @@ class SignIn extends React.Component {
     this.state = {
       username: "",
       password: "",
-      message: ""
+      message: "",
+      role: ""
     };
     this.login = this.login.bind(this);
   }
@@ -27,9 +28,11 @@ class SignIn extends React.Component {
     AuthToken.login(credentials).then(res => {
       if (res.data.success) {
         localStorage.setItem("userInfo", JSON.stringify(res.data));
+        this.setState({ role: res.data.roles[0].authority });
         this.props.history.push("/");
+        console.log();
         // @FIXME: dont do this, use redux/context api
-        window.location.reload();
+        // window.location.reload();
       } else {
         this.setState({ message: res.data.message });
       }

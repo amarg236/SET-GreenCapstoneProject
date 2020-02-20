@@ -35,9 +35,10 @@ class PendingGame extends Component {
       });
   }
 
-  approveGame(e) {
-    e.preventDefault();
-    const emptyObj = {};
+  approveGame(id) {
+    const emptyObj = {
+      id
+    };
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyObj, {
         headers: {
@@ -46,25 +47,25 @@ class PendingGame extends Component {
       })
       .then(res => {
         window.alert("The game has been approved!");
-        // window.location.reload();
-        // console.log(res);
-        // console.log(res.data);
+        window.location.reload();
       });
   }
-  denyGame(e) {
-    e.preventDefault();
-    const emptyObj = {};
+  denyGame(id) {
+    const emptyObj = {
+      id
+    };
+
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyObj, {
+      .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
         headers: {
           Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
         }
       })
       .then(res => {
-        window.alert("The game has been Denied!");
-        // window.location.reload();
-        // console.log(res);
-        // console.log(res.data);
+        if (res.data.success) {
+          window.alert("The game has been denied!");
+          window.location.reload();
+        }
       });
   }
 
@@ -91,7 +92,6 @@ class PendingGame extends Component {
             <tbody>
               {this.state.game &&
                 this.state.game.map(display => {
-                  console.log(display);
                   const {
                     id,
                     hometeam,
@@ -114,7 +114,7 @@ class PendingGame extends Component {
                           <button
                             type="button"
                             className="btn btn-success"
-                            onClick={this.approveGame}
+                            onClick={() => this.approveGame(id)}
                           >
                             Approve
                           </button>
@@ -123,7 +123,7 @@ class PendingGame extends Component {
                           <button
                             type="button"
                             className="btn btn-danger"
-                            onClick={this.denyGame}
+                            onClick={() => this.denyGame(id)}
                           >
                             Deny
                           </button>
