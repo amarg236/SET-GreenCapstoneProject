@@ -4,19 +4,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.setgreen.setgreen.model.Teams;
 @Entity
+@IdClass(Teams.class)
 public class BadDay{
-	@JsonIgnore
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	Long id;
 	@JsonIgnore
 	@NotEmpty(message = "Must have date")
 	private String dte;
-	@JoinColumn(name = "id", table = "teams")
-	long teamId;
+	@Id
+	@ManyToOne()
+	Teams tm;
+	String internalName;
+	String tmName;
+	String tmClass;
+	Long id;
 }

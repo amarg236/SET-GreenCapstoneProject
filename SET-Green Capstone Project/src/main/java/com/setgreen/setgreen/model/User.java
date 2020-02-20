@@ -29,9 +29,9 @@ public class User  {
     private Long id;
 
 
-    @NaturalId
-    @NotBlank(message = "Username cannot be blank")
-    private String username;
+  //  @NaturalId
+  //  @NotBlank(message = "Username cannot be blank")
+  //  private String username;
 
     @NaturalId
     @NotBlank(message = "Email cannot be empty")

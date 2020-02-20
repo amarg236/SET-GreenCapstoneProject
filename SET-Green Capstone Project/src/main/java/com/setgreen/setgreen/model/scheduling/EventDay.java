@@ -7,7 +7,8 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public abstract class EventDay {
+@Entity
+public class EventDay {
 	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -15,4 +16,6 @@ public abstract class EventDay {
 	@JsonIgnore
 	@NotEmpty(message = "Must have date")
 	private String dte;
+	@JsonIgnore
+	private String reason;
 }

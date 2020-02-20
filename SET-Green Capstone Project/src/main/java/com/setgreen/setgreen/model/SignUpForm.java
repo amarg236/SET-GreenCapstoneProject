@@ -14,8 +14,9 @@ public class SignUpForm {
     @NotEmpty(message= "Last Name must not be empty!")
     private String lastname;
 
-    @NotEmpty(message= "UserName must not be empty!")
-    private String username;
+//XXX Find out how many things this broke.
+//    @NotEmpty(message= "UserName must not be empty!")
+//    private String username;
 
     @NotEmpty(message= "Email must not be empty!")
     private String email;

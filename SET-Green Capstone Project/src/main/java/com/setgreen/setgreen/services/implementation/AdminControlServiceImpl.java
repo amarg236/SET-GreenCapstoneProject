@@ -32,8 +32,8 @@ public class AdminControlServiceImpl implements AdminControlService {
     @Override
     public Boolean setVerified(String username) {
         System.out.println(username);
-        User checkUser = userRepo.findByUserNameIgnoreCase(username);
-        System.out.println(checkUser.getUsername());
+        User checkUser = userRepo.findByEmail(username);
+        System.out.println(checkUser.getEmail());
         if(checkUser != null){
 
             checkUser.setVerified(Boolean.TRUE);

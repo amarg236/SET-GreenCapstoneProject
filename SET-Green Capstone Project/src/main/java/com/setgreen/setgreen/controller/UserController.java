@@ -37,7 +37,7 @@ public class UserController {
 
     @Autowired
 
-    UserRepo userValid; //TODO The UserService should access the UserRepo on behalf of this class, so the security stuff I've marked below should most likely be rolled into the UserService
+    private UserRepo userValid; //TODO The UserService should access the UserRepo on behalf of this class, so the security stuff I've marked below should most likely be rolled into the UserService
 
     @Autowired
     private UserService userService;
@@ -69,7 +69,7 @@ public class UserController {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) return errorMap;
 
-         User   user = userValid.findByUserNameIgnoreCase(loginRequest.getUsername());
+         User   user = userValid.findByEmail(loginRequest.getUsername());
 
          if(user == null) return new ResponseEntity<>("Username not found. Please enter correct username.",HttpStatus.BAD_REQUEST);
             if (user.getVerified()) {//XXX ENCAPSULATE. This is shared here and the other login method, it should be its own method
@@ -101,7 +101,7 @@ public class UserController {
     	LoginRequest loginRequest = new LoginRequest();//Hacks on hacks.
     	loginRequest.setPassword(p);
     	loginRequest.setUsername(u);
-    	User usr = userValid.findByUsername(loginRequest.getUsername());
+    	User usr = userValid.findByEmail(loginRequest.getUsername());
     	try {
     		//To get around null checking we test to see if the user is not verified.
     		//If the user is not verified or their value is null we throw an error and the catch allows them to log in.
@@ -176,7 +176,7 @@ public class UserController {
             }
         }
         userData.setPassword(newUser.getPassword());
-        userData.setUsername(newUser.getUsername());
+//        userData.setUsername(newUser.getUsername());
         userData.setLastname(newUser.getLastname());
         userData.setFirstname(newUser.getFirstname());
         userData.setEmail(newUser.getEmail());
