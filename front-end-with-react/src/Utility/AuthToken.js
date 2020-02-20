@@ -15,9 +15,18 @@ class AuthToken {
     isAuthenticated: localStorage.getItem("userInfo")
   };
 
+  userRole = {
+    currentUserRole: localStorage.getItem("userRole")
+  };
+
   login(credentials) {
     this.authentication.isAuthenticated = true;
+
     return axios.post(USER_API_BASE_URL + "/api/auth/login", credentials);
+  }
+
+  getUserRole() {
+    return this.userRole.currentUserRole;
   }
 
   getUserInfo() {

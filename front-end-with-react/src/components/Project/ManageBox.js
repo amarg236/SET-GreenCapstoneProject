@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import AuthToken from "../../Utility/AuthToken";
 
 class ManageBox extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userRole: AuthToken.getUserRole()
+    };
+  }
+
   render() {
     return (
       <div className="manageLayout">

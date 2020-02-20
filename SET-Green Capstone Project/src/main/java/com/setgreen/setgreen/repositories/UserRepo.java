@@ -1,5 +1,6 @@
 package com.setgreen.setgreen.repositories;
 
+import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -38,4 +39,6 @@ public interface UserRepo extends JpaRepository<User, Id> {
     @Modifying
     @Query("UPDATE User u set verified = (:tf) WHERE u.email = (:who)")
     public void updateVerify(@Param("who") String who, @Param("tf") boolean tf);
+
+
 }

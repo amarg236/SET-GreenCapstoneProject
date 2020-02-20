@@ -28,11 +28,13 @@ class SignIn extends React.Component {
     AuthToken.login(credentials).then(res => {
       if (res.data.success) {
         localStorage.setItem("userInfo", JSON.stringify(res.data));
-        this.setState({ role: res.data.roles[0].authority });
+        // this.setState({ role: res.data.roles[0].authority });
+        localStorage.setItem("userRole", res.data.roles[0].authority);
         this.props.history.push("/");
-        console.log();
+        // console.log(this.state.role);
+        // console.log(res.data.roles[0].authority);
         // @FIXME: dont do this, use redux/context api
-        // window.location.reload();
+        window.location.reload();
       } else {
         this.setState({ message: res.data.message });
       }

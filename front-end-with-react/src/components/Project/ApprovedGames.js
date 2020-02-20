@@ -25,8 +25,6 @@ class ApprovedGames extends Component {
       })
       .then(res => {
         this.setState({ game: res.data.result, loading: false });
-        // console.log(res);
-        // console.log(res.data.result);
       });
   }
 

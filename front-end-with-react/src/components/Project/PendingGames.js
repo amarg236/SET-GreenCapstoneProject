@@ -30,26 +30,28 @@ class PendingGame extends Component {
       })
       .then(res => {
         this.setState({ game: res.data.result, loading: false });
-        // console.log(res);
-        // console.log(res.data.result);
       });
   }
 
   approveGame(id) {
-    const emptyObj = {
+    console.log("i am here");
+    const aemptyObj = {
       id
     };
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyObj, {
+      .post(Authtoken.getBaseUrl() + "/api/game/modify", aemptyObj, {
         headers: {
           Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
         }
       })
       .then(res => {
-        window.alert("The game has been approved!");
-        window.location.reload();
+        if (res.data.success) {
+          window.alert("The game has been approved!");
+          window.location.reload();
+        }
       });
   }
+
   denyGame(id) {
     const emptyObj = {
       id

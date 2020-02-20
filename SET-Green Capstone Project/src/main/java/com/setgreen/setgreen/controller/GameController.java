@@ -25,8 +25,8 @@ public class GameController {
 	}
 	
 	@PostMapping("delete")
-	public ResponseBody delete(@RequestBody Long id) {
-		return gh.deleteGame(id);
+	public ResponseBody delete(@RequestBody Game g) {
+		return gh.deleteGame(g.getId());
 	}
 	
 	@PostMapping("modify")
