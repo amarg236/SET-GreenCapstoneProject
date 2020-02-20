@@ -6,7 +6,7 @@ import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { Table } from "react-bootstrap";
 
-class ApprovedGames extends Component {
+class FullyApprovedGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,11 +35,11 @@ class ApprovedGames extends Component {
           //Unapproved games
         }
         <div>
-          <h3 className="text-center">Waiting for Assignor Approvel</h3>
+          <h3 className="text-center">Approved Games </h3>
           <br />
           <Table className="table-striped hover table-responsive-sm ">
             <thead>
-              <tr>
+              <tr className="btn-success">
                 <th>Home Team</th>
                 <th>Playing Against</th>
                 <th>Time</th>
@@ -61,9 +61,10 @@ class ApprovedGames extends Component {
                     time,
                     duration,
                     location,
-                    approved
+                    approved,
+                    away_accepted
                   } = display;
-                  if (approved) {
+                  if (away_accepted) {
                     return (
                       <tr key={id}>
                         <td>{hometeam}</td>
@@ -87,4 +88,4 @@ class ApprovedGames extends Component {
   }
 }
 
-export default ApprovedGames;
+export default FullyApprovedGames;

@@ -32,6 +32,7 @@ class CreateGame extends Component {
       // timeFinal: ""
     };
   }
+
   onChangeHomeTeam(e) {
     this.setState({ homeTeam: e.target.value });
   }
@@ -74,7 +75,7 @@ class CreateGame extends Component {
       awaydistrict: this.state.againstTeamDistrict,
       duration: 30,
       hometeam: this.state.homeTeam,
-      homedistrict: "Dummy Home District",
+      homedistrict: "Monroe",
       location: this.state.gameLocation,
       time: "2020-02-13 12:30"
     };
@@ -93,6 +94,10 @@ class CreateGame extends Component {
       });
   }
 
+  // updateChange(schoolName){
+
+  // }
+
   render() {
     return (
       <div className="gameLayout">
@@ -110,8 +115,8 @@ class CreateGame extends Component {
               onChange={this.onChangeHomeTeam}
             >
               <option>Choose Home Team</option>
-              <option value="teamA">Team A</option>
-              <option value="teamB">Team B</option>
+              <option value="Home Team Jr. Boys">Home Team Jr. Boys</option>
+              <option value="Home Team Jr Girls">Home Team Jr Girls</option>
             </select>
           </div>
 
@@ -157,20 +162,33 @@ class CreateGame extends Component {
             />
           </div>
           <div className="form-group row">
-            <div className="form-group col-sm">
+            <div className="form-group">
               <label>Opponent Team</label>
-              <input
+
+              <select
                 className="form-control"
-                placeholder="Enter Opponent Team"
                 onChange={this.onChangeAgainstTeam}
                 value={this.state.againstTeam}
-              />
+              >
+                <option>Choose Opponent Team</option>
+                <option value="West Monroe High School">
+                  West Monroe High School
+                </option>
+                <option value="Neville High School">Neville High School</option>
+                <option value="Carroll Junior High School">
+                  Carroll Junior High School
+                </option>
+                <option value="Lee Junior High School">
+                  Lee Junior High School
+                </option>
+                <option value="Wossman High School">Wossman High School</option>
+              </select>
             </div>
             <div className="form-group col-sm">
               <label>Opponent Team District</label>
               <input
                 className="form-control"
-                placeholder="Enter Opponent Team District"
+                placeholder="Enter P1 , P2, P3"
                 onChange={this.onChangeAgainstTeamDistrict}
                 value={this.state.againstTeamDistrict}
               />

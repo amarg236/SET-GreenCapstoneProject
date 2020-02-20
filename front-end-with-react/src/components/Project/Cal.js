@@ -24,7 +24,7 @@ class Cal extends React.Component {
   // Schedule remote data
   // remoteData = new DataManager({
   //   dataSource: "../dummy.json"
-  //   // url: "https://js.syncfusion.com/demos/ejservices/api/Schedule/LoadData",
+  //   // url: " ",
   //   // adaptor: new WebApiAdaptor(),
   //   // crossDomain: true
   // });
