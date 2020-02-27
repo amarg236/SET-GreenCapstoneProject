@@ -4,13 +4,15 @@ import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.*;
 import com.setgreen.setgreen.payload.JWTLoginSuccessResponse;
 import com.setgreen.setgreen.payload.LoginRequest;
-import com.setgreen.setgreen.repositories.UserRepo;
 import com.setgreen.setgreen.security.JwtTokenProvider;
 import com.setgreen.setgreen.services.MapValidationErrorService;
 import com.setgreen.setgreen.services.UserService;
-import com.setgreen.setgreen.services.MailService.MailHandler;
+import com.setgreen.setgreen.services.mailservice.MailHandler;
+import com.setgreen.setgreen.services.usergroups.UserReference;
+import com.setgreen.setgreen.util.DataObject;
+import com.setgreen.setgreen.util.Debugger;
+import com.setgreen.setgreen.services.implementation.CustomUserDetailsService;
 import com.setgreen.setgreen.services.implementation.RoleServiceImpl;
-import com.setgreen.setgreen.services.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -27,18 +30,15 @@ import java.util.Set;
 
 import static com.setgreen.setgreen.security.SecurityConstants.TOKEN_PREFIX;
 
+/**
+ * @author Brendon LeBaron and Sonam Gurang
+ * Controller for user interaction. Not security checked
+ */
 @CrossOrigin
 @RestController
 @RequestMapping("api/auth/")
 public class UserController {
-//
-//    @Autowired
-//    private ViewUserService viewUserService;
-
-    @Autowired
-
-    private UserRepo userValid; //TODO The UserService should access the UserRepo on behalf of this class, so the security stuff I've marked below should most likely be rolled into the UserService
-
+	
     @Autowired
     private UserService userService;
 
@@ -50,32 +50,36 @@ public class UserController {
     private JwtTokenProvider tokenProvider;
 
     @Autowired
-    private RoleServiceImpl roleService;
+    private CustomUserDetailsService ud;
+//    @Autowired XXX TEST
+//    private RoleServiceImpl roleService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
-
-//
-//    @GetMapping("viewusers")
-//    public List<User> getUser(){
-//        return viewUserService.ViewUsers();
-//
-//    }
-
+    /**
+     * @param loginRequest Takes a Username and Password
+     * @param result For binding result of request
+     * @return ResponseEntity that asks to either verify email, or a JWT login token
+     */
     @PostMapping("login")
     public ResponseEntity<?> authenticateuser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
 
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) return errorMap;
 
-         User   user = userValid.findByEmail(loginRequest.getUsername());
-
+         ResponseBody<User> rb = userService.loginAttempt(loginRequest); //TESTME userValid.findByEmail(loginRequest.getUsername());
+         System.out.print(rb);
+         User user = null;
+         if(rb.getHttpStatusCode() == HttpStatus.ACCEPTED.value()) {
+        	 user = rb.getResult();
+         }
+        
          if(user == null) return new ResponseEntity<>("Username not found. Please enter correct username.",HttpStatus.BAD_REQUEST);
             if (user.getVerified()) {//XXX ENCAPSULATE. This is shared here and the other login method, it should be its own method
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
-                                loginRequest.getUsername(), //FIXME USERNAME->EMAIL I do ***NOT*** want to login via a username, as we (should) key on emails (as one email can't have 2 accounts) and coaches do good to remember their email without needing a separate username.
+                        		loginRequest.getUsername(),
                                 loginRequest.getPassword()
                         )
                 );
@@ -92,16 +96,23 @@ public class UserController {
     /**
      * Login using a get request that only accepts non-verified users. After you do this you **REALLY** need to update the users password, but we don't force that to be done innately here.
      * Side note we could most likely do a "forgot password" by de-verifing and re-sending a verification email. It's a bit hacky/lazy, but it'd work.
-     * @param loginRequest
-     * @param result
-     * @return
+     * @param loginRequest Username and Password
+     * @param result For binding result
+     * @return A message saying email is already verified or a JWT token
      */
-    @GetMapping("login")//TODO REDIRECT this should really print out a redirect for html and have them go to a reset password place or something.
+    @GetMapping("login")
     public ResponseEntity<?> firstTimeLogin(@RequestParam(value="u") String u, @RequestParam(value="p") String p) {
     	LoginRequest loginRequest = new LoginRequest();//Hacks on hacks.
     	loginRequest.setPassword(p);
     	loginRequest.setUsername(u);
-    	User usr = userValid.findByEmail(loginRequest.getUsername());
+    	 ResponseBody<User> rb = userService.loginAttempt(loginRequest); //TESTME userValid.findByEmail(loginRequest.getUsername());
+         Debugger.cout(rb.toString());
+         User usr = null;
+         UserDetails uds = null;
+         if(rb.getHttpStatusCode() == HttpStatus.ACCEPTED.value()) {
+        	 usr = rb.getResult();
+        	 uds = ud.loadUserByUsername(usr.getEmail());
+         }
     	try {
     		//To get around null checking we test to see if the user is not verified.
     		//If the user is not verified or their value is null we throw an error and the catch allows them to log in.
@@ -111,37 +122,30 @@ public class UserController {
     		}
     	}
     	catch(Exception e) {
-    		 Authentication authentication = authenticationManager.authenticate(
-                     new UsernamePasswordAuthenticationToken(
-                             loginRequest.getUsername(),
-                             loginRequest.getPassword()
-                     )
-             );
+    		Debugger.cout("\n>>"+usr.toString()+"\n>>"+loginRequest.getPassword()+"\n>>>>"+uds.toString());
+    		Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                    		loginRequest.getUsername(),
+                            loginRequest.getPassword()
+                    )
+            );
+    		Debugger.cout("/n>>>"+authentication.toString());
 
-             SecurityContextHolder.getContext().setAuthentication(authentication);
-             String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
 
-             return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, authentication.getAuthorities().toArray()));
+            return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, authentication.getAuthorities().toArray()));
     	}
     	return new ResponseEntity<>("Email already verified",HttpStatus.BAD_REQUEST);
     }
     
-    /** //TODO This might not need to be in api/auth/ 
+    /**
      * @param u User object with the new password already set
      * @return ResponseEntity
      */
     @PostMapping("setPassword")
-    public ResponseEntity<?> updatePassword(@RequestBody User u){
-    	//try {//If we don't send verified we crash, so we'd have to do a user query, and I'd rather just update the password and verify everyone.
-    		//if(!u.getVerified().booleanValue()) 
-    			userService.updatePassAndVerify(u);//TODO Add password checking (for security)
-    		//else
-    		//	userService.updatePassword(u);
-    	//}
-    	//catch(Exception e) {
-    	//	return new ResponseEntity<>("Failure to update password", HttpStatus.BAD_REQUEST);
-    	//}
-    	return new ResponseEntity<>("Password Updated!", HttpStatus.ACCEPTED);
+    public ResponseBody<User> updatePassword(@RequestBody User u, @RequestHeader("Authorization") String a){
+    	return userService.updatePassAndVerify(u, a);
     }
 
 
@@ -151,8 +155,11 @@ public class UserController {
      * @return ResponseEntity that represents the status of the registration attempt
      */
     @PostMapping("createuser")
-    public ResponseEntity<?> addNewUser(@Valid @RequestBody SignUpForm newUser, BindingResult result) //TODO this may need to go in the mail controller
+    public ResponseBody<User> addNewUser(@Valid @RequestBody SignUpForm suf, @RequestHeader("Authorization") String a, BindingResult result)
     {
+    	UserReference ur = suf.getRole().getRole().build();
+    	return ur.inviteUser(suf, a);
+    	/*//FIXME refactor/delete
         //TODO in future validate password match
 //        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 //        if(errorMap != null) return errorMap;
@@ -176,7 +183,6 @@ public class UserController {
             }
         }
         userData.setPassword(newUser.getPassword());
-//        userData.setUsername(newUser.getUsername());
         userData.setLastname(newUser.getLastname());
         userData.setFirstname(newUser.getFirstname());
         userData.setEmail(newUser.getEmail());
@@ -193,11 +199,11 @@ public class UserController {
         }
 
         //User createUser = userService.saveUser(userData);
-        return new ResponseEntity<>("User has been registered successfully!", HttpStatus.CREATED);
+        return new ResponseEntity<>("User has been registered successfully!", HttpStatus.CREATED);*/
     }
     
     @PostMapping("find/email")
-    public ResponseBody getByEmail(@RequestBody String s) {
-    	return userService.fetchByEmail(s);
+    public ResponseBody<User> getByEmail(@RequestBody DataObject<String> s) {
+    	return userService.fetchByEmail(s.getData());
     }
 }

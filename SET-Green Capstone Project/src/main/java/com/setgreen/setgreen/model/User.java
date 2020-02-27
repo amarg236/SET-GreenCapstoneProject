@@ -53,18 +53,24 @@ public class User  {
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date update_At;
 
-    @JsonIgnore
-    @ManyToMany(targetEntity = Role.class)
+
+    @OneToMany()
     private Set<Role> roles = new HashSet<>();
 
-    @JsonIgnore
     private Boolean Verified;
 
     public User() {
     }
 
 
-    @PrePersist
+    public User(SignUpForm suf) {
+		email = suf.getEmail();
+		firstname = suf.getFirstname();
+		lastname = suf.getLastname();
+	}
+
+
+	@PrePersist
     protected void onCreate(){
         this.create_At = new Date();
     }
@@ -74,6 +80,18 @@ public class User  {
     protected void onUpdate(){
         this.update_At = new Date();
     }
+
+
+	public RoleName getRoles(District d) {
+		Set<Role> rs = getRoles();
+		for(Role x : rs) {
+			//XXX we abuse short circuit logic here (in that if an admin is found we take it) to avoid potential "no district exists" errors for our admin.
+			if(x.getRole().userLevel() >= 12000 || x.getDistrictName().equals(d.getDistrictName())) {
+				return x.getRole();
+			}
+		}
+		return RoleName.UNFOUND;
+	}
 
 
 

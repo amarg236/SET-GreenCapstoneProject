@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface RoleRepo extends JpaRepository<Role, Long> {
     Role findByRole(RoleName role);
 
-	@Query("SELECT u.email FROM User u JOIN Role r ON u.email=r.eml AND r.dst=(:ad) AND r.schl=(:sn)")
-    Iterable<String> findOver(String sn, String ad);
+	//@Query("SELECT u.email FROM User u JOIN Role r ON u.email=r.eml AND r.dst=(:ad) AND r.schl=(:sn)")
+    Iterable<String> findByUserEmail(String sn);
 }

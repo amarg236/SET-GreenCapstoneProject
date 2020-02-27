@@ -16,20 +16,20 @@ public class TeamsServiceImpl implements TeamsService{
 	TeamsRepo tr;
 	
 	@Override
-	public ResponseBody saveTeam(Teams tm) {
+	public ResponseBody<Teams> saveTeam(Teams tm) {
 		try {
 			System.out.println(tm);
 			tr.save(tm);
-			return new ResponseBody(HttpStatus.ACCEPTED.value(), "Team saved!", tm);
+			return new ResponseBody<Teams>(HttpStatus.ACCEPTED.value(), "Team saved!", tm);
 		}
 		catch(Exception e) {
-			return new ResponseBody(HttpStatus.CONFLICT.value(), "Could not create team!", tm);
+			return new ResponseBody<Teams>(HttpStatus.CONFLICT.value(), "Could not create team!", tm);
 		}
 	}
 
 	@Override
-	public Iterable<Teams> getTeams() {
-		return tr.findAll();
+	public ResponseBody<Iterable<Teams>> getTeams() {
+		return new ResponseBody<Iterable<Teams>>(HttpStatus.ACCEPTED.value(), "Teams found", tr.findAll());
 	}
 	
 }

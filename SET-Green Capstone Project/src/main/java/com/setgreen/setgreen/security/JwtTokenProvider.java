@@ -17,7 +17,7 @@ import static com.setgreen.setgreen.security.SecurityConstants.SECRET;
 public class JwtTokenProvider {
 
     //Generate Token
-
+	
     public String generateToken(Authentication authentication)
     {
         UserPrinciple user = (UserPrinciple) authentication.getPrincipal();
@@ -67,12 +67,12 @@ public class JwtTokenProvider {
         }
         return false;
     }
-
+    
     //Get user Id from Token
-    public Long getUserIdFromJWT(String token){
+    public static Long getUserIdFromJWT(String token){
         Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
         String id = (String)claims.get("id");
         return Long.parseLong(id);
     }
-
+    
 }

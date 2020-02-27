@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepo extends JpaRepository<User, Id> {
+public interface UserRepo extends JpaRepository<User, Long> {
 //    User findByUsername(String username);
     User getById(Long id);
 

@@ -14,7 +14,7 @@ import com.setgreen.setgreen.repositories.DistrictRepo;
 public class DistrictHandler {
 	@Autowired
 	DistrictRepo dr;
-	public ResponseBody saveDistrict(District d){
+	public ResponseBody<District> saveDistrict(District d){
 		try {
 			dr.save(d);
 			return new ResponseBody(HttpStatus.ACCEPTED.value(), "Created new District", d);
@@ -23,7 +23,7 @@ public class DistrictHandler {
 			return new ResponseBody(HttpStatus.CONFLICT.value(), "Could not create district!", d);
 		}
 	}
-	public ResponseBody deleteDistrict(District d) {
+	public ResponseBody<District> deleteDistrict(District d) {
 		try {
 			dr.delete(d);
 			return new ResponseBody(HttpStatus.ACCEPTED.value(), "Removed District", d);

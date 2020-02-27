@@ -13,9 +13,12 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     
-    String eml;
-    String schl;
-    String dst;
+    
+    private String userEmail;//FIXME enforce through code
+    
+    private String districtName;//FIXME Enforce districts through code
+    //@ManyToOne
+    //private School school;
     
     @Enumerated(EnumType.STRING)
     @Column(length = 20)

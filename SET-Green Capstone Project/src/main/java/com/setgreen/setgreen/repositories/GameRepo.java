@@ -31,6 +31,9 @@ public interface GameRepo extends CrudRepository<Game, Long>{
     public Iterable<Game> findInDistrictAccepted(@Param("d") String d);
     
     @Modifying
-    @Query("UPDATE Game g set awayAccepted = (:tf) WHERE g.time = (:time) AND g.location = (:location)")
-	public void updateAccept(Date time, String location, boolean tf);
+    @Query("UPDATE Game g set awayAccepted = (:tf) WHERE g.id = (:id) AND awayAccepted != TRUE")
+	public void updateAccept(Long id, boolean tf);
+
+    @Query("SELECT g FROM Game g WHERE g.approved = TRUE")
+	public Iterable<Game> findAllVerified();
 }
