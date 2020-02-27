@@ -26,10 +26,6 @@ public class AdminControlController {
 
     @Autowired
     private AdminControlService adminControlService;
-    @Autowired
-    private DayHandlerImpl dh = new DayHandlerImpl();
-    @Autowired
-    private GameHandler gh = new GameHandler();
 
     @GetMapping("viewUnverifiedUser")
     public List<User> viewUnverified(){

@@ -44,7 +44,7 @@ public class UserAssigner extends UserScheduler implements UserReference  {
 
 	@Override
 	public ResponseBody<User> manageUser(User u) {
-		return UserReference.stubbed(u);
+		return ur.updateProfile(u);
 	}
 	@Override
 	public ResponseBody<Long> approveGame(Long g){

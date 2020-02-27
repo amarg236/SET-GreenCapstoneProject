@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepo extends JpaRepository<User, Long> {
 //    User findByUsername(String username);
-    User getById(Long id);
+//    User findById(Long id);
 
 //    @Query("Select u from User u where u.username =(:username)")
 //    User findByUserNameIgnoreCase(String username);

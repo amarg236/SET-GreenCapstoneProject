@@ -54,8 +54,8 @@ public class User  {
     private Date update_At;
 
 
-    @OneToMany()
-    private Set<Role> roles = new HashSet<>();
+    @OneToMany(cascade=CascadeType.ALL)
+    private Set<Role> roles = new HashSet<>();//TODO figure out why UserPrinciple needs this.
 
     private Boolean Verified;
 
@@ -82,11 +82,11 @@ public class User  {
     }
 
 
-	public RoleName getRoles(District d) {
-		Set<Role> rs = getRoles();
-		for(Role x : rs) {
+	public RoleName getRoles(District d, Iterable<Role> iterable) {
+		for(Role x : iterable) {
 			//XXX we abuse short circuit logic here (in that if an admin is found we take it) to avoid potential "no district exists" errors for our admin.
 			if(x.getRole().userLevel() >= 12000 || x.getDistrictName().equals(d.getDistrictName())) {
+				System.out.println(x.toString());
 				return x.getRole();
 			}
 		}

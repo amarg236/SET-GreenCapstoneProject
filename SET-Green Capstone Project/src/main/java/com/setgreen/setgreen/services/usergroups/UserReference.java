@@ -2,6 +2,7 @@ package com.setgreen.setgreen.services.usergroups;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.setgreen.setgreen.model.District;
 import com.setgreen.setgreen.model.Game;
@@ -16,6 +17,7 @@ import com.setgreen.setgreen.services.UserService;
 import com.setgreen.setgreen.services.admin.DistrictHandler;
 import com.setgreen.setgreen.services.implementation.DayHandlerImpl;
 import com.setgreen.setgreen.services.implementation.GameHandler;
+import com.setgreen.setgreen.services.implementation.RoleServiceImpl;
 import com.setgreen.setgreen.services.implementation.SchoolHandler;
 import com.setgreen.setgreen.services.implementation.UserServiceImpl;
 import com.setgreen.setgreen.util.DataObject;
@@ -35,6 +37,8 @@ public interface UserReference {
 	
 	@Autowired
 	SchoolHandler sh = new SchoolHandler();
+	@Autowired
+	RoleServiceImpl rr = new RoleServiceImpl();
 	/** for assignor+, invite user of lower tier (equal in admin case)
 	 * @param u User to create
 	 * @return responsebody with status of request
@@ -123,8 +127,11 @@ public interface UserReference {
 	 * @return responsebody with user that is updated
 	 */
 	public ResponseBody<User> updatePassword(User u, String h);
+	@Transactional
 	public static RoleName getRoleFromToken(String t, District d) {
-		return ur.getByToken(t).getRoles(d);
+		User u = ur.getByToken(t);
+		System.out.println(">>"+ur.getByToken(t).getRoles(d, rr.findByEmail(u.getEmail())).toString());
+		return u.getRoles(d, rr.findByEmail(u.getEmail()));
 	}
 	public static <T> ResponseBody<T> forbiddenAccess(T obj){
 		return new ResponseBody<T>(HttpStatus.FORBIDDEN.value(), "disallowed", obj);

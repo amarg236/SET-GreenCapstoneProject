@@ -30,12 +30,12 @@ public class GameHandler {
 	 */
 	public ResponseBody<Game> saveGame(Game g){
 		try{
-			Iterable<String> i = rr.findByUserEmail(tr.findByTmName(g.getAwayteam()));
+			Iterable<Role> i = rr.findByUserEmail(tr.findByTmName(g.getAwayteam()));
 			String str = "";
 			Mail m = new Mail();
 			MailHandler snd = new MailHandler(new JavaMailSenderImpl());
-			for(String x : i) {
-				m.setSendTo(x);
+			for(Role x : i) {
+				m.setSendTo(x.getUserEmail());
 				m.setSubjectLine("Game against "+g.getAwayteam()+".");
 				m.setEmailContent(g.getAwayteam()+" has suggested a game to play.");
 				//snd.sendMailMessage(m);//TODO Switch from debug to deploy

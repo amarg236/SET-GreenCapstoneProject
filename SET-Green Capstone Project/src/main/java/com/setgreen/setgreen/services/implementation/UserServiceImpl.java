@@ -54,19 +54,6 @@ public class UserServiceImpl implements UserService {
     	}
     }
     
-    
-    public User saveUserOld(User newUser){//FIXME refactor/delete
-        try{
-            newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-            newUser.setEmail(newUser.getEmail());
-            return userRepo.save(newUser);
-        }
-        catch (Exception e) {
-            throw new UsernameAlreadyExistsException("Email '" + newUser.getEmail() + "' already exists"); //TODO TRACK DOWN USERNAME STUFF AND CHANGE IT TO EMAIL
-        }
-
-    }
-    
 
     /**
      * Attempts to login a user
@@ -143,8 +130,10 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+	@Transactional
+	@Override
 	public User getByToken(String token) {
+		System.out.println(">>"+token+">>>>"+userRepo.toString());//FIXME custom method needs to implement this, userRepo is shitting itself.
 		return userRepo.findById(JwtTokenProvider.getUserIdFromJWT(token.split(" ")[1])).get();
 	}
 	public boolean verifyUserByTokenAndEmail(String email, String token) {

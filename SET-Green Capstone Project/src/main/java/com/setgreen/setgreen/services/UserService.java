@@ -19,5 +19,5 @@ public interface UserService {
 
 	ResponseBody<User> saveUser(SignUpForm suf);
 
-	User getByToken(String a);
+	public User getByToken(String a);
 }

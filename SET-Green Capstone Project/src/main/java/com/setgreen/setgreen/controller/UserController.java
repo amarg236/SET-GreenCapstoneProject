@@ -159,47 +159,6 @@ public class UserController {
     {
     	UserReference ur = suf.getRole().getRole().build();
     	return ur.inviteUser(suf, a);
-    	/*//FIXME refactor/delete
-        //TODO in future validate password match
-//        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-//        if(errorMap != null) return errorMap;
-
-        Set<Role> roles = new HashSet<>();
-        User userData = new User();
-
-
-        //TODO check for when no role present, also check that the typing is right on roles (admin can create anyone, assigner creates users, users aren't allowed)
-
-        for(String s: newUser.getRole()){
-            if(s.equals("ADMIN")){
-                roles.add(roleService.getRoleByRoleName(RoleName.ADMIN));
-            }
-            else if(s.equals("USER")){
-                roles.add(roleService.getRoleByRoleName(RoleName.USER));
-            }
-            else{
-
-                return new ResponseEntity<>("Role not valid", HttpStatus.BAD_REQUEST);
-            }
-        }
-        userData.setPassword(newUser.getPassword());
-        userData.setLastname(newUser.getLastname());
-        userData.setFirstname(newUser.getFirstname());
-        userData.setEmail(newUser.getEmail());
-        userData.setRoles(roles);
-        
-        try{
-        	MailHandler m = new MailHandler(new JavaMailSenderImpl());
-        	userData.setPassword(m.genLink());
-        	m.sendMailMessage(m.inviteUser(userData));
-        	userService.saveUser(userData);
-        }
-        catch(Exception e) {
-        	return new ResponseEntity<>("Error saving user"+e, HttpStatus.BAD_REQUEST);
-        }
-
-        //User createUser = userService.saveUser(userData);
-        return new ResponseEntity<>("User has been registered successfully!", HttpStatus.CREATED);*/
     }
     
     @PostMapping("find/email")
