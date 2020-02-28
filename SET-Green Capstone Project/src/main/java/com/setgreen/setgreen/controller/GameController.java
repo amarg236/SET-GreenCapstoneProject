@@ -22,7 +22,7 @@ import com.setgreen.setgreen.util.DataObject;
 public class GameController {
 	@Autowired
 	GameHandler gh = new GameHandler();
-	
+	/*
 	@PostMapping("save")
 	public ResponseBody<Game> save(@RequestBody Game g, @RequestHeader("Authorization") String a){
 		try {
@@ -42,7 +42,7 @@ public class GameController {
 			return new ResponseBody<Long>(HttpStatus.FORBIDDEN.value(), "Could not verify access level", id.getData());
 		}
 	}
-	
+	*/
 	@PostMapping("modify")
 	public ResponseBody<Game> modify(@RequestBody Game g) {
 		return gh.modifyGame(g);

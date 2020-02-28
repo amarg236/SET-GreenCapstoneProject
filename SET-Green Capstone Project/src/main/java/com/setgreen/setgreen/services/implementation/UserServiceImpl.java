@@ -37,15 +37,11 @@ public class UserServiceImpl implements UserService {
     @Override//FIXME URGENT creating users needs school and that needs district, on top of roles. Not inserted right atm.
     public ResponseBody<User> saveUser(SignUpForm suf){
     	try {
-    	User ud = new User();
-    	ud.setEmail(suf.getEmail());
-    	ud.setFirstname(suf.getFirstname());
-    	ud.setLastname(suf.getLastname());
+    	User ud = new User(suf);
     	MailHandler m = new MailHandler(new JavaMailSenderImpl());
     	ud.setPassword(m.genLink());
     	m.sendMailMessage(m.inviteUser(ud));
     	ud.setPassword(bCryptPasswordEncoder.encode(ud.getPassword()));
-    	rr.save(suf.getRole());
     	userRepo.save(ud);
     	return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "User Saved", ud);
     	}

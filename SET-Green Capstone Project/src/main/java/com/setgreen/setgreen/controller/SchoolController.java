@@ -25,7 +25,7 @@ public class SchoolController {
 	/**
 	 * @param s School to add
 	 * @return ResponseBody with school added and status of request
-	 */
+	 *
 	@PostMapping("add")
 	public ResponseBody<School> addSchool(@RequestBody School s, @RequestHeader("Authorization") String a) {
 		District d = new District();
@@ -37,7 +37,7 @@ public class SchoolController {
 	/**
 	 * @param s School to remove
 	 * @return ResponseBody with school removed and status of request
-	 */
+	 *
 	@PostMapping("remove")
 	public ResponseBody<School> deleteSchool(@RequestBody School s, @RequestHeader("Authorization") String a) {
 		District d = new District();

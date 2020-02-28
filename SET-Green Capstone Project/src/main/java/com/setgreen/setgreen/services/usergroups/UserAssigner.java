@@ -2,17 +2,49 @@ package com.setgreen.setgreen.services.usergroups;
 
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import com.setgreen.setgreen.model.District;
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.Role;
+import com.setgreen.setgreen.model.RoleName;
 import com.setgreen.setgreen.model.School;
 import com.setgreen.setgreen.model.SignUpForm;
 import com.setgreen.setgreen.model.User;
 import com.setgreen.setgreen.model.scheduling.EventDay;
+import com.setgreen.setgreen.services.DayHandler;
+import com.setgreen.setgreen.services.UserService;
+import com.setgreen.setgreen.services.admin.DistrictHandler;
+import com.setgreen.setgreen.services.implementation.GameHandler;
+import com.setgreen.setgreen.services.implementation.RoleServiceImpl;
+import com.setgreen.setgreen.services.implementation.SchoolHandler;
 import com.setgreen.setgreen.util.DataObject;
-
-public class UserAssigner extends UserScheduler implements UserReference  {
+@Service
+public class UserAssigner extends UserScheduler /*implements UserReference*/  {
+	@Override
+	public RoleName getName() {
+		return RoleName.ASSIGNER;
+	}
+	@Autowired
+	public UserAssigner() {super();};
+	@Autowired
+	private GameHandler gh;
 	
+	@Autowired
+	private UserService ur;
+	
+	@Autowired
+	private DistrictHandler dh;
+	
+	@Autowired
+	private DayHandler dyh;
+	
+	@Autowired
+	private SchoolHandler sh;
+	@Autowired
+	private RoleServiceImpl rr;
 	private boolean validate(Set<Role> r, SignUpForm suf) {
 		for(Role x : r) {
 			if(x.getDistrictName().equals(suf.getRole().getDistrictName())) {
@@ -39,7 +71,7 @@ public class UserAssigner extends UserScheduler implements UserReference  {
 	
 	@Override
 	public ResponseBody<User> removeUser(User u) {
-		return UserReference.stubbed(u);
+		return stubbed(u);
 	}
 
 	@Override
@@ -52,17 +84,17 @@ public class UserAssigner extends UserScheduler implements UserReference  {
 	}
 	@Override
 	public ResponseBody<Long> deleteGame(DataObject<Long> g) {
-		return UserReference.stubbed(g.getData());
+		return stubbed(g.getData());
 	}
 	
 	@Override
 	public ResponseBody<District> addDistrict(District d) {
-		return UserReference.stubbed(d);
+		return stubbed(d);
 	}
 
 	@Override
 	public ResponseBody<District> removeDistrict(District d) {
-		return UserReference.stubbed(d);
+		return stubbed(d);
 	}
 
 	@Override

@@ -67,6 +67,7 @@ public class User  {
 		email = suf.getEmail();
 		firstname = suf.getFirstname();
 		lastname = suf.getLastname();
+		roles.add(suf.getRole());
 	}
 
 

@@ -8,6 +8,7 @@ import com.setgreen.setgreen.security.JwtTokenProvider;
 import com.setgreen.setgreen.services.MapValidationErrorService;
 import com.setgreen.setgreen.services.UserService;
 import com.setgreen.setgreen.services.mailservice.MailHandler;
+import com.setgreen.setgreen.services.usergroups.RoleManager;
 import com.setgreen.setgreen.services.usergroups.UserReference;
 import com.setgreen.setgreen.util.DataObject;
 import com.setgreen.setgreen.util.Debugger;
@@ -38,7 +39,8 @@ import static com.setgreen.setgreen.security.SecurityConstants.TOKEN_PREFIX;
 @RestController
 @RequestMapping("api/auth/")
 public class UserController {
-	
+	@Autowired
+	RoleManager rm;
     @Autowired
     private UserService userService;
 
@@ -69,7 +71,7 @@ public class UserController {
         if (errorMap != null) return errorMap;
 
          ResponseBody<User> rb = userService.loginAttempt(loginRequest); //TESTME userValid.findByEmail(loginRequest.getUsername());
-         System.out.print(rb);
+         System.out.print(rb);//TODO Debug remove
          User user = null;
          if(rb.getHttpStatusCode() == HttpStatus.ACCEPTED.value()) {
         	 user = rb.getResult();
@@ -86,7 +88,6 @@ public class UserController {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
-
                 return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, authentication.getAuthorities().toArray()));
             }
 
@@ -157,7 +158,7 @@ public class UserController {
     @PostMapping("createuser")
     public ResponseBody<User> addNewUser(@Valid @RequestBody SignUpForm suf, @RequestHeader("Authorization") String a, BindingResult result)
     {
-    	UserReference ur = suf.getRole().getRole().build();
+    	UserReference ur = rm.build(suf.getRole().getRole());
     	return ur.inviteUser(suf, a);
     }
     

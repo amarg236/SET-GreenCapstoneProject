@@ -10,11 +10,13 @@ import com.setgreen.setgreen.model.scheduling.EventDay;
 import com.setgreen.setgreen.services.AdminControlService;
 import com.setgreen.setgreen.services.implementation.DayHandlerImpl;
 import com.setgreen.setgreen.services.implementation.GameHandler;
+import com.setgreen.setgreen.services.usergroups.UserAdmin;
 import com.setgreen.setgreen.services.usergroups.UserReference;
 import com.setgreen.setgreen.util.DataObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +24,10 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/admin/")
-public class AdminControlController {
+public class AdminControlController extends ControllerAssistant{
 
+	@Autowired
+	ControllerAssistant help;
     @Autowired
     private AdminControlService adminControlService;
 
@@ -45,26 +49,25 @@ public class AdminControlController {
     }
     
     @PostMapping("district/add")
-    public ResponseBody<District> addDistrict(@RequestBody District d, @RequestHeader("Authorization") String a){
-    	return UserReference.getRoleFromToken(a, d).build().addDistrict(d);
+    public ResponseBody<District> addDistrict(@RequestBody District d, Authentication auth){ //@RequestHeader("Authorization") String a){
+    	return help.getRole(auth).addDistrict(d);
     }
     
     @PostMapping("district/remove")
-    public ResponseBody<District> removeDistrict(@RequestBody District d, @RequestHeader("Authorization") String a){
-    	RoleName r = UserReference.getRoleFromToken(a, d);
-    	return r.build().removeDistrict(d);
+    public ResponseBody<District> removeDistrict(@RequestBody District d, Authentication auth){
+    	return help.getRole(auth).removeDistrict(d);
     }
     
     @PostMapping("day/ban") //XXX TEST
-    public ResponseBody<EventDay> banDay(@RequestBody EventDay d, @RequestHeader("Authorization") String a) {
-    	return UserReference.getRoleFromToken(a, null).build().addEventDay(d);
+    public ResponseBody<EventDay> banDay(@RequestBody EventDay d, Authentication auth) {
+    	return help.getRole(auth).addEventDay(d);
     }
     @PostMapping("day/allow") //XXX TEST
-    public ResponseBody<EventDay> unbanDay(@RequestBody EventDay d, @RequestHeader("Authorization") String a) {
-    	return UserReference.getRoleFromToken(a, null).build().removeEventDay(d);
+    public ResponseBody<EventDay> unbanDay(@RequestBody EventDay d, Authentication auth) {
+    	return help.getRole(auth).removeEventDay(d);
     }
     @PostMapping("game/verify")
-    public ResponseBody<Long> verifyGame(@RequestBody Game g, @RequestHeader("Authorization") String a) {
-    	return UserReference.getRoleFromToken(a, g.getHomedistrict()).build().approveGame(g.getId());
+    public ResponseBody<Long> verifyGame(@RequestBody Game g, Authentication auth) {
+    	return help.getRole(auth).approveGame(g.getId());
     }
 }

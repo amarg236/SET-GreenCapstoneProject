@@ -19,8 +19,8 @@ public class Role {
     private String districtName;//FIXME Enforce districts through code
     //@ManyToOne
     //private School school;
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    private User user;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User user;
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private RoleName role;
