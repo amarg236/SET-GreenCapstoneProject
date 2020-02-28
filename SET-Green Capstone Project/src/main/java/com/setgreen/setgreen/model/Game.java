@@ -53,3 +53,7 @@ public class Game implements Serializable{
 	boolean approved;
 	boolean awayAccepted;//TODO Implement more better
 }
+
+
+
+

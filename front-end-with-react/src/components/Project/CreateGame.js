@@ -2,12 +2,8 @@ import React, { Component } from "react";
 import moment from "moment";
 import "../../stylesheets/createGame.css";
 import "./SignIn";
-import ChooseTime from "./ChooseTime";
-import ChooseDate from "./ChooseDate";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import TimePicker from "./ChooseTime";
-import * as fs from "fs";
 
 class CreateGame extends Component {
   constructor(props) {
@@ -64,11 +60,6 @@ class CreateGame extends Component {
     this.setState({ againstTeamDistrict: e.target.value });
   }
 
-  // getTimeFinal(this.sate.Date,this.state.time)
-  // {
-  //   return "2020-02-13 12:30";
-  // }
-
   gameSubmit(e) {
     e.preventDefault();
 
@@ -78,7 +69,7 @@ class CreateGame extends Component {
       .set("hours", 0)
       .set("minutes", 0);
     const startTime = moment(this.state.gameStartTime, "HH:mm");
-    const endTime = moment(this.state.gameEndTime, "HH:mm");
+    // const endTime = moment(this.state.gameEndTime, "HH:mm");
     const gameStart = moment(startDate)
       .add(startTime.hours(), "hour")
       .add(startTime.minutes(), "minute");
@@ -107,10 +98,6 @@ class CreateGame extends Component {
         // console.log(res.data);
       });
   }
-
-  // updateChange(schoolName){
-
-  // }
 
   render() {
     return (

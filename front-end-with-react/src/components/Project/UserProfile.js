@@ -1,17 +1,14 @@
 import React, { Component } from "react";
 import "../../stylesheets/createGame.css";
 import "./SignIn";
-import ChooseTime from "./ChooseTime";
-import ChooseDate from "./ChooseDate";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import TimePicker from "./ChooseTime";
-import { Card, Button } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 
 class UserProfile extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   componentDidMount() {
     axios

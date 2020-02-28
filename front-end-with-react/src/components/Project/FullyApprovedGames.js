@@ -76,6 +76,7 @@ class FullyApprovedGames extends Component {
                       </tr>
                     );
                   }
+                  return null;
                 })}
             </tbody>
           </Table>

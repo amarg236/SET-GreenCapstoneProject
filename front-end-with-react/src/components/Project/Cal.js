@@ -12,7 +12,7 @@ import {
   Month
 } from "@syncfusion/ej2-react-schedule";
 import { extend } from "@syncfusion/ej2-base";
-import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+// import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 
 function processData(rawEvents) {
   return rawEvents.map(event => ({
