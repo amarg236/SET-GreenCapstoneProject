@@ -1,17 +1,24 @@
 package com.setgreen.setgreen.security;
 
-import com.setgreen.setgreen.model.User;
-import com.setgreen.setgreen.model.UserPrinciple;
-import io.jsonwebtoken.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
+import static com.setgreen.setgreen.security.SecurityConstants.EXPIRATION_TIME;
+import static com.setgreen.setgreen.security.SecurityConstants.SECRET;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.setgreen.setgreen.security.SecurityConstants.EXPIRATION_TIME;
-import static com.setgreen.setgreen.security.SecurityConstants.SECRET;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
+import com.setgreen.setgreen.model.UserPrinciple;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
 public class JwtTokenProvider {
@@ -69,7 +76,7 @@ public class JwtTokenProvider {
     }
     
     //Get user Id from Token
-    public static Long getUserIdFromJWT(String token){
+    public Long getUserIdFromJWT(String token){
         Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
         String id = (String)claims.get("id");
         return Long.parseLong(id);

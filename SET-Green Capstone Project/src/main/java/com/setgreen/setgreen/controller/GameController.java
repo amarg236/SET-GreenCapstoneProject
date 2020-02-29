@@ -1,19 +1,18 @@
 package com.setgreen.setgreen.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.setgreen.setgreen.model.District;
 import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.School;
 import com.setgreen.setgreen.services.implementation.GameHandler;
-import com.setgreen.setgreen.services.usergroups.UserReference;
 import com.setgreen.setgreen.util.DataObject;
 
 @RestController
@@ -22,35 +21,27 @@ import com.setgreen.setgreen.util.DataObject;
 public class GameController {
 	@Autowired
 	GameHandler gh = new GameHandler();
-	/*
+	
+	@Autowired
+	ControllerAssistant hlp;
+	
 	@PostMapping("save")
-	public ResponseBody<Game> save(@RequestBody Game g, @RequestHeader("Authorization") String a){
-		try {
-			return UserReference.getRoleFromToken(a, g.getHomedistrict()).build().createGame(g);//XXX I don't like relying on homedistrict.
-		}
-		catch(Exception e) {
-			return new ResponseBody<Game>(HttpStatus.FORBIDDEN.value(), "Could not verify access level", g);
-		}
+	public ResponseBody<Game> save(@RequestBody Game g, Authentication auth){
+		return hlp.getRole(auth).createGame(g);
 	}
 	
 	@PostMapping("delete")
-	public ResponseBody<Long> delete(@RequestBody DataObject<Long> id, @RequestHeader("Authorization") String a) {
-		try {
-			return UserReference.getRoleFromToken(a, gh.getGameById(id).getHomedistrict()).build().deleteGame(id);
-		}
-		catch(Exception e) {
-			return new ResponseBody<Long>(HttpStatus.FORBIDDEN.value(), "Could not verify access level", id.getData());
-		}
+	public ResponseBody<Long> delete(@RequestBody DataObject<Long> id, Authentication auth) {
+		return hlp.getRole(auth).deleteGame(id);
 	}
-	*/
 	@PostMapping("modify")
-	public ResponseBody<Game> modify(@RequestBody Game g) {
-		return gh.modifyGame(g);
+	public ResponseBody<Game> modify(@RequestBody Game g, Authentication auth) {
+		return hlp.getRole(auth).rescheduleGame(g);
 	}
 	
 	@PostMapping("accept")
-	public ResponseBody<Long> accept(@RequestBody Game g) {
-		return gh.acceptGame(g.getId());
+	public ResponseBody<Long> accept(@RequestBody Game g, Authentication auth) {
+		return hlp.getRole(auth).approveGame(g.getId());
 	}
 	
 	/** Gets all the verified games in a district

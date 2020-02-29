@@ -9,17 +9,23 @@ import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.RoleName;
 import com.setgreen.setgreen.model.School;
 import com.setgreen.setgreen.model.SignUpForm;
+import com.setgreen.setgreen.model.Teams;
 import com.setgreen.setgreen.model.User;
+import com.setgreen.setgreen.model.scheduling.BadDay;
 import com.setgreen.setgreen.model.scheduling.EventDay;
+import com.setgreen.setgreen.model.scheduling.IdealDay;
 import com.setgreen.setgreen.util.DataObject;
 @Service
 public class UserUnfound extends UserReference {
 	
 	@Autowired
 	public UserUnfound() {super();};
-	
 	@Override
-	public ResponseBody<User> inviteUser(SignUpForm u, String a) {
+	public RoleName getName() {
+		return RoleName.UNFOUND;
+	}
+	@Override
+	public ResponseBody<User> inviteUser(SignUpForm u) {
 		return forbiddenAccess(new User(u));
 	}
 
@@ -94,13 +100,37 @@ public class UserUnfound extends UserReference {
 	}
 
 	@Override
-	public ResponseBody<User> updatePassword(User u, String h) {
+	public ResponseBody<User> updatePassword(User u, User u2) {
 		return forbiddenAccess(u);
 	}
 
 	@Override
-	public RoleName getName() {
-		return RoleName.UNFOUND;
+	public ResponseBody<Teams> addTeam(Teams t) {
+		return forbiddenAccess(t);
+	}
+
+	@Override
+	public ResponseBody<Teams> removeTeam(Teams t) {
+		return forbiddenAccess(t);
+	}
+	@Override
+	public ResponseBody<BadDay> addBadDay(BadDay d) {
+		return forbiddenAccess(d);
+	}
+
+	@Override
+	public ResponseBody<BadDay> removeBadDay(BadDay d) {
+		return forbiddenAccess(d);
+	}
+
+	@Override
+	public ResponseBody<IdealDay> saveIdealDay(IdealDay d) {
+		return forbiddenAccess(d);
+	}
+
+	@Override
+	public ResponseBody<IdealDay> removeIdealDay(IdealDay d) {
+		return forbiddenAccess(d);
 	}
 
 }

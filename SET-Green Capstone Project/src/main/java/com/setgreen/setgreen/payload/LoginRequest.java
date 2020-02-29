@@ -1,8 +1,8 @@
 package com.setgreen.setgreen.payload;
 
-import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
+
+import lombok.Data;
 
 /**
  * @author Sonam Gurung

@@ -24,7 +24,12 @@ public class RoleManager {
 	}
 	//Creates a class object representing this access level (we assume would be) implementing UserReference
 	public UserReference build(RoleName rn) {
-		System.out.println(">>"+usergroups.toString());
+		try {
+			rn.getClass();
+		}
+		catch(Exception e) {
+			return UGCache.get(RoleName.UNFOUND.toString());
+		}
 		return UGCache.get(rn.toString());
 	}
 }

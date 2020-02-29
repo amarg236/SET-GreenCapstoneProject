@@ -4,12 +4,11 @@ import java.net.URLEncoder;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import com.setgreen.setgreen.model.User;
 import com.setgreen.setgreen.model.mail.Mail;
-
-import org.springframework.mail.SimpleMailMessage;
 public class MailHandler {
 	private JavaMailSenderImpl mailSender;
 	private static final String EMAIL_SENDER = "Bbaronx@gmail.com";

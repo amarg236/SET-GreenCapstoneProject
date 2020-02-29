@@ -10,16 +10,19 @@ import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.RoleName;
 import com.setgreen.setgreen.model.School;
 import com.setgreen.setgreen.model.SignUpForm;
+import com.setgreen.setgreen.model.Teams;
 import com.setgreen.setgreen.model.User;
+import com.setgreen.setgreen.model.scheduling.BadDay;
 import com.setgreen.setgreen.model.scheduling.EventDay;
+import com.setgreen.setgreen.model.scheduling.IdealDay;
+import com.setgreen.setgreen.services.AdminControlService;
 import com.setgreen.setgreen.services.DayHandler;
 import com.setgreen.setgreen.services.UserService;
 import com.setgreen.setgreen.services.admin.DistrictHandler;
-import com.setgreen.setgreen.services.implementation.DayHandlerImpl;
 import com.setgreen.setgreen.services.implementation.GameHandler;
 import com.setgreen.setgreen.services.implementation.RoleServiceImpl;
 import com.setgreen.setgreen.services.implementation.SchoolHandler;
-import com.setgreen.setgreen.services.implementation.UserServiceImpl;
+import com.setgreen.setgreen.services.implementation.TeamsServiceImpl;
 import com.setgreen.setgreen.util.DataObject;
 @Service
 public abstract class UserReference {
@@ -34,27 +37,42 @@ public abstract class UserReference {
 	};
 	
 	@Autowired
-	private GameHandler gh;
-	
+	public GameHandler gh;
 	@Autowired
-	private UserService ur;
-	
+	public UserService ur;
 	@Autowired
-	private DistrictHandler dh;
-	
+	public DistrictHandler dh;
 	@Autowired
-	private DayHandler dyh;
-	
+	public DayHandler dyh;
 	@Autowired
-	private SchoolHandler sh;
+	public SchoolHandler sh;
 	@Autowired
-	private RoleServiceImpl rr;
+	public RoleServiceImpl rr;
+	@Autowired
+	public TeamsServiceImpl th;
+	@Autowired
+	public AdminControlService ah;
+	/**
+	 * @return rolename associated with this class
+	 */
+	public abstract RoleName getName();
 	
+	/** Response for when you don't have the access to a method, throws your parameters back at you
+	 */
+	public <T> ResponseBody<T> forbiddenAccess(T obj){
+		return new ResponseBody<T>(HttpStatus.FORBIDDEN.value(), "disallowed", obj);
+	}
+	
+	/** Throws your parameters back at you and tells you that I'm lazy.
+	 */
+	public <T> ResponseBody<T> stubbed(T obj){
+		return new ResponseBody<T>(HttpStatus.NOT_IMPLEMENTED.value(), "Not yet implemented", obj);
+	}
 	/** for assignor+, invite user of lower tier (equal in admin case)
 	 * @param u User to create
 	 * @return responsebody with status of request
 	 */
-	public abstract ResponseBody<User> inviteUser(SignUpForm u, String a);
+	public abstract ResponseBody<User> inviteUser(SignUpForm u);
 	/** for assignor+, delete user of lower tier (equal in admin case)
 	 * @param u User to remove
 	 * @return responsebody status of request
@@ -114,6 +132,8 @@ public abstract class UserReference {
 	 * @return responsebody with status
 	 */
 	public abstract ResponseBody<School> removeSchool(School s);
+	public abstract ResponseBody<Teams> addTeam(Teams t);
+	public abstract ResponseBody<Teams> removeTeam(Teams t);
 	/** assignor+, add a day as an event and prevent games from being scheduled there
 	 * @param d eventday to add
 	 * @return responsebody with status of request
@@ -137,17 +157,29 @@ public abstract class UserReference {
 	 * @param u user to update
 	 * @return responsebody with user that is updated
 	 */
-	public abstract ResponseBody<User> updatePassword(User u, String h);
+	public abstract ResponseBody<User> updatePassword(User u, User u2);
 	
-	public <T> ResponseBody<T> forbiddenAccess(T obj){
-		return new ResponseBody<T>(HttpStatus.FORBIDDEN.value(), "disallowed", obj);
-	}
-	
-	public <T> ResponseBody<T> stubbed(T obj){
-		return new ResponseBody<T>(HttpStatus.NOT_IMPLEMENTED.value(), "Unfinished", obj);
-	}
 	/**
-	 * @return rolename associated with this class
+	 * @param d day you want to add
+	 * @return responsebody with status of request
 	 */
-	public abstract RoleName getName();
+	public abstract ResponseBody<BadDay> addBadDay(BadDay d);
+
+	/**
+	 * @param d badday to remove
+	 * @return responsebody with status
+	 */
+	public abstract ResponseBody<BadDay> removeBadDay(BadDay d);
+
+	/**
+	 * @param d idealday to save
+	 * @return responsebody with status
+	 */
+	public abstract ResponseBody<IdealDay> saveIdealDay(IdealDay d);
+
+	/**
+	 * @param d idealday to remove
+	 * @return responsebody with status
+	 */
+	public abstract ResponseBody<IdealDay> removeIdealDay(IdealDay d);
 }

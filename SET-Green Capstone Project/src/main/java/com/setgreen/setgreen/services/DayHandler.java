@@ -1,6 +1,5 @@
 package com.setgreen.setgreen.services;
 
-import com.setgreen.setgreen.model.District;
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.Teams;
 import com.setgreen.setgreen.model.scheduling.BadDay;

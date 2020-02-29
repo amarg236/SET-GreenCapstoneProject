@@ -1,33 +1,30 @@
 package com.setgreen.setgreen.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.setgreen.setgreen.model.District;
-import com.setgreen.setgreen.services.admin.DistrictHandler;
 import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.ResponseBody;
-import com.setgreen.setgreen.model.RoleName;
 import com.setgreen.setgreen.model.User;
 import com.setgreen.setgreen.model.scheduling.EventDay;
 import com.setgreen.setgreen.services.AdminControlService;
-import com.setgreen.setgreen.services.implementation.DayHandlerImpl;
-import com.setgreen.setgreen.services.implementation.GameHandler;
-import com.setgreen.setgreen.services.usergroups.UserAdmin;
-import com.setgreen.setgreen.services.usergroups.UserReference;
-import com.setgreen.setgreen.util.DataObject;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/api/admin/")
-public class AdminControlController extends ControllerAssistant{
+public class AdminControlController{
 
 	@Autowired
-	ControllerAssistant help;
+	private ControllerAssistant hlp;
     @Autowired
     private AdminControlService adminControlService;
 
@@ -36,7 +33,7 @@ public class AdminControlController extends ControllerAssistant{
 
         return adminControlService.viewUnverifiedUser();
     }
-
+/*//TODO IMPLEMENT this is something we can do with a password change for now though.
     @PostMapping("verifyUser")
     public ResponseBody<User> verifyUser(@RequestBody User user)
     {
@@ -47,27 +44,27 @@ public class AdminControlController extends ControllerAssistant{
         return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(),"User not verified", user );
 
     }
-    
+*/    
     @PostMapping("district/add")
     public ResponseBody<District> addDistrict(@RequestBody District d, Authentication auth){ //@RequestHeader("Authorization") String a){
-    	return help.getRole(auth).addDistrict(d);
+    	return hlp.getRole(auth).addDistrict(d);
     }
     
     @PostMapping("district/remove")
     public ResponseBody<District> removeDistrict(@RequestBody District d, Authentication auth){
-    	return help.getRole(auth).removeDistrict(d);
+    	return hlp.getRole(auth).removeDistrict(d);
     }
     
     @PostMapping("day/ban") //XXX TEST
     public ResponseBody<EventDay> banDay(@RequestBody EventDay d, Authentication auth) {
-    	return help.getRole(auth).addEventDay(d);
+    	return hlp.getRole(auth).addEventDay(d);
     }
     @PostMapping("day/allow") //XXX TEST
     public ResponseBody<EventDay> unbanDay(@RequestBody EventDay d, Authentication auth) {
-    	return help.getRole(auth).removeEventDay(d);
+    	return hlp.getRole(auth).removeEventDay(d);
     }
     @PostMapping("game/verify")
     public ResponseBody<Long> verifyGame(@RequestBody Game g, Authentication auth) {
-    	return help.getRole(auth).approveGame(g.getId());
+    	return hlp.getRole(auth).approveGame(g.getId());
     }
 }

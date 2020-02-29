@@ -1,6 +1,7 @@
 package com.setgreen.setgreen.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,8 @@ import com.setgreen.setgreen.services.implementation.TeamsServiceImpl;
 @RestController
 @RequestMapping("api/team/")
 public class TeamController {
-	
+	@Autowired
+	private ControllerAssistant hlp;
 	@Autowired
 	private TeamsService tmRpo = new TeamsServiceImpl();
 	@Autowired
@@ -36,9 +38,8 @@ public class TeamController {
 	 * @return Response Body with status and team sent
 	 */
 	@PostMapping("add")
-	public ResponseBody<Teams> addTeam(@RequestBody Teams t) {
-		System.out.println(t);
-		return tmRpo.saveTeam(t);
+	public ResponseBody<Teams> addTeam(@RequestBody Teams t, Authentication auth) {
+		return hlp.getRole(auth).addTeam(t);
 	}
 	
 	/**
@@ -56,9 +57,8 @@ public class TeamController {
 	 *
 	 */
 	@PostMapping("day/bad/save") //TODO Decide if this method should allow IDs to be sent to override dates //TODO Team validation
-	public ResponseBody<BadDay> forbidDay(@RequestBody BadDay d) {
-		d.setId(null);
-		return dh.saveBadDay(d);
+	public ResponseBody<BadDay> saveBadDay(@RequestBody BadDay d, Authentication auth) {
+		return hlp.getRole(auth).addBadDay(d);
 	}
 	/** takes a bad day defined as:
 	 *  {"id":ID_OF_DAY}
@@ -67,8 +67,8 @@ public class TeamController {
 	 * @return responsebody with the removed bad day
 	 */
 	@PostMapping("day/bad/remove") //TODO Team validation
-	public ResponseBody<BadDay> removeBadDay(@RequestBody BadDay d) {
-		return dh.deleteBadDay(d);
+	public ResponseBody<BadDay> removeBadDay(@RequestBody BadDay d, Authentication auth) {
+		return hlp.getRole(auth).removeBadDay(d);
 	}
 	
 	/**
@@ -92,17 +92,16 @@ public class TeamController {
 	 * @return responsebody status of request and the day sent
 	 */
 	@PostMapping("day/good/save") //TODO team validation
-	public ResponseBody<IdealDay> wantGameHere(@RequestBody IdealDay d) {
-		d.setId(null);
-		return dh.saveIdealDay(d);
+	public ResponseBody<IdealDay> wantGameHere(@RequestBody IdealDay d, Authentication auth) {
+		return hlp.getRole(auth).saveIdealDay(d);
 	}
 	/**
 	 * @param d day to remove (must include ID)
 	 * @return responsebody with status of request and removed day
 	 */
 	@PostMapping("day/good/remove") //TODO team validation
-	public ResponseBody<IdealDay> removeIdealDay(@RequestBody IdealDay d) {
-		return dh.deleteIdealDay(d);
+	public ResponseBody<IdealDay> removeIdealDay(@RequestBody IdealDay d, Authentication auth) {
+		return hlp.getRole(auth).removeIdealDay(d);
 	}
 	/**
 	 * @return responsebody with an iterable of all good days in database

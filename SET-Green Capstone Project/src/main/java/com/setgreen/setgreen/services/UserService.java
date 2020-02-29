@@ -7,9 +7,7 @@ import com.setgreen.setgreen.payload.LoginRequest;
 
 public interface UserService {
 
-	ResponseBody<User> updatePassword(User u, String h);
-
-	ResponseBody<User> updatePassAndVerify(User u, String h);
+	ResponseBody<User> updatePassAndVerify(User u, User u2);
 	
 	public ResponseBody<User> fetchByEmail(String s);
 	
@@ -19,5 +17,6 @@ public interface UserService {
 
 	ResponseBody<User> saveUser(SignUpForm suf);
 
-	public User getByToken(String a);
+	ResponseBody<User> updatePassword(User u, User u2);
+
 }

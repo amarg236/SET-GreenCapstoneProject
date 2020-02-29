@@ -1,35 +1,37 @@
 package com.setgreen.setgreen.controller;
 
-import com.setgreen.setgreen.model.ResponseBody;
-import com.setgreen.setgreen.model.*;
-import com.setgreen.setgreen.payload.JWTLoginSuccessResponse;
-import com.setgreen.setgreen.payload.LoginRequest;
-import com.setgreen.setgreen.security.JwtTokenProvider;
-import com.setgreen.setgreen.services.MapValidationErrorService;
-import com.setgreen.setgreen.services.UserService;
-import com.setgreen.setgreen.services.mailservice.MailHandler;
-import com.setgreen.setgreen.services.usergroups.RoleManager;
-import com.setgreen.setgreen.services.usergroups.UserReference;
-import com.setgreen.setgreen.util.DataObject;
-import com.setgreen.setgreen.util.Debugger;
-import com.setgreen.setgreen.services.implementation.CustomUserDetailsService;
-import com.setgreen.setgreen.services.implementation.RoleServiceImpl;
+import static com.setgreen.setgreen.security.SecurityConstants.TOKEN_PREFIX;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Set;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import static com.setgreen.setgreen.security.SecurityConstants.TOKEN_PREFIX;
+import com.setgreen.setgreen.model.ResponseBody;
+import com.setgreen.setgreen.model.SignUpForm;
+import com.setgreen.setgreen.model.User;
+import com.setgreen.setgreen.payload.JWTLoginSuccessResponse;
+import com.setgreen.setgreen.payload.LoginRequest;
+import com.setgreen.setgreen.security.JwtTokenProvider;
+import com.setgreen.setgreen.services.MapValidationErrorService;
+import com.setgreen.setgreen.services.UserService;
+import com.setgreen.setgreen.services.implementation.CustomUserDetailsService;
+import com.setgreen.setgreen.util.DataObject;
+import com.setgreen.setgreen.util.Debugger;
 
 /**
  * @author Brendon LeBaron and Sonam Gurang
@@ -40,7 +42,7 @@ import static com.setgreen.setgreen.security.SecurityConstants.TOKEN_PREFIX;
 @RequestMapping("api/auth/")
 public class UserController {
 	@Autowired
-	RoleManager rm;
+	ControllerAssistant hlp;
     @Autowired
     private UserService userService;
 
@@ -145,8 +147,11 @@ public class UserController {
      * @return ResponseEntity
      */
     @PostMapping("setPassword")
-    public ResponseBody<User> updatePassword(@RequestBody User u, @RequestHeader("Authorization") String a){
-    	return userService.updatePassAndVerify(u, a);
+    public ResponseBody<User> updatePassword(@RequestBody User u, Authentication auth){
+    	User u2 = new User();
+    	if(auth.isAuthenticated())
+    		u2.setEmail(auth.getName());
+    	return userService.updatePassAndVerify(u, u2);
     }
 
 
@@ -156,10 +161,8 @@ public class UserController {
      * @return ResponseEntity that represents the status of the registration attempt
      */
     @PostMapping("createuser")
-    public ResponseBody<User> addNewUser(@Valid @RequestBody SignUpForm suf, @RequestHeader("Authorization") String a, BindingResult result)
-    {
-    	UserReference ur = rm.build(suf.getRole().getRole());
-    	return ur.inviteUser(suf, a);
+    public ResponseBody<User> addNewUser(@Valid @RequestBody SignUpForm suf, Authentication auth, BindingResult result) {
+    	return hlp.getRole(auth).inviteUser(suf);
     }
     
     @PostMapping("find/email")

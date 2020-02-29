@@ -1,13 +1,11 @@
 package com.setgreen.setgreen.services.implementation;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.setgreen.setgreen.model.Role;
 import com.setgreen.setgreen.model.RoleName;
 import com.setgreen.setgreen.repositories.RoleRepo;
-
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class RoleServiceImpl {

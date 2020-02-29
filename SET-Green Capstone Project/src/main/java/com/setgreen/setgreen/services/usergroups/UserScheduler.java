@@ -3,42 +3,21 @@ package com.setgreen.setgreen.services.usergroups;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.setgreen.setgreen.model.District;
 import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.RoleName;
-import com.setgreen.setgreen.model.School;
-import com.setgreen.setgreen.model.SignUpForm;
 import com.setgreen.setgreen.model.User;
-import com.setgreen.setgreen.model.scheduling.EventDay;
-import com.setgreen.setgreen.services.DayHandler;
-import com.setgreen.setgreen.services.UserService;
-import com.setgreen.setgreen.services.admin.DistrictHandler;
-import com.setgreen.setgreen.services.implementation.GameHandler;
-import com.setgreen.setgreen.services.implementation.RoleServiceImpl;
-import com.setgreen.setgreen.services.implementation.SchoolHandler;
-import com.setgreen.setgreen.util.DataObject;
+import com.setgreen.setgreen.model.scheduling.BadDay;
+import com.setgreen.setgreen.model.scheduling.IdealDay;
 @Service
 public class UserScheduler extends UserUnfound {
-	@Autowired
-	private GameHandler gh;
-	
-	@Autowired
-	private UserService ur;
-	
-	@Autowired
-	private DistrictHandler dh=new DistrictHandler();
-	
-	@Autowired
-	private DayHandler dyh;
-	
-	@Autowired
-	private SchoolHandler sh;
-	@Autowired
-	private RoleServiceImpl rr;
+
 	@Autowired
 	public UserScheduler(){super();};
-	
+	@Override
+	public RoleName getName() {
+		return RoleName.USER;
+	}
 	@Override
 	public ResponseBody<Game> createGame(Game g) {
 		return gh.saveGame(g);
@@ -58,18 +37,33 @@ public class UserScheduler extends UserUnfound {
 	public ResponseBody<Game> rescheduleGame(Game g) {
 		return gh.RequestReschedule(g);
 	}
+	
+	@Override
+	public ResponseBody<BadDay> addBadDay(BadDay d) {
+		return stubbed(d);
+	}
+	@Override
+	public ResponseBody<BadDay> removeBadDay(BadDay d) {
+		return stubbed(d);
+	}
 
+	@Override
+	public ResponseBody<IdealDay> saveIdealDay(IdealDay d) {
+		return stubbed(d);
+	}
+
+	@Override
+	public ResponseBody<IdealDay> removeIdealDay(IdealDay d) {
+		return stubbed(d);
+	}
 	@Override
 	public ResponseBody<User> updateProfile(User u) {
 		return ur.updateProfile(u);
 	}
 
 	@Override
-	public ResponseBody<User> updatePassword(User u, String h) {
-		return ur.updatePassword(u, h);
+	public ResponseBody<User> updatePassword(User u, User u2) {
+		return ur.updatePassword(u, u);
 	}
-	@Override
-	public RoleName getName() {
-		return RoleName.USER;
-	}
+	
 }

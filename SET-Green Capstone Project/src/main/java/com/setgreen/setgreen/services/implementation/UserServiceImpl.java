@@ -1,29 +1,21 @@
 package com.setgreen.setgreen.services.implementation;
 
-import com.setgreen.setgreen.exceptions.UsernameAlreadyExistsException;
-import com.setgreen.setgreen.model.ResponseBody;
-import com.setgreen.setgreen.model.Role;
-import com.setgreen.setgreen.model.RoleName;
-import com.setgreen.setgreen.model.SignUpForm;
-import com.setgreen.setgreen.model.User;
-import com.setgreen.setgreen.payload.LoginRequest;
-import com.setgreen.setgreen.repositories.RoleRepo;
-import com.setgreen.setgreen.repositories.UserRepo;
-import com.setgreen.setgreen.security.JwtTokenProvider;
-import com.setgreen.setgreen.services.UserService;
-import com.setgreen.setgreen.services.mailservice.MailHandler;
-import com.setgreen.setgreen.services.usergroups.UserReference;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.setgreen.setgreen.model.ResponseBody;
+import com.setgreen.setgreen.model.SignUpForm;
+import com.setgreen.setgreen.model.User;
+import com.setgreen.setgreen.payload.LoginRequest;
+import com.setgreen.setgreen.repositories.RoleRepo;
+import com.setgreen.setgreen.repositories.UserRepo;
+import com.setgreen.setgreen.services.UserService;
+import com.setgreen.setgreen.services.mailservice.MailHandler;
+import com.setgreen.setgreen.util.Debugger;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,10 +32,18 @@ public class UserServiceImpl implements UserService {
     	User ud = new User(suf);
     	MailHandler m = new MailHandler(new JavaMailSenderImpl());
     	ud.setPassword(m.genLink());
-    	m.sendMailMessage(m.inviteUser(ud));
+    	//XXX DEBUG
+    	String s = "User Saved";
+    	if(Debugger.MODE_ON) {
+    		s = m.debugMessage(m.inviteUser(ud));
+    	}
+    	else {
+    		m.sendMailMessage(m.inviteUser(ud));
+    	}
+    	//END DEBUG
     	ud.setPassword(bCryptPasswordEncoder.encode(ud.getPassword()));
     	userRepo.save(ud);
-    	return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "User Saved", ud);
+    	return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), s, ud);
     	}
     	catch(Exception e) {
     		return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "Error creating user" + e.getLocalizedMessage(), new User());
@@ -85,14 +85,15 @@ public class UserServiceImpl implements UserService {
     	}
     }
     
-    @Override
+    
     /** Updates a password for a user u
      * @param u User object that you most likely created exclusively to update another already existing user object
      */
-    public ResponseBody<User> updatePassword(User u, String h) {
+    @Override
+    public ResponseBody<User> updatePassword(User u, User u2) {
     	ResponseBody<User> rb = new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "Password Changed", u);
     	try {
-	    	if(verifyUserByTokenAndEmail(u.getEmail(), h)) { 
+	    	if(u.getEmail().equals(u2.getEmail())) { 
 	    		userRepo.updatePassword(u.getEmail(), bCryptPasswordEncoder.encode(u.getPassword()));
 	    	}
 	    	else {
@@ -112,9 +113,9 @@ public class UserServiceImpl implements UserService {
     /** Updates the password for a user AND sets the user to be verified
      * @param u User object, already possessing the new password.
      */
-    public ResponseBody<User> updatePassAndVerify(User u, String h) {
-    	ResponseBody<User> rb = updatePassword(u, h);
-    	if(rb.getHttpStatusCode()==202) {
+    public ResponseBody<User> updatePassAndVerify(User u, User u2) {
+    	ResponseBody<User> rb = updatePassword(u, u2);
+    	if(rb.getHttpStatusCode()==HttpStatus.ACCEPTED.value()) {
     		userRepo.updateVerify(u.getEmail(), true);
     	}
     	return rb;
@@ -126,14 +127,5 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	@Transactional
-	@Override
-	public User getByToken(String token) {
-		System.out.println(">>"+token+">>>>"+userRepo.toString());//FIXME custom method needs to implement this, userRepo is shitting itself.
-		return userRepo.findById(JwtTokenProvider.getUserIdFromJWT(token.split(" ")[1])).get();
-	}
-	public boolean verifyUserByTokenAndEmail(String email, String token) {
-    	return email.equals(getByToken(token).getEmail());
-    }
     
 }

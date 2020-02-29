@@ -1,17 +1,14 @@
 package com.setgreen.setgreen.services.implementation;
 
-import com.setgreen.setgreen.model.ResponseBody;
-import com.setgreen.setgreen.model.SignUpForm;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.setgreen.setgreen.model.User;
 import com.setgreen.setgreen.repositories.AdminControlRepo;
 import com.setgreen.setgreen.repositories.UserRepo;
 import com.setgreen.setgreen.services.AdminControlService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
-import javax.validation.constraints.Null;
-import java.util.List;
 
 @Service
 public class AdminControlServiceImpl implements AdminControlService {

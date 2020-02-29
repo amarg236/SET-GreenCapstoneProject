@@ -2,10 +2,6 @@ package com.setgreen.setgreen.payload;
 
 import lombok.Data;
 
-import java.util.List;
-
-import com.setgreen.setgreen.model.Role;
-
 @Data
 public class JWTLoginSuccessResponse {
     private boolean success;
