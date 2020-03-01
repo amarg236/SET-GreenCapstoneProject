@@ -35,7 +35,8 @@ class Cal extends React.Component {
         currentView="Month"
         eventSettings={{ dataSource: this.data }}
         // selectedDate={new Date(2020, 2, 20)}
-        style={{ maxHeight: "200vh", minHeight: "80vh" }}
+        style={{ maxHeight: "200vh", minHeight: "80vh",
+                 minWidth: '40vh'}}
       >
         <Inject services={[Day, Week, WorkWeek, Month]} />
       </ScheduleComponent>

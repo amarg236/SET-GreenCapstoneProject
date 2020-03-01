@@ -35,7 +35,7 @@ class App extends React.Component {
                 )}
               </Col>
               <Col md={10} sm={9} style={{ paddingLeft: "1%" }}>
-                <div className="auth-inner">
+                <div className="auth-inner" style={{paddingLeft:"3%"}}>
                   <Switch>
                     <Route exact path="/" component={Home} />
                     <ProtectedRoute
