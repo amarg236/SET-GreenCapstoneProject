@@ -1,44 +1,26 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import AuthToken from "../../Utility/AuthToken";
+import { connect } from "react-redux";
+import { loginAction } from "../../actions/loginAction";
 
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: "",
-      password: "",
-      message: "",
-      role: ""
+      password: ""
     };
     this.login = this.login.bind(this);
   }
 
   componentDidMount() {
-    localStorage.clear();
+    // localStorage.clear();
   }
 
   login = e => {
     e.preventDefault();
-    const credentials = {
-      username: this.state.username,
-      password: this.state.password
-    };
-
-    AuthToken.login(credentials).then(res => {
-      if (res.data.success) {
-        localStorage.setItem("userInfo", JSON.stringify(res.data));
-        // this.setState({ role: res.data.roles[0].authority });
-        localStorage.setItem("userRole", res.data.roles[0].authority);
-        this.props.history.push("/");
-        // console.log(this.state.role);
-        // console.log(res.data.roles[0].authority);
-        // @FIXME: dont do this, use redux/context api
-        window.location.reload();
-      } else {
-        this.setState({ message: res.data.message });
-      }
-    });
+    this.props.login(this.state.username, this.state.password);
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -48,6 +30,7 @@ class SignIn extends React.Component {
       <div className="wrapper">
         <form className="form-signin">
           {/*Log in Heading  */}
+
           <div className="sign-in-title">
             <h3
               style={{
@@ -124,10 +107,28 @@ class SignIn extends React.Component {
           </div>
 
           <div className="forget">Forget Username/Password?</div>
+
+          {this.props.message ? (
+            <div className="alert alert-danger">
+              Wrong Username or Password!
+            </div>
+          ) : null}
         </form>
       </div>
     );
   }
 }
 
-export default withRouter(SignIn);
+const mapStatetoProps = state => {
+  return {
+    message: state.userReducer.message
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (username, password) => dispatch(loginAction(username, password))
+  };
+};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(withRouter(SignIn));

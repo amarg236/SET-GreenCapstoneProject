@@ -67,7 +67,6 @@ class Cal extends React.Component {
         // selectedDate={new Date(2020, 2, 20)}
         style={{ maxHeight: "200vh", minHeight: "80vh" }}
       >
-        {console.log("i am good")}
         <Inject services={[Day, Week, WorkWeek, Month]} />
       </ScheduleComponent>
     );

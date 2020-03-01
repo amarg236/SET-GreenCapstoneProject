@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import Header from "./components/Layout/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SignIn from "./components/Project/SignIn";
@@ -11,25 +10,22 @@ import ProtectedRoute from "./Utility/protectedRoute";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import AuthToken from "./Utility/AuthToken";
 import ManageBox from "./components/Project/ManageBox";
 import ViewGames from "./components/Project/ViewGames";
 import UserProfile from "./components/Project/UserProfile";
+import { connect } from "react-redux";
+import HeaderRoot from "./components/Layout/HeaderRoot";
 
 class App extends React.Component {
   render() {
     return (
       <Router>
         <div className="App">
-          <Header />
+          <HeaderRoot />
           <Container fluid={true} className="body-container-style">
             <Row noGutters={true} className="body-row-style">
               <Col md={2} sm={3} className="login-column">
-                {AuthToken.getAuthenticationStatus() ? (
-                  <ManageBox />
-                ) : (
-                  <SignIn />
-                )}
+                {this.props.role ? <ManageBox /> : <SignIn />}
               </Col>
               <Col md={10} sm={9} style={{ paddingLeft: "1%" }}>
                 <div className="auth-inner">
@@ -63,4 +59,10 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStatetoProps = state => {
+  return {
+    role: state.userReducer.role
+  };
+};
+
+export default connect(mapStatetoProps)(App);
