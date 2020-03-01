@@ -2,8 +2,6 @@ package com.setgreen.setgreen.payload;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class JWTLoginSuccessResponse {
     private boolean success;

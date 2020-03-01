@@ -3,21 +3,26 @@ package com.setgreen.setgreen.model;
 
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import org.hibernate.annotations.NaturalId;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.annotations.NaturalId;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import lombok.Data;
 
 
 @Entity
@@ -53,18 +58,25 @@ public class User  {
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date update_At;
 
-    @JsonIgnore
-    @ManyToMany(targetEntity = Role.class)
-    private Set<Role> roles = new HashSet<>();
 
-    @JsonIgnore
+    @OneToMany(cascade=CascadeType.ALL)
+    private Set<Role> roles = new HashSet<>();//TODO figure out why UserPrinciple needs this.
+
     private Boolean Verified;
 
     public User() {
     }
 
 
-    @PrePersist
+    public User(SignUpForm suf) {
+		email = suf.getEmail();
+		firstname = suf.getFirstname();
+		lastname = suf.getLastname();
+		roles.add(suf.getRole());
+	}
+
+
+	@PrePersist
     protected void onCreate(){
         this.create_At = new Date();
     }
@@ -74,6 +86,18 @@ public class User  {
     protected void onUpdate(){
         this.update_At = new Date();
     }
+
+
+	public RoleName getRoles(District d, Iterable<Role> iterable) {
+		for(Role x : iterable) {
+			//XXX we abuse short circuit logic here (in that if an admin is found we take it) to avoid potential "no district exists" errors for our admin.
+			if(x.getRole().userLevel() >= 12000 || x.getDistrictName().equals(d.getDistrictName())) {
+				System.out.println(x.toString());
+				return x.getRole();
+			}
+		}
+		return RoleName.UNFOUND;
+	}
 
 
 

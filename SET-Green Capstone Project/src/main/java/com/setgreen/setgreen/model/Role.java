@@ -1,9 +1,15 @@
 package com.setgreen.setgreen.model;
 
-import lombok.Data;
-import org.hibernate.annotations.NaturalId;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.ManyToOne;
 
-import javax.persistence.*;
+import lombok.Data;
 
 @Data
 @Entity
@@ -13,10 +19,14 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     
-    String eml;
-    String schl;
-    String dst;
     
+    private String userEmail;//FIXME enforce through code
+    
+    private String districtName;//FIXME Enforce districts through code
+    //@ManyToOne
+    //private School school;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User user;
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private RoleName role;

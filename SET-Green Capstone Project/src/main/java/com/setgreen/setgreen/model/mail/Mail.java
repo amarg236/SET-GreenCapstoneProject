@@ -1,4 +1,4 @@
-package com.setgreen.setgreen.model.Mail;
+package com.setgreen.setgreen.model.mail;
 
 import lombok.Data;
 

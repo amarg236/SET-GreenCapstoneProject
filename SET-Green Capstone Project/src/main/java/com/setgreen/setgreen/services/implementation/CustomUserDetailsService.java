@@ -1,8 +1,5 @@
 package com.setgreen.setgreen.services.implementation;
 
-import com.setgreen.setgreen.model.User;
-import com.setgreen.setgreen.model.UserPrinciple;
-import com.setgreen.setgreen.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,7 +7,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.attribute.UserPrincipal;
+import com.setgreen.setgreen.model.User;
+import com.setgreen.setgreen.model.UserPrinciple;
+import com.setgreen.setgreen.repositories.UserRepo;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -28,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     //We need this when we find user by id while filtering
     @Transactional
     public UserDetails loadUserById(Long id){
-        User user = userRepo.getById(id);
+        User user = userRepo.findById(id).get();
         if(user==null) new UsernameNotFoundException("User not found");
         return UserPrinciple.build(user);
 

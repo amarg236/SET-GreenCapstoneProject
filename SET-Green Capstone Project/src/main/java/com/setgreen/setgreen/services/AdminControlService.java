@@ -1,9 +1,8 @@
 package com.setgreen.setgreen.services;
 
-import com.setgreen.setgreen.model.ResponseBody;
-import com.setgreen.setgreen.model.User;
-
 import java.util.List;
+
+import com.setgreen.setgreen.model.User;
 
 public interface AdminControlService {
     List<User> viewUnverifiedUser();
