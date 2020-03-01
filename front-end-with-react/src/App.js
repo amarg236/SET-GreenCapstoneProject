@@ -27,14 +27,14 @@ class App extends React.Component {
           <Header />
           <Container fluid={true} className="body-container-style">
             <Row noGutters={true} className="body-row-style">
-              <Col md={2} sm={3} className="login-column">
+              <Col md={2} sm={7} className="login-column">
                 {AuthToken.getAuthenticationStatus() ? (
                   <ManageBox />
                 ) : (
                   <SignIn />
                 )}
               </Col>
-              <Col md={10} sm={9} style={{ paddingLeft: "1%" }}>
+              <Col md={10} sm={10} style={{ paddingLeft: "1%" }}>
                 <div className="auth-inner" style={{paddingLeft:"3%", paddingRight:"3%"}}>
                   <Switch>
                     <Route exact path="/" component={Home} />
