@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import AuthToken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import { loginAction } from "../../actions/loginAction";
+import "../../stylesheets/home.css";
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -30,8 +31,7 @@ class SignIn extends React.Component {
       <div className="wrapper">
         <form className="form-signin">
           {/*Log in Heading  */}
-
-          <div className="sign-in-title">
+          <div className="sign-in-title" style={{ padding: "0" }}>
             <h3
               style={{
                 padding: "3%"

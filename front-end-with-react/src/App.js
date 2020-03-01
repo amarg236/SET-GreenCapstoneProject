@@ -27,8 +27,11 @@ class App extends React.Component {
               <Col md={2} sm={3} className="login-column">
                 {this.props.role ? <ManageBox /> : <SignIn />}
               </Col>
-              <Col md={10} sm={9} style={{ paddingLeft: "1%" }}>
-                <div className="auth-inner">
+              <Col md={10} sm={10} style={{ paddingLeft: "1%" }}>
+                <div
+                  className="auth-inner"
+                  style={{ paddingLeft: "3%", paddingRight: "3%" }}
+                >
                   <Switch>
                     <Route exact path="/" component={Home} />
                     <ProtectedRoute
