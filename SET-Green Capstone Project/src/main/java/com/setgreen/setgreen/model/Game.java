@@ -35,5 +35,5 @@ public class Game implements Serializable{
 	Date time;
 	int duration;
 	boolean approved;
-	boolean awayAccepted;//TODO Implement more better
+	boolean awayAccepted;
 }

@@ -33,7 +33,12 @@ public class UserUnfound extends UserReference {
 	public ResponseBody<User> removeUser(User u) {
 		return forbiddenAccess(u);
 	}
-
+	
+	@Override
+	public ResponseBody<User> verifyUser(User u){
+		return forbiddenAccess(u);
+	}
+	
 	@Override
 	public ResponseBody<User> manageUser(User u) {
 		return forbiddenAccess(u);

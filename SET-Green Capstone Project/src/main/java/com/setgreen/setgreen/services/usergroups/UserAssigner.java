@@ -28,10 +28,15 @@ public class UserAssigner extends UserScheduler /*implements UserReference*/  {
 	public ResponseBody<User> removeUser(User u) {
 		return stubbed(u);
 	}
-
+	
+	@Override
+	public ResponseBody<User> verifyUser(User u){
+		return stubbed(u);
+	}
+	
 	@Override
 	public ResponseBody<User> manageUser(User u) {
-		return ur.updateProfile(u);
+		return uh.updateProfile(u);
 	}
 	@Override
 	public ResponseBody<Long> approveGame(Long g){
@@ -73,20 +78,20 @@ public class UserAssigner extends UserScheduler /*implements UserReference*/  {
 	}
 	@Override
 	public ResponseBody<BadDay> addBadDay(BadDay d) {
-		return stubbed(d);
+		return super.addBadDay(d);
 	}
 	@Override
 	public ResponseBody<BadDay> removeBadDay(BadDay d) {
-		return stubbed(d);
+		return super.removeBadDay(d);
 	}
 
 	@Override
 	public ResponseBody<IdealDay> saveIdealDay(IdealDay d) {
-		return stubbed(d);
+		return super.saveIdealDay(d);
 	}
 
 	@Override
 	public ResponseBody<IdealDay> removeIdealDay(IdealDay d) {
-		return stubbed(d);
+		return super.removeIdealDay(d);
 	}
 }

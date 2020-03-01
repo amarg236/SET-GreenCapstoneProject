@@ -40,30 +40,30 @@ public class UserScheduler extends UserUnfound {
 	
 	@Override
 	public ResponseBody<BadDay> addBadDay(BadDay d) {
-		return stubbed(d);
+		return dyh.saveBadDay(d);
 	}
 	@Override
 	public ResponseBody<BadDay> removeBadDay(BadDay d) {
-		return stubbed(d);
+		return dyh.deleteBadDay(d);
 	}
 
 	@Override
 	public ResponseBody<IdealDay> saveIdealDay(IdealDay d) {
-		return stubbed(d);
+		return dyh.saveIdealDay(d);
 	}
 
 	@Override
 	public ResponseBody<IdealDay> removeIdealDay(IdealDay d) {
-		return stubbed(d);
+		return dyh.deleteIdealDay(d);
 	}
 	@Override
 	public ResponseBody<User> updateProfile(User u) {
-		return ur.updateProfile(u);
+		return stubbed(u);//uh.updateProfile(u);
 	}
 
 	@Override
 	public ResponseBody<User> updatePassword(User u, User u2) {
-		return ur.updatePassword(u, u);
+		return uh.updatePassword(u, u);
 	}
 	
 }

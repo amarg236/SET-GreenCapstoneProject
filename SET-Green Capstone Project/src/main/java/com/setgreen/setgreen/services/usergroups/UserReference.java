@@ -39,7 +39,7 @@ public abstract class UserReference {
 	@Autowired
 	public GameHandler gh;
 	@Autowired
-	public UserService ur;
+	public UserService uh;
 	@Autowired
 	public DistrictHandler dh;
 	@Autowired
@@ -47,7 +47,7 @@ public abstract class UserReference {
 	@Autowired
 	public SchoolHandler sh;
 	@Autowired
-	public RoleServiceImpl rr;
+	public RoleServiceImpl rh;
 	@Autowired
 	public TeamsServiceImpl th;
 	@Autowired
@@ -83,6 +83,12 @@ public abstract class UserReference {
 	 * @return
 	 */
 	public abstract ResponseBody<User> manageUser(User u);
+	/**TODO do I need this? Or just use password change
+	 * assigner+, Verifies a user
+	 * @param u User to verify
+	 * @return responsebody with verification status
+	 */
+	public abstract ResponseBody<User> verifyUser(User u);
 	/** assignor+, forcibly create a game and add it to the schedule with no checks on it.
 	 *  userlevels, create a game request
 	 * @param g game to create

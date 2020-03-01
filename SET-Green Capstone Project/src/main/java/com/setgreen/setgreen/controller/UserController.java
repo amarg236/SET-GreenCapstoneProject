@@ -49,14 +49,11 @@ public class UserController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
-
     @Autowired
     private JwtTokenProvider tokenProvider;
 
     @Autowired
     private CustomUserDetailsService ud;
-//    @Autowired XXX TEST
-//    private RoleServiceImpl roleService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -165,6 +162,10 @@ public class UserController {
     	return hlp.getRole(auth).inviteUser(suf);
     }
     
+    /**
+     * @param s Email to search for
+     * @return Responsebody with a user by that email if it exists, null otherwise
+     */
     @PostMapping("find/email")
     public ResponseBody<User> getByEmail(@RequestBody DataObject<String> s) {
     	return userService.fetchByEmail(s.getData());

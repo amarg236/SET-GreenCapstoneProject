@@ -17,23 +17,31 @@ import com.setgreen.setgreen.util.DataObject;
  */
 @Service
 public class UserAdmin extends UserAssigner{
-
+	@Override
+	public RoleName getName() {
+		return RoleName.ADMIN;
+	}
 	@Autowired
 	public UserAdmin() {super();};
 	
 	@Override
 	public ResponseBody<User> inviteUser(SignUpForm suf){
-		return ur.saveUser(suf);
+		return uh.saveUser(suf);
 	}
 	
 	@Override
 	public ResponseBody<User> removeUser(User u) {
 		return stubbed(u);
 	}
-
+	
+	@Override
+	public ResponseBody<User> verifyUser(User u){
+		return stubbed(u);
+	}
+	
 	@Override
 	public ResponseBody<User> manageUser(User u) {
-		return ur.updateProfile(u);
+		return stubbed(u);//uh.updateProfile(u);
 	}
 	
 	@Override
@@ -50,10 +58,5 @@ public class UserAdmin extends UserAssigner{
 	@Override
 	public ResponseBody<District> removeDistrict(District d) {
 		return dh.deleteDistrict(d);
-	}
-	
-	@Override
-	public RoleName getName() {
-		return RoleName.ADMIN;
 	}
 }

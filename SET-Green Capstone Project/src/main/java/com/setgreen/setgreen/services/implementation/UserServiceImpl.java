@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
     		return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "Found user", u);
     	}
     	catch(Exception e) {
-    		return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "No user found", new User());
+    		return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "No user found", null);
     	}
     }
     
