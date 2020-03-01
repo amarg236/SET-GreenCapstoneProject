@@ -3,10 +3,12 @@ package com.setgreen.setgreen.services.usergroups;
 import org.springframework.stereotype.Service;
 
 import com.setgreen.setgreen.model.District;
+import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.RoleName;
 import com.setgreen.setgreen.model.School;
 import com.setgreen.setgreen.model.SignUpForm;
+import com.setgreen.setgreen.model.Teams;
 import com.setgreen.setgreen.model.User;
 import com.setgreen.setgreen.model.scheduling.BadDay;
 import com.setgreen.setgreen.model.scheduling.EventDay;
@@ -76,6 +78,17 @@ public class UserAssigner extends UserScheduler /*implements UserReference*/  {
 	public ResponseBody<EventDay> removeEventDay(EventDay d) {
 		return dyh.deleteEventDay(d);
 	}
+	
+	@Override
+	public ResponseBody<Teams> addTeam(Teams t){
+		return th.saveTeam(t);
+	}
+	
+	@Override 
+	public ResponseBody<Teams> removeTeam(Teams t){
+		return stubbed(t);
+	}
+	
 	@Override
 	public ResponseBody<BadDay> addBadDay(BadDay d) {
 		return super.addBadDay(d);

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -24,8 +25,10 @@ public class Game implements Serializable{
 	 */
 	private static final long serialVersionUID = 4946784525722445495L;
 	String hometeam;
+	@OneToOne
 	District homedistrict;
 	String awayteam;//TODO verify this, most likely using setter methods.
+	@OneToOne
 	District awaydistrict;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
