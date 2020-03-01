@@ -1,24 +1,9 @@
 package com.setgreen.setgreen.controller;
 
-<<<<<<< HEAD
-import com.setgreen.setgreen.model.ResponseBody;
-import com.setgreen.setgreen.model.*;
-import com.setgreen.setgreen.payload.JWTLoginSuccessResponse;
-import com.setgreen.setgreen.payload.LoginRequest;
-import com.setgreen.setgreen.repositories.UserRepo;
-import com.setgreen.setgreen.security.JwtTokenProvider;
-import com.setgreen.setgreen.services.MapValidationErrorService;
-import com.setgreen.setgreen.services.UserService;
-import com.setgreen.setgreen.services.MailService.MailHandler;
-import com.setgreen.setgreen.services.implementation.GameHandler;
-import com.setgreen.setgreen.services.implementation.RoleServiceImpl;
-import com.setgreen.setgreen.services.implementation.UserServiceImpl;
-=======
 import static com.setgreen.setgreen.security.SecurityConstants.TOKEN_PREFIX;
 
 import javax.validation.Valid;
 
->>>>>>> d47fff2aca08961679cc9a1a4fa8cf4bc7d0a262
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,15 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
-<<<<<<< HEAD
-import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static com.setgreen.setgreen.security.SecurityConstants.TOKEN_PREFIX;
-=======
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
->>>>>>> d47fff2aca08961679cc9a1a4fa8cf4bc7d0a262
 
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.SignUpForm;
@@ -83,25 +58,11 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-<<<<<<< HEAD
-    @Autowired
-    private GameHandler gameHandler;
-
-
-//
-//    @GetMapping("viewusers")
-//    public List<User> getUser(){
-//        return viewUserService.ViewUsers();
-//
-//    }
-
-=======
     /**
      * @param loginRequest Takes a Username and Password
      * @param result For binding result of request
      * @return ResponseEntity that asks to either verify email, or a JWT login token
      */
->>>>>>> d47fff2aca08961679cc9a1a4fa8cf4bc7d0a262
     @PostMapping("login")
     public ResponseEntity<?> authenticateuser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
 
@@ -135,15 +96,9 @@ public class UserController {
     /**
      * Login using a get request that only accepts non-verified users. After you do this you **REALLY** need to update the users password, but we don't force that to be done innately here.
      * Side note we could most likely do a "forgot password" by de-verifing and re-sending a verification email. It's a bit hacky/lazy, but it'd work.
-<<<<<<< HEAD
-     * //@param loginRequest
-     * //@param result
-     * //@return
-=======
      * @param loginRequest Username and Password
      * @param result For binding result
      * @return A message saying email is already verified or a JWT token
->>>>>>> d47fff2aca08961679cc9a1a4fa8cf4bc7d0a262
      */
     @GetMapping("login")
     public ResponseEntity<?> firstTimeLogin(@RequestParam(value="u") String u, @RequestParam(value="p") String p) {

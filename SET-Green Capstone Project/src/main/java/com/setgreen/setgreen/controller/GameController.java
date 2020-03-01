@@ -31,13 +31,8 @@ public class GameController {
 	}
 	
 	@PostMapping("delete")
-<<<<<<< HEAD
-	public ResponseBody delete(@RequestBody Game g) {
-		return gh.deleteGame(g.getId());
-=======
 	public ResponseBody<Long> delete(@RequestBody DataObject<Long> id, Authentication auth) {
 		return hlp.getRole(auth).deleteGame(id);
->>>>>>> d47fff2aca08961679cc9a1a4fa8cf4bc7d0a262
 	}
 	@PostMapping("modify")
 	public ResponseBody<Game> modify(@RequestBody Game g, Authentication auth) {
