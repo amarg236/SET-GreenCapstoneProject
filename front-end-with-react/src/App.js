@@ -23,11 +23,11 @@ class App extends React.Component {
         <div className="App">
           <HeaderRoot />
           <Container fluid={true} className="body-container-style">
-            <Row noGutters={true} className="body-row-style">
-              <Col md={3} sm={10} className="login-column">
+            <Row noGutters={true} className="body-row-style justify-content-sm-center">
+              <Col lg={3} md={4} sm={10} className="login-column">
                 {this.props.role ? <ManageBox /> : <SignIn />}
               </Col>
-              <Col md={9} sm={10} style={{ paddingLeft: "1%" }}>
+              <Col lg={9} md={8} sm={10} style={{ paddingLeft: "1%" }}>
                 <div
                   className="auth-inner"
                   style={{ paddingLeft: "3%", paddingRight: "3%" }}
