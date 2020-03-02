@@ -45,6 +45,7 @@ class Cal extends React.Component {
         id='schedule'
         ref={t => this.scheduleObj = t}
         actionBegin={this.onActionBegin.bind(this)}
+        readonly={true}
         style={{
           maxHeight: "80vh", minHeight:'70vh',
           minWidth: '40vh',
