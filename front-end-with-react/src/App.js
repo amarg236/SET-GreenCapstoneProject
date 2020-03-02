@@ -1,38 +1,71 @@
 import React from "react";
 import "./App.css";
-import Header from "./components/Layout/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import AddProject from "./components/Project/AddProject";
-import ApproveGame from "./components/Project/ApproveGame";
 import SignIn from "./components/Project/SignIn";
 import Home from "./components/Layout/Home";
 import CreateGame from "./components/Project/CreateGame";
 import Footer from "./components/Layout/Footer";
+import ProtectedRoute from "./Utility/protectedRoute";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import ManageBox from "./components/Project/ManageBox";
+import ViewGames from "./components/Project/ViewGames";
+import UserProfile from "./components/Project/UserProfile";
+import { connect } from "react-redux";
+import HeaderRoot from "./components/Layout/HeaderRoot";
 
 class App extends React.Component {
-  
-  render(){
-  return (
-    <Router>
-      <div className="App"> 
-        <Header />
-        <Switch>
-          <Route exact path="/createGame" component={CreateGame} />
-          <Route exact path="/ApproveGame" component={ApproveGame} />
-          <Route exact path="/addProject" component={AddProject} />
-          <Route exact path="/signIn" component={SignIn} />
-          <Route exact path="/home" component={Home} />
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-
-        <Footer />
-      </div>
-    </Router>
-  );
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <HeaderRoot />
+          <Container fluid={true} className="body-container-style">
+            <Row noGutters={true} className="body-row-style">
+              <Col md={2} sm={3} className="login-column">
+                {this.props.role ? <ManageBox /> : <SignIn />}
+              </Col>
+              <Col md={10} sm={10} style={{ paddingLeft: "1%" }}>
+                <div
+                  className="auth-inner"
+                  style={{ paddingLeft: "3%", paddingRight: "3%" }}
+                >
+                  <Switch>
+                    <Route exact path="/" component={Home} />
+                    <ProtectedRoute
+                      exact
+                      path="/createGame"
+                      component={CreateGame}
+                    />
+                    <ProtectedRoute
+                      exact
+                      path="/viewGames"
+                      component={ViewGames}
+                    />
+                    <ProtectedRoute
+                      exact
+                      path="/userProfile"
+                      component={UserProfile}
+                    />
+                    <Route path="*" component={() => "404 NOT FOUND"} />
+                  </Switch>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+          <Footer />
+        </div>
+      </Router>
+    );
+  }
 }
-}
 
-export default App;
+const mapStatetoProps = state => {
+  return {
+    role: state.userReducer.role
+  };
+};
+
+export default connect(mapStatetoProps)(App);

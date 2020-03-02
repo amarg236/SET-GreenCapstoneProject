@@ -1,38 +1,27 @@
-import React, { Component } from "react";
-import AuthService from "../../Utility/AuthService";
+import React from "react";
+import { withRouter } from "react-router-dom";
+import AuthToken from "../../Utility/AuthToken";
+import { connect } from "react-redux";
+import { loginAction } from "../../actions/loginAction";
+import "../../stylesheets/home.css";
 
-export default class SignIn extends Component {
+class SignIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: "",
-      password: "",
-      message: ""
+      password: ""
     };
     this.login = this.login.bind(this);
   }
 
   componentDidMount() {
-    localStorage.clear();
+    // localStorage.clear();
   }
 
   login = e => {
     e.preventDefault();
-    const credentials = {
-      username: this.state.username,
-      password: this.state.password
-    };
-
-    AuthService.login(credentials).then(res => {
-      console.log(res);
-      if (res.data.status === 200) {
-        localStorage.setItem("userInfo", JSON.stringify(res.data.result));
-
-        this.props.history.push("/");
-      } else {
-        this.setState({ message: res.data.message });
-      }
-    });
+    this.props.login(this.state.username, this.state.password);
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -42,7 +31,7 @@ export default class SignIn extends Component {
       <div className="wrapper">
         <form className="form-signin">
           {/*Log in Heading  */}
-          <div className="sign-in-title">
+          <div className="sign-in-title" style={{ padding: "0" }}>
             <h3
               style={{
                 padding: "3%"
@@ -57,7 +46,7 @@ export default class SignIn extends Component {
               name="username"
               type="text"
               value={this.state.username}
-              onChange={e => this.setState({username: e.target.value})}
+              onChange={e => this.setState({ username: e.target.value })}
               className="form-control"
               aria-describedby="emailHelp"
               placeholder="Enter username"
@@ -69,12 +58,12 @@ export default class SignIn extends Component {
           </div>
 
           <div className="form-group">
-            <input 
+            <input
               name="password"
               type="password"
               autoComplete="on"
               value={this.state.password}
-              onChange={e => this.setState({password: e.target.value})}
+              onChange={e => this.setState({ password: e.target.value })}
               className="form-control"
               id="exampleInputPassword1"
               placeholder="Password"
@@ -104,7 +93,7 @@ export default class SignIn extends Component {
             }}
           >
             <button
-              className="btn btn-block"
+              className="btn btn-success btn-block"
               style={{
                 height: "35%",
                 marginTop: "5%",
@@ -118,8 +107,28 @@ export default class SignIn extends Component {
           </div>
 
           <div className="forget">Forget Username/Password?</div>
+
+          {this.props.message ? (
+            <div className="alert alert-danger">
+              Wrong Username or Password!
+            </div>
+          ) : null}
         </form>
-        </div>
+      </div>
     );
   }
 }
+
+const mapStatetoProps = state => {
+  return {
+    message: state.userReducer.message
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (username, password) => dispatch(loginAction(username, password))
+  };
+};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(withRouter(SignIn));

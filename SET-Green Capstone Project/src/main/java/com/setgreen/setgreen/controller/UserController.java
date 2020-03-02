@@ -170,4 +170,11 @@ public class UserController {
     public ResponseBody<User> getByEmail(@RequestBody DataObject<String> s) {
     	return userService.fetchByEmail(s.getData());
     }
+
+
+
+    @GetMapping("jsonData")
+    public List<Game> getJsonData(){
+        return gameHandler.JsonGetAll();
+    }
 }

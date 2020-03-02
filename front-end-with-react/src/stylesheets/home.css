@@ -7,7 +7,7 @@
 
 .body-row-style {
   padding-bottom: 100px;
-  margin-top: -130px;
+  margin-top: -160px;
 }
 
 body {
@@ -19,7 +19,7 @@ body {
 }
 
 .btn {
-  background-color: #739608;
+  /* background-color: #739608; */
   color: white;
 }
 
@@ -30,7 +30,8 @@ input.SignIn.placeholder {
 .form-signin-heading {
   background-color: #739608;
   color: white;
-  max-width: 100%;
+  width: 100%;
+  margin: 0;
 }
 
 .form-group {
@@ -41,37 +42,34 @@ input.SignIn.placeholder {
 .form-signin {
   margin: 0 auto;
   background-color: #fff;
-  width: 50vh;
+  width: 100%;
   height: auto;
   padding-bottom: 5%;
-  }
+}
 
-  .checkbox {
-    font-weight: normal;
-  }
+.checkbox {
+  font-weight: normal;
+}
 
-  .form-control {
-    position: relative;
-    font-size: 16px;
-    height: auto;
-    padding: 10px;
-    box-sizing:(border-box);
+.form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+  box-sizing: (border-box);
+}
 
+input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
 
-  }
-
-  input[type="text"] {
-    margin-bottom: -1px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  input[type="password"] {
-    margin-bottom: 20px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-
+input[type="password"] {
+  margin-bottom: 20px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
 
 .forget {
   text-align: center;
@@ -86,10 +84,9 @@ It is for the login font title  */
   color: #ffffff;
   margin-top: 0;
   margin-bottom: 25px;
-  
 }
 
-.dashboardNames{
+.dashboardNames {
   color: #868982;
   font-weight: 500;
 }
@@ -98,4 +95,8 @@ It is for the login font title  */
   padding-left: 2vh;
   padding-right: 2vh;
   padding-bottom: 10px;
+  padding-top: 10px;
+}
+a {
+  color: #ffffff;
 }
