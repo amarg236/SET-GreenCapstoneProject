@@ -18,7 +18,6 @@ public class DistrictHandler {
 	DistrictRepo dr;
 	public ResponseBody<District> saveDistrict(District d){
 		try {
-			System.out.println(dr.toString());
 			dr.save(d);
 			return new ResponseBody<District>(HttpStatus.ACCEPTED.value(), "Created new District", d);
 		}
@@ -33,6 +32,14 @@ public class DistrictHandler {
 		}
 		catch(Exception e) {
 			return new ResponseBody<District>(HttpStatus.CONFLICT.value(), "Could not delete district!", d);
+		}
+	}
+	public ResponseBody<Iterable<District>> getAll() {
+		try {
+			return new ResponseBody<Iterable<District>>(HttpStatus.ACCEPTED.value(), "Found districts", dr.findAll());
+		}
+		catch(Exception e) {
+			return new ResponseBody<Iterable<District>>(500, "Error looking up districts", null);
 		}
 	}
 }
