@@ -1,5 +1,7 @@
 package com.setgreen.setgreen.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -71,5 +73,9 @@ public class GameController {
 	@PostMapping("get/all")
 	public ResponseBody<Iterable<Game>> getAll() {
 		return gh.allGames();
+	}
+	@PostMapping("get/json")
+	public ResponseBody<List<Game>> getJson(){
+		return gh.JsonGetAll();
 	}
 }

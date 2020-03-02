@@ -1,17 +1,11 @@
 package com.setgreen.setgreen.repositories;
 
-<<<<<<< HEAD
-import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.User;
-=======
->>>>>>> d47fff2aca08961679cc9a1a4fa8cf4bc7d0a262
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.setgreen.setgreen.model.User;
 
 @Repository
 public interface UserRepo extends JpaRepository<User, Long> {
