@@ -1,28 +1,28 @@
 package com.setgreen.setgreen.repositories;
 
+<<<<<<< HEAD
 import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.User;
+=======
+>>>>>>> d47fff2aca08961679cc9a1a4fa8cf4bc7d0a262
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Id;
-import java.util.List;
-import java.util.Optional;
+import com.setgreen.setgreen.model.User;
 
 @Repository
-public interface UserRepo extends JpaRepository<User, Id> {
+public interface UserRepo extends JpaRepository<User, Long> {
 //    User findByUsername(String username);
-    User getById(Long id);
+//    User findById(Long id);
 
 //    @Query("Select u from User u where u.username =(:username)")
 //    User findByUserNameIgnoreCase(String username);
     
-    @Query("Select u from User u where u.email =(:email)")
-    User findByEmail(String email);
+    @Query("SELECT u from User u where u.email =(:email)")
+    public User findByEmail(String email);
     
     /**
      * @param who String email of user you want to update (as email is assumed to be a singular key value)

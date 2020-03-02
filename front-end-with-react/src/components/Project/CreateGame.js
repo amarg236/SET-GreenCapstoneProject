@@ -1,11 +1,9 @@
 import React, { Component } from "react";
+import moment from "moment";
 import "../../stylesheets/createGame.css";
 import "./SignIn";
-import ChooseTime from "./ChooseTime";
-import ChooseDate from "./ChooseDate";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import TimePicker from "./ChooseTime";
 
 class CreateGame extends Component {
   constructor(props) {
@@ -23,9 +21,11 @@ class CreateGame extends Component {
 
     this.state = {
       homeTeam: "",
-      gameDate: new Date(),
-      gameStartTime: "",
-      gameEndTime: "",
+      gameDate: moment().format("YYYY-MM-DD"),
+      gameStartTime: moment().format("HH:mm"),
+      gameEndTime: moment()
+        .add(30, "minute")
+        .format("HH:mm"),
       gameLocation: "",
       againstTeam: "",
       againstTeamDistrict: ""
@@ -38,6 +38,7 @@ class CreateGame extends Component {
   }
 
   onChangeGameDate(e) {
+    console.log(e.target.value);
     this.setState({ gameDate: e.target.value });
   }
 
@@ -59,16 +60,20 @@ class CreateGame extends Component {
     this.setState({ againstTeamDistrict: e.target.value });
   }
 
-  // getTimeFinal(this.sate.Date,this.state.time)
-  // {
-  //   return "2020-02-13 12:30";
-  // }
-
   gameSubmit(e) {
     e.preventDefault();
 
-    console.log(this.state.homeTeam);
-    console.log(this.state.gameDate);
+    // console.log(this.state.homeTeam);
+    // console.log(this.state.gameDate);
+    const startDate = moment(this.state.gameDate)
+      .set("hours", 0)
+      .set("minutes", 0);
+    const startTime = moment(this.state.gameStartTime, "HH:mm");
+    // const endTime = moment(this.state.gameEndTime, "HH:mm");
+    const gameStart = moment(startDate)
+      .add(startTime.hours(), "hour")
+      .add(startTime.minutes(), "minute");
+
     const gameObject = {
       approved: false,
       awayteam: this.state.againstTeam,
@@ -77,9 +82,9 @@ class CreateGame extends Component {
       hometeam: this.state.homeTeam,
       homedistrict: "Monroe",
       location: this.state.gameLocation,
-      time: "2020-02-13 12:30"
+      time: moment(gameStart).format("YYYY-MM-DD HH:mm")
     };
-
+    // const fs = require("browserify-fs");
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/save", gameObject, {
         headers: {
@@ -89,14 +94,10 @@ class CreateGame extends Component {
       .then(res => {
         window.alert("The Game has been created successfully!!");
         // window.location.reload();
-        // console.log(res);
+        console.log(res);
         // console.log(res.data);
       });
   }
-
-  // updateChange(schoolName){
-
-  // }
 
   render() {
     return (
@@ -123,12 +124,11 @@ class CreateGame extends Component {
           <div className="form-inline">
             <div className="form-group mb-2">
               <label>Date: &nbsp;</label>
-              <ChooseDate
+              <input
+                type="date"
                 className="input-group"
                 value={this.state.gameDate}
                 onChange={this.onChangeGameDate}
-                showTimeSelect
-                dateFormat="Pp"
               />
             </div>
             <div className="form-group mx-sm-3 mb-2">

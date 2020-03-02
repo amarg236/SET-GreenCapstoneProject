@@ -7,10 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -27,6 +25,9 @@ public class Teams implements Serializable{
 	 */
 	private static final long serialVersionUID = -877221888835515046L;
 
+	@ManyToOne()
+	private School school;
+	
 	@NotEmpty(message = "Must have a team name")
 	@Column(length = 50)
 	private String tmName; //Good (display) name
@@ -36,7 +37,6 @@ public class Teams implements Serializable{
 	private String tmClass; //Type of team (varsity, jr, ext)
 	
 	@Id
-	@JsonIgnore
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
@@ -44,11 +44,13 @@ public class Teams implements Serializable{
 	private String internalName;//internal name for teams for dumping to XML
 	
 	public Teams() {}
-	
-	public Teams(long tid, String tclass, String tname, String tiname) {
-		id=tid;
-		tmClass=tclass;
-		tmName=tname;
-		internalName=tiname;
+
+	public Teams(String tmName, String tmClass, long id, String internalName) {
+		super();
+		this.tmName = tmName;
+		this.tmClass = tmClass;
+		this.id = id;
+		this.internalName = internalName;
 	}
+	
 }

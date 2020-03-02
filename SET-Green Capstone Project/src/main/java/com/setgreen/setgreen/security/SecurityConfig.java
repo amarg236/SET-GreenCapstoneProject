@@ -1,6 +1,5 @@
 package com.setgreen.setgreen.security;
 
-import com.setgreen.setgreen.services.implementation.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.setgreen.setgreen.services.implementation.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -53,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/",
                         "/api/auth/**",
+                        "/api/public/**",
                         //XXX REMOVE from release builds, matter of fact go ahead and remove swagger as well.
                         "/spring-security-rest/**",
                         "/swagger-resources/**",
@@ -61,7 +63,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/webjars/**",
                         "/swagger-resources/configuration/security",
                         "/v2/api-docs",
-                        "/swagger-resources/configuration/ui"
+                        "/swagger-resources/configuration/ui",
+                        "/api/public/**",
+                        "/api/test/**"
                 ).permitAll()
                 .anyRequest().authenticated();
 

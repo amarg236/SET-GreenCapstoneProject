@@ -1,18 +1,19 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-// import Auth, { useAuth } from "./auth";
-import Authtoken from "../Utility/AuthToken";
+import { connect } from "react-redux";
 
-const ProtectedRoute = ({ component: Component, ...rest }) => (
+const ProtectedRoute = ({ userName, component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      Authtoken.getAuthenticationStatus() ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/" />
-      )
+      userName ? <Component {...props} /> : <Redirect to="/" />
     }
   />
 );
-export default ProtectedRoute;
+const mapStatetoProps = state => {
+  return {
+    userName: state.userReducer.username
+  };
+};
+
+export default connect(mapStatetoProps, null)(ProtectedRoute);

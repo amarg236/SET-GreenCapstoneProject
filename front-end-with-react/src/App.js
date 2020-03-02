@@ -1,41 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
-import Header from "./components/Layout/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import AddProject from "./components/Project/AddProject";
-import ApproveGame from "./components/Project/ApproveGame";
 import SignIn from "./components/Project/SignIn";
 import Home from "./components/Layout/Home";
 import CreateGame from "./components/Project/CreateGame";
 import Footer from "./components/Layout/Footer";
-import AdminDashboard from "./components/Layout/Admindashboard";
 import ProtectedRoute from "./Utility/protectedRoute";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import AuthToken from "./Utility/AuthToken";
 import ManageBox from "./components/Project/ManageBox";
 import ViewGames from "./components/Project/ViewGames";
 import UserProfile from "./components/Project/UserProfile";
+import { connect } from "react-redux";
+import HeaderRoot from "./components/Layout/HeaderRoot";
 
 class App extends React.Component {
   render() {
     return (
       <Router>
         <div className="App">
-          <Header />
+          <HeaderRoot />
           <Container fluid={true} className="body-container-style">
             <Row noGutters={true} className="body-row-style">
-              <Col md={2} sm={7} className="login-column">
-                {AuthToken.getAuthenticationStatus() ? (
-                  <ManageBox />
-                ) : (
-                  <SignIn />
-                )}
+              <Col md={2} sm={3} className="login-column">
+                {this.props.role ? <ManageBox /> : <SignIn />}
               </Col>
               <Col md={10} sm={10} style={{ paddingLeft: "1%" }}>
-                <div className="auth-inner" style={{paddingLeft:"3%", paddingRight:"3%"}}>
+                <div
+                  className="auth-inner"
+                  style={{ paddingLeft: "3%", paddingRight: "3%" }}
+                >
                   <Switch>
                     <Route exact path="/" component={Home} />
                     <ProtectedRoute
@@ -66,4 +62,10 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStatetoProps = state => {
+  return {
+    role: state.userReducer.role
+  };
+};
+
+export default connect(mapStatetoProps)(App);

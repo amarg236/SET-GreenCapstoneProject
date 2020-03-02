@@ -1,27 +1,25 @@
-a.dashboardNames:hover {                 
-    color: #a3b985; 
+a.dashboardNames:hover {
+  color: #a3b985;
 }
 
-
-.hdr{
-    border-bottom: 2px solid #91BF04;
-    background-color: #DDDDDD; 
-    display: block;
-    position: sticky;
-    width: 100%;
+.hdr {
+  border-bottom: 2px solid #91bf04;
+  background-color: #dddddd;
+  /* display: block; */
+  position: sticky;
+  /* width: 100%; */
 }
 
-
-.nav-button{
-    width: 60px;
+.nav-button {
+  width: 60px;
 }
 
-.dashboardNames{
-    color: #868982;
-    font-weight: 500;
-    height: 100%;
+.dashboardNames {
+  color: #868982;
+  font-weight: 500;
+  height: 100%;
 }
 
-.dashboardSeperator{
-    border-right: solid 1px black;
+.dashboardSeperator {
+  border-right: solid 1px black;
 }

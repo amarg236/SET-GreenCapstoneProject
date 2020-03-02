@@ -4,12 +4,11 @@ import "./SignIn";
 import ApprovedGames from "./ApprovedGames";
 import PendingGame from "./PendingGames";
 import FullyApprovedGames from "./FullyApprovedGames";
-import AuthToken from "../../Utility/AuthToken";
 
 class ViewGames extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     return (

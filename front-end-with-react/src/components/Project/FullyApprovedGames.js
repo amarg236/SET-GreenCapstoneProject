@@ -39,7 +39,7 @@ class FullyApprovedGames extends Component {
           <br />
           <Table className="table-striped hover table-responsive-sm ">
             <thead>
-              <tr className="btn-success">
+              <tr>
                 <th>Home Team</th>
                 <th>Playing Against</th>
                 <th>Time</th>
@@ -62,9 +62,9 @@ class FullyApprovedGames extends Component {
                     duration,
                     location,
                     approved,
-                    away_accepted
+                    awayAccepted
                   } = display;
-                  if (away_accepted) {
+                  if (awayAccepted) {
                     return (
                       <tr key={id}>
                         <td>{hometeam}</td>
@@ -76,6 +76,7 @@ class FullyApprovedGames extends Component {
                       </tr>
                     );
                   }
+                  return null;
                 })}
             </tbody>
           </Table>

@@ -4,7 +4,7 @@ import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.Teams;
 
 public interface TeamsService {
-	ResponseBody saveTeam(Teams tm);
+	ResponseBody<Teams> saveTeam(Teams tm);
 
-	Iterable<Teams> getTeams();
+	ResponseBody<Iterable<Teams>> getTeams();
 }

@@ -1,9 +1,8 @@
 package com.setgreen.setgreen.services;
 
-import com.setgreen.setgreen.model.User;
-
 import java.util.List;
-import java.util.Optional;
+
+import com.setgreen.setgreen.model.User;
 
 public interface ViewUserService {
 

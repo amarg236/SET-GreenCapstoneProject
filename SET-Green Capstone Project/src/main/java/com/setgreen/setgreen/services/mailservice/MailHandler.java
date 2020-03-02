@@ -1,15 +1,14 @@
-package com.setgreen.setgreen.services.MailService; //FIXME Is this the same as MailService.MailHandlerService
+package com.setgreen.setgreen.services.mailservice;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import com.setgreen.setgreen.model.User;
-import com.setgreen.setgreen.model.Mail.Mail;
-
-import org.springframework.mail.SimpleMailMessage;
+import com.setgreen.setgreen.model.mail.Mail;
 public class MailHandler {
 	private JavaMailSenderImpl mailSender;
 	private static final String EMAIL_SENDER = "Bbaronx@gmail.com";

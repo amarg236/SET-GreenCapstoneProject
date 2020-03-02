@@ -1,21 +1,16 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import AuthToken from "../../Utility/AuthToken";
+import { connect } from "react-redux";
 
 class ManageBox extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userRole: AuthToken.getUserRole()
-    };
-  }
-
   render() {
     return (
       <div className="manageLayout">
-        <div class="alert alert-primary" role="alert">
-          Hello, <u className="text-danger">{AuthToken.getUserRole()}</u> !
-          Welcome to the Dashboard!
+        <div className="alert alert-primary" role="alert">
+          <p>
+            <i>Username:</i> {this.props.username}
+          </p>
+          <b>{this.props.role}</b>
         </div>
         <button className="btn btn-success btn-block" type="button">
           MANAGE USER
@@ -33,5 +28,10 @@ class ManageBox extends Component {
     );
   }
 }
-
-export default ManageBox;
+const mapStatetoProps = state => {
+  return {
+    username: state.userReducer.username,
+    role: state.userReducer.role
+  };
+};
+export default connect(mapStatetoProps)(ManageBox);
