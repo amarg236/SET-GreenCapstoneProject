@@ -23,8 +23,8 @@ public class Role {
     private String userEmail;//FIXME enforce through code
     
     private String districtName;//FIXME Enforce districts through code
-    //@ManyToOne
-    //private School school;
+    @ManyToOne
+    private School school;
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
     @Enumerated(EnumType.STRING)

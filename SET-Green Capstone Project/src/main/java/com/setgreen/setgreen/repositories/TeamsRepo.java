@@ -8,6 +8,6 @@ import com.setgreen.setgreen.model.Teams;
 @Repository
 public interface TeamsRepo extends CrudRepository<Teams, Long> {
 
-	String findByTmName(String awayteam);
+	Teams findByTmName(String awayteam);
 
 }

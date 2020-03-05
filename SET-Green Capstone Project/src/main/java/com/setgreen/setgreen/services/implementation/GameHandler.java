@@ -16,6 +16,7 @@ import com.setgreen.setgreen.repositories.RoleRepo;
 import com.setgreen.setgreen.repositories.TeamsRepo;
 import com.setgreen.setgreen.services.mailservice.MailHandler;
 import com.setgreen.setgreen.util.DataObject;
+import com.setgreen.setgreen.util.Debugger;
 
 import java.util.List;
 
@@ -34,22 +35,27 @@ public class GameHandler {
 	 */
 	public ResponseBody<Game> saveGame(Game g){
 		try{
-			Iterable<Role> i = rr.findByUserEmail(tr.findByTmName(g.getAwayteam()));
 			String str = "";
-			Mail m = new Mail();
-			MailHandler snd = new MailHandler(new JavaMailSenderImpl());
-			for(Role x : i) {
-				m.setSendTo(x.getUserEmail());
-				m.setSubjectLine("Game against "+g.getAwayteam()+".");
-				m.setEmailContent(g.getAwayteam()+" has suggested a game to play.");
-				//snd.sendMailMessage(m);//TODO Switch from debug to deploy
-				str+=snd.debugMessage(m)+"\n";
+			try {
+				Mail m = new Mail();
+				MailHandler snd = new MailHandler(new JavaMailSenderImpl());
+				Iterable<Role> i = tr.findByTmName(g.getAwayteam()).getSchool().getRoles();
+				for(Role x : i) {
+					m.setSendTo(x.getUserEmail());
+					m.setSubjectLine("Game against "+g.getAwayteam()+".");
+					m.setEmailContent(g.getAwayteam()+" has suggested a game to play.");
+					//snd.sendMailMessage(m);//TODO Switch from debug to deploy
+					str+=snd.debugMessage(m)+"\n";
+				}
+			}
+			catch(NullPointerException e) {
+				str = "No coaches of that email found.";
 			}
 			gr.save(g);
 			return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), /*"Game Saved"*/ str, g);
 		}
 		catch(Exception e) {
-			return new ResponseBody<Game>(HttpStatus.NOT_ACCEPTABLE.value(), "Did not save game", g);
+			return new ResponseBody<Game>(HttpStatus.NOT_ACCEPTABLE.value(), "Did not save game "+e, g);
 		}
 	}
 	

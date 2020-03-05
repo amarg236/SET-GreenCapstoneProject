@@ -26,6 +26,8 @@ public class School {
     private Long id;
 	@OneToMany()
 	private Set<Teams> teams;
+	@OneToMany()
+	private Set<Role> roles;
 	@OneToOne()
 	private District district;
 	private String name;
