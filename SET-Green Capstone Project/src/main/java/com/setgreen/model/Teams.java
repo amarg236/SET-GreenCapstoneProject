@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +30,7 @@ public class Teams implements Serializable{
 	 */
 	private static final long serialVersionUID = -877221888835515046L;
 
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne()
 	private School school;
 	@OneToMany
 	private Set<IdealDay> idealDays;
