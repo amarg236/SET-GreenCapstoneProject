@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
 import SignIn from "./components/Project/SignIn";
 import Home from "./components/Layout/Home";
 import CreateGame from "./components/Project/CreateGame";
@@ -15,15 +15,20 @@ import ViewGames from "./components/Project/ViewGames";
 import UserProfile from "./components/Project/UserProfile";
 import { connect } from "react-redux";
 import HeaderRoot from "./components/Layout/HeaderRoot";
+import LoggedInUserDashboard from "./components/Layout/LoggedInUser";
+import history from "./Utility/history";
 
 class App extends React.Component {
   render() {
     return (
-      <Router>
+      <Router history={history}>
         <div className="App">
           <HeaderRoot />
           <Container fluid={true} className="body-container-style">
-            <Row noGutters={true} className="body-row-style justify-content-sm-center">
+            <Row
+              noGutters={true}
+              className="body-row-style justify-content-sm-center"
+            >
               <Col lg={3} md={4} sm={10} className="login-column">
                 {this.props.role ? <ManageBox /> : <SignIn />}
               </Col>
@@ -34,6 +39,11 @@ class App extends React.Component {
                 >
                   <Switch>
                     <Route exact path="/" component={Home} />
+                    <ProtectedRoute
+                      exact
+                      path="/dashboard"
+                      component={LoggedInUserDashboard}
+                    />
                     <ProtectedRoute
                       exact
                       path="/createGame"

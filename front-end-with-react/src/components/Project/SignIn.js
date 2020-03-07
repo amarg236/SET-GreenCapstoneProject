@@ -16,7 +16,7 @@ class SignIn extends React.Component {
   }
 
   componentDidMount() {
-    // localStorage.clear();
+    localStorage.clear();
   }
 
   login = e => {

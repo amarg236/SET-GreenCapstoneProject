@@ -15,7 +15,7 @@ class HeaderRoot extends Component {
   logout = async () => {
     await Authtoken.logOut();
     await this.props.history.push("/");
-    window.location.reload();
+    // window.location.reload();
   };
 
   render() {
