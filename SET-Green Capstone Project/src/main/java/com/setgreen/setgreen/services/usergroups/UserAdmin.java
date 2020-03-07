@@ -8,7 +8,6 @@ import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.RoleName;
 import com.setgreen.setgreen.model.SignUpForm;
 import com.setgreen.setgreen.model.User;
-import com.setgreen.setgreen.util.DataObject;
 
 /**
  * @author Brendon LeBaron
@@ -44,11 +43,7 @@ public class UserAdmin extends UserAssigner{
 		return stubbed(u);//uh.updateProfile(u);
 	}
 	
-	@Override
-	public ResponseBody<Long> deleteGame(DataObject<Long> g) {
-		return gh.deleteGame(g.getData());
-		
-	}
+	
 	
 	@Override
 	public ResponseBody<District> addDistrict(District d) {

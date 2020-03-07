@@ -36,5 +36,15 @@ public class TeamsServiceImpl implements TeamsService{
 	public ResponseBody<Teams> getTeamsByName(String tm) {
 		return new ResponseBody<Teams>(HttpStatus.ACCEPTED.value(), "Teams found", tr.findByTmName(tm));
 	}
+
+	public ResponseBody<Teams> deleteTeam(Teams t) {
+		try {
+			tr.deleteById(t.getId());
+			return new ResponseBody<Teams>(HttpStatus.ACCEPTED.value(), "Team deleted", t);
+		}
+		catch(Exception e) {
+			return new ResponseBody<Teams>(HttpStatus.BAD_REQUEST.value(), "Team could not be deleted", t);
+		}
+	}
 	
 }

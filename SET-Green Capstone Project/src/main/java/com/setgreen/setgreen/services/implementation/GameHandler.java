@@ -1,5 +1,7 @@
 package com.setgreen.setgreen.services.implementation;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -16,9 +18,6 @@ import com.setgreen.setgreen.repositories.RoleRepo;
 import com.setgreen.setgreen.repositories.TeamsRepo;
 import com.setgreen.setgreen.services.mailservice.MailHandler;
 import com.setgreen.setgreen.util.DataObject;
-import com.setgreen.setgreen.util.Debugger;
-
-import java.util.List;
 
 @Service
 public class GameHandler {

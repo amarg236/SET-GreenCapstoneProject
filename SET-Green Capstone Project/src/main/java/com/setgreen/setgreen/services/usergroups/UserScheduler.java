@@ -44,11 +44,11 @@ public class UserScheduler extends UserUnfound {
 			if(!fg.isAwayAccepted()) {
 				return gh.deleteGame(d.getData());
 			}
-			else if(!fg.isApproved()) {
-				return stubbed(d.getData());
+			else if(fg.isApproved()) {
+				return new ResponseBody<Long>(HttpStatus.CONFLICT.value(), "Game is already approved, contact an assignor", d.getData());
 			}
 			else {
-				return stubbed(d.getData());
+				return new ResponseBody<Long>(HttpStatus.CONFLICT.value(), "Game is already accepted by opposing team, contact an assignor", d.getData());
 			}
 		}
 		catch(NullPointerException e) {
@@ -58,7 +58,18 @@ public class UserScheduler extends UserUnfound {
 	
 	@Override
 	public ResponseBody<Game> rescheduleGame(Game g) {
-		return stubbed(g);//gh.RequestReschedule(g);
+		Game ng = gh.getGameById(g.getId());
+		ng.setDuration(g.getDuration());
+		ng.setTime(g.getTime());
+		if(!ng.isAwayAccepted()) {
+			return gh.modifyGame(ng);
+		}
+		else if(ng.isApproved()) {
+			return new ResponseBody<Game>(HttpStatus.CONFLICT.value(), "Game is already approved, contact an assignor", ng);
+		}
+		else {
+			return new ResponseBody<Game>(HttpStatus.CONFLICT.value(), "Game is already accepted by opposing team, contact an assignor", ng);
+		}
 	}
 	
 	@Override

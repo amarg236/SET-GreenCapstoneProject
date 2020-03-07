@@ -5,7 +5,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import com.setgreen.setgreen.model.District;
-import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.Role;
 import com.setgreen.setgreen.model.RoleName;
 import com.setgreen.setgreen.model.Teams;

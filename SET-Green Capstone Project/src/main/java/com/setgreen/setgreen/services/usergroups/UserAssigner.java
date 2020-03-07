@@ -45,17 +45,18 @@ public class UserAssigner extends UserScheduler /*implements UserReference*/  {
 	}
 	@Override
 	public ResponseBody<Long> deleteGame(DataObject<Long> g) {
-		return stubbed(g.getData());
+		return gh.deleteGame(g.getData());
+		
 	}
 	
 	@Override
 	public ResponseBody<District> addDistrict(District d) {
-		return stubbed(d);
+		return dh.saveDistrict(d);
 	}
 
 	@Override
 	public ResponseBody<District> removeDistrict(District d) {
-		return stubbed(d);
+		return dh.deleteDistrict(d);
 	}
 
 	@Override
@@ -85,7 +86,7 @@ public class UserAssigner extends UserScheduler /*implements UserReference*/  {
 	
 	@Override 
 	public ResponseBody<Teams> removeTeam(Teams t){
-		return stubbed(t);
+		return th.deleteTeam(t);
 	}
 	
 	@Override
