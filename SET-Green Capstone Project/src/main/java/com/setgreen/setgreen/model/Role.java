@@ -20,10 +20,10 @@ public class Role {
     private Long Id;
     
     
-    private String userEmail;//FIXME enforce through code
+    //private String userEmail;//FIXME enforce through code
     
-    private String districtName;//FIXME Enforce districts through code
-    @ManyToOne
+    //private String districtName;//FIXME Enforce districts through code
+    @ManyToOne(cascade = CascadeType.ALL)
     private School school;
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;

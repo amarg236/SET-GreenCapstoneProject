@@ -1,14 +1,20 @@
 package com.setgreen.setgreen.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
+
+import com.setgreen.setgreen.model.scheduling.BadDay;
+import com.setgreen.setgreen.model.scheduling.IdealDay;
 
 import lombok.Data;
 
@@ -27,7 +33,10 @@ public class Teams implements Serializable{
 
 	@ManyToOne()
 	private School school;
-	
+	@OneToMany
+	private Set<IdealDay> idealDays;
+	@OneToMany
+	private Set<BadDay> badDays;
 	@NotEmpty(message = "Must have a team name")
 	@Column(length = 50)
 	private String tmName; //Good (display) name

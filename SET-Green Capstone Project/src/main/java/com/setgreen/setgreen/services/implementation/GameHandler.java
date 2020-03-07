@@ -41,7 +41,7 @@ public class GameHandler {
 				MailHandler snd = new MailHandler(new JavaMailSenderImpl());
 				Iterable<Role> i = tr.findByTmName(g.getAwayteam()).getSchool().getRoles();
 				for(Role x : i) {
-					m.setSendTo(x.getUserEmail());
+					m.setSendTo(x.getUser().getEmail());
 					m.setSubjectLine("Game against "+g.getAwayteam()+".");
 					m.setEmailContent(g.getAwayteam()+" has suggested a game to play.");
 					//snd.sendMailMessage(m);//TODO Switch from debug to deploy
@@ -81,7 +81,7 @@ public class GameHandler {
 		}
 	}
 	
-	public ResponseBody<Long> acceptGame(Long g) {//TODO verification of team
+	public ResponseBody<Long> teamVerifyGame(Long g) {//TODO verification of team
 		try{
 			gr.updateAccept(g, true);
 			return new ResponseBody<Long>(HttpStatus.ACCEPTED.value(), "Game Accepted", g);
@@ -105,7 +105,7 @@ public class GameHandler {
 	 * @param g ID of a game to verify
 	 * @return Response body detailing the status of the verification
 	 */
-	public ResponseBody<Long> verifyGame(Long g) {
+	public ResponseBody<Long> adminVerifyGame(Long g) {
 		try {
 			gr.updateVerify(g.longValue(), true);
 			return new ResponseBody<Long>(HttpStatus.ACCEPTED.value(), "Game Verified", g);
@@ -177,5 +177,9 @@ public class GameHandler {
 
 	public ResponseBody<List<Game>> JsonGetAll(){
 		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findAllByAwayAcceptedTrue());
+	}
+
+	public Game getGameById(Long id) {
+		return getGameById(new DataObject<Long>(id));
 	}
 }

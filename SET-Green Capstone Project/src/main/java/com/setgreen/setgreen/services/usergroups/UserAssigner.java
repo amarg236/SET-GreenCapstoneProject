@@ -3,7 +3,6 @@ package com.setgreen.setgreen.services.usergroups;
 import org.springframework.stereotype.Service;
 
 import com.setgreen.setgreen.model.District;
-import com.setgreen.setgreen.model.Game;
 import com.setgreen.setgreen.model.ResponseBody;
 import com.setgreen.setgreen.model.RoleName;
 import com.setgreen.setgreen.model.School;
@@ -42,7 +41,7 @@ public class UserAssigner extends UserScheduler /*implements UserReference*/  {
 	}
 	@Override
 	public ResponseBody<Long> approveGame(Long g){
-		return gh.verifyGame(g);
+		return gh.adminVerifyGame(g);
 	}
 	@Override
 	public ResponseBody<Long> deleteGame(DataObject<Long> g) {

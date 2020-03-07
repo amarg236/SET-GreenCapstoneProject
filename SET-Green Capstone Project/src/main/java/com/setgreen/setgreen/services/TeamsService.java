@@ -7,4 +7,6 @@ public interface TeamsService {
 	ResponseBody<Teams> saveTeam(Teams tm);
 
 	ResponseBody<Iterable<Teams>> getTeams();
+
+	ResponseBody<Teams> getTeamsByName(String tm);
 }

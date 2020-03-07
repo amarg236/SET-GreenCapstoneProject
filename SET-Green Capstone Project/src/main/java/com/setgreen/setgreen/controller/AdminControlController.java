@@ -47,14 +47,14 @@ public class AdminControlController{
     
     @PostMapping("day/ban") //XXX TEST
     public ResponseBody<EventDay> banDay(@RequestBody EventDay d, Authentication auth) {
-    	return hlp.getRole(auth).addEventDay(d);
+    	return hlp.getRoleByBest(auth).addEventDay(d);
     }
     @PostMapping("day/allow") //XXX TEST
     public ResponseBody<EventDay> unbanDay(@RequestBody EventDay d, Authentication auth) {
-    	return hlp.getRole(auth).removeEventDay(d);
+    	return hlp.getRoleByBest(auth).removeEventDay(d);
     }
     @PostMapping("game/verify")
     public ResponseBody<Long> verifyGame(@RequestBody Game g, Authentication auth) {
-    	return hlp.getRole(auth).approveGame(g.getId());
+    	return hlp.getRoleByBest(auth).approveGame(g.getId());
     }
 }

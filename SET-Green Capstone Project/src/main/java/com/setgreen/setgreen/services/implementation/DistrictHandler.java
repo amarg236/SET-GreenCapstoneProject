@@ -1,4 +1,4 @@
-package com.setgreen.setgreen.services.admin;
+package com.setgreen.setgreen.services.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

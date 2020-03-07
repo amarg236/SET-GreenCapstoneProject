@@ -31,5 +31,10 @@ public class TeamsServiceImpl implements TeamsService{
 	public ResponseBody<Iterable<Teams>> getTeams() {
 		return new ResponseBody<Iterable<Teams>>(HttpStatus.ACCEPTED.value(), "Teams found", tr.findAll());
 	}
+
+	@Override
+	public ResponseBody<Teams> getTeamsByName(String tm) {
+		return new ResponseBody<Teams>(HttpStatus.ACCEPTED.value(), "Teams found", tr.findByTmName(tm));
+	}
 	
 }

@@ -28,7 +28,7 @@ public class SchoolController {
 	 */
 	@PostMapping("add")
 	public ResponseBody<School> addSchool(@RequestBody School s, Authentication auth) {
-		return hlp.getRole(auth).addSchool(s);
+		return hlp.getRoleByBest(auth).addSchool(s);
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public class SchoolController {
 	 */
 	@PostMapping("remove")
 	public ResponseBody<School> deleteSchool(@RequestBody School s, Authentication auth) {
-		return hlp.getRole(auth).removeSchool(s);
+		return hlp.getRoleByBest(auth).removeSchool(s);
 	}
 	
 	/**

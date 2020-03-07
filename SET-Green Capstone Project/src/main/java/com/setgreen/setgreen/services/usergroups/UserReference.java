@@ -18,7 +18,7 @@ import com.setgreen.setgreen.model.scheduling.IdealDay;
 import com.setgreen.setgreen.services.AdminControlService;
 import com.setgreen.setgreen.services.DayHandler;
 import com.setgreen.setgreen.services.UserService;
-import com.setgreen.setgreen.services.admin.DistrictHandler;
+import com.setgreen.setgreen.services.implementation.DistrictHandler;
 import com.setgreen.setgreen.services.implementation.GameHandler;
 import com.setgreen.setgreen.services.implementation.RoleServiceImpl;
 import com.setgreen.setgreen.services.implementation.SchoolHandler;
@@ -53,7 +53,7 @@ public abstract class UserReference {
 	@Autowired
 	public AdminControlService ah;
 	/**
-	 * @return rolename associated with this class
+	 * @return rolename associated with this class, should be unique among all implementations of this class.
 	 */
 	public abstract RoleName getName();
 	
@@ -118,7 +118,8 @@ public abstract class UserReference {
 	 * @return responsebody with game and status
 	 */
 	public abstract ResponseBody<Long> deleteGame(DataObject<Long> id);
-	/** admin, add a district to the service
+	/** userlevel, cancel an unaccepted game request, or request to have an admin cancel their game
+	 * admin, add a district to the service
 	 * @param d district to add
 	 * @return responsebody with status
 	 */

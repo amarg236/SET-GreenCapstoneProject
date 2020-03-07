@@ -87,7 +87,7 @@ public class User  {
         this.update_At = new Date();
     }
 
-
+/* FIXME CLEANUP
 	public RoleName getRoles(District d, Iterable<Role> iterable) {
 		for(Role x : iterable) {
 			//XXX we abuse short circuit logic here (in that if an admin is found we take it) to avoid potential "no district exists" errors for our admin.
@@ -98,7 +98,7 @@ public class User  {
 		}
 		return RoleName.UNFOUND;
 	}
-
+*/
 
 
 

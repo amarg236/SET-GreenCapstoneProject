@@ -40,7 +40,7 @@ public class MailHandler {
 		Mail m = new Mail();
 		m.setSendTo(toInvite.getEmail());
 		m.setSubjectLine("Invite to schedule games");//XXX BETTER LINK SYSTEM
-		m.setEmailContent("You have been invited to join an email scheduling system.\nFollow this link to finish the sign up process: "+HOSTNAME+"api/auth/login?u="+URLEncoder.encode(toInvite.getEmail(), "UTF-8")+"&p="+toInvite.getPassword());//FIXME USES USERNAME if we switch to email, **this breaks**
+		m.setEmailContent("You have been invited to join an email scheduling system.\nFollow this link to finish the sign up process: "+HOSTNAME+"api/auth/login?u="+URLEncoder.encode(toInvite.getEmail(), "UTF-8")+"&p="+toInvite.getPassword());
 		return m;
 	}
 	public String genLink() {//XXX MOVE TO UTILITY CLASS. If we have time to do that. Also it should be named "genString()" and have an override of "genString(int lengthOfString)" if I find the time

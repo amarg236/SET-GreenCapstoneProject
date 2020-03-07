@@ -159,7 +159,7 @@ public class UserController {
      */
     @PostMapping("createuser")
     public ResponseBody<User> addNewUser(@Valid @RequestBody SignUpForm suf, Authentication auth, BindingResult result) {
-    	return hlp.getRole(auth).inviteUser(suf);
+    	return hlp.getRoleByBest(auth).inviteUser(suf);
     }
     
     /**

@@ -39,7 +39,7 @@ public class TeamController {
 	 */
 	@PostMapping("add")
 	public ResponseBody<Teams> addTeam(@RequestBody Teams t, Authentication auth) {
-		return hlp.getRole(auth).addTeam(t);
+		return hlp.getRoleByLocation(auth, t.getSchool().getDistrict()).addTeam(t);
 	}
 	
 	/**
@@ -50,25 +50,22 @@ public class TeamController {
 		return tmRpo.getTeams();
 	}
 	
-	/** takes a bad day defined as:
-	 *  {"dte":"YYYY-MM-DD", "tm":{"id":TEAM_ID_NUMBER}}
+	/** takes a bad day and saves it
 	 * @param d Day to set as a bad day for a given team
 	 * @return ResponseBody with status of request and day sent
 	 *
 	 */
 	@PostMapping("day/bad/save") //TODO Decide if this method should allow IDs to be sent to override dates //TODO Team validation
 	public ResponseBody<BadDay> saveBadDay(@RequestBody BadDay d, Authentication auth) {
-		return hlp.getRole(auth).addBadDay(d);
+		return hlp.getRoleByTeam(auth, d.getTm()).addBadDay(d);
 	}
-	/** takes a bad day defined as:
-	 *  {"id":ID_OF_DAY}
-	 *  and deletes it by id 
+	/** takes a bad day and deletes it by id 
 	 * @param d day to delete
 	 * @return responsebody with the removed bad day
 	 */
-	@PostMapping("day/bad/remove") //TODO Team validation
+	@PostMapping("day/bad/remove")
 	public ResponseBody<BadDay> removeBadDay(@RequestBody BadDay d, Authentication auth) {
-		return hlp.getRole(auth).removeBadDay(d);
+		return hlp.getRoleByTeam(auth, d.getTm()).removeBadDay(d);
 	}
 	
 	/**
@@ -93,7 +90,7 @@ public class TeamController {
 	 */
 	@PostMapping("day/good/save") //TODO team validation
 	public ResponseBody<IdealDay> wantGameHere(@RequestBody IdealDay d, Authentication auth) {
-		return hlp.getRole(auth).saveIdealDay(d);
+		return hlp.getRoleByTeam(auth, d.getTm()).saveIdealDay(d);
 	}
 	/**
 	 * @param d day to remove (must include ID)
@@ -101,7 +98,7 @@ public class TeamController {
 	 */
 	@PostMapping("day/good/remove") //TODO team validation
 	public ResponseBody<IdealDay> removeIdealDay(@RequestBody IdealDay d, Authentication auth) {
-		return hlp.getRole(auth).removeIdealDay(d);
+		return hlp.getRoleByTeam(auth, d.getTm()).removeIdealDay(d);
 	}
 	/**
 	 * @return responsebody with an iterable of all good days in database
