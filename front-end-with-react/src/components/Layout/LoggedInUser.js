@@ -4,7 +4,8 @@ import Cal from "../Project/Cal";
 import "../../stylesheets/home.css";
 import UserDashboard from "./UserRoleView/UserDashboard";
 import AssignorDashboard from "./UserRoleView/AssignorDashboard";
-import AdminDashboard from "./UserRoleView/AssignorDashboard";
+import AdminDashboard from "./UserRoleView/AdminDashboard";
+import { connect } from "react-redux";
 
 class LoggedInUser extends Component {
   constructor(props) {
@@ -17,12 +18,36 @@ class LoggedInUser extends Component {
   render() {
     // return <Cal />;
     //we are gonna put sliders and other contents in front page
-    return (
-      <div className="jumbotron">
-        <h1 className="display-4">We will display depending upon user Roles</h1>
-      </div>
-    );
+    console.log(this.props.role);
+
+    switch (this.props.role) {
+      case "ADMIN":
+        return <AdminDashboard />;
+
+      case "USER":
+        return <UserDashboard />;
+
+      case "ASSIGNOR":
+        return <AssignorDashboard />;
+      default:
+        return (
+          <div>
+            <div className="jumbotron">
+              <h1 className="display-4">
+                Sorry! Will are not a valid user. You will be logged out. Bye
+                bye
+              </h1>
+            </div>
+          </div>
+        );
+    }
   }
 }
 
-export default LoggedInUser;
+const mapStatetoProps = state => {
+  return {
+    role: state.userReducer.role
+  };
+};
+
+export default connect(mapStatetoProps)(LoggedInUser);
