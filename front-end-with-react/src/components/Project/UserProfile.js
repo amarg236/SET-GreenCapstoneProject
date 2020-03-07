@@ -21,11 +21,13 @@ class UserProfile extends Component {
     axios
       .post(Authtoken.getBaseUrl() + "/api/auth/find/email", dataBody, {
         headers: {
-          Authorization: "Bearer " + this.props.token.split(" ")[1]
+          Authorization:
+            "Bearer " + JSON.parse(localStorage.getItem("userInfo")).token
         }
       })
       .then(res => {
         if (res.data.httpStatusCode === 202) {
+          console.log(res.data);
           this.setState({
             firstName: res.data.result.firstname,
             lastName: res.data.result.lastname

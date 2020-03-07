@@ -75,12 +75,26 @@ class CreateGame extends Component {
       .add(startTime.minutes(), "minute");
 
     const gameObject = {
-      approved: false,
+      // approved: false,
+      // awayteam: this.state.againstTeam,
+      // awaydistrict: this.state.againstTeamDistrict,
+      // duration: 30,
+      // hometeam: this.state.homeTeam,
+      // homedistrict: "Monroe",
+      // location: this.state.gameLocation,
+      // time: moment(gameStart).format("YYYY-MM-DD HH:mm")
+
       awayteam: this.state.againstTeam,
-      awaydistrict: this.state.againstTeamDistrict,
+      awaydistrict: {
+        districtName: "D1",
+        id: 1
+      },
       duration: 30,
       hometeam: this.state.homeTeam,
-      homedistrict: "Monroe",
+      homedistrict: {
+        districtName: "D1",
+        id: 1
+      },
       location: this.state.gameLocation,
       time: moment(gameStart).format("YYYY-MM-DD HH:mm")
     };

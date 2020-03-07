@@ -4,6 +4,7 @@ import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { Table } from "react-bootstrap";
+import { connect } from "react-redux";
 
 class PendingGame extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class PendingGame extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.token);
     const emptyBody = {};
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyBody, {
@@ -61,14 +63,14 @@ class PendingGame extends Component {
       })
       .then(res => {
         window.alert("The game has been approved!");
-        window.location.reload();
+        // window.location.reload();
       });
   }
 
   denyGame(id) {
     console.log("i am here");
     const emptyObj = {
-      id
+      data: id
     };
 
     axios
@@ -171,4 +173,9 @@ class PendingGame extends Component {
   }
 }
 
-export default PendingGame;
+const mapStatetoProps = state => {
+  return {
+    token: state.userReducer.token
+  };
+};
+export default connect(mapStatetoProps, null)(PendingGame);
