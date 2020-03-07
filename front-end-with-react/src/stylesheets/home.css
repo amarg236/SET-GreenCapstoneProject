@@ -100,3 +100,7 @@ It is for the login font title  */
 a {
   color: #ffffff;
 }
+
+.dropdown-menu{
+  width: 80%;
+}

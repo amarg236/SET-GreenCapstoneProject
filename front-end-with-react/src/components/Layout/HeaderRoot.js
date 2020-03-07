@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import Authtoken from "../../Utility/AuthToken";
+import ProfileButton from "../Buttons/ProfileButton";
 import { withRouter } from "react-router-dom";
 import "../../stylesheets/header.css";
 import GreenBackground from "./GreenBackground";
 import Header from "./Header";
 import { connect } from "react-redux";
+import LoginHeader from "./LoginHeader";
 
 class HeaderRoot extends Component {
   // constructor(props) {
@@ -35,9 +37,11 @@ class HeaderRoot extends Component {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span className="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon">
+            </span>
           </button>
-          {this.props.isAuthenticated ? <Header /> : null}
+
+          {this.props.isAuthenticated ? <Header /> : <LoginHeader />}
         </nav>
         <GreenBackground />
       </div>

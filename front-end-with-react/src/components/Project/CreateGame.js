@@ -123,7 +123,7 @@ class CreateGame extends Component {
 
           <div className="form-inline">
             <div className="form-group mb-2">
-              <label>Date: &nbsp;</label>
+              <label>Date: &nbsp;&nbsp;&nbsp; </label>
               <input
                 type="date"
                 className="input-group"

@@ -15,6 +15,7 @@ import ViewGames from "./components/Project/ViewGames";
 import UserProfile from "./components/Project/UserProfile";
 import { connect } from "react-redux";
 import HeaderRoot from "./components/Layout/HeaderRoot";
+import Cal from "./components/Project/Cal";
 
 class App extends React.Component {
   render() {
@@ -25,7 +26,7 @@ class App extends React.Component {
           <Container fluid={true} className="body-container-style">
             <Row noGutters={true} className="body-row-style justify-content-sm-center">
               <Col lg={3} md={4} sm={10} className="login-column">
-                {this.props.role ? <ManageBox /> : <SignIn />}
+                {this.props.role ? <ManageBox /> : null}
               </Col>
               <Col lg={9} md={8} sm={10} style={{ paddingLeft: "1%" }}>
                 <div
