@@ -38,6 +38,7 @@ class LoggedInUser extends Component {
                 bye
               </h1>
             </div>
+            <Cal />
           </div>
         );
     }

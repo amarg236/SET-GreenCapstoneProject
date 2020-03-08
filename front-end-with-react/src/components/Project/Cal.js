@@ -1,7 +1,89 @@
+// import React from "react";
+// import axios from "axios";
+// import moment from "moment";
+// import Authtoken from "../../Utility/AuthToken";
+// import { connect } from "react-redux";
+
+// import {
+//   Inject,
+//   ScheduleComponent,
+//   Day,
+//   Week,
+//   WorkWeek,
+//   Month
+// } from "@syncfusion/ej2-react-schedule";
+// import { extend } from "@syncfusion/ej2-base";
+// // import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+
+// function processData(rawEvents) {
+//   console.log(rawEvents.result);
+//   return rawEvents.result.map(event => ({
+//     Id: event.id,
+//     StartTime: "2020-03-08 12:30",
+//     EndTime: "2020-03-08 13:00",
+//     // StartTime: moment(event.time, "YYYY-MM-DD HH:mm").toISOString(),
+//     // EndTime: moment(event.time, "YYYY-MM-DD HH:mm")
+//     //   .add(event.duration, "minute")
+//     //   .toISOString(),
+//     Subject: `${event.hometeam} vs ${event.awayteam}`,
+//     Location: event.location
+//   }));
+// }
+// class Cal extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       jData: []
+//     };
+//     // this.data = extend([], localStorage.getItem("jsonFeed"), null, true);
+//   }
+
+//   componentDidMount() {
+//     const emptyBody = {};
+//     axios
+//       .post(Authtoken.getBaseUrl() + "/api/game/get/json", emptyBody, {
+//         headers: {
+//           Authorization: "Bearer " + this.props.token
+//         }
+//       })
+//       .then(res => {
+//         // this.setState({ jData: res.data });
+//         // console.log(res.data, processData(res.data));
+//         //console.log(res.data);
+//         this.setState({ jData: extend([], processData(res.data), null, true) });
+//       });
+//   }
+
+//   async fetchData() {}
+
+//   render() {
+//     return (
+//       <ScheduleComponent
+//         currentView="Month"
+//         eventSettings={{ dataSource: this.state.jData }}
+//         // selectedDate={new Date(2020, 2, 20)}
+//         style={{ maxHeight: "200vh", minHeight: "80vh" }}
+//       >
+//         {console.log("i am good")}
+//         <Inject services={[Day, Week, WorkWeek, Month]} />
+//       </ScheduleComponent>
+//     );
+//   }
+// }
+
+// const mapStatetoProps = state => {
+//   return {
+//     token: state.userReducer.token
+//   };
+// };
+
+// export default connect(mapStatetoProps)(Cal);
+
 import React from "react";
 import axios from "axios";
 import moment from "moment";
 import Authtoken from "../../Utility/AuthToken";
+import { connect } from "react-redux";
 
 import {
   Inject,
@@ -17,12 +99,15 @@ import { extend } from "@syncfusion/ej2-base";
 // import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 
 function processData(rawEvents) {
-  return rawEvents.map(event => ({
+  console.log(rawEvents.result);
+  return rawEvents.result.map(event => ({
     Id: event.id,
-    StartTime: moment(event.time, "YYYY-MM-DD HH:mm").toISOString(),
-    EndTime: moment(event.time, "YYYY-MM-DD HH:mm")
-      .add(event.duration, "minute")
-      .toISOString(),
+    StartTime: "2020-03-08 12:30",
+    EndTime: "2020-03-08 13:00",
+    // StartTime: moment(event.time, "YYYY-MM-DD HH:mm").toISOString(),
+    // EndTime: moment(event.time, "YYYY-MM-DD HH:mm")
+    //   .add(event.duration, "minute")
+    //   .toISOString(),
     Subject: `${event.hometeam} vs ${event.awayteam}`,
     Location: event.location
   }));
@@ -37,15 +122,22 @@ class Cal extends React.Component {
   }
 
   componentDidMount() {
+    const emptyBody = {};
     axios
-      .get(Authtoken.getBaseUrl() + "/api/auth/jsonData")
-
+      .post(Authtoken.getBaseUrl() + "/api/public/get/game/json", emptyBody, {
+        headers: {
+          Authorization: "Bearer " + this.props.token
+        }
+      })
       .then(res => {
         // this.setState({ jData: res.data });
         // console.log(res.data, processData(res.data));
+        //console.log(res.data);
         this.setState({ jData: extend([], processData(res.data), null, true) });
       });
   }
+
+  async fetchData() {}
 
   onActionBegin(args) {
     if (args.requestType === "toolbarItemRendering") {
@@ -72,7 +164,8 @@ class Cal extends React.Component {
       <ScheduleComponent
         cssClass="excel-export"
         currentView="Month"
-        eventSettings={{ dataSource: this.data }}
+        // eventSettings={{ dataSource: this.data }}
+        eventSettings={{ dataSource: this.state.jData }}
         id="schedule"
         ref={t => (this.scheduleObj = t)}
         actionBegin={this.onActionBegin.bind(this)}
@@ -83,15 +176,23 @@ class Cal extends React.Component {
           minWidth: "40vh"
         }}
       >
-        <ViewsDirective>
-          <ViewDirective option="Month" />
-          <ViewDirective option="Week" />
-          <ViewDirective option="Day" />
-        </ViewsDirective>
+        {
+          <ViewsDirective>
+            <ViewDirective option="Month" />
+            <ViewDirective option="Week" />
+            <ViewDirective option="Day" />
+          </ViewsDirective>
+        }
+
         <Inject services={[Day, Week, Month, ExcelExport]} />
       </ScheduleComponent>
     );
   }
 }
+const mapStatetoProps = state => {
+  return {
+    token: state.userReducer.token
+  };
+};
 
-export default Cal;
+export default connect(mapStatetoProps)(Cal);
