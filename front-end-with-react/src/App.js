@@ -16,58 +16,14 @@ import ViewGames from "./components/Project/ViewGames";
 import UserProfile from "./components/Project/UserProfile";
 import { connect } from "react-redux";
 import HeaderRoot from "./components/Layout/HeaderRoot";
-<<<<<<< HEAD
-import Cal from "./components/Project/Cal";
-=======
 import LoggedInUserDashboard from "./components/Layout/LoggedInUser";
 import history from "./Utility/history";
 import SidebarComp from "./components/Layout/SidebarComp";
 import { Layout, Breadcrumb, Content } from "antd";
->>>>>>> f145d3290b53d0ef070bec2d6d2b5d098c32df50
 
 class App extends React.Component {
   render() {
     return (
-<<<<<<< HEAD
-      <Router>
-        <div className="App">
-          <HeaderRoot />
-          <Container fluid={true} className="body-container-style">
-            <Row noGutters={true} className="body-row-style justify-content-sm-center">
-              <Col lg={3} md={4} sm={10} className="login-column">
-                {this.props.role ? <ManageBox /> : null}
-              </Col>
-              <Col lg={9} md={8} sm={10} style={{ paddingLeft: "1%" }}>
-                <div
-                  className="auth-inner"
-                  style={{ paddingLeft: "3%", paddingRight: "3%" }}
-                >
-                  <Switch>
-                    <Route exact path="/" component={Home} />
-                    <ProtectedRoute
-                      exact
-                      path="/createGame"
-                      component={CreateGame}
-                    />
-                    <ProtectedRoute
-                      exact
-                      path="/viewGames"
-                      component={ViewGames}
-                    />
-                    <ProtectedRoute
-                      exact
-                      path="/userProfile"
-                      component={UserProfile}
-                    />
-                    <Route path="*" component={() => "404 NOT FOUND"} />
-                  </Switch>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-          <Footer />
-        </div>
-=======
       <Router history={history}>
         <Layout>
           <SidebarComp />
@@ -93,7 +49,6 @@ class App extends React.Component {
           </Layout>
         </Layout>
         <FooterComp />
->>>>>>> f145d3290b53d0ef070bec2d6d2b5d098c32df50
       </Router>
     );
   }
