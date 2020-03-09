@@ -5,6 +5,9 @@ import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 
+import { Layout } from "antd";
+const { Content } = Layout;
+
 class CreateGame extends Component {
   constructor(props) {
     super(props);
@@ -75,12 +78,26 @@ class CreateGame extends Component {
       .add(startTime.minutes(), "minute");
 
     const gameObject = {
-      approved: false,
+      // approved: false,
+      // awayteam: this.state.againstTeam,
+      // awaydistrict: this.state.againstTeamDistrict,
+      // duration: 30,
+      // hometeam: this.state.homeTeam,
+      // homedistrict: "Monroe",
+      // location: this.state.gameLocation,
+      // time: moment(gameStart).format("YYYY-MM-DD HH:mm")
+
       awayteam: this.state.againstTeam,
-      awaydistrict: this.state.againstTeamDistrict,
+      awaydistrict: {
+        districtName: "D1",
+        id: 1
+      },
       duration: 30,
       hometeam: this.state.homeTeam,
-      homedistrict: "Monroe",
+      homedistrict: {
+        districtName: "D1",
+        id: 1
+      },
       location: this.state.gameLocation,
       time: moment(gameStart).format("YYYY-MM-DD HH:mm")
     };
@@ -101,122 +118,135 @@ class CreateGame extends Component {
 
   render() {
     return (
-      <div className="gameLayout">
-        <form className="form-group " onSubmit={this.gameSubmit}>
-          <div className="form-signin" style={{ justifyContent: "center" }}>
-            <h3>Create New Game</h3>
-          </div>
-
-          <div className="form-group">
-            <label>Home Team</label>
-
-            <select
-              className="form-control"
-              value={this.state.homeTeam}
-              onChange={this.onChangeHomeTeam}
-            >
-              <option>Choose Home Team</option>
-              <option value="Home Team Jr. Boys">Home Team Jr. Boys</option>
-              <option value="Home Team Jr Girls">Home Team Jr Girls</option>
-            </select>
-          </div>
-
-          <div className="form-inline">
-            <div className="form-group mb-2">
-              <label>Date: &nbsp;&nbsp;&nbsp; </label>
-              <input
-                type="date"
-                className="input-group"
-                value={this.state.gameDate}
-                onChange={this.onChangeGameDate}
-              />
+      <Content
+        style={{
+          padding: 24,
+          margin: 0,
+          minHeight: 580
+        }}
+        className="site-layout-background"
+      >
+        <div className="gameLayout">
+          <form className="form-group " onSubmit={this.gameSubmit}>
+            <div className="form-signin" style={{ justifyContent: "center" }}>
+              <h3>Create New Game</h3>
             </div>
-            <div className="form-group mx-sm-3 mb-2">
-              <label>Start Time: &nbsp;</label>
-              <input
-                type="text"
-                className="form-control"
-                onChange={this.onChangeGameStartTime}
-                value={this.state.gameStartTime}
-                placeholder="HH:MM"
-              />
-            </div>
-            <div className="form-group mx-sm-3 mb-2">
-              <label>End Time: &nbsp;</label>
-              <input
-                type="text"
-                className="form-control"
-                onChange={this.onChangeGameEndTime}
-                value={this.state.gameEndTime}
-                placeholder="HH:MM"
-              />
-            </div>
-          </div>
-          <div className="form-group">
-            <label>Game Location</label>
-            <input
-              className="form-control"
-              placeholder="Enter Game Location"
-              onChange={this.onChangeGameLocation}
-              value={this.state.gameLocation}
-            />
-          </div>
-          <div className="form-group row">
+
             <div className="form-group">
-              <label>Opponent Team</label>
+              <label>Home Team</label>
 
               <select
                 className="form-control"
-                onChange={this.onChangeAgainstTeam}
-                value={this.state.againstTeam}
+                value={this.state.homeTeam}
+                onChange={this.onChangeHomeTeam}
               >
-                <option>Choose Opponent Team</option>
-                <option value="West Monroe High School">
-                  West Monroe High School
-                </option>
-                <option value="Neville High School">Neville High School</option>
-                <option value="Carroll Junior High School">
-                  Carroll Junior High School
-                </option>
-                <option value="Lee Junior High School">
-                  Lee Junior High School
-                </option>
-                <option value="Wossman High School">Wossman High School</option>
+                <option>Choose Home Team</option>
+                <option value="Home Team Jr. Boys">Home Team Jr. Boys</option>
+                <option value="Home Team Jr Girls">Home Team Jr Girls</option>
               </select>
             </div>
-            <div className="form-group col-sm">
-              <label>Opponent Team District</label>
+
+            <div className="form-inline">
+              <div className="form-group mb-2">
+                <label>Date: &nbsp;</label>
+                <input
+                  type="date"
+                  className="input-group"
+                  value={this.state.gameDate}
+                  onChange={this.onChangeGameDate}
+                />
+              </div>
+              <div className="form-group mx-sm-3 mb-2">
+                <label>Start Time: &nbsp;</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={this.onChangeGameStartTime}
+                  value={this.state.gameStartTime}
+                  placeholder="HH:MM"
+                />
+              </div>
+              <div className="form-group mx-sm-3 mb-2">
+                <label>End Time: &nbsp;</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={this.onChangeGameEndTime}
+                  value={this.state.gameEndTime}
+                  placeholder="HH:MM"
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <label>Game Location</label>
               <input
                 className="form-control"
-                placeholder="Enter P1 , P2, P3"
-                onChange={this.onChangeAgainstTeamDistrict}
-                value={this.state.againstTeamDistrict}
+                placeholder="Enter Game Location"
+                onChange={this.onChangeGameLocation}
+                value={this.state.gameLocation}
               />
             </div>
-          </div>
+            <div className="form-group row">
+              <div className="form-group">
+                <label>Opponent Team</label>
 
-          <div
-            className="pos"
-            style={{
-              paddingLeft: "10%",
-              paddingRight: "10%"
-            }}
-          >
-            <button
-              className="btn btn-block btn-success"
+                <select
+                  className="form-control"
+                  onChange={this.onChangeAgainstTeam}
+                  value={this.state.againstTeam}
+                >
+                  <option>Choose Opponent Team</option>
+                  <option value="West Monroe High School">
+                    West Monroe High School
+                  </option>
+                  <option value="Neville High School">
+                    Neville High School
+                  </option>
+                  <option value="Carroll Junior High School">
+                    Carroll Junior High School
+                  </option>
+                  <option value="Lee Junior High School">
+                    Lee Junior High School
+                  </option>
+                  <option value="Wossman High School">
+                    Wossman High School
+                  </option>
+                </select>
+              </div>
+              <div className="form-group col-sm">
+                <label>Opponent Team District</label>
+                <input
+                  className="form-control"
+                  placeholder="Enter P1 , P2, P3"
+                  onChange={this.onChangeAgainstTeamDistrict}
+                  value={this.state.againstTeamDistrict}
+                />
+              </div>
+            </div>
+
+            <div
+              className="pos"
               style={{
-                height: "35%",
-                marginTop: "5%",
-                marginBottom: "5%"
+                paddingLeft: "10%",
+                paddingRight: "10%"
               }}
-              type="submit"
-              onClick={this.gameSubmit}
             >
-              REQUEST GAME
-            </button>
-          </div>
-        </form>
-      </div>
+              <button
+                className="btn btn-block btn-success"
+                style={{
+                  height: "35%",
+                  marginTop: "5%",
+                  marginBottom: "5%"
+                }}
+                type="submit"
+                onClick={this.gameSubmit}
+              >
+                REQUEST GAME
+              </button>
+            </div>
+          </form>
+        </div>
+      </Content>
     );
   }
 }

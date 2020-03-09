@@ -1,5 +1,6 @@
 import axios from "axios";
 import Authtoken from "../Utility/AuthToken";
+import history from "../Utility/history";
 
 export const loginAction = (username, password) => {
   return dispatch => {
@@ -21,6 +22,7 @@ export const loginAction = (username, password) => {
             username,
             role: saveDatainFormat.role
           });
+          history.push("./dashboard");
         }
       })
       .catch(e => {

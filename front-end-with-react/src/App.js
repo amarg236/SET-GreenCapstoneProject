@@ -1,25 +1,34 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
 import SignIn from "./components/Project/SignIn";
 import Home from "./components/Layout/Home";
 import CreateGame from "./components/Project/CreateGame";
-import Footer from "./components/Layout/Footer";
+import FooterComp from "./components/Layout/FooterComp";
 import ProtectedRoute from "./Utility/protectedRoute";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Cal from "./components/Project/Cal";
 import ManageBox from "./components/Project/ManageBox";
 import ViewGames from "./components/Project/ViewGames";
 import UserProfile from "./components/Project/UserProfile";
 import { connect } from "react-redux";
 import HeaderRoot from "./components/Layout/HeaderRoot";
+<<<<<<< HEAD
 import Cal from "./components/Project/Cal";
+=======
+import LoggedInUserDashboard from "./components/Layout/LoggedInUser";
+import history from "./Utility/history";
+import SidebarComp from "./components/Layout/SidebarComp";
+import { Layout, Breadcrumb, Content } from "antd";
+>>>>>>> f145d3290b53d0ef070bec2d6d2b5d098c32df50
 
 class App extends React.Component {
   render() {
     return (
+<<<<<<< HEAD
       <Router>
         <div className="App">
           <HeaderRoot />
@@ -58,6 +67,33 @@ class App extends React.Component {
           </Container>
           <Footer />
         </div>
+=======
+      <Router history={history}>
+        <Layout>
+          <SidebarComp />
+          <Layout className="site-layout">
+            <HeaderRoot />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <ProtectedRoute
+                exact
+                path="/dashboard"
+                component={LoggedInUserDashboard}
+              />
+              <ProtectedRoute exact path="/createGame" component={CreateGame} />
+              <ProtectedRoute exact path="/viewGames" component={ViewGames} />
+              <ProtectedRoute
+                exact
+                path="/userProfile"
+                component={UserProfile}
+              />
+              <ProtectedRoute exact path="/calander" component={Cal} />
+              <Route path="*" component={() => "404 NOT FOUND"} />
+            </Switch>
+          </Layout>
+        </Layout>
+        <FooterComp />
+>>>>>>> f145d3290b53d0ef070bec2d6d2b5d098c32df50
       </Router>
     );
   }
