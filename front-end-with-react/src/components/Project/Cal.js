@@ -97,6 +97,8 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 import { extend } from "@syncfusion/ej2-base";
 // import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
+import { Layout } from "antd";
+const { Content } = Layout;
 
 function processData(rawEvents) {
   console.log(rawEvents.result);
@@ -161,31 +163,40 @@ class Cal extends React.Component {
 
   render() {
     return (
-      <ScheduleComponent
-        cssClass="excel-export"
-        currentView="Month"
-        // eventSettings={{ dataSource: this.data }}
-        eventSettings={{ dataSource: this.state.jData }}
-        id="schedule"
-        ref={t => (this.scheduleObj = t)}
-        actionBegin={this.onActionBegin.bind(this)}
-        readonly={true}
+      <Content
         style={{
-          maxHeight: "80vh",
-          minHeight: "70vh",
-          minWidth: "40vh"
+          padding: 24,
+          margin: 0,
+          minHeight: 580
         }}
+        className="site-layout-background"
       >
-        {
-          <ViewsDirective>
-            <ViewDirective option="Month" />
-            <ViewDirective option="Week" />
-            <ViewDirective option="Day" />
-          </ViewsDirective>
-        }
+        <ScheduleComponent
+          cssClass="excel-export"
+          currentView="Month"
+          // eventSettings={{ dataSource: this.data }}
+          eventSettings={{ dataSource: this.state.jData }}
+          id="schedule"
+          ref={t => (this.scheduleObj = t)}
+          actionBegin={this.onActionBegin.bind(this)}
+          readonly={true}
+          style={{
+            maxHeight: "80vh",
+            minHeight: "70vh",
+            minWidth: "40vh"
+          }}
+        >
+          {
+            <ViewsDirective>
+              <ViewDirective option="Month" />
+              <ViewDirective option="Week" />
+              <ViewDirective option="Day" />
+            </ViewsDirective>
+          }
 
-        <Inject services={[Day, Week, Month, ExcelExport]} />
-      </ScheduleComponent>
+          <Inject services={[Day, Week, Month, ExcelExport]} />
+        </ScheduleComponent>
+      </Content>
     );
   }
 }

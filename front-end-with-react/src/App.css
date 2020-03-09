@@ -1,74 +1,43 @@
-body{
-  min-height: 100vh;
-  height: 100vh;
+#components-layout-demo-custom-trigger .trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
 }
 
-.App{
-  min-height: 100%;
-  height:100%;
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
 }
 
-img {
-  width: 100%;
+#components-layout-demo-custom-trigger {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
+.logo {
+  height: 32px;
+  color: white;
+  text-align: center;
+  margin: 16px;
+  font-weight: bolder;
+}
+.site-layout {
+  background: rgb(240, 242, 245);
 }
 
-.navbar {
-  background-color: #e3f2fd;
-}
-.fa.fa-edit {
-  color: #18a2b9;
+/* .site-layout-background {
+  background: #ffff;
+} */
+
+.nav_bar {
+  background: #ffff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 }
 
-.list-group-item.delete:hover {
-  cursor: -webkit-grab;
-  background-color: pink;
-}
-
-.list-group-item.update:hover {
-  cursor: -webkit-grab;
-  background-color: gainsboro;
-}
-
-.list-group-item.board:hover {
-  cursor: -webkit-grab;
-  background-color: gainsboro;
-}
-
-.fa.fa-minus-circle {
-  color: red;
-}
-
-.landing {
-  position: relative;
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-  margin-top: -24px;
-  margin-bottom: -50px;
-}
-
-.landing-inner {
-  padding-top: 80px;
-}
-
-.dark-overlay {
-  background-color: rgba(0, 0, 0, 0.7);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.card-form {
-  opacity: 0.9;
-}
-
-.latest-profiles-img {
-  width: 40px;
-  height: 40px;
-}
-
-.form-control::placeholder {
-  color: #bbb !important;
+.nav_bar_toggle {
+  margin-left: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s, padding 0s;
 }

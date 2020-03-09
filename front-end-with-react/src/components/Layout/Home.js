@@ -1,7 +1,10 @@
-import "../../stylesheets/home.css";
 import React, { Component } from "react";
+import Cal from "../Project/Cal";
+import "../../App.css";
+import "../../stylesheets/layout.css";
+import { Layout, Carousel } from "antd";
 
-import "../../stylesheets/home.css";
+const { Content } = Layout;
 
 class Home extends Component {
   constructor(props) {
@@ -15,27 +18,29 @@ class Home extends Component {
     // return <Cal />;
     //we are gonna put sliders and other contents in front page
     return (
-      <div>
-        <div className="jumbotron">
-          <h1 className="display-4">Hello, Everybody!</h1>
-          <p className="lead">
-            This is a sample home page . We will add sliders and other contains
-            in days to come.
-          </p>
-          <hr className="my-4" />
-          <p>Click on the button below to go to the documentation Link.</p>
-          <p className="lead">
-            <a
-              className="btn btn-primary btn-lg"
-              href="https://d3dqstghi7h8sb.cloudfront.net/swagger-ui.html"
-              target="_blank"
-              role="button"
-            >
-              Learn more
-            </a>
-          </p>
-        </div>
-      </div>
+      <Content
+        className="site-layout-background"
+        style={{
+          padding: 24,
+          margin: 0,
+          minHeight: 580
+        }}
+      >
+        <Carousel autoplay>
+          <div>
+            <h3>Welcome to the Home Page</h3>
+          </div>
+          <div>
+            <h3>These slides are just for demo</h3>
+          </div>
+          <div>
+            <h3>These slides are just for demo</h3>
+          </div>
+          <div>
+            <h3>These slides are just for demo</h3>
+          </div>
+        </Carousel>
+      </Content>
     );
   }
 }

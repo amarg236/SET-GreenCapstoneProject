@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "../../../stylesheets/home.css";
 import Cal from "../../Project/Cal";
 
 class AdminDashboard extends Component {
@@ -15,11 +14,8 @@ class AdminDashboard extends Component {
     //we are gonna put sliders and other contents in front page
     return (
       <div>
-        <div className="jumbotron">
-          <h1 className="display-4">Hello, ADMIN!</h1>
-          <p className="lead">This is a Admin Dashboard</p>
-        </div>
-        <Cal />
+        <h1>Hello, ADMIN!</h1>
+        <p>This is a Admin Dashboard</p>
       </div>
     );
   }

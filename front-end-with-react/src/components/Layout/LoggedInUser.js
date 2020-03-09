@@ -6,7 +6,8 @@ import UserDashboard from "./UserRoleView/UserDashboard";
 import AssignorDashboard from "./UserRoleView/AssignorDashboard";
 import AdminDashboard from "./UserRoleView/AdminDashboard";
 import { connect } from "react-redux";
-
+import { Layout } from "antd";
+const { Content } = Layout;
 class LoggedInUser extends Component {
   constructor(props) {
     super(props);
@@ -22,24 +23,61 @@ class LoggedInUser extends Component {
 
     switch (this.props.role) {
       case "ADMIN":
-        return <AdminDashboard />;
+        return (
+          <Content
+            style={{
+              padding: 24,
+              margin: 0,
+              minHeight: 580
+            }}
+            className=" site-layout-background"
+          >
+            <AdminDashboard />
+          </Content>
+        );
 
       case "USER":
-        return <UserDashboard />;
+        return (
+          <Content
+            style={{
+              padding: 24,
+              margin: 0,
+              minHeight: 580
+            }}
+            className="site-layout-background"
+          >
+            <UserDashboard />
+          </Content>
+        );
 
       case "ASSIGNOR":
-        return <AssignorDashboard />;
+        return (
+          <Content
+            style={{
+              padding: 24,
+              margin: 0,
+              minHeight: 580
+            }}
+            className=" site-layout-background"
+          >
+            <AssignorDashboard />
+          </Content>
+        );
       default:
         return (
-          <div>
-            <div className="jumbotron">
-              <h1 className="display-4">
-                Sorry! Will are not a valid user. You will be logged out. Bye
-                bye
-              </h1>
-            </div>
+          <Content
+            style={{
+              padding: 24,
+              margin: 0,
+              minHeight: 580
+            }}
+            className="site-layout-background"
+          >
+            <h1 className="display-4">
+              Sorry! Will are not a valid user. You will be logged out. Bye bye
+            </h1>
             <Cal />
-          </div>
+          </Content>
         );
     }
   }
