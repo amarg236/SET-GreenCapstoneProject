@@ -11,6 +11,9 @@ const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 class SidebarComp extends Component {
+  state = {
+    collapsed: true,
+  }
   render() {
     switch (this.props.role) {
       case "ADMIN":
@@ -31,7 +34,12 @@ class SidebarComp extends Component {
 
       case "USER":
         return (
-          <Sider trigger={null} collapsible collapsed={this.props.toggelState}>
+          <Sider
+            //trigger={null}
+            //collapsible collapsed={this.props.toggelState}
+            breakpoint='md'
+            collapsedWidth='0'
+          >
             <div className="logo">SET GREEN</div>
             <UserSidebar />
           </Sider>
@@ -76,3 +84,4 @@ const mapStatetoProps = state => {
 };
 
 export default connect(mapStatetoProps)(SidebarComp);
+

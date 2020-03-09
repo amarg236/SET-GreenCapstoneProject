@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Authtoken from "../../Utility/AuthToken";
-import ProfileButton from "../Buttons/ProfileButton";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import LoginComp from "../../components/Project/LoginComp";
@@ -40,7 +39,7 @@ class HeaderRoot extends Component {
     return (
       <Header className="site-layout-background" style={{ padding: 0 }}>
         <Row justify="space-between" className="nav_bar">
-          <Col span={4}>
+          {/* <Col lg={4} md={2}>
             <span className="nav_bar_toggle">
               {React.createElement(
                 this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
@@ -50,9 +49,9 @@ class HeaderRoot extends Component {
                 }
               )}
             </span>
-          </Col>
-          <Col span={14}></Col>
-          <Col span={6}>
+          </Col> */}
+          <Col lg={14} md={2}></Col>
+          <Col lg={6}>
             {this.props.username ? (
               <Dropdown overlay={logOutForm} trigger={["click"]}>
                 <a className="ant-dropdown-link" href="#">

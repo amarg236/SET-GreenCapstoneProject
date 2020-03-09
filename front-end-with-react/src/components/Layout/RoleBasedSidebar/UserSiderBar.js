@@ -22,11 +22,14 @@ class UserSidebar extends Component {
         className="sidebarProperty"
         defaultSelectedKeys={["1"]}
         defaultOpenKeys={["sub1"]}
-        style={{ height: "100%", borderRight: 0 }}
+        style={{ height: "100%", borderRight: 0,
+                 paddingRight: "0" }}
       >
         <Menu.Item key="home">
           <span>
-            <DashboardOutlined />
+            <a href="/dashboard">
+              <DashboardOutlined />
+            </a>
           </span>
           <span>
             <a href="/dashboard">Dashboard</a>
@@ -35,7 +38,9 @@ class UserSidebar extends Component {
 
         <Menu.Item key="calander">
           <span>
-            <CalendarOutlined />
+            <a href="/calander">
+              <CalendarOutlined />
+            </a>
           </span>
           <span>
             <a href="/calander">Game Calander</a>
@@ -44,15 +49,20 @@ class UserSidebar extends Component {
 
         <Menu.Item key="createGame">
           <span>
-            <FileAddOutlined />
+            <a href="/createGame">
+              <FileAddOutlined />
+            </a>
           </span>
           <span>
             <a href="/createGame">Create Game</a>
           </span>
         </Menu.Item>
+
         <Menu.Item key="viewGame">
           <span>
-            <EyeOutlined />
+            <a href="/viewGames">
+              <EyeOutlined />
+            </a>
           </span>
           <span>
             <a href="/viewGames">View Game</a>
