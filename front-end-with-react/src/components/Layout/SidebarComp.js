@@ -12,13 +12,18 @@ const SubMenu = Menu.SubMenu;
 
 class SidebarComp extends Component {
   state = {
-    collapsed: true,
+    collapsed: this.props.toggelState,
   }
   render() {
     switch (this.props.role) {
       case "ADMIN":
         return (
-          <Sider trigger={null} collapsible collapsed={this.props.toggelState}>
+          <Sider
+            //trigger={null}
+            //collapsible collapsed={this.props.toggelState}
+            breakpoint='md'
+            collapsedWidth='0'
+          >
             <div className="logo">SET GREEN</div>
             <AdminSidebar />
           </Sider>
@@ -47,9 +52,14 @@ class SidebarComp extends Component {
 
       default:
         return (
-          <Sider trigger={null} collapsible collapsed={this.props.toggelState}>
+          <Sider
+          breakpoint='md'
+          collapsedWidth='0'
+          // trigger={null} collapsible collapsed={this.props.toggelState}
+          >
             <div className="logo">SET GREEN</div>
             <Menu
+            
               mode="inline"
               theme="dark"
               defaultSelectedKeys={["1"]}

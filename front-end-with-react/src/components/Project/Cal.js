@@ -100,8 +100,10 @@ class Cal extends React.Component {
           actionBegin={this.onActionBegin.bind(this)}
           readonly={true}
           style={{
-            minHeight: "70vh",
-            minWidth: "40vh"
+            minHeight: "50vh",
+            maxHeight: "70vh",
+            minWidth: "46vh",
+            marginLeft: '0'
           }}
         >
           {
