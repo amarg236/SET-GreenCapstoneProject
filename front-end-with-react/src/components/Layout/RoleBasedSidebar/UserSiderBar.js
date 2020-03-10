@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import { Menu, Layout } from "antd";
+import history from "../../../Utility/history";
 import Dashboard from "../../Layout/LoggedInUser";
 
 import {
@@ -17,6 +18,10 @@ const SubMenu = Menu.SubMenu;
 
 class UserSidebar extends Component {
   render() {
+    const handleClick = e => {
+      history.push("/".concat(e.key));
+    };
+
     return (
       <Menu
         mode="inline"
@@ -26,39 +31,31 @@ class UserSidebar extends Component {
         defaultOpenKeys={["sub1"]}
         style={{ height: "100%", borderRight: 0 }}
       >
-        <Menu.Item key="home">
+        <Menu.Item onClick={handleClick} key="dashboard">
           <span>
             <DashboardOutlined />
           </span>
-          <span>
-            <Link to="/dashboard">Dashboard</Link>
-          </span>
+          <span>Dashboard</span>
         </Menu.Item>
 
-        <Menu.Item key="calander">
+        <Menu.Item onClick={handleClick} key="calander">
           <span>
             <CalendarOutlined />
           </span>
-          <span>
-            <Link to="/calander">Game Calander</Link>
-          </span>
+          <span>Game Calander</span>
         </Menu.Item>
 
-        <Menu.Item key="createGame">
+        <Menu.Item onClick={handleClick} key="createGame">
           <span>
             <FileAddOutlined />
           </span>
-          <span>
-            <Link to="/createGame">Create Game</Link>
-          </span>
+          <span>Create Game</span>
         </Menu.Item>
-        <Menu.Item key="viewGame">
+        <Menu.Item onClick={handleClick} key="viewGames">
           <span>
             <EyeOutlined />
           </span>
-          <span>
-            <Link to="/viewGames">View Game</Link>
-          </span>
+          <span>View Game</span>
         </Menu.Item>
 
         <Menu.Item key="setting">
