@@ -47,7 +47,7 @@ class UserSidebar extends Component {
               <CalendarOutlined />
             </a>
           </span>
-          <span>Game Calander</span>
+          <span>Game Calendar</span>
         </Menu.Item>
 
         <Menu.Item onClick={handleClick} key="createGame">

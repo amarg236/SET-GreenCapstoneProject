@@ -42,7 +42,7 @@ class AdminSidebar extends Component {
           <span>
             <CalendarOutlined />
           </span>
-          <span>Game Calander</span>
+          <span>Game Calendar</span>
         </Menu.Item>
 
         <Menu.Item onClick={handleClick} key="createGame">

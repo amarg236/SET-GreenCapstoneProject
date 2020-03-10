@@ -40,7 +40,7 @@ class LoggedInUser extends Component {
         return (
           <Content
             style={{
-              padding: 5,
+              padding: 3,
               margin: 0,
               minHeight: 580
             }}

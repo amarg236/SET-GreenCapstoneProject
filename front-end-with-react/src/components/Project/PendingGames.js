@@ -5,6 +5,8 @@ import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { Table } from "react-bootstrap";
 import { connect } from "react-redux";
+import { Layout } from "antd";
+const { Content } = Layout;
 
 class PendingGame extends Component {
   constructor(props) {
