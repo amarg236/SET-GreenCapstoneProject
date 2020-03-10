@@ -16,27 +16,24 @@ class SidebarComp extends Component {
   };
 
   renderSwitch(userRole) {
-    console.log(userRole);
     switch (this.props.role) {
       case "ADMIN":
         return (
           <div>
-            <div className="logo">SET GREEN</div>
+            <AdminSidebar />
           </div>
         );
 
       case "ASSIGNOR":
         return (
           <div>
-            <div className="logo">SET GREEN</div>
-            <h3>Hello ASSIGNOR</h3>
+            <AssignorSidebar />
           </div>
         );
 
       case "USER":
         return (
           <div>
-            <div className="logo">SET GREEN</div>
             <UserSidebar />
           </div>
         );
@@ -44,8 +41,6 @@ class SidebarComp extends Component {
       default:
         return (
           <div>
-            <div className="logo">SET GREEN</div>
-            {this.props.role}
             <Menu
               mode="inline"
               theme="dark"
@@ -87,6 +82,8 @@ class SidebarComp extends Component {
         // }}
         // collapsed={this.props.toggelState}
       >
+        {" "}
+        <div className="logo">SET GREEN</div>
         {this.renderSwitch(this.props.role)}
       </Sider>
     );
