@@ -1,6 +1,8 @@
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import { Menu, Layout } from "antd";
+import Dashboard from "../../Layout/LoggedInUser";
 
 import {
   DashboardOutlined,
@@ -29,7 +31,7 @@ class UserSidebar extends Component {
             <DashboardOutlined />
           </span>
           <span>
-            <a href="/dashboard">Dashboard</a>
+            <Link to="/dashboard">Dashboard</Link>
           </span>
         </Menu.Item>
 
@@ -38,7 +40,7 @@ class UserSidebar extends Component {
             <CalendarOutlined />
           </span>
           <span>
-            <a href="/calander">Game Calander</a>
+            <Link to="/calander">Game Calander</Link>
           </span>
         </Menu.Item>
 
@@ -47,7 +49,7 @@ class UserSidebar extends Component {
             <FileAddOutlined />
           </span>
           <span>
-            <a href="/createGame">Create Game</a>
+            <Link to="/createGame">Create Game</Link>
           </span>
         </Menu.Item>
         <Menu.Item key="viewGame">
@@ -55,7 +57,7 @@ class UserSidebar extends Component {
             <EyeOutlined />
           </span>
           <span>
-            <a href="/viewGames">View Game</a>
+            <Link to="/viewGames">View Game</Link>
           </span>
         </Menu.Item>
 
