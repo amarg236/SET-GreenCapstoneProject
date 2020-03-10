@@ -18,51 +18,37 @@ class SidebarComp extends Component {
   renderSwitch(userRole) {
     switch (this.props.role) {
       case "ADMIN":
-        return (
-          <div>
-            <AdminSidebar />
-          </div>
-        );
+        return <AdminSidebar />;
 
       case "ASSIGNOR":
-        return (
-          <div>
-            <AssignorSidebar />
-          </div>
-        );
+        return <AssignorSidebar />;
 
       case "USER":
-        return (
-          <div>
-            <UserSidebar />
-          </div>
-        );
+        return <UserSidebar />;
 
       default:
         return (
-          <div>
-            <Menu
-              mode="inline"
-              theme="dark"
-              defaultSelectedKeys={["1"]}
-              defaultOpenKeys={["sub1"]}
-              style={{ height: "100%", borderRight: 0 }}
-            >
-              <Menu.Item key="home">
-                <span>
-                  <HomeOutlined />
-                </span>
-                <span>HOME</span>
-              </Menu.Item>
+          <Menu
+            mode="inline"
+            theme="dark"
+            defaultSelectedKeys={["1"]}
+            defaultOpenKeys={["sub1"]}
+            style={{ height: "100%", borderRight: 0 }}
+          >
+            <Menu.Item key="home">
+              <span>
+                <HomeOutlined />
+              </span>
+              <span>HOME</span>
+            </Menu.Item>
 
-              <Menu.Item key="logOut">
-                <span>
-                  <LogoutOutlined />
-                </span>
-                <span>Log Out</span>
-              </Menu.Item>
-            </Menu>
-          </div>
+            <Menu.Item key="logOut">
+              <span>
+                <LogoutOutlined />
+              </span>
+              <span>Log Out</span>
+            </Menu.Item>
+          </Menu>
         );
     }
   }
