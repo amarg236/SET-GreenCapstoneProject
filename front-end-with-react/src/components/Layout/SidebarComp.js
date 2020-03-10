@@ -11,36 +11,41 @@ const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 class SidebarComp extends Component {
-  render() {
+  state = {
+    collapsed: this.props.toggelState
+  };
+
+  renderSwitch(userRole) {
+    console.log(userRole);
     switch (this.props.role) {
       case "ADMIN":
         return (
-          <Sider trigger={null} collapsible collapsed={this.props.toggelState}>
+          <div>
             <div className="logo">SET GREEN</div>
-            <AdminSidebar />
-          </Sider>
+          </div>
         );
 
       case "ASSIGNOR":
         return (
-          <Sider trigger={null} collapsible collapsed={this.props.toggelState}>
+          <div>
             <div className="logo">SET GREEN</div>
             <h3>Hello ASSIGNOR</h3>
-          </Sider>
+          </div>
         );
 
       case "USER":
         return (
-          <Sider trigger={null} collapsible collapsed={this.props.toggelState}>
+          <div>
             <div className="logo">SET GREEN</div>
             <UserSidebar />
-          </Sider>
+          </div>
         );
 
       default:
         return (
-          <Sider trigger={null} collapsible collapsed={this.props.toggelState}>
+          <div>
             <div className="logo">SET GREEN</div>
+            {this.props.role}
             <Menu
               mode="inline"
               theme="dark"
@@ -62,9 +67,29 @@ class SidebarComp extends Component {
                 <span>Log Out</span>
               </Menu.Item>
             </Menu>
-          </Sider>
+          </div>
         );
     }
+  }
+
+  render() {
+    return (
+      <Sider
+        trigger={null}
+        breakpoint="md"
+        collapsible
+        collapsedWidth="0"
+        // onBreakpoint={broken => {
+        //   console.log(broken);
+        // }}
+        // onCollapse={(collapsed, type) => {
+        //   console.log(collapsed, type);
+        // }}
+        // collapsed={this.props.toggelState}
+      >
+        {this.renderSwitch(this.props.role)}
+      </Sider>
+    );
   }
 }
 

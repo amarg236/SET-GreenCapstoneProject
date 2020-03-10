@@ -39,19 +39,22 @@ class HeaderRoot extends Component {
     return (
       <Header className="site-layout-background" style={{ padding: 0 }}>
         <Row justify="space-between" className="nav_bar">
-          <Col span={4}>
-            <span className="nav_bar_toggle">
-              {React.createElement(
-                this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-                {
-                  className: "trigger",
-                  onClick: this.toggle
-                }
-              )}
-            </span>
-          </Col>
-          <Col span={14}></Col>
-          <Col span={6}>
+          {
+            // <Col lg={4} md={2}>
+            //   <span className="nav_bar_toggle">
+            //   {React.createElement(
+            //     this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+            //     {
+            //       className: "trigger",
+            //       onClick: this.toggle
+            //     }
+            //   )}
+            // </span>
+            // </Col>
+          }
+
+          <Col lg={14} md={2}></Col>
+          <Col lg={6}>
             {this.props.username ? (
               <Dropdown overlay={logOutForm} trigger={["click"]}>
                 <a className="ant-dropdown-link" href="#">
