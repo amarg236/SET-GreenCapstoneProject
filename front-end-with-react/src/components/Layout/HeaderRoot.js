@@ -39,17 +39,20 @@ class HeaderRoot extends Component {
     return (
       <Header className="site-layout-background" style={{ padding: 0 }}>
         <Row justify="space-between" className="nav_bar">
-          {/* <Col lg={4} md={2}>
-            <span className="nav_bar_toggle">
-              {React.createElement(
-                this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-                {
-                  className: "trigger",
-                  onClick: this.toggle
-                }
-              )}
-            </span>
-          </Col> */}
+          {
+            // <Col lg={4} md={2}>
+            //   <span className="nav_bar_toggle">
+            //   {React.createElement(
+            //     this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+            //     {
+            //       className: "trigger",
+            //       onClick: this.toggle
+            //     }
+            //   )}
+            // </span>
+            // </Col>
+          }
+
           <Col lg={14} md={2}></Col>
           <Col lg={6}>
             {this.props.username ? (

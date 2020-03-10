@@ -88,9 +88,6 @@ class PendingGame extends Component {
   render() {
     return (
       <div>
-        {
-          //Unapproved games
-        }
         <div>
           <h3 className="text-center">Pending Games</h3>
           <br />

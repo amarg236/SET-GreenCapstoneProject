@@ -12,52 +12,35 @@ const SubMenu = Menu.SubMenu;
 
 class SidebarComp extends Component {
   state = {
-    collapsed: this.props.toggelState,
-  }
-  render() {
+    collapsed: this.props.toggelState
+  };
+
+  renderSwitch(userRole) {
     switch (this.props.role) {
       case "ADMIN":
         return (
-          <Sider
-            //trigger={null}
-            //collapsible collapsed={this.props.toggelState}
-            breakpoint='md'
-            collapsedWidth='0'
-          >
-            <div className="logo">SET GREEN</div>
+          <div>
             <AdminSidebar />
-          </Sider>
+          </div>
         );
 
       case "ASSIGNOR":
         return (
-          <Sider trigger={null} collapsible collapsed={this.props.toggelState}>
-            <div className="logo">SET GREEN</div>
-            <h3>Hello ASSIGNOR</h3>
-          </Sider>
+          <div>
+            <AssignorSidebar />
+          </div>
         );
 
       case "USER":
         return (
-          <Sider
-            //trigger={null}
-            //collapsible collapsed={this.props.toggelState}
-            breakpoint='md'
-            collapsedWidth='0'
-          >
-            <div className="logo">SET GREEN</div>
+          <div>
             <UserSidebar />
-          </Sider>
+          </div>
         );
 
       default:
         return (
-          <Sider
-          breakpoint='md'
-          collapsedWidth='0'
-          // trigger={null} collapsible collapsed={this.props.toggelState}
-          >
-            <div className="logo">SET GREEN</div>
+          <div>
             <Menu
             
               mode="inline"
@@ -80,9 +63,31 @@ class SidebarComp extends Component {
                 <span>Log Out</span>
               </Menu.Item>
             </Menu>
-          </Sider>
+          </div>
         );
     }
+  }
+
+  render() {
+    return (
+      <Sider
+        trigger={null}
+        breakpoint="md"
+        collapsible
+        collapsedWidth="0"
+        // onBreakpoint={broken => {
+        //   console.log(broken);
+        // }}
+        // onCollapse={(collapsed, type) => {
+        //   console.log(collapsed, type);
+        // }}
+        // collapsed={this.props.toggelState}
+      >
+        {" "}
+        <div className="logo">SET GREEN</div>
+        {this.renderSwitch(this.props.role)}
+      </Sider>
+    );
   }
 }
 

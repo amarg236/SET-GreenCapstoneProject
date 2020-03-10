@@ -4,6 +4,7 @@ import "./SignIn";
 import ApprovedGames from "./ApprovedGames";
 import PendingGame from "./PendingGames";
 import FullyApprovedGames from "./FullyApprovedGames";
+import ShowGames from "./ShowGames";
 import { Layout } from "antd";
 const { Content } = Layout;
 
@@ -22,13 +23,18 @@ class ViewGames extends Component {
         }}
         className="site-layout-background"
       >
-        <div>
-          <PendingGame />
-          <br />
-          <ApprovedGames />
-          <br />
-          <FullyApprovedGames />
-        </div>
+        {
+          <div>
+            <PendingGame />
+            <br />
+            <ApprovedGames />
+            <br />
+            <FullyApprovedGames />
+          </div>
+        }
+        {
+          // <ShowGames />
+        }
       </Content>
     );
   }

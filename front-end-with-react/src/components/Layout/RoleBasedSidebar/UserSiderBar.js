@@ -1,6 +1,9 @@
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import { Menu, Layout } from "antd";
+import history from "../../../Utility/history";
+import Dashboard from "../../Layout/LoggedInUser";
 
 import {
   DashboardOutlined,
@@ -15,6 +18,10 @@ const SubMenu = Menu.SubMenu;
 
 class UserSidebar extends Component {
   render() {
+    const handleClick = e => {
+      history.push("/".concat(e.key));
+    };
+
     return (
       <Menu
         mode="inline"
@@ -25,48 +32,39 @@ class UserSidebar extends Component {
         style={{ height: "100%", borderRight: 0,
                  paddingRight: "0" }}
       >
-        <Menu.Item key="home">
+        <Menu.Item onClick={handleClick} key="dashboard">
           <span>
             <a href="/dashboard">
               <DashboardOutlined />
             </a>
           </span>
-          <span>
-            <a href="/dashboard">Dashboard</a>
-          </span>
+          <span>Dashboard</span>
         </Menu.Item>
 
-        <Menu.Item key="calander">
+        <Menu.Item onClick={handleClick} key="calander">
           <span>
             <a href="/calander">
               <CalendarOutlined />
             </a>
           </span>
-          <span>
-            <a href="/calander">Game Calander</a>
-          </span>
+          <span>Game Calander</span>
         </Menu.Item>
 
-        <Menu.Item key="createGame">
+        <Menu.Item onClick={handleClick} key="createGame">
           <span>
             <a href="/createGame">
               <FileAddOutlined />
             </a>
           </span>
-          <span>
-            <a href="/createGame">Create Game</a>
-          </span>
+          <span>Create Game</span>
         </Menu.Item>
-
-        <Menu.Item key="viewGame">
+        <Menu.Item onClick={handleClick} key="viewGames">
           <span>
             <a href="/viewGames">
               <EyeOutlined />
             </a>
           </span>
-          <span>
-            <a href="/viewGames">View Game</a>
-          </span>
+          <span>View Game</span>
         </Menu.Item>
 
         <Menu.Item key="setting">

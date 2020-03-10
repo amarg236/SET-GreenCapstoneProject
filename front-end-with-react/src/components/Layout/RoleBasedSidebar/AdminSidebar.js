@@ -1,5 +1,7 @@
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import React, { Component } from "react";
+import history from "../../../Utility/history";
 import { Menu, Layout } from "antd";
 
 import {
@@ -14,6 +16,10 @@ import {
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
+const handleClick = e => {
+  history.push("/".concat(e.key));
+};
+
 class AdminSidebar extends Component {
   render() {
     return (
@@ -25,39 +31,31 @@ class AdminSidebar extends Component {
         defaultOpenKeys={["sub1"]}
         style={{ height: "100%", borderRight: 0 }}
       >
-        <Menu.Item key="home">
+        <Menu.Item onClick={handleClick} key="dashboard">
           <span>
             <DashboardOutlined />
           </span>
-          <span>
-            <a href="/dashboard">Dashboard</a>
-          </span>
+          <span>Dashboard</span>
         </Menu.Item>
 
-        <Menu.Item key="calander">
+        <Menu.Item onClick={handleClick} key="calander">
           <span>
             <CalendarOutlined />
           </span>
-          <span>
-            <a href="/calander">Game Calander</a>
-          </span>
+          <span>Game Calander</span>
         </Menu.Item>
 
-        <Menu.Item key="createGame">
+        <Menu.Item onClick={handleClick} key="createGame">
           <span>
             <FileAddOutlined />
           </span>
-          <span>
-            <a href="/createGame">Create Game</a>
-          </span>
+          <span>Create Game</span>
         </Menu.Item>
-        <Menu.Item key="viewGame">
+        <Menu.Item onClick={handleClick} key="viewGames">
           <span>
             <EyeOutlined />
           </span>
-          <span>
-            <a href="/viewGames">View Game</a>
-          </span>
+          <span>View Game</span>
         </Menu.Item>
 
         <Menu.Item key="manageUser">
