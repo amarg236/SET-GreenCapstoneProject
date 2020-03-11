@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.setgreen.model.District;
 import com.setgreen.model.Game;
 
 @Repository
@@ -20,10 +21,10 @@ public interface GameRepo extends CrudRepository<Game, Long>{
 	public Iterable<Game> findInDistrictAll(@Param("d") String d);
     
     @Query("SELECT g FROM Game g WHERE g.hometeam = (:n) OR g.awayteam = (:n) AND g.homedistrict = (:d)")
-	public Iterable<Game> findInSchoolAll(@Param("n") String n, @Param("d") String d);
+	public Iterable<Game> findInSchoolAll(@Param("n") String n, @Param("d") District district);
     
     @Query("SELECT g FROM Game g WHERE g.hometeam = (:n) OR g.awayteam = (:n) AND g.homedistrict = (:d) AND g.approved = TRUE")
-	public Iterable<Game> findInSchoolVerified(@Param("n") String n, @Param("d") String d);
+	public Iterable<Game> findInSchoolVerified(@Param("n") String n, @Param("d") District district);
     
     @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d) AND g.approved = TRUE")
     public Iterable<Game> findInDistrictVerified(@Param("d") String d);

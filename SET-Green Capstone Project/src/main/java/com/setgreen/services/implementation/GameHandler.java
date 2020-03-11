@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.setgreen.model.District;
 import com.setgreen.model.Game;
@@ -57,7 +58,7 @@ public class GameHandler {
 			return new ResponseBody<Game>(HttpStatus.NOT_ACCEPTABLE.value(), "Did not save game "+e, g);
 		}
 	}
-	
+	@Transactional
 	public ResponseBody<Long> deleteGame(Long g) {
 		try {
 			gr.deleteById(g.longValue());
@@ -69,6 +70,7 @@ public class GameHandler {
 	}
 	
 	//FIXME better implementation w/ a custom method, or at least do a "find game" check.
+	@Transactional
 	public ResponseBody<Game> modifyGame(Game g) {
 		try {
 			gr.deleteById(g.getId());
@@ -79,7 +81,7 @@ public class GameHandler {
 			return new ResponseBody<Game>(HttpStatus.NOT_ACCEPTABLE.value(), "Could Not modify Game", g);
 		}
 	}
-	
+	@Transactional
 	public ResponseBody<Long> teamVerifyGame(Long g) {//TODO verification of team
 		try{
 			gr.updateAccept(g, true);
@@ -89,7 +91,7 @@ public class GameHandler {
 			return new ResponseBody<Long>(HttpStatus.NOT_ACCEPTABLE.value(), "Could Not Accept Game", g);
 		}
 	}
-	
+	@Transactional
 	public ResponseBody<Game> rejectGame(Game g){ //TODO this should remove game and inform other guy
 		try {
 			gr.updateAccept(g.getId(), false);
@@ -104,13 +106,15 @@ public class GameHandler {
 	 * @param g ID of a game to verify
 	 * @return Response body detailing the status of the verification
 	 */
+	@Transactional
 	public ResponseBody<Long> adminVerifyGame(Long g) {
 		try {
 			gr.updateVerify(g.longValue(), true);
+			gr.updateAccept(g.longValue(), true);
 			return new ResponseBody<Long>(HttpStatus.ACCEPTED.value(), "Game Verified", g);
 		}
 		catch(Exception e) {
-			return new ResponseBody<Long>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not verify game", g);
+			return new ResponseBody<Long>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not verify game " + e, g);
 		}
 	}
 
@@ -129,15 +133,15 @@ public class GameHandler {
 		try{
 			Iterable<Game> g;
 			if(findAll) {
-				g = gr.findInSchoolAll(s.getDistrict().getDistrictName(), s.getName());
+				g = gr.findInSchoolAll(s.getName(),s.getDistrict());
 			}
 			else {
-				g = gr.findInSchoolVerified(s.getDistrict().getDistrictName(), s.getName());
+				g = gr.findInSchoolVerified(s.getName(),s.getDistrict());
 			}
 			return new ResponseBody<Iterable<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
 		}
 		catch(Exception e) {
-			return new ResponseBody<Iterable<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games", null);
+			return new ResponseBody<Iterable<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games " + e, null);
 		}
 	}
 	

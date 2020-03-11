@@ -67,6 +67,7 @@ public class GameController {
 	
 	@PostMapping("get/BySchool/all")
 	public ResponseBody<Iterable<Game>> getSchoolAll(@RequestBody School s) {
+		System.out.println(s.getDistrict());
 		return gh.getGames(s, true);
 	}
 	
