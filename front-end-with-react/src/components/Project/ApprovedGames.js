@@ -49,15 +49,15 @@ const dataSource = [
   {
     key: '1',
     playingAgainst: 'Neville High',
-    time: '5:00',
+    time: '5:00 03/25/20',
     location: 'Home',
   },
-  {
-    key: '2',
-    name: 'John',
-    age: 42,
-    address: '10 Downing Street',
-  },
+  // {
+  //   key: '2',
+  //   name: 'John',
+  //   age: 42,
+  //   address: '10 Downing Street',
+  // },
 ];
 
 const columns = [
@@ -67,7 +67,7 @@ const columns = [
     key: 'playingAgainst',
   },
   {
-    title: 'Time',
+    title: 'Time and Date',
     dataIndex: 'time',
     key: 'time',
   },

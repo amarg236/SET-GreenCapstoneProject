@@ -133,7 +133,7 @@ const columns = [
     render: text => <a>{text}</a>,
   },
   {
-    title: 'Time',
+    title: 'Time and Date',
     dataIndex: 'time',
     key: 'time',
   },
