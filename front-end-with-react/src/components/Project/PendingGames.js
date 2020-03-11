@@ -5,152 +5,84 @@ import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { Table } from "antd";
 import { connect } from "react-redux";
+import reqwest from 'reqwest';
 
 class PendingGame extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      game: []
-    };
-
-    this.approveGame = this.approveGame.bind(this);
-    this.denyGame = this.denyGame.bind(this);
+  state = {
+    data: [],
+    pagination: {},
+    loading: true,
+  };
+  handleTableChange = (pagination, filters, sorter) => {
+    const pager = { ...this.state.pagination };
+    pager.current = pagination.current;
+    this.setState({
+      pagination: pager,
+    });
+    this.fetch({
+      results: pagination.pageSize,
+      page: pagination.current,
+      sortField: sorter.field,
+      sortOrder: sorter.order,
+      ...filters,
+    });
   }
-
+  fetch = (params = {}) => {
+    console.log('params:', params);
+    this.setState({ loading: true });
+    reqwest({
+      url: 'https://randomuser.me/api',
+      method: 'get',
+      data: {
+        results: 3,
+        ...params,
+      },
+      type: 'json',
+    }).then((data) => {
+      const pagination = { ...this.state.pagination };
+      // Read total count from server
+      // pagination.total = data.totalCount;
+      pagination.total = 200;
+      this.setState({
+        loading: false,
+        data: data.results,
+        pagination,
+      });
+    });
+  }
   componentDidMount() {
-    console.log(this.props.token);
-    const emptyBody = {};
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyBody, {
-        headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
-      })
-      .then(res => {
-        this.setState({ game: res.data.result, loading: false });
-      });
-  }
-
-  approveGame(
-    id,
-    hometeam,
-    homedistrict,
-    awayteam,
-    awaydistrict,
-    time,
-    duration,
-    location,
-    away_accepted
-  ) {
-    const aemptyObj = {
-      id,
-      time,
-      away_accepted,
-      approved: true,
-      awayteam,
-      awaydistrict,
-      duration,
-      hometeam,
-      homedistrict,
-      location
-    };
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/modify", aemptyObj, {
-        headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
-      })
-      .then(res => {
-        window.alert("The game has been approved!");
-        // window.location.reload();
-      });
-  }
-
-  denyGame(id) {
-    console.log("i am here");
-    const emptyObj = {
-      data: id
-    };
-
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
-        headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
-      })
-      .then(res => {
-        window.alert("The game has been denied!");
-        window.location.reload();
-      });
+    this.fetch();
   }
 
   render() {
     return (
-      <div>
-        <h3 className='text-center'>Pending Games</h3>
-        <Table 
-        dataSource={dataSource} 
-        columns={columns} 
-        pagination={{pageSize: 3}}/>
-      </div>
-    );
+      <Table columns={columns}
+      rowKey={record => record.registered}
+      dataSource={this.state.data}
+      pagination={this.state.pagination}
+      loading={this.state.loading}
+      onChange={this.handleTableChange}
+    />
+  );
   }
 }
 
-const dataSource = [
-  {
-    key: '1',
-    playingAgainst: 'Neville High',
-    time: '5:00 03/25/20',
-    location: 'Home',
-  },
-  {
-    key: '2',
-    playingAgainst: 'West Monroe High',
-    time: '7:00 03/27/20',
-    location: 'Home',
-  },
-  {
-    key: '3',
-    playingAgainst: 'Salmen High',
-    time: '8:00 03/27/20',
-    location: 'Salmen Field',
-  },
-  {
-    key: '4',
-    playingAgainst: 'New Orleans High',
-    time: '7:00 03/28/20',
-    location: 'New Orleans',
-  },
-];
-
-const columns = [
-  {
-    title: 'Playing Against',
-    dataIndex: 'playingAgainst',
-    key: 'playingAgainst',
-    render: text => <a>{text}</a>,
-  },
-  {
-    title: 'Time and Date',
-    dataIndex: 'time',
-    key: 'time',
-  },
-  {
-    title: 'Location',
-    dataIndex: 'location',
-    key: 'location',
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (text, record) => (
-      <span>
-        <a style={{ marginRight: 16 }}>Accept {record.playingAgainst}</a>
-        <a>Delete</a>
-      </span>
-    ),
-  },
-];
+const columns = [{
+  title: 'Name',
+  dataIndex: 'name',
+  sorter: true,
+  render: name => `${name.first} ${name.last}`,
+  width: '20%',
+}, {
+  title: 'Gender',
+  dataIndex: 'gender',
+  filters: [
+    { text: 'Male', value: 'male' },
+    { text: 'Female', value: 'female' },
+  ],
+  width: '20%',
+}, {
+  title: 'Email',
+  dataIndex: 'email',
+}];
 export default PendingGame;
