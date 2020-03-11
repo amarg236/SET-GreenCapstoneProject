@@ -137,7 +137,7 @@ public class GameHandler {
 			return new ResponseBody<Iterable<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
 		}
 		catch(Exception e) {
-			return new ResponseBody<Iterable<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games", null);
+			return new ResponseBody<Iterable<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games "+e, null);
 		}
 	}
 	
