@@ -3,7 +3,7 @@ import "../../stylesheets/createGame.css";
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import { Table } from "react-bootstrap";
+import { Table } from "antd";
 
 class ApprovedGames extends Component {
   constructor(props) {
@@ -34,56 +34,48 @@ class ApprovedGames extends Component {
           //Unapproved games
         }
         <div>
-          <h3 className="text-center">Waiting for Assignor Approvel</h3>
-          <br />
-          <Table className="table-striped hover table-responsive-sm ">
-            <thead>
-              <tr>
-                <th>Home Team</th>
-                <th>Playing Against</th>
-                <th>Time</th>
-                <th>Location</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.game &&
-                this.state.game.map(display => {
-                  console.log(display);
-                  const {
-                    id,
-                    hometeam,
-                    homedistrict,
-                    awayteam,
-                    awaydistrict,
-                    time,
-                    duration,
-                    location,
-                    approved
-                  } = display;
-                  if (approved) {
-                    return (
-                      <tr key={id}>
-                        <td>{hometeam}</td>
-                        <td>{awayteam}</td>
-                        <td>{time}</td>
-                        <td>{location}</td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                    );
-                  }
-                })}
-            </tbody>
-          </Table>
+          <h3 className="text-center">Waiting for Assignor Approval</h3>
+          <Table
+            dataSource={dataSource}
+            columns={columns}
+            pagination={{ pageSize: 3 }} />
         </div>
-        {
-          // Approved Games
-        }
       </div>
     );
   }
 }
+
+const dataSource = [
+  {
+    key: '1',
+    playingAgainst: 'Neville High',
+    time: '5:00',
+    location: 'Home',
+  },
+  {
+    key: '2',
+    name: 'John',
+    age: 42,
+    address: '10 Downing Street',
+  },
+];
+
+const columns = [
+  {
+    title: 'Playing Against',
+    dataIndex: 'playingAgainst',
+    key: 'playingAgainst',
+  },
+  {
+    title: 'Time',
+    dataIndex: 'time',
+    key: 'time',
+  },
+  {
+    title: 'Location',
+    dataIndex: 'location',
+    key: 'location',
+  },
+];
 
 export default ApprovedGames;

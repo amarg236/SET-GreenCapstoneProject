@@ -3,10 +3,8 @@ import "../../stylesheets/createGame.css";
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import { Table } from "react-bootstrap";
+import { Table } from "antd";
 import { connect } from "react-redux";
-import { Layout } from "antd";
-const { Content } = Layout;
 
 class PendingGame extends Component {
   constructor(props) {
@@ -90,91 +88,69 @@ class PendingGame extends Component {
   render() {
     return (
       <div>
-        <div>
-          <h3 className="text-center">Pending Games</h3>
-          <br />
-          <Table className="table-striped hover table-responsive-sm ">
-            <thead>
-              <tr>
-                <th>Home Team</th>
-                <th>Playing Against</th>
-                <th>Time</th>
-                <th>Location</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.game &&
-                this.state.game.map(display => {
-                  const {
-                    id,
-                    hometeam,
-                    homedistrict,
-                    awayteam,
-                    awaydistrict,
-                    time,
-                    duration,
-                    location,
-                    approved,
-                    away_accepted
-                  } = display;
-                  if (!approved) {
-                    return (
-                      <tr key={id}>
-                        <td>{hometeam}</td>
-                        <td>{awayteam}</td>
-                        <td>{time}</td>
-                        <td>{location}</td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-success"
-                            onClick={() =>
-                              this.approveGame(
-                                id,
-                                hometeam,
-                                homedistrict,
-                                awayteam,
-                                awaydistrict,
-                                time,
-                                duration,
-                                location,
-                                approved,
-                                away_accepted
-                              )
-                            }
-                          >
-                            Approve
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-danger"
-                            onClick={() => this.denyGame(id)}
-                          >
-                            Deny
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  }
-                })}
-            </tbody>
-          </Table>
-        </div>
-        {
-          // Approved Games
-        }
+        <h3 className='text-center'>Pending Games</h3>
+        <Table 
+        dataSource={dataSource} 
+        columns={columns} 
+        pagination={{pageSize: 3}}/>
       </div>
     );
   }
 }
 
-const mapStatetoProps = state => {
-  return {
-    token: state.userReducer.token
-  };
-};
-export default connect(mapStatetoProps, null)(PendingGame);
+const dataSource = [
+  {
+    key: '1',
+    playingAgainst: 'Neville High',
+    time: '5:00 03/25/20',
+    location: 'Home',
+  },
+  {
+    key: '2',
+    playingAgainst: 'West Monroe High',
+    time: '7:00 03/27/20',
+    location: 'Home',
+  },
+  {
+    key: '3',
+    playingAgainst: 'Salmen High',
+    time: '8:00 03/27/20',
+    location: 'Salmen Field',
+  },
+  {
+    key: '4',
+    playingAgainst: 'New Orleans High',
+    time: '7:00 03/28/20',
+    location: 'New Orleans',
+  },
+];
+
+const columns = [
+  {
+    title: 'Playing Against',
+    dataIndex: 'playingAgainst',
+    key: 'playingAgainst',
+    render: text => <a>{text}</a>,
+  },
+  {
+    title: 'Time',
+    dataIndex: 'time',
+    key: 'time',
+  },
+  {
+    title: 'Location',
+    dataIndex: 'location',
+    key: 'location',
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (text, record) => (
+      <span>
+        <a style={{ marginRight: 16 }}>Accept {record.playingAgainst}</a>
+        <a>Delete</a>
+      </span>
+    ),
+  },
+];
+export default PendingGame;
