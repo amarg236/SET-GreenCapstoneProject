@@ -57,8 +57,8 @@ class HeaderRoot extends Component {
             </Col>
           }
 
-          <Col lg={14} md={2} xs={0}></Col>
-          <Col lg={6}>
+          <Col lg={10} md={0} xs={0}></Col>
+          <Col lg={6} md={10} xs={10}>
             {this.props.username ? (
               <Dropdown overlay={logOutForm} trigger={["click"]}>
                 <a className="ant-dropdown-link" href="#">
