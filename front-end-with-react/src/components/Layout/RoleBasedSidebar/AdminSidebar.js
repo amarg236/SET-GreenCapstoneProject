@@ -92,12 +92,6 @@ class AdminSidebar extends Component {
             </span>
             <span>Add School</span>
           </Menu.Item>
-          <Menu.Item onClick={handleClick} key="viewGames">
-            <span>
-              <AppstoreAddOutlined />
-            </span>
-            <span>Add Team</span>
-          </Menu.Item>
         </SubMenu>
         <Menu.Item key="manageUser">
           <span>

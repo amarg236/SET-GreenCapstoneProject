@@ -11,7 +11,9 @@ import {
   EyeOutlined,
   LogoutOutlined,
   SettingOutlined,
-  CalendarOutlined
+  CalendarOutlined,
+  ApartmentOutlined,
+  AppstoreAddOutlined
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -57,6 +59,22 @@ class UserSidebar extends Component {
           </span>
           <span>View Game</span>
         </Menu.Item>
+        <SubMenu
+          key="sub2"
+          title={
+            <span>
+              <ApartmentOutlined />
+              <span>Manage Team</span>
+            </span>
+          }
+        >
+          <Menu.Item onClick={handleClick} key="viewGames">
+            <span>
+              <AppstoreAddOutlined />
+            </span>
+            <span>Add Team</span>
+          </Menu.Item>
+        </SubMenu>
 
         <Menu.Item key="setting">
           <span>
