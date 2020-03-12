@@ -58,13 +58,15 @@ class HeaderRoot extends Component {
           }
 
           <Col lg={10} md={0} xs={0}></Col>
-          <Col lg={6} md={10} xs={10}>
+          <Col lg={3} md={3} xs={5}>
             {this.props.username ? (
               <Dropdown overlay={logOutForm} trigger={["click"]}>
                 <a className="ant-dropdown-link" href="#">
-                  <a href="" style={{ marginRight: "10px" }}>
-                    {this.props.username}
-                  </a>
+                  {
+                    //  <a href="" style={{ marginRight: "10px" }}>
+                    // {this.props.username}
+                    // </a>
+                  }
                   <Avatar icon={<UserOutlined />} />
                 </a>
               </Dropdown>
@@ -74,7 +76,10 @@ class HeaderRoot extends Component {
                   <a href="" style={{ marginRight: "10px" }}>
                     Hello, Guest !
                   </a>
-                  <Avatar icon={<UserOutlined />} />
+                  <Avatar
+                    style={{ paddingRight: "5px" }}
+                    icon={<UserOutlined />}
+                  />
                 </a>
               </Dropdown>
             )}

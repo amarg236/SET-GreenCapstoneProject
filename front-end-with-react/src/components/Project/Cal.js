@@ -165,7 +165,7 @@ class Cal extends React.Component {
     return (
       <Content
         style={{
-          padding: 0,
+          padding: "10px",
           margin: 0,
           minHeight: 580
         }}

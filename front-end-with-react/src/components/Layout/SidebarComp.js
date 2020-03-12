@@ -6,14 +6,33 @@ import UserSidebar from "./RoleBasedSidebar/UserSiderBar";
 import AssignorSidebar from "./RoleBasedSidebar/AssignorSidebar";
 import AdminSidebar from "./RoleBasedSidebar/AdminSidebar";
 import { toggleAction } from "../../actions/toggleAction";
-
+import styled from "styled-components";
+import device from "../../Utility/media";
 import { HomeOutlined, LogoutOutlined } from "@ant-design/icons";
 const { Sider } = Layout;
-const SubMenu = Menu.SubMenu;
 
 class SidebarComp extends Component {
   state = {
-    collapsed: this.props.toggelState
+    collapsed: false,
+    collapsedWidth: 80
+  };
+
+  componentDidMount() {
+    this.checkWidth();
+    window.addEventListener("resize", this.checkWidth());
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.checkWidth());
+  }
+
+  checkWidth = () => () => {
+    const match = window.matchMedia(`(max-width: 768px)`);
+    if (match) {
+      this.setState({ collapsed: true, collapsedWidth: 0 });
+    } else {
+      this.setState({ collapsedWidth: 80 });
+    }
   };
 
   renderSwitch(userRole) {
@@ -67,19 +86,22 @@ class SidebarComp extends Component {
       <Sider
         trigger={null}
         breakpoint="md"
-        // collapsible
-        collapsedWidth="0"
+        collapsible
+        collapsed={this.state.collapsed}
+        collapsedWidth={this.state.collapsedWidth}
         onBreakpoint={broken => {
-          console.log(broken);
-          if (broken == true) {
-            this.props.toggle();
-          } else if (broken == false) {
-            this.props.toggle();
-          }
+          // return `collapsedWidth="0"`;
+          // console.log(broken);
+          // if (broken == true) {
+          //   this.props.toggle();
+          // } else if (broken == false) {
+          //   this.props.toggle();
+          // console.log(broken);
+          // }
         }}
-        // onCollapse={(collapsed, type) => {
-        //   console.log(collapsed, type);
-        // }}
+        onCollapse={(collapsed, type) => {
+          console.log(collapsed, type);
+        }}
         collapsed={this.props.toggelState}
       >
         <div className="logo">SET GREEN</div>
