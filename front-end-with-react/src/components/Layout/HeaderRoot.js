@@ -1,3 +1,4 @@
+import "../../App.css";
 import React, { Component } from "react";
 import Authtoken from "../../Utility/AuthToken";
 import { withRouter } from "react-router-dom";
@@ -30,30 +31,33 @@ class HeaderRoot extends Component {
 
   toggle = () => {
     this.props.toggle();
+    console.log(this.props.toggelState);
   };
 
   render() {
     const loginForm = <LoginComp />;
     const logOutForm = <Logout />;
-    console.log(this.props.username);
     return (
       <Header className="site-layout-background" style={{ padding: 0 }}>
         <Row justify="space-between" className="nav_bar">
           {
-            // <Col lg={4} md={2}>
-            //   <span className="nav_bar_toggle">
-            //   {React.createElement(
-            //     this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            //     {
-            //       className: "trigger",
-            //       onClick: this.toggle
-            //     }
-            //   )}
-            // </span>
-            // </Col>
+            // <Col lg={4} md={2} xs={1}></Col>
+            <Col lg={4} md={2} xs={1}>
+              <span className="nav_bar_toggle">
+                {React.createElement(
+                  this.props.toggelState
+                    ? MenuUnfoldOutlined
+                    : MenuFoldOutlined,
+                  {
+                    className: "trigger",
+                    onClick: this.toggle
+                  }
+                )}
+              </span>
+            </Col>
           }
 
-          <Col lg={14} md={2}></Col>
+          <Col lg={14} md={2} xs={0}></Col>
           <Col lg={6}>
             {this.props.username ? (
               <Dropdown overlay={logOutForm} trigger={["click"]}>

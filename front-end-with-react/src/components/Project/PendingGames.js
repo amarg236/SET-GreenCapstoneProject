@@ -5,13 +5,15 @@ import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { Table } from "react-bootstrap";
 import { connect } from "react-redux";
+import history from "../../Utility/history";
 
 class PendingGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      game: []
+      game: [],
+      school: []
     };
 
     this.approveGame = this.approveGame.bind(this);
@@ -33,36 +35,43 @@ class PendingGame extends Component {
   }
 
   approveGame(
-    id,
-    hometeam,
-    homedistrict,
-    awayteam,
-    awaydistrict,
-    time,
-    duration,
-    location,
-    away_accepted
+    // id,
+    // hometeam,
+    // homedistrict,
+    // awayteam,
+    // awaydistrict,
+    // time,
+    // duration,
+    // location,
+    // approved,
+    // awayAccepted
+    display
   ) {
+    console.log(display);
     const aemptyObj = {
-      id,
-      time,
-      away_accepted,
-      approved: true,
-      awayteam,
-      awaydistrict,
-      duration,
-      hometeam,
-      homedistrict,
-      location
+      // id,
+      // time,
+      // awayAccepted,
+      // approved: true,
+      // awayteam,
+      // awaydistrict,
+      // duration,
+      // hometeam,
+      // homedistrict,
+      // location
+      display
     };
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/modify", aemptyObj, {
+      .post(Authtoken.getBaseUrl() + "/api/game/accept", display, {
         headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
+          Authorization: "Bearer " + this.props.token
         }
       })
       .then(res => {
+        console.log(res);
         window.alert("The game has been approved!");
+        //history.push("./viewGames");
+        // Need to fix this later on
         // window.location.reload();
       });
   }
@@ -76,16 +85,24 @@ class PendingGame extends Component {
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
         headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
+          Authorization: "Bearer " + this.props.token
         }
       })
       .then(res => {
         window.alert("The game has been denied!");
+        // This needs fix later on
         window.location.reload();
+        // history.push("./viewGames");
       });
   }
 
   render() {
+    console.log(this.state.game);
+    // for (let [key, value] of Object.entries(this.state.game)) {
+    //   // console.log("I am under render");
+    //   // console.log(`${key}:${value}`);
+    // }
+    // console.log("I am above return");
     return (
       <div>
         <div>
@@ -115,7 +132,7 @@ class PendingGame extends Component {
                     duration,
                     location,
                     approved,
-                    away_accepted
+                    awayAccepted
                   } = display;
                   if (!approved) {
                     return (
@@ -130,16 +147,17 @@ class PendingGame extends Component {
                             className="btn btn-success"
                             onClick={() =>
                               this.approveGame(
-                                id,
-                                hometeam,
-                                homedistrict,
-                                awayteam,
-                                awaydistrict,
-                                time,
-                                duration,
-                                location,
-                                approved,
-                                away_accepted
+                                // id,
+                                // hometeam,
+                                // homedistrict,
+                                // awayteam,
+                                // awaydistrict,
+                                // time,
+                                // duration,
+                                // location,
+                                // approved,
+                                // awayAccepted
+                                display
                               )
                             }
                           >

@@ -20,6 +20,8 @@ import LoggedInUserDashboard from "./components/Layout/LoggedInUser";
 import history from "./Utility/history";
 import SidebarComp from "./components/Layout/SidebarComp";
 import { Layout, Breadcrumb, Content } from "antd";
+import AddSchool from "./components/ManageTeam/AddSchool";
+import AddDistrict from "./components/ManageTeam/AddDistrict";
 
 class App extends React.Component {
   render() {
@@ -36,6 +38,12 @@ class App extends React.Component {
                 path="/dashboard"
                 component={LoggedInUserDashboard}
               />
+              <ProtectedRoute
+                exact
+                path="/addDistrict"
+                component={AddDistrict}
+              />
+              <ProtectedRoute exact path="/addSchool" component={AddSchool} />
               <ProtectedRoute exact path="/createGame" component={CreateGame} />
               <ProtectedRoute exact path="/viewGames" component={ViewGames} />
               <ProtectedRoute

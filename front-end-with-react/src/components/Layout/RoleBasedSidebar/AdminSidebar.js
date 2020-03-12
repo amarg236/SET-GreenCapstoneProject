@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import history from "../../../Utility/history";
 import { Menu, Layout } from "antd";
+import AddSchool from "../../ManageTeam/AddSchool";
 
 import {
   DashboardOutlined,
@@ -11,7 +12,10 @@ import {
   SettingOutlined,
   LogoutOutlined,
   TeamOutlined,
-  CalendarOutlined
+  CalendarOutlined,
+  AppstoreOutlined,
+  ApartmentOutlined,
+  AppstoreAddOutlined
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -44,20 +48,57 @@ class AdminSidebar extends Component {
           </span>
           <span>Game Calander</span>
         </Menu.Item>
+        <SubMenu
+          key="sub1"
+          title={
+            <span>
+              <AppstoreOutlined />
+              <span>Manage Game</span>
+            </span>
+          }
+        >
+          <Menu.Item onClick={handleClick} key="createGame">
+            <span>
+              <FileAddOutlined />
+            </span>
+            <span>Create Game</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="viewGames">
+            <span>
+              <EyeOutlined />
+            </span>
+            <span>View Game</span>
+          </Menu.Item>
+        </SubMenu>
 
-        <Menu.Item onClick={handleClick} key="createGame">
-          <span>
-            <FileAddOutlined />
-          </span>
-          <span>Create Game</span>
-        </Menu.Item>
-        <Menu.Item onClick={handleClick} key="viewGames">
-          <span>
-            <EyeOutlined />
-          </span>
-          <span>View Game</span>
-        </Menu.Item>
-
+        <SubMenu
+          key="sub2"
+          title={
+            <span>
+              <ApartmentOutlined />
+              <span>Manage Team</span>
+            </span>
+          }
+        >
+          <Menu.Item onClick={handleClick} key="addDistrict">
+            <span>
+              <FileAddOutlined />
+            </span>
+            <span>Add District</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="addSchool">
+            <span>
+              <FileAddOutlined />
+            </span>
+            <span>Add School</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="viewGames">
+            <span>
+              <AppstoreAddOutlined />
+            </span>
+            <span>Add Team</span>
+          </Menu.Item>
+        </SubMenu>
         <Menu.Item key="manageUser">
           <span>
             <TeamOutlined />

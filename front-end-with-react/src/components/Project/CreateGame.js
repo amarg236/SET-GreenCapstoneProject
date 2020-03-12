@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
-
+import { connect } from "react-redux";
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
@@ -142,8 +142,8 @@ class CreateGame extends Component {
       })
       .then(res => {
         window.alert("The Game has been created successfully!!");
-        // window.location.reload();
-        console.log(res);
+        window.location.reload();
+        // console.log(res);
         // console.log(res.data);
       });
   }
@@ -222,7 +222,7 @@ class CreateGame extends Component {
             </Form.Item>
             <Form.Item
               name="gametime"
-              label="Choose Time Range"
+              label="Choose Time"
               rules={[
                 {
                   required: true
@@ -280,4 +280,9 @@ class CreateGame extends Component {
   }
 }
 
-export default CreateGame;
+const mapStatetoProps = state => {
+  return {
+    token: state.userReducer.token
+  };
+};
+export default connect(mapStatetoProps)(CreateGame);

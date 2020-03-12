@@ -55,20 +55,23 @@ class SidebarComp extends Component {
 
   render() {
     return (
+      /*
+      trigger :  This is for menu icon type. It is to allow use to click on it.
+      We are putting it as null because we are using our own trigger symbol.
+      */
       <Sider
         trigger={null}
         breakpoint="md"
         collapsible
         collapsedWidth="0"
-        // onBreakpoint={broken => {
-        //   console.log(broken);
-        // }}
-        // onCollapse={(collapsed, type) => {
-        //   console.log(collapsed, type);
-        // }}
-        // collapsed={this.props.toggelState}
+        onBreakpoint={broken => {
+          console.log(broken);
+        }}
+        onCollapse={(collapsed, type) => {
+          console.log(collapsed, type);
+        }}
+        collapsed={this.props.toggelState}
       >
-        {" "}
         <div className="logo">SET GREEN</div>
         {this.renderSwitch(this.props.role)}
       </Sider>
