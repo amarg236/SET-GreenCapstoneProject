@@ -32,7 +32,7 @@ class ShowGames extends Component {
 
   render() {
     return (
-      <Table dataSource={this.state.game}>
+      <Table dataSource={this.state.game} size="small">
         <Column title="Home Team" dataIndex="hometeam" key="hometeam" />
         <Column title="Away Team" dataIndex="awayteam" key="awayteam" />
 

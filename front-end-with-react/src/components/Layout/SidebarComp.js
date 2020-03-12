@@ -67,8 +67,8 @@ class SidebarComp extends Component {
       <Sider
         trigger={null}
         breakpoint="md"
-        collapsible
-        // collapsedWidth="0"
+        // collapsible
+        collapsedWidth="0"
         onBreakpoint={broken => {
           console.log(broken);
           if (broken == true) {
