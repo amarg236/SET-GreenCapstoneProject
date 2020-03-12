@@ -180,7 +180,7 @@ class AddDistrict extends Component {
                 ]}
               >
                 <Skeleton avatar title={false} loading={item.loading} active>
-                  <List.Item.Meta title={item.districtName} />
+                  <List.Item.Meta title={item.districtName} description />
                 </Skeleton>
               </List.Item>
             )}

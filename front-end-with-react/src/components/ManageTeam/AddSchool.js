@@ -1,21 +1,31 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
+
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import { Form, Input, Button, Layout, List, Skeleton } from "antd";
+import ViewSchool from "./ViewSchool";
+import { Form, Input, Button, Layout, List, Select, Skeleton } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 const { Content } = Layout;
-
+const { Option } = Select;
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 }
+};
 class AddSchool extends Component {
   constructor(props) {
     super(props);
-    this.onChangeDistrict = this.onChangeDistrict.bind(this);
 
-    this.districtSubmit = this.districtSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.schoolSubmit = this.schoolSubmit.bind(this);
   }
 
   state = {
+    selectedD: {
+      id: "",
+      districtName: ""
+    },
     district: "",
+    schoolAddress: "",
+    schoolName: "",
     initLoading: true,
     loading: false,
     data: [],
@@ -36,82 +46,55 @@ class AddSchool extends Component {
         }
       )
       .then(res => {
-        console.log(res.data);
         this.setState({
           initLoading: false,
           data: res.data.result,
           list: res.data.result
         });
-
-        // this.setState({
-        //   myDistrict: res.data.result
-        // });
-        // myDistrict = {res.data.result};
       });
   }
 
-  onChangeDistrict = e => {
-    this.setState({ district: e.target.value });
+  onChangeSchoolName = e => {
+    this.setState({ schoolName: e.target.value });
+  };
+  onChangeSchoolAddress = e => {
+    this.setState({ schoolAddress: e.target.value });
   };
 
-  districtSubmit(e) {
+  schoolSubmit(e) {
     e.preventDefault();
-    console.log(e);
-    console.log(this.state.myDistrict);
-    const gameObject = {
-      districtName: this.state.district
+    const schoolObj = {
+      address: this.state.schoolAddress,
+      name: this.state.schoolName,
+      district: {
+        id: this.state.selectedD.id,
+        districtName: this.state.selectedD.districtName
+      }
     };
     axios
-      .post(Authtoken.getBaseUrl() + "/api/location/district/add", gameObject, {
+      .post(Authtoken.getBaseUrl() + "/api/location/school/add", schoolObj, {
         headers: {
           Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
         }
       })
       .then(res => {
-        console.log(res);
-        // window.alert("The Game has been created successfully!!");
+        window.alert("The School has been added successfully!!");
         window.location.reload();
       });
   }
-  //   api/location/district/remove
 
-  onDelete(item) {
-    const deleteObject = {
-      id: item.id
-    };
-    axios
-      .post(
-        Authtoken.getBaseUrl() + "/api/location/district/remove",
-        deleteObject,
-        {
-          headers: {
-            Authorization:
-              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-          }
-        }
-      )
-      .then(res => {
-        console.log(res);
-        window.alert("The district has been deleted successfully!!");
-        window.location.reload();
-      });
+  handleChange(value) {
+    const dummy = JSON.parse(value);
+    this.setState(prevState => ({
+      selectedD: {
+        id: dummy.id,
+        districtName: dummy.districtName
+      }
+    }));
   }
 
   render() {
     const { initLoading, loading, list } = this.state;
-    const loadMore =
-      !initLoading && !loading ? (
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: 12,
-            height: 32,
-            lineHeight: "32px"
-          }}
-        >
-          <Button onClick={this.onLoadMore}>loading more</Button>
-        </div>
-      ) : null;
 
     const layout = {
       labelCol: {
@@ -154,63 +137,66 @@ class AddSchool extends Component {
             validateMessages={validateMessages}
           >
             <Form.Item
-              name="district"
+              label="School Name"
+              name="schoolName"
               rules={[
                 {
-                  // required: true
+                  required: true
                 }
               ]}
             >
               <Input
                 size="large"
-                value={this.state.district}
-                onChange={this.onChangeDistrict}
-                placeholder="Add District"
-                addonAfter={[
-                  <Button
-                    type="link"
-                    onClick={this.districtSubmit}
-                    // icon={<PlusOutlined />}
-                  >
-                    +
-                  </Button>
-                ]}
+                value={this.state.schoolName}
+                onChange={this.onChangeSchoolName}
+                placeholder="Enter School Name"
               />
             </Form.Item>
-          </Form>
-          <List
-            column="2"
-            className="demo-loadmore-list"
-            loading={initLoading}
-            itemLayout="horizontal"
-            loadMore={loadMore}
-            dataSource={list}
-            renderItem={item => (
-              <List.Item
-                actions={[
-                  <Button type="dashed" onClick={() => this.onDelete(item)}>
-                    Remove
-                  </Button>
-                ]}
+            <Form.Item
+              label="Address"
+              name="schoolAddress"
+              rules={[
+                {
+                  required: true
+                }
+              ]}
+            >
+              <Input
+                size="large"
+                value={this.state.schoolAddress}
+                onChange={this.onChangeSchoolAddress}
+                placeholder="Enter School Name"
+              />
+            </Form.Item>
+            <Form.Item label="Select District" name="districtName">
+              <Select
+                size="large"
+                defaultValue="Select Options"
+                style={{ width: 120 }}
+                onChange={this.handleChange}
               >
-                <Skeleton avatar title={false} loading={item.loading} active>
-                  <List.Item.Meta title={item.districtName} />
-                </Skeleton>
-              </List.Item>
-            )}
-          />
-          {
-            // <Table columns={columns} dataSource={this.state.myDistrict}></Table>
-          }
+                {this.state.list.map(item => (
+                  <Select.Option
+                    key={item.id}
+                    // value={index}
+                    value={JSON.stringify(item)}
+                  >
+                    {item.districtName}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item {...tailLayout}>
+              <Button type="primary" onClick={this.schoolSubmit}>
+                Add School
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
+        <ViewSchool />
       </Content>
     );
   }
 }
 
-const mapStatetoProps = state => {
-  return {
-    token: state.userReducer.token
-  };
-};
-export default connect(mapStatetoProps)(AddSchool);
+export default AddSchool;
