@@ -32,7 +32,7 @@ class ViewGames extends Component {
           //   <FullyApprovedGames />
           // </div>
         }
-        <h4 style={{ textAlign: "center" }}>View Pending Games</h4>
+
         {<ShowGames />}
       </Content>
     );

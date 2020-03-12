@@ -5,6 +5,7 @@ import { Menu, Layout } from "antd";
 import UserSidebar from "./RoleBasedSidebar/UserSiderBar";
 import AssignorSidebar from "./RoleBasedSidebar/AssignorSidebar";
 import AdminSidebar from "./RoleBasedSidebar/AdminSidebar";
+import { toggleAction } from "../../actions/toggleAction";
 
 import { HomeOutlined, LogoutOutlined } from "@ant-design/icons";
 const { Sider } = Layout;
@@ -52,6 +53,10 @@ class SidebarComp extends Component {
         );
     }
   }
+  // toggle = () => {
+  //   this.props.toggle();
+  //   console.log(this.props.toggelState);
+  // };
 
   render() {
     return (
@@ -61,12 +66,16 @@ class SidebarComp extends Component {
       */
       <Sider
         trigger={null}
-        breakpoint="xs"
+        breakpoint="md"
         collapsible
         // collapsedWidth="0"
         onBreakpoint={broken => {
           console.log(broken);
-          return `collapseWidth="0"`;
+          if (broken == true) {
+            this.props.toggle();
+          } else if (broken == false) {
+            this.props.toggle();
+          }
         }}
         // onCollapse={(collapsed, type) => {
         //   console.log(collapsed, type);
@@ -87,4 +96,10 @@ const mapStatetoProps = state => {
   };
 };
 
-export default connect(mapStatetoProps)(SidebarComp);
+const mapDispatchToProps = dispatch => {
+  return {
+    toggle: () => dispatch(toggleAction())
+  };
+};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(SidebarComp);
