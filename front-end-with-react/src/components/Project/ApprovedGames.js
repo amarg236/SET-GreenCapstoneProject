@@ -60,9 +60,10 @@ class ApprovedGames extends Component {
                     time,
                     duration,
                     location,
-                    approved
+                    approved,
+                    awayAccepted
                   } = display;
-                  if (approved) {
+                  if (awayAccepted && !approved) {
                     return (
                       <tr key={id}>
                         <td>{hometeam}</td>

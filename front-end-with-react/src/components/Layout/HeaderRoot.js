@@ -73,9 +73,6 @@ class HeaderRoot extends Component {
             ) : (
               <Dropdown overlay={loginForm} trigger={["click"]}>
                 <a className="ant-dropdown-link" href="#">
-                  <a href="" style={{ marginRight: "10px" }}>
-                    Hello, Guest !
-                  </a>
                   <Avatar
                     style={{ paddingRight: "5px" }}
                     icon={<UserOutlined />}

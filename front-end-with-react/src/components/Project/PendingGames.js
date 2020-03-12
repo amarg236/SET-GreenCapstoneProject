@@ -58,8 +58,10 @@ class PendingGame extends Component {
       // hometeam,
       // homedistrict,
       // location
-      display
+      // display
+      id: display.id
     };
+    // console.log(display.id);
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/accept", display, {
         headers: {
@@ -97,11 +99,7 @@ class PendingGame extends Component {
 
   render() {
     console.log(this.state.game);
-    // for (let [key, value] of Object.entries(this.state.game)) {
-    //   // console.log("I am under render");
-    //   // console.log(`${key}:${value}`);
-    // }
-    // console.log("I am above return");
+
     return (
       <div>
         <div>
