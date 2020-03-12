@@ -1,25 +1,37 @@
 import React from "react";
 import "./App.css";
+
+//Redux
+import { connect } from "react-redux";
+
+// Bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+
+// Router Import
 import { Router, Switch, Route } from "react-router-dom";
 import SignIn from "./components/Project/SignIn";
+
+// Components
 import Home from "./components/Layout/Home";
 import CreateGame from "./components/Project/CreateGame";
 import FooterComp from "./components/Layout/FooterComp";
 import ProtectedRoute from "./Utility/protectedRoute";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Cal from "./components/Project/Cal";
 import ManageBox from "./components/Project/ManageBox";
 import ViewGames from "./components/Project/ViewGames";
 import UserProfile from "./components/Project/UserProfile";
-import { connect } from "react-redux";
 import HeaderRoot from "./components/Layout/HeaderRoot";
 import LoggedInUserDashboard from "./components/Layout/LoggedInUser";
 import history from "./Utility/history";
 import SidebarComp from "./components/Layout/SidebarComp";
-import { Layout, Breadcrumb, Content } from "antd";
+
+// AntDesign
+import { Layout } from "antd";
+
+const { Header, Footer, Sider, Content } = Layout;
 
 class App extends React.Component {
   render() {

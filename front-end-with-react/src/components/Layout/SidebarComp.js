@@ -1,18 +1,22 @@
 import "../../App.css";
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { Menu, Layout } from "antd";
+
 import UserSidebar from "./RoleBasedSidebar/UserSiderBar";
 import AssignorSidebar from "./RoleBasedSidebar/AssignorSidebar";
 import AdminSidebar from "./RoleBasedSidebar/AdminSidebar";
 
+import { Menu, Layout } from "antd";
 import { HomeOutlined, LogoutOutlined } from "@ant-design/icons";
 const { Sider } = Layout;
-const SubMenu = Menu.SubMenu;
 
 class SidebarComp extends Component {
   state = {
     collapsed: this.props.toggelState
+  };
+
+  onCollapse = collapsed => {
+    this.setState({ collapsed });
   };
 
   renderSwitch(userRole) {
@@ -42,7 +46,6 @@ class SidebarComp extends Component {
         return (
           <div>
             <Menu
-            
               mode="inline"
               theme="dark"
               defaultSelectedKeys={["1"]}
@@ -71,17 +74,9 @@ class SidebarComp extends Component {
   render() {
     return (
       <Sider
-        trigger={null}
-        breakpoint="md"
         collapsible
-        collapsedWidth="0"
-        // onBreakpoint={broken => {
-        //   console.log(broken);
-        // }}
-        // onCollapse={(collapsed, type) => {
-        //   console.log(collapsed, type);
-        // }}
-        // collapsed={this.props.toggelState}
+        collapsed={this.state.collapsed}
+        onCollapse={this.onCollapse}
       >
         {" "}
         <div className="logo">SET GREEN</div>
@@ -99,4 +94,3 @@ const mapStatetoProps = state => {
 };
 
 export default connect(mapStatetoProps)(SidebarComp);
-

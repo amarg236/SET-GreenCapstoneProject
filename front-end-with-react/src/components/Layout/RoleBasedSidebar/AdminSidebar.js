@@ -29,7 +29,7 @@ class AdminSidebar extends Component {
         className="sidebarProperty"
         defaultSelectedKeys={["1"]}
         defaultOpenKeys={["sub1"]}
-        style={{ height: "100%", borderRight: 0 }}
+        // style={{ height: "100%", borderRight: 0 }}
       >
         <Menu.Item onClick={handleClick} key="dashboard">
           <span>
