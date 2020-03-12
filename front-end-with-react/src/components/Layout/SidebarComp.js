@@ -61,15 +61,16 @@ class SidebarComp extends Component {
       */
       <Sider
         trigger={null}
-        breakpoint="md"
+        breakpoint="xs"
         collapsible
-        collapsedWidth="0"
+        // collapsedWidth="0"
         onBreakpoint={broken => {
           console.log(broken);
+          return `collapseWidth="0"`;
         }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
+        // onCollapse={(collapsed, type) => {
+        //   console.log(collapsed, type);
+        // }}
         collapsed={this.props.toggelState}
       >
         <div className="logo">SET GREEN</div>

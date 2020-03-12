@@ -8,7 +8,7 @@ import ShowGames from "./ShowGames";
 import { Layout } from "antd";
 const { Content } = Layout;
 
-class ViewGames extends Component {
+class WorkingVersion extends Component {
   // constructor(props) {
   //   super(props);
   // }
@@ -24,19 +24,21 @@ class ViewGames extends Component {
         className="site-layout-background"
       >
         {
-          // <div>
-          //   <PendingGame />
-          //   <br />
-          //   <ApprovedGames />
-          //   <br />
-          //   <FullyApprovedGames />
-          // </div>
+          <div>
+            <PendingGame />
+            <br />
+            <ApprovedGames />
+            <br />
+            <FullyApprovedGames />
+          </div>
         }
-        <h4 style={{ textAlign: "center" }}>View Pending Games</h4>
-        {<ShowGames />}
+        {
+          // <h4 style={{ textAlign: "center" }}>View Pending Games</h4>
+          // <ShowGames />
+        }
       </Content>
     );
   }
 }
 
-export default ViewGames;
+export default WorkingVersion;

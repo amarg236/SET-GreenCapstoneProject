@@ -59,6 +59,12 @@ class UserSidebar extends Component {
           </span>
           <span>View Game</span>
         </Menu.Item>
+        <Menu.Item onClick={handleClick} key="workingVersion">
+          <span>
+            <EyeOutlined />
+          </span>
+          <span>Working Version</span>
+        </Menu.Item>
         <SubMenu
           key="sub2"
           title={
