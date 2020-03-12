@@ -20,7 +20,6 @@ class UserDashboard extends Component {
           <h1 className="display-4">Hello, USER!</h1>
           <p className="lead">This is a UserDashboard</p>
         </div>
-        <Cal />
       </div>
     );
   }
