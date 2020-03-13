@@ -24,17 +24,16 @@ class ViewGames extends Component {
         className="site-layout-background"
       >
         {
-          <div>
-            <PendingGame />
-            <br />
-            <ApprovedGames />
-            <br />
-            <FullyApprovedGames />
-          </div>
+          // <div>
+          //   <PendingGame />
+          //   <br />
+          //   <ApprovedGames />
+          //   <br />
+          //   <FullyApprovedGames />
+          // </div>
         }
-        {
-          // <ShowGames />
-        }
+
+        {<ShowGames />}
       </Content>
     );
   }

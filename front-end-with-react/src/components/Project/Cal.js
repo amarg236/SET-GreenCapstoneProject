@@ -84,7 +84,7 @@ class Cal extends React.Component {
     return (
       <Content
         style={{
-          padding: 0,
+          padding: "10px",
           margin: 0,
           minHeight: 580
         }}
@@ -100,10 +100,10 @@ class Cal extends React.Component {
           actionBegin={this.onActionBegin.bind(this)}
           readonly={true}
           style={{
-            minHeight: "55%",
-            maxHeight: "100%",
+            maxHeight: "55%",
+            minHeight: "100%",
             minWidth: "46vh",
-            marginLeft: '0'
+            marginLeft: "0"
           }}
         >
           {

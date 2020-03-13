@@ -34,11 +34,50 @@ class ApprovedGames extends Component {
           //Unapproved games
         }
         <div>
-          <h3 className="text-center">Waiting for Assignor Approval</h3>
-          <Table
-            dataSource={dataSource}
-            columns={columns}
-            pagination={{ pageSize: 3 }} />
+          <h3 className="text-center">Waiting for Assignor Approvel</h3>
+          <br />
+          <Table className="table-striped hover table-responsive-sm ">
+            <thead>
+              <tr>
+                <th>Home Team</th>
+                <th>Playing Against</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.game &&
+                this.state.game.map(display => {
+                  console.log(display);
+                  const {
+                    id,
+                    hometeam,
+                    homedistrict,
+                    awayteam,
+                    awaydistrict,
+                    time,
+                    duration,
+                    location,
+                    approved,
+                    awayAccepted
+                  } = display;
+                  if (awayAccepted && !approved) {
+                    return (
+                      <tr key={id}>
+                        <td>{hometeam}</td>
+                        <td>{awayteam}</td>
+                        <td>{time}</td>
+                        <td>{location}</td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    );
+                  }
+                })}
+            </tbody>
+          </Table>
         </div>
       </div>
     );

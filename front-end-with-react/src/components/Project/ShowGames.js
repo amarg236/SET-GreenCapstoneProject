@@ -3,19 +3,19 @@ import "../../stylesheets/createGame.css";
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import { Table } from "react-bootstrap";
-import { connect } from "react-redux";
+
+import { Table, Tag } from "antd";
+
+const { Column, ColumnGroup } = Table;
 
 class ShowGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      pagination: {},
       loading: true,
       game: []
     };
-
-    this.approveGame = this.approveGame.bind(this);
-    this.denyGame = this.denyGame.bind(this);
   }
 
   componentDidMount() {
@@ -32,147 +32,28 @@ class ShowGames extends Component {
       });
   }
 
-  approveGame(
-    id,
-    hometeam,
-    homedistrict,
-    awayteam,
-    awaydistrict,
-    time,
-    duration,
-    location,
-    away_accepted
-  ) {
-    const aemptyObj = {
-      id,
-      time,
-      away_accepted,
-      approved: true,
-      awayteam,
-      awaydistrict,
-      duration,
-      hometeam,
-      homedistrict,
-      location
-    };
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/modify", aemptyObj, {
-        headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
-      })
-      .then(res => {
-        window.alert("The game has been approved!");
-        // window.location.reload();
-      });
-  }
-
-  denyGame(id) {
-    console.log("i am here");
-    const emptyObj = {
-      data: id
-    };
-
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
-        headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
-      })
-      .then(res => {
-        window.alert("The game has been denied!");
-        window.location.reload();
-      });
-  }
-
   render() {
     return (
-      <div>
-        <div>
-          <h3 className="text-center">Pending Games</h3>
-          <br />
-          <Table className="table-striped hover table-responsive-sm ">
-            <thead>
-              <tr>
-                <th>Home Team</th>
-                <th>Playing Against</th>
-                <th>Time</th>
-                <th>Location</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.game &&
-                this.state.game.map(display => {
-                  const {
-                    id,
-                    hometeam,
-                    homedistrict,
-                    awayteam,
-                    awaydistrict,
-                    time,
-                    duration,
-                    location,
-                    approved,
-                    away_accepted
-                  } = display;
-                  if (!approved) {
-                    return (
-                      <tr key={id}>
-                        <td>{hometeam}</td>
-                        <td>{awayteam}</td>
-                        <td>{time}</td>
-                        <td>{location}</td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-success"
-                            onClick={() =>
-                              this.approveGame(
-                                id,
-                                hometeam,
-                                homedistrict,
-                                awayteam,
-                                awaydistrict,
-                                time,
-                                duration,
-                                location,
-                                approved,
-                                away_accepted
-                              )
-                            }
-                          >
-                            Approve
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-danger"
-                            onClick={() => this.denyGame(id)}
-                          >
-                            Deny
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  }
-                })}
-            </tbody>
-          </Table>
-        </div>
-        {
-          // Approved Games
-        }
-      </div>
+      <Table dataSource={this.state.game} size="small">
+        <Column title="Home Team" dataIndex="hometeam" key="hometeam" />
+        <Column title="Away Team" dataIndex="awayteam" key="awayteam" />
+
+        <Column title="Location" dataIndex="location" key="location" />
+        <Column title="Time" dataIndex="time" key="time" />
+
+        <Column
+          title="Action"
+          key="action"
+          render={(text, record) => (
+            <span>
+              <a style={{ marginRight: 16 }}>Approve {record.lastName}</a>
+              <a>Deny</a>
+            </span>
+          )}
+        />
+      </Table>
     );
   }
 }
 
-const mapStatetoProps = state => {
-  return {
-    token: state.userReducer.token
-  };
-};
-export default connect(mapStatetoProps, null)(ShowGames);
+export default ShowGames;

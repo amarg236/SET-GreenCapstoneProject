@@ -1,3 +1,4 @@
+import "../../App.css";
 import React, { Component } from "react";
 import Authtoken from "../../Utility/AuthToken";
 import { withRouter } from "react-router-dom";
@@ -30,47 +31,52 @@ class HeaderRoot extends Component {
 
   toggle = () => {
     this.props.toggle();
+    console.log(this.props.toggelState);
   };
 
   render() {
     const loginForm = <LoginComp />;
     const logOutForm = <Logout />;
-    console.log(this.props.username);
     return (
       <Header className="site-layout-background" style={{ padding: 0 }}>
         <Row justify="space-between" className="nav_bar">
           {
-            // <Col lg={4} md={2}>
-            //   <span className="nav_bar_toggle">
-            //   {React.createElement(
-            //     this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            //     {
-            //       className: "trigger",
-            //       onClick: this.toggle
-            //     }
-            //   )}
-            // </span>
-            // </Col>
+            // <Col lg={4} md={2} xs={1}></Col>
+            <Col lg={4} md={2} xs={1}>
+              <span className="nav_bar_toggle">
+                {React.createElement(
+                  this.props.toggelState
+                    ? MenuUnfoldOutlined
+                    : MenuFoldOutlined,
+                  {
+                    className: "trigger",
+                    onClick: this.toggle
+                  }
+                )}
+              </span>
+            </Col>
           }
 
-          <Col lg={14} md={2}></Col>
-          <Col lg={6}>
+          <Col lg={10} md={0} xs={0}></Col>
+          <Col lg={3} md={3} xs={5}>
             {this.props.username ? (
               <Dropdown overlay={logOutForm} trigger={["click"]}>
                 <a className="ant-dropdown-link" href="#">
-                  <a href="" style={{ marginRight: "10px" }}>
-                    {this.props.username}
-                  </a>
+                  {
+                    //  <a href="" style={{ marginRight: "10px" }}>
+                    // {this.props.username}
+                    // </a>
+                  }
                   <Avatar icon={<UserOutlined />} />
                 </a>
               </Dropdown>
             ) : (
               <Dropdown overlay={loginForm} trigger={["click"]}>
                 <a className="ant-dropdown-link" href="#">
-                  <a href="" style={{ marginRight: "10px" }}>
-                    Hello, Guest !
-                  </a>
-                  <Avatar icon={<UserOutlined />} />
+                  <Avatar
+                    style={{ paddingRight: "5px" }}
+                    icon={<UserOutlined />}
+                  />
                 </a>
               </Dropdown>
             )}
