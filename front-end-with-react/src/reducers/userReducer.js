@@ -1,8 +1,9 @@
 const initialState = {
   //following commented line of code can also be used as alternative
   // ...JSON.parse(localStorage.getItem("userInfo"))
+  sidebarCollapased: false,
   username: JSON.parse(localStorage.getItem("userInfo"))?.username,
-  token: JSON.parse(localStorage.getItem("userInfo"))?.token,
+  token: JSON.parse(localStorage.getItem("userInfo"))?.token.split(" ")[1],
   message: "",
   role: JSON.parse(localStorage.getItem("userInfo"))?.role
 };
@@ -24,6 +25,11 @@ const userReducer = (state = initialState, action) => {
         username: "",
         token: "",
         role: ""
+      };
+    case "SIDEBAR_TOGGLE":
+      return {
+        ...state,
+        sidebarCollapased: !state.sidebarCollapased
       };
     default:
       return state;

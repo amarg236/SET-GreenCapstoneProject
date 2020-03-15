@@ -3,14 +3,17 @@ import "../../stylesheets/createGame.css";
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import { Table } from "react-bootstrap";
+import { Table } from "antd";
+import { connect } from "react-redux";
+import reqwest from 'reqwest';
 
 class PendingGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      game: []
+      game: [],
+      school: []
     };
 
     this.approveGame = this.approveGame.bind(this);
@@ -18,6 +21,7 @@ class PendingGame extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.token);
     const emptyBody = {};
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyBody, {
@@ -31,64 +35,75 @@ class PendingGame extends Component {
   }
 
   approveGame(
-    id,
-    hometeam,
-    homedistrict,
-    awayteam,
-    awaydistrict,
-    time,
-    duration,
-    location,
-    away_accepted
+    // id,
+    // hometeam,
+    // homedistrict,
+    // awayteam,
+    // awaydistrict,
+    // time,
+    // duration,
+    // location,
+    // approved,
+    // awayAccepted
+    display
   ) {
+    console.log(display);
     const aemptyObj = {
-      id,
-      time,
-      away_accepted,
-      approved: true,
-      awayteam,
-      awaydistrict,
-      duration,
-      hometeam,
-      homedistrict,
-      location
+      // id,
+      // time,
+      // awayAccepted,
+      // approved: true,
+      // awayteam,
+      // awaydistrict,
+      // duration,
+      // hometeam,
+      // homedistrict,
+      // location
+      // display
+      id: display.id
     };
+    // console.log(display.id);
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/modify", aemptyObj, {
+      .post(Authtoken.getBaseUrl() + "/api/game/accept", display, {
         headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
+          Authorization: "Bearer " + this.props.token
         }
       })
       .then(res => {
+        console.log(res);
         window.alert("The game has been approved!");
-        window.location.reload();
+        //history.push("./viewGames");
+        // Need to fix this later on
+        // window.location.reload();
       });
+    
   }
 
   denyGame(id) {
     console.log("i am here");
     const emptyObj = {
-      id
+      data: id
     };
 
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
         headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
+          Authorization: "Bearer " + this.props.token
         }
       })
       .then(res => {
         window.alert("The game has been denied!");
+        // This needs fix later on
         window.location.reload();
+        // history.push("./viewGames");
       });
   }
 
   render() {
+    console.log(this.state.game);
+
     return (
       <div>
-        {
-          //Unapproved games
-        }
         <div>
           <h3 className="text-center">Pending Games</h3>
           <br />
@@ -116,7 +131,7 @@ class PendingGame extends Component {
                     duration,
                     location,
                     approved,
-                    away_accepted
+                    awayAccepted
                   } = display;
                   if (!approved) {
                     return (
@@ -131,16 +146,17 @@ class PendingGame extends Component {
                             className="btn btn-success"
                             onClick={() =>
                               this.approveGame(
-                                id,
-                                hometeam,
-                                homedistrict,
-                                awayteam,
-                                awaydistrict,
-                                time,
-                                duration,
-                                location,
-                                approved,
-                                away_accepted
+                                // id,
+                                // hometeam,
+                                // homedistrict,
+                                // awayteam,
+                                // awaydistrict,
+                                // time,
+                                // duration,
+                                // location,
+                                // approved,
+                                // awayAccepted
+                                display
                               )
                             }
                           >
@@ -171,4 +187,22 @@ class PendingGame extends Component {
   }
 }
 
+const columns = [{
+  title: 'Name',
+  dataIndex: 'name',
+  sorter: true,
+  render: name => `${name.first} ${name.last}`,
+  width: '20%',
+}, {
+  title: 'Gender',
+  dataIndex: 'gender',
+  filters: [
+    { text: 'Male', value: 'male' },
+    { text: 'Female', value: 'female' },
+  ],
+  width: '20%',
+}, {
+  title: 'Email',
+  dataIndex: 'email',
+}];
 export default PendingGame;

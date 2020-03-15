@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import "../../stylesheets/createGame.css";
 import "./SignIn";
-
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import { Table } from "react-bootstrap";
+import { Table } from "antd";
 
 class ApprovedGames extends Component {
   constructor(props) {
@@ -61,9 +60,10 @@ class ApprovedGames extends Component {
                     time,
                     duration,
                     location,
-                    approved
+                    approved,
+                    awayAccepted
                   } = display;
-                  if (approved) {
+                  if (awayAccepted && !approved) {
                     return (
                       <tr key={id}>
                         <td>{hometeam}</td>
@@ -79,12 +79,42 @@ class ApprovedGames extends Component {
             </tbody>
           </Table>
         </div>
-        {
-          // Approved Games
-        }
       </div>
     );
   }
 }
+
+const dataSource = [
+  {
+    key: '1',
+    playingAgainst: 'Neville High',
+    time: '5:00 03/25/20',
+    location: 'Home',
+  },
+  // {
+  //   key: '2',
+  //   name: 'John',
+  //   age: 42,
+  //   address: '10 Downing Street',
+  // },
+];
+
+const columns = [
+  {
+    title: 'Playing Against',
+    dataIndex: 'playingAgainst',
+    key: 'playingAgainst',
+  },
+  {
+    title: 'Time and Date',
+    dataIndex: 'time',
+    key: 'time',
+  },
+  {
+    title: 'Location',
+    dataIndex: 'location',
+    key: 'location',
+  },
+];
 
 export default ApprovedGames;
