@@ -133,10 +133,10 @@ public class GameHandler {
 		try{
 			Iterable<Game> g;
 			if(findAll) {
-				g = gr.findInSchoolAll(s.getName(),s.getDistrict());
+				g = gr.findInSchoolAll(s.getName());
 			}
 			else {
-				g = gr.findInSchoolVerified(s.getName(),s.getDistrict());
+				g = gr.findInSchoolVerified(s.getName());
 			}
 			return new ResponseBody<Iterable<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
 		}
@@ -184,5 +184,9 @@ public class GameHandler {
 
 	public Game getGameById(Long id) {
 		return getGameById(new DataObject<Long>(id));
+	}
+	
+	public ResponseBody<Iterable<Game>> unverifiedGames(School s) {
+		return new ResponseBody<Iterable<Game>>(HttpStatus.ACCEPTED.value(), "Found Games", gr.findByApprovedFalse());
 	}
 }

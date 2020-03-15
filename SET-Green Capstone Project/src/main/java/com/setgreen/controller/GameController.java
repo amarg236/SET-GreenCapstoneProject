@@ -67,12 +67,15 @@ public class GameController {
 	
 	@PostMapping("get/BySchool/all")
 	public ResponseBody<Iterable<Game>> getSchoolAll(@RequestBody School s) {
-		System.out.println(s.getDistrict());
 		return gh.getGames(s, true);
 	}
 	
 	@PostMapping("get/all")
 	public ResponseBody<Iterable<Game>> getAll() {
 		return gh.allGames();
+	}
+	@PostMapping("get/BySchool/unverified")
+	public ResponseBody<Iterable<Game>> getAll(@RequestBody School s){
+		return gh.unverifiedGames(s);
 	}
 }
