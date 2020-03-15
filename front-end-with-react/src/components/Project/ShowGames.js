@@ -78,8 +78,9 @@ class ShowGames extends Component {
       <div>
         <h3 className="text-center">Pending Games</h3>
         <Table dataSource={
-          //this.state.game
-          data} size="small">
+          this.state.game
+          //data
+          } size="small">
           <Column title="Home Team" dataIndex="hometeam" key="hometeam" />
           <Column title="Away Team" dataIndex="awayteam" key="awayteam" />
 
