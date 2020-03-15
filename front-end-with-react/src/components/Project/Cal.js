@@ -74,7 +74,11 @@ class Cal extends React.Component {
     }
   }
   onExportClick() {
-    this.scheduleObj.exportToExcel();
+    let exportValues = {
+      //fields: ['Date', 'Time', 'Level', 'Home-Team', 'Home-Level', 'Away-Team', 'Away-Level'],
+      exportType: "csv" 
+  };
+  this.scheduleObj.exportToExcel(exportValues);
   }
 
   // Links that could be helpful

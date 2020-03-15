@@ -28,7 +28,7 @@ class App extends React.Component {
   render() {
     return (
       <Router history={history}>
-        <Layout style={{height:"100vh"}}>
+        <Layout style={{height:"100vh", overflow:'hidden'}}>
           <SidebarComp />
           <Layout className="site-layout">
             <HeaderRoot />

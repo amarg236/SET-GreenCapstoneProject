@@ -5,6 +5,7 @@ import ApprovedGames from "./ApprovedGames";
 import PendingGame from "./PendingGames";
 import FullyApprovedGames from "./FullyApprovedGames";
 import ShowGames from "./ShowGames";
+import ApproveGame from "./ApproveGame";
 import { Layout } from "antd";
 const { Content } = Layout;
 
@@ -34,6 +35,7 @@ class ViewGames extends Component {
         }
 
         {<ShowGames />}
+        <ApproveGame />
       </Content>
     );
   }
