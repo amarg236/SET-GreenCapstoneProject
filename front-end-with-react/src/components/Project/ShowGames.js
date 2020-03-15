@@ -95,10 +95,9 @@ class ShowGames extends Component {
                       id,
                       approved,
                     } = display;
-                    if (!approved) {
+                    if (!display["approved"]) {
                       return (
-                        <tr key={id}>
-                          <td>
+                        <div>
                             <button
                               type="button"
                               className="btn btn-success"
@@ -110,8 +109,7 @@ class ShowGames extends Component {
                             >
                               Approve
                           </button>
-                          </td>
-                          <td>
+
                             <button
                               type="button"
                               className="btn btn-danger"
@@ -119,8 +117,7 @@ class ShowGames extends Component {
                             >
                               Deny
                           </button>
-                          </td>
-                        </tr>
+                          </div>
                       )
                     }
                   }
@@ -129,7 +126,7 @@ class ShowGames extends Component {
 
 
                 {/* <Button href="javacsript:;" onClick={() => this.approveGame(display)}>
-                  Approve 
+                  Approve
                 </Button> */}
               </span>
             )

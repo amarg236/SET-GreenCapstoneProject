@@ -76,7 +76,7 @@ class PendingGame extends Component {
         // Need to fix this later on
         // window.location.reload();
       });
-    
+
   }
 
   denyGame(id) {
@@ -140,7 +140,7 @@ class PendingGame extends Component {
                         <td>{awayteam}</td>
                         <td>{time}</td>
                         <td>{location}</td>
-                        <td>
+                        /*<td>
                           <button
                             type="button"
                             className="btn btn-success"
