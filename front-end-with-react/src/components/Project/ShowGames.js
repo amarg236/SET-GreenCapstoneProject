@@ -77,7 +77,9 @@ class ShowGames extends Component {
     return (
       <div>
         <h3 className="text-center">Pending Games</h3>
-        <Table dataSource={this.state.game} size="small">
+        <Table dataSource={
+          //this.state.game
+          data} size="small">
           <Column title="Home Team" dataIndex="hometeam" key="hometeam" />
           <Column title="Away Team" dataIndex="awayteam" key="awayteam" />
 
@@ -129,7 +131,6 @@ class ShowGames extends Component {
 
 
                 {/* <Button href="javacsript:;" onClick={() => this.approveGame(display)}>
-                  Approve 
                 </Button> */}
               </span>
             )
@@ -140,5 +141,14 @@ class ShowGames extends Component {
     );
   }
 }
+
+const data =[
+  {
+    hometeam: 'a1',
+    awayteam:'a2',
+    location: 'a3',
+    time: 'a4'
+  }
+]
 
 export default ShowGames;

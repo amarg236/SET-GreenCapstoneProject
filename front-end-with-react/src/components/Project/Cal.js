@@ -23,12 +23,12 @@ function processData(rawEvents) {
   console.log(rawEvents.result);
   return rawEvents.result.map(event => ({
     Id: event.id,
-    StartTime: "2020-03-08 12:30",
-    EndTime: "2020-03-08 13:00",
-    // StartTime: moment(event.time, "YYYY-MM-DD HH:mm").toISOString(),
-    // EndTime: moment(event.time, "YYYY-MM-DD HH:mm")
-    //   .add(event.duration, "minute")
-    //   .toISOString(),
+    // StartTime: "2020-03-08 12:30",
+    // EndTime: "2020-03-08 13:00",
+    StartTime: moment(event.time, "YYYY-MM-DD HH:mm").toISOString(),
+    EndTime: moment(event.time, "YYYY-MM-DD HH:mm")
+      .add(event.duration, "minute")
+      .toISOString(),
     Subject: `${event.hometeam} vs ${event.awayteam}`,
     Location: event.location
   }));
