@@ -129,7 +129,7 @@ public class GameHandler {
 		}
 	}
 	
-	public ResponseBody<Iterable<Game>> getGames(School s, boolean findAll) {
+	public ResponseBody<Iterable<Game>> getGames(School s, boolean findAll) { //FIXME URGENT doesn't care about district. Fix that
 		try{
 			Iterable<Game> g;
 			if(findAll) {
