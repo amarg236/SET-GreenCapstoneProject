@@ -4,7 +4,7 @@ import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 
-import { Table, Tag } from "antd";
+import { Table, Tag, Button } from "antd";
 
 const { Column, ColumnGroup } = Table;
 
@@ -32,26 +32,111 @@ class ShowGames extends Component {
       });
   }
 
+  approveGame(display) {
+    console.log(display);
+    const aemptyObj = {
+      id: display.id
+    };
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/game/accept", display, {
+        headers: {
+          Authorization: "Bearer " + this.props.token
+        }
+      })
+      .then(res => {
+        console.log(res);
+        window.alert("The game has been approved!");
+        //history.push("./viewGames");
+        // Need to fix this later on
+        // window.location.reload();
+      });
+
+  }
+
+  denyGame(id) {
+    console.log("i am here");
+    const emptyObj = {
+      data: id
+    };
+
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
+        headers: {
+          Authorization: "Bearer " + this.props.token
+        }
+      })
+      .then(res => {
+        window.alert("The game has been denied!");
+        // This needs fix later on
+        window.location.reload();
+        // history.push("./viewGames");
+      });
+  }
+
   render() {
     return (
-      <Table dataSource={this.state.game} size="small">
-        <Column title="Home Team" dataIndex="hometeam" key="hometeam" />
-        <Column title="Away Team" dataIndex="awayteam" key="awayteam" />
+      <div>
+        <h3 className="text-center">Pending Games</h3>
+        <Table dataSource={this.state.game} size="small">
+          <Column title="Home Team" dataIndex="hometeam" key="hometeam" />
+          <Column title="Away Team" dataIndex="awayteam" key="awayteam" />
 
-        <Column title="Location" dataIndex="location" key="location" />
-        <Column title="Time" dataIndex="time" key="time" />
+          <Column title="Location" dataIndex="location" key="location" />
+          <Column title="Time" dataIndex="time" key="time" />
 
-        <Column
-          title="Action"
-          key="action"
-          render={(text, record) => (
-            <span>
-              <a style={{ marginRight: 16 }}>Approve {record.lastName}</a>
-              <a>Deny</a>
-            </span>
-          )}
-        />
-      </Table>
+          <Column
+            title="Action"
+            key="action"
+            render={(text, record) => (
+              <span>
+                {this.state.game &&
+                  this.state.game.map(display => {
+                    const {
+                      id,
+                      approved,
+                    } = display;
+                    if (!approved) {
+                      return (
+                        <tr key={id}>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-success"
+                              onClick={() =>
+                                this.approveGame(
+                                  display
+                                )
+                              }
+                            >
+                              Approve
+                          </button>
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-danger"
+                              onClick={() => this.denyGame(id)}
+                            >
+                              Deny
+                          </button>
+                          </td>
+                        </tr>
+                      )
+                    }
+                  }
+                  )
+                }
+
+
+                {/* <Button href="javacsript:;" onClick={() => this.approveGame(display)}>
+                  Approve 
+                </Button> */}
+              </span>
+            )
+          }
+          />
+        </Table>
+      </div>
     );
   }
 }

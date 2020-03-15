@@ -76,7 +76,7 @@ class PendingGame extends Component {
         // Need to fix this later on
         // window.location.reload();
       });
-    });
+    
   }
 
   denyGame(id) {
