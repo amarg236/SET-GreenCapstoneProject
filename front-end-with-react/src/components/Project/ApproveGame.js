@@ -29,7 +29,7 @@ class ApproveGame extends Component {
             this.setState({ game: res.data.result, loading: false });
           });
       }
-
+      
     render() {
         return (
             <div>
