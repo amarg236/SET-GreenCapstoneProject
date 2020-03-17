@@ -5,7 +5,7 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import { Row, Col, Button } from "antd";
 
-class ApproveGame extends Component {
+class ShowPendingGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +13,9 @@ class ApproveGame extends Component {
       game: [],
       school: []
     };
+
+    this.approveGame = this.approveGame.bind(this);
+    this.denyGame = this.denyGame.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +32,43 @@ class ApproveGame extends Component {
       });
   }
 
+  approveGame(display) {
+    console.log(display);
+    const aemptyObj = {
+      id: display.id
+    };
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/game/accept", display, {
+        headers: {
+          Authorization: "Bearer " + this.props.token
+        }
+      })
+      .then(res => {
+        console.log(res);
+        window.alert("The game has been approved!");
+      });
+  }
+
+  denyGame(id) {
+    console.log("i am here");
+    const emptyObj = {
+      data: id
+    };
+
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
+        headers: {
+          Authorization: "Bearer " + this.props.token
+        }
+      })
+      .then(res => {
+        window.alert("The game has been denied!");
+        // This needs fix later on
+        window.location.reload();
+        // history.push("./viewGames");
+      });
+  }
+
   render() {
     console.log(this.state.game);
 
@@ -36,7 +76,7 @@ class ApproveGame extends Component {
       <div>
         <Row>
           <Col style={{ textAlign: "center" }} span={24}>
-            <h4>Approved Games</h4>
+            <h4>Pending Games</h4>
           </Col>
         </Row>
         <Row
@@ -67,7 +107,7 @@ class ApproveGame extends Component {
               approved,
               awayAccepted
             } = display;
-            if (approved && awayAccepted) {
+            if (!approved && !awayAccepted) {
               return (
                 <Row
                   rowkey={id}
@@ -111,6 +151,10 @@ class ApproveGame extends Component {
               );
             }
           })}
+
+        {
+          // Approved Games
+        }
       </div>
     );
   }
@@ -121,5 +165,4 @@ const mapStatetoProps = state => {
     token: state.userReducer.token
   };
 };
-export default connect(mapStatetoProps, null)(ApproveGame);
-
+export default connect(mapStatetoProps, null)(ShowPendingGames);
