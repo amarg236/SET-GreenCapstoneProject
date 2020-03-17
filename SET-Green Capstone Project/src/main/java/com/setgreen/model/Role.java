@@ -18,11 +18,6 @@ public class Role {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    
-    
-    //private String userEmail;//FIXME enforce through code
-    
-    //private String districtName;//FIXME Enforce districts through code
     @ManyToOne(cascade = CascadeType.ALL)
     private School school;
     @ManyToOne(cascade = CascadeType.ALL)

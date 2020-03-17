@@ -1,6 +1,7 @@
 package com.setgreen.model;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -12,9 +13,6 @@ public class SignUpForm {
 
     @NotEmpty(message= "Last Name must not be empty!")
     private String lastname;
-    
-    @NotEmpty(message="User must have a home district!")
-    private String district;
 
     @NotEmpty(message= "Email must not be empty!")
     private String email;
@@ -23,7 +21,7 @@ public class SignUpForm {
     @Size(min= 6, max = 30)
     private String password;
     
-    @NotEmpty(message="User must have a role!")
+    @NotNull(message="User must have a role!")
     private Role role;
 
     private boolean verified = false;
