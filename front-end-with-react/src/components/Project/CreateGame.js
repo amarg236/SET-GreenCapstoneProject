@@ -121,14 +121,14 @@ class CreateGame extends Component {
 
       awayteam: this.state.againstTeam,
       awaydistrict: {
-        districtName: "D1",
-        id: 1
+        districtName: "District 1-5A",
+        id: 15
       },
       duration: gameDuration,
       hometeam: this.state.homeTeam,
       homedistrict: {
-        districtName: "D1",
-        id: 1
+        districtName: "District 1-5A",
+        id: 15
       },
       location: this.state.gameLocation
       //time: moment(this.gameDate).format("YYYY-MM-DD HH:mm")

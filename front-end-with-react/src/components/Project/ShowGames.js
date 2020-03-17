@@ -1,21 +1,21 @@
 import React, { Component } from "react";
-import "../../stylesheets/createGame.css";
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-
-import { Table, Tag, Button } from "antd";
-
-const { Column, ColumnGroup } = Table;
+import { connect } from "react-redux";
+import { Row, Col, Button } from "antd";
 
 class ShowGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pagination: {},
       loading: true,
-      game: []
+      game: [],
+      school: []
     };
+
+    this.approveGame = this.approveGame.bind(this);
+    this.denyGame = this.denyGame.bind(this);
   }
 
   componentDidMount() {
@@ -46,11 +46,7 @@ class ShowGames extends Component {
       .then(res => {
         console.log(res);
         window.alert("The game has been approved!");
-        //history.push("./viewGames");
-        // Need to fix this later on
-        // window.location.reload();
       });
-
   }
 
   denyGame(id) {
@@ -74,82 +70,105 @@ class ShowGames extends Component {
   }
 
   render() {
+    console.log(this.state.game);
+
     return (
       <div>
-        <h3 className="text-center">Pending Games</h3>
-        <Table dataSource={
-          this.state.game
-          //data
-          } size="small">
-          <Column title="Home Team" dataIndex="hometeam" key="hometeam" />
-          <Column title="Away Team" dataIndex="awayteam" key="awayteam" />
+        <Row>
+          <Col style={{ textAlign: "center" }} span={24}>
+            <h5>Pending Games</h5>
+          </Col>
+        </Row>
+        <Row
+          style={{
+            padding: "10px",
+            color: "#006ca1",
+            backgroundColor: "#dddd"
+          }}
+        >
+          <Col span={6}>Home Team</Col>
+          <Col span={6}>Away Team</Col>
+          <Col span={4}>Time</Col>
+          <Col span={4}>Location</Col>
+          <Col span={2}></Col>
+          <Col span={2}></Col>
+        </Row>
+        {this.state.game &&
+          this.state.game.map(display => {
+            const {
+              id,
+              hometeam,
+              homedistrict,
+              awayteam,
+              awaydistrict,
+              time,
+              duration,
+              location,
+              approved,
+              awayAccepted
+            } = display;
+            if (!approved && !awayAccepted) {
+              return (
+                <Row
+                  rowkey={id}
+                  style={{
+                    padding: "5px",
+                    marginTop: "2px",
+                    backgroundColor: "#ffff"
+                  }}
+                >
+                  <Col span={6}>{hometeam}</Col>
+                  <Col span={6}>{awayteam}</Col>
+                  <Col span={4}>{time}</Col>
+                  <Col span={4}>{location}</Col>
+                  <Col span={2}>
+                    <Button
+                      type="button"
+                      className="btn btn-success"
+                      onClick={() =>
+                        this.approveGame(
+                          // id,
+                          // hometeam,
+                          // homedistrict,
+                          // awayteam,
+                          // awaydistrict,
+                          // time,
+                          // duration,
+                          // location,
+                          // approved,
+                          // awayAccepted
+                          display
+                        )
+                      }
+                    >
+                      Approve
+                    </Button>
+                  </Col>
+                  <Col span={2}>
+                    <Button
+                      type="button"
+                      danger
+                      onClick={() => this.denyGame(id)}
+                    >
+                      Deny
+                    </Button>
+                  </Col>
+                </Row>
+              );
+            }
+          })}
 
-          <Column title="Location" dataIndex="location" key="location" />
-          <Column title="Time" dataIndex="time" key="time" />
-
-          <Column
-            title="Action"
-            key="action"
-            render={(text, record) => (
-              <span>
-                {this.state.game &&
-                  this.state.game.map(display => {
-                    const {
-                      id,
-                      approved,
-                    } = display;
-                    if (!approved) {
-                      return (
-                        <tr key={id}>
-                          <td>
-                            <button
-                              type="button"
-                              className="btn btn-success"
-                              onClick={() =>
-                                this.approveGame(
-                                  display
-                                )
-                              }
-                            >
-                              Approve
-                          </button>
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              className="btn btn-danger"
-                              onClick={() => this.denyGame(id)}
-                            >
-                              Deny
-                          </button>
-                          </td>
-                        </tr>
-                      )
-                    }
-                  }
-                  )
-                }
-
-
-                {/* <Button href="javacsript:;" onClick={() => this.approveGame(display)}>
-                </Button> */}
-              </span>
-            )
-          }
-          />
-        </Table>
+        {
+          // Approved Games
+        }
       </div>
     );
   }
 }
 
-const data =[
-  {
-    hometeam: 'a1',
-    awayteam:'a2',
-    location: 'a3',
-    time: 'a4'
-  }
-]
-
-export default ShowGames;
+const mapStatetoProps = state => {
+  return {
+    token: state.userReducer.token
+  };
+};
+export default connect(mapStatetoProps, null)(ShowGames);
