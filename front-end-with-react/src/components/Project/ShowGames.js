@@ -108,7 +108,7 @@ class ShowGames extends Component {
               approved,
               awayAccepted
             } = display;
-            if (!approved) {
+            if (!approved && !awayAccepted) {
               return (
                 <Row
                   rowkey={id}
