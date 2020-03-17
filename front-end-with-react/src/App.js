@@ -22,7 +22,6 @@ import SidebarComp from "./components/Layout/SidebarComp";
 import { Layout, Breadcrumb, Content } from "antd";
 import AddSchool from "./components/ManageTeam/AddSchool";
 import AddDistrict from "./components/ManageTeam/AddDistrict";
-import WorkingVersion from "./components/Project/WorkingVersion";
 
 class App extends React.Component {
   render() {
@@ -47,11 +46,7 @@ class App extends React.Component {
               <ProtectedRoute exact path="/addSchool" component={AddSchool} />
               <ProtectedRoute exact path="/createGame" component={CreateGame} />
               <ProtectedRoute exact path="/viewGames" component={ViewGames} />
-              <ProtectedRoute
-                exact
-                path="/workingVersion"
-                component={WorkingVersion}
-              />
+
               <ProtectedRoute
                 exact
                 path="/userProfile"
