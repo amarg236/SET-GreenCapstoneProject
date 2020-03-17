@@ -21,7 +21,9 @@ import history from "./Utility/history";
 import SidebarComp from "./components/Layout/SidebarComp";
 import { Layout, Breadcrumb, Content } from "antd";
 import AddSchool from "./components/ManageTeam/AddSchool";
+import AddTeam from "./components/ManageTeam/AddTeam";
 import AddDistrict from "./components/ManageTeam/AddDistrict";
+import InviteToSystem from "./components/ManageUser/InviteToSystem";
 
 class App extends React.Component {
   render() {
@@ -46,6 +48,12 @@ class App extends React.Component {
               <ProtectedRoute exact path="/addSchool" component={AddSchool} />
               <ProtectedRoute exact path="/createGame" component={CreateGame} />
               <ProtectedRoute exact path="/viewGames" component={ViewGames} />
+              <ProtectedRoute exact path="/addTeam" component={AddTeam} />
+              <ProtectedRoute
+                exact
+                path="/inviteToSystem"
+                component={InviteToSystem}
+              />
 
               <ProtectedRoute
                 exact

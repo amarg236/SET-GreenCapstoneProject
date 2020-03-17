@@ -69,7 +69,7 @@ class UserSidebar extends Component {
             </span>
           }
         >
-          <Menu.Item onClick={handleClick} key="viewGames">
+          <Menu.Item onClick={handleClick} key="addTeam">
             <span>
               <AppstoreAddOutlined />
             </span>

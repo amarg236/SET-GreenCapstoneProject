@@ -15,7 +15,7 @@ import {
   CalendarOutlined,
   AppstoreOutlined,
   ApartmentOutlined,
-  AppstoreAddOutlined
+  UserAddOutlined
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -93,12 +93,23 @@ class AdminSidebar extends Component {
             <span>Add School</span>
           </Menu.Item>
         </SubMenu>
-        <Menu.Item key="manageUser">
-          <span>
-            <TeamOutlined />
-          </span>
-          <span>Manage User</span>
-        </Menu.Item>
+
+        <SubMenu
+          key="manageUser"
+          title={
+            <span>
+              <TeamOutlined />
+              <span>Manage User</span>
+            </span>
+          }
+        >
+          <Menu.Item onClick={handleClick} key="inviteToSystem">
+            <span>
+              <UserAddOutlined />
+            </span>
+            <span>Invite User</span>
+          </Menu.Item>
+        </SubMenu>
         <Menu.Item key="setting">
           <span>
             <SettingOutlined />
