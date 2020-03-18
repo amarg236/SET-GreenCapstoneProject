@@ -1,159 +1,108 @@
 import React, { Component } from "react";
-import moment from "moment";
-import { connect } from "react-redux";
-
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 
-import {
-  Form,
-  Input,
-  InputNumber,
-  Button,
-  Layout,
-  DatePicker,
-  TimePicker
-} from "antd";
+import { Form, Input, Button, Layout, Select } from "antd";
 const { Content } = Layout;
-const { RangePicker } = TimePicker;
 
 class InviteToSystem extends Component {
   constructor(props) {
     super(props);
-    this.onChangeHomeTeam = this.onChangeHomeTeam.bind(this);
-    this.onChangeGameDate = this.onChangeGameDate.bind(this);
-    this.onChangeGameStartTime = this.onChangeGameStartTime.bind(this);
-    this.onChangeGameEndTime = this.onChangeGameEndTime.bind(this);
-    this.onChangeGameLocation = this.onChangeGameLocation.bind(this);
-    this.onChangeAgainstTeam = this.onChangeAgainstTeam.bind(this);
-    this.onChangeAgainstTeamDistrict = this.onChangeAgainstTeamDistrict.bind(
-      this
-    );
-    this.onChangeGameTime = this.onChangeGameTime.bind(this);
-    this.gameSubmit = this.gameSubmit.bind(this);
+    // this.inviteUser = this.inviteUser.bind(this);
   }
 
   state = {
-    homeTeam: "",
-    gameDate: moment().format("YYYY-MM-DD"),
-    gameStartTime: moment().format("HH:mm"),
-    gameEndTime: moment().format("HH:mm"),
-    // gameEndTime: moment()
-    //   .add(30, "minute")
-    //   .format("HH:mm"),
-    gameLocation: "",
-    againstTeam: "",
-    againstTeamDistrict: "",
-    gameTime: ""
-    // timeFinal: ""
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    role: "",
+    school: "",
+    data: [],
+    initLoading: true
   };
 
   componentDidMount() {
-    let HOMETEAM = "https://www.something.com";
-    let URL2 = "https://www.something1.com";
-    let URL3 = "https://www.something2.com";
-    let URL1 = "https://www.something.com";
+    const schoolBody = {};
+    axios
+      .post(
+        Authtoken.getBaseUrl() + "/api/location/school/get/all",
+        schoolBody,
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
+          }
+        }
+      )
+      .then(res => {
+        console.log(res.data);
+        this.setState({
+          initLoading: false,
+          data: res.data.result
+        });
+      });
   }
 
-  //added in antdesign
-  dateFormat = "YYYY-MM-DD";
-  monthFormat = "YYYY/MM";
-
-  onChangeGameTime(time, timeString) {
-    console.log(time[0]?.format("HH:mm"));
-    console.log(time[1]?.format("HH:mm"));
-    this.setState({ gameStartTime: time[0]?.format("HH:mm") });
-    this.setState({ gameEndTime: time[1]?.format("HH:mm") });
-    // console.log(time.format("HH:mm"));
-  }
-
-  onChangeHomeTeam = e => {
-    this.setState({ homeTeam: e.target.value });
+  onChangeFirstName = e => {
+    this.setState({ firstname: e.target.value });
   };
 
-  onChangeGameDate(date, dateString) {
-    // console.log(date);
-    console.log(dateString);
-    // this.setState({ gameDate: dateString });
-    this.setState({ gameDate: date?.format("YYYY-MM-DD") });
-  }
+  onChangeLastName = e => {
+    this.setState({ lastname: e.target.value });
+  };
+  onChangeEmail = e => {
+    this.setState({ email: e.target.value });
+  };
+  onChangePassword = e => {
+    this.setState({ password: e.target.value });
+  };
 
-  onChangeGameStartTime(e) {
-    this.setState({ gameStartTime: e.target.value });
-  }
+  onChangeSchool = e => {
+    this.setState({ school: e.target.value });
+  };
 
-  onChangeGameEndTime(e) {
-    this.setState({ gameEndTime: e.target.value });
-  }
-  onChangeGameLocation(e) {
-    this.setState({ gameLocation: e.target.value });
-  }
-  onChangeAgainstTeam(e) {
-    this.setState({ againstTeam: e.target.value });
-  }
-
-  onChangeAgainstTeamDistrict(e) {
-    this.setState({ againstTeamDistrict: e.target.value });
-  }
-
-  gameSubmit(e) {
-    e.preventDefault();
-    // console.log();
-
-    // console.log(this.state.homeTeam);
-    // console.log(this.state.gameDate);
-    const startDate = moment(this.state.gameDate)
-      .set("hours", 0)
-      .set("minutes", 0);
-    const startTime = moment(this.state.gameStartTime, "HH:mm");
-    const endTime = moment(this.state.gameEndTime, "HH:mm");
-    // moment(this.state.gameStartTime, "HH:mm");
-    // const endTime = moment(this.state.gameEndTime, "HH:mm");
-    const gameStart = moment(startDate)
-      .add(startTime.hours(), "hour")
-      .add(startTime.minutes(), "minute");
-
-    const gameDuration = moment.duration(endTime.diff(startTime)).as("minutes");
-    console.log(gameDuration);
-
-    const gameObject = {
-      // approved: false,
-      // awayteam: this.state.againstTeam,
-      // awaydistrict: this.state.againstTeamDistrict,
-      // duration: 30,
-      // hometeam: this.state.homeTeam,
-      // homedistrict: "Monroe",
-      // location: this.state.gameLocation,
-      time: moment(gameStart).format("YYYY-MM-DD HH:mm"),
-
-      awayteam: this.state.againstTeam,
-      awaydistrict: {
-        districtName: "District 1-5A",
-        id: 15
-      },
-      duration: gameDuration,
-      hometeam: this.state.homeTeam,
-      homedistrict: {
-        districtName: "District 1-5A",
-        id: 15
-      },
-      location: this.state.gameLocation
-      //time: moment(this.gameDate).format("YYYY-MM-DD HH:mm")
+  inviteUser = values => {
+    // console.log(values);
+    const school = {
+      id: this.state.school
     };
-    // const fs = require("browserify-fs");
+    const role = {
+      role: this.state.role,
+      school
+    };
+
+    const objCreate = {
+      firstname: this.state.firstname,
+      lastname: this.state.lastname,
+      email: this.state.email,
+      password: this.state.password,
+      role
+    };
+
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/save", gameObject, {
+      .post(Authtoken.getBaseUrl() + "/api/auth/createuser", objCreate, {
         headers: {
           Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
         }
       })
       .then(res => {
-        window.alert("The Game has been created successfully!!");
-        window.location.reload();
-        // console.log(res);
+        // window.alert("User has been invited successfully!!");
+        // window.location.reload();
+        console.log(res);
         // console.log(res.data);
       });
-  }
+  };
+
+  handleChange = value => {
+    // console.log(value);
+    // const dummy = JSON.parse(value);
+    this.setState({ school: value });
+  };
+
+  chooseRole = pick => {
+    this.setState({ role: pick });
+  };
 
   render() {
     const layout = {
@@ -192,69 +141,107 @@ class InviteToSystem extends Component {
         >
           <Form
             {...layout}
-            name="nest-messages"
-            onSubmit={this.gameSubmit}
+            name="inviteUser"
+            onFinish={this.inviteUser}
             validateMessages={validateMessages}
           >
             <Form.Item
-              name="hometeam"
-              label="District"
+              name="firstname"
+              label="First Name"
               rules={[
                 {
-                  // required: true
+                  required: true
                 }
               ]}
             >
               <Input
-                value={this.state.homeTeam}
-                onChange={this.onChangeHomeTeam}
-                placeholder="Enter Home Team"
+                value={this.state.firstname}
+                onChange={this.onChangeFirstName}
+                placeholder="Enter First Name"
+              />
+            </Form.Item>
+            <Form.Item
+              name="lastname"
+              label="Last Name"
+              rules={[
+                {
+                  required: true
+                }
+              ]}
+            >
+              <Input
+                value={this.state.lastname}
+                onChange={this.onChangeLastName}
+                placeholder="Enter Last Name"
               />
             </Form.Item>
 
-            <Form.Item name="location" label="Email" rules={[{}]}>
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[
+                {
+                  required: true
+                }
+              ]}
+            >
               <Input
-                onChange={this.onChangeGameLocation}
-                value={this.state.gameLocation}
-                placeholder="Location"
+                type="email"
+                onChange={this.onChangeEmail}
+                value={this.state.email}
+                placeholder="Enter Email"
               />
             </Form.Item>
 
-            <Form.Item name="awayschool" label="First Name">
-              <Input
-                onChange={this.onChangeAgainstTeam}
-                value={this.state.againstTeam}
-                placeholder="Away School"
-              />
-            </Form.Item>
-            <Form.Item name="awayschool" label="Last Name">
-              <Input
-                onChange={this.onChangeAgainstTeam}
-                value={this.state.againstTeam}
-                placeholder="Away School"
-              />
-            </Form.Item>
-            <Form.Item placeholder="Away Team" name="awayteam" label="Password">
-              <Input
-                onChange={this.onChangeAgainstTeamDistrict}
-                value={this.state.againstTeamDistrict}
-                placeholder="Away Team"
-              />
-            </Form.Item>
-            <Form.Item placeholder="Away Team" name="awayteam" label="Role">
-              <Input
-                onChange={this.onChangeAgainstTeamDistrict}
-                value={this.state.againstTeamDistrict}
-                placeholder="Away Team"
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[
+                {
+                  required: true
+                }
+              ]}
+            >
+              <Input.Password
+                onChange={this.onChangePassword}
+                value={this.state.password}
+                placeholder="Enter Password"
               />
             </Form.Item>
 
-            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                onClick={this.gameSubmit}
+            <Form.Item label="Role" size="large" name="role">
+              <Select
+                defaultValue="Select Role"
+                onChange={this.chooseRole}
+                value={this.state.role}
+                style={{ width: "450px", minWidth: "auto" }}
               >
+                <Select.Option value="USER">USER</Select.Option>
+
+                <Select.Option value="ASSIGNOR">ASSIGNOR</Select.Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item label="Select School" size="large" name="school">
+              <Select
+                defaultValue="Select Options"
+                style={{ width: "450px", minWidth: "auto" }}
+                onChange={this.handleChange}
+              >
+                {this.state.data.map(item => (
+                  <Select.Option
+                    key={item.id}
+                    // value={index}
+                    // value={JSON.stringify(item)}
+                    value={item.id}
+                  >
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+              <Button type="primary" htmlType="submit">
                 Invite
               </Button>
             </Form.Item>
@@ -265,9 +252,4 @@ class InviteToSystem extends Component {
   }
 }
 
-const mapStatetoProps = state => {
-  return {
-    token: state.userReducer.token
-  };
-};
-export default connect(mapStatetoProps)(InviteToSystem);
+export default InviteToSystem;
