@@ -108,55 +108,55 @@ class ShowGames extends Component {
               approved,
               awayAccepted
             } = display;
-            if (!approved && !awayAccepted) {
-              return (
-                <Row
-                  rowkey={id}
-                  style={{
-                    padding: "5px",
-                    marginTop: "2px",
-                    backgroundColor: "#ffff"
-                  }}
-                >
-                  <Col span={6}>{hometeam}</Col>
-                  <Col span={6}>{awayteam}</Col>
-                  <Col span={4}>{time}</Col>
-                  <Col span={4}>{location}</Col>
-                  <Col span={2}>
-                    <Button
-                      type="button"
-                      className="btn btn-success"
-                      onClick={() =>
-                        this.approveGame(
-                          // id,
-                          // hometeam,
-                          // homedistrict,
-                          // awayteam,
-                          // awaydistrict,
-                          // time,
-                          // duration,
-                          // location,
-                          // approved,
-                          // awayAccepted
-                          display
-                        )
-                      }
-                    >
-                      Approve
-                    </Button>
-                  </Col>
-                  <Col span={2}>
-                    <Button
-                      type="button"
-                      danger
-                      onClick={() => this.denyGame(id)}
-                    >
-                      Deny
-                    </Button>
-                  </Col>
-                </Row>
-              );
-            }
+            // if (!approved && !awayAccepted) {
+            return (
+              <Row
+                rowkey={id}
+                style={{
+                  padding: "5px",
+                  marginTop: "2px",
+                  backgroundColor: "#ffff"
+                }}
+              >
+                <Col span={6}>{hometeam}</Col>
+                <Col span={6}>{awayteam}</Col>
+                <Col span={4}>{time}</Col>
+                <Col span={4}>{location}</Col>
+                <Col span={2}>
+                  <Button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={() =>
+                      this.approveGame(
+                        // id,
+                        // hometeam,
+                        // homedistrict,
+                        // awayteam,
+                        // awaydistrict,
+                        // time,
+                        // duration,
+                        // location,
+                        // approved,
+                        // awayAccepted
+                        display
+                      )
+                    }
+                  >
+                    Approve
+                  </Button>
+                </Col>
+                <Col span={2}>
+                  <Button
+                    type="button"
+                    danger
+                    onClick={() => this.denyGame(id)}
+                  >
+                    Deny
+                  </Button>
+                </Col>
+              </Row>
+            );
+            // }
           })}
 
         {
