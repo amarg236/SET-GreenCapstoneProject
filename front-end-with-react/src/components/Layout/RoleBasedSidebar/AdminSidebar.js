@@ -46,7 +46,7 @@ class AdminSidebar extends Component {
           <span>
             <CalendarOutlined />
           </span>
-          <span>Game Calander</span>
+          <span>Game Calendar</span>
         </Menu.Item>
         <SubMenu
           key="sub1"

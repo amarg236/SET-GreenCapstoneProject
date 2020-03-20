@@ -5,7 +5,7 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import { Row, Col, Button } from "antd";
 
-class ApproveGame extends Component {
+class AssignorGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,7 +36,7 @@ class ApproveGame extends Component {
       <div style={{marginTop: '2%'}}>
         <Row>
           <Col style={{ textAlign: "center" }} span={24}>
-            <h4>Approved Games</h4>
+            <h4>Assignor Approval</h4>
           </Col>
         </Row>
         <Row
@@ -106,5 +106,5 @@ const mapStatetoProps = state => {
     token: state.userReducer.token
   };
 };
-export default connect(mapStatetoProps, null)(ApproveGame);
+export default connect(mapStatetoProps, null)(AssignorGames);
 

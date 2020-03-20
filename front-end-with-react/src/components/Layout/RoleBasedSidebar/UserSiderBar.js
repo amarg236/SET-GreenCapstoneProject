@@ -31,35 +31,43 @@ class UserSidebar extends Component {
         className="sidebarProperty"
         defaultSelectedKeys={["1"]}
         defaultOpenKeys={["sub1"]}
-        style={{ height: "100%", borderRight: 0 }}
+        style={{ height: "100%", borderRight: 0,
+                 paddingRight: "0" }}
       >
         <Menu.Item onClick={handleClick} key="dashboard">
           <span>
-            <DashboardOutlined />
+            <a href="/dashboard">
+              <DashboardOutlined />
+            </a>
           </span>
           <span>Dashboard</span>
         </Menu.Item>
 
         <Menu.Item onClick={handleClick} key="calander">
           <span>
-            <CalendarOutlined />
+            <a href="/calander">
+              <CalendarOutlined />
+            </a>
           </span>
-          <span>Game Calander</span>
+          <span>Game Calendar</span>
         </Menu.Item>
 
         <Menu.Item onClick={handleClick} key="createGame">
           <span>
-            <FileAddOutlined />
+            <a href="/createGame">
+              <FileAddOutlined />
+            </a>
           </span>
           <span>Create Game</span>
         </Menu.Item>
         <Menu.Item onClick={handleClick} key="viewGames">
           <span>
-            <EyeOutlined />
+            <a href="/viewGames">
+              <EyeOutlined />
+            </a>
           </span>
           <span>View Game</span>
         </Menu.Item>
-
         <SubMenu
           key="sub2"
           title={

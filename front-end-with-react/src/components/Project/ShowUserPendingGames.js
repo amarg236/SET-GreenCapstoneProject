@@ -5,7 +5,7 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import { Row, Col, Button } from "antd";
 
-class ShowGames extends Component {
+class ShowUserPendingGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +37,6 @@ class ShowGames extends Component {
     const aemptyObj = {
       id: display.id
     };
-
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/accept", display, {
         headers: {
@@ -77,7 +76,7 @@ class ShowGames extends Component {
       <div>
         <Row>
           <Col style={{ textAlign: "center" }} span={24}>
-            <h5>Pending Games</h5>
+            <h4>Pending Games</h4>
           </Col>
         </Row>
         <Row
@@ -87,12 +86,20 @@ class ShowGames extends Component {
             backgroundColor: "#dddd"
           }}
         >
-          <Col span={6}>Home Team</Col>
-          <Col span={6}>Away Team</Col>
-          <Col span={4}>Time</Col>
-          <Col span={4}>Location</Col>
-          <Col span={2}></Col>
-          <Col span={2}></Col>
+          <Col lg={6} md={5} sm={5} xs={6}>
+            Home Team
+          </Col>
+          <Col lg={6} md={5} sm={5} xs={6}>
+            Away Team
+          </Col>
+          <Col lg={4} md={4} sm={4} xs={4}>
+            Time
+          </Col>
+          <Col lg={4} md={4} sm={4} xs={4}>
+            Location
+          </Col>
+          <Col lg={2} md={3}></Col>
+          <Col lg={2} md={3}></Col>
         </Row>
         {this.state.game &&
           this.state.game.map(display => {
@@ -108,55 +115,57 @@ class ShowGames extends Component {
               approved,
               awayAccepted
             } = display;
-            // if (!approved && !awayAccepted) {
-            return (
-              <Row
-                rowkey={id}
-                style={{
-                  padding: "5px",
-                  marginTop: "2px",
-                  backgroundColor: "#ffff"
-                }}
-              >
-                <Col span={6}>{hometeam}</Col>
-                <Col span={6}>{awayteam}</Col>
-                <Col span={4}>{time}</Col>
-                <Col span={4}>{location}</Col>
-                <Col span={2}>
-                  <Button
-                    type="button"
-                    className="btn btn-success"
-                    onClick={() =>
-                      this.approveGame(
-                        // id,
-                        // hometeam,
-                        // homedistrict,
-                        // awayteam,
-                        // awaydistrict,
-                        // time,
-                        // duration,
-                        // location,
-                        // approved,
-                        // awayAccepted
-                        display
-                      )
-                    }
-                  >
-                    Approve
-                  </Button>
-                </Col>
-                <Col span={2}>
-                  <Button
-                    type="button"
-                    danger
-                    onClick={() => this.denyGame(id)}
-                  >
-                    Deny
-                  </Button>
-                </Col>
-              </Row>
-            );
-            // }
+            if (!approved && !awayAccepted) {
+              return (
+                <Row
+                  rowkey={id}
+                  style={{
+                    padding: "5px",
+                    marginTop: "2px",
+                    backgroundColor: "#ffff"
+                  }}
+                >
+                  <Col lg={6} md={5} sm={5} xs={6}>
+                    {hometeam}
+                  </Col>
+                  <Col lg={6} md={5} sm={5} xs={6}>
+                    {awayteam}
+                  </Col>
+                  <Col lg={4} md={4} sm={4} xs={4}>
+                    {time}
+                  </Col>
+                  <Col lg={4} md={4} sm={4} xs={4}>
+                    {location}
+                  </Col>
+                  <Col lg={4} sm={4}>
+                    <Row justify="left">
+                      <Col>
+                        <Button
+                          type="button"
+                          className="btn btn-success"
+                          style={{ width: "100%" }}
+                          onClick={() => this.approveGame(display)}
+                        >
+                          Approve
+                        </Button>
+                        <Col></Col>
+                        <Col></Col>
+                      </Col>
+                      <Col>
+                        <Button
+                          type="button"
+                          danger
+                          style={{ width: "130%" }}
+                          onClick={() => this.denyGame(id)}
+                        >
+                          Deny
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              );
+            }
           })}
 
         {
@@ -172,4 +181,4 @@ const mapStatetoProps = state => {
     token: state.userReducer.token
   };
 };
-export default connect(mapStatetoProps, null)(ShowGames);
+export default connect(mapStatetoProps, null)(ShowUserPendingGames);
