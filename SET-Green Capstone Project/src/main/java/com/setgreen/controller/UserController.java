@@ -100,7 +100,7 @@ public class UserController {
      * @param result For binding result
      * @return A message saying email is already verified or a JWT token
      */
-    @GetMapping("login")
+    @GetMapping("login") //TODO URGENT add some JS to take to a login page.
     public ResponseEntity<?> firstTimeLogin(@RequestParam(value="u") String u, @RequestParam(value="p") String p) {
     	LoginRequest loginRequest = new LoginRequest();//Hacks on hacks.
     	loginRequest.setPassword(p);

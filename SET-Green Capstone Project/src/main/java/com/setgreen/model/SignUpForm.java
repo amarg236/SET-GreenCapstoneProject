@@ -17,8 +17,8 @@ public class SignUpForm {
     @NotEmpty(message= "Email must not be empty!")
     private String email;
 
-    @NotEmpty(message= "Password must not be empty!")
-    @Size(min= 6, max = 30)
+    //@NotEmpty(message= "Password must not be empty!")
+    //@Size(min= 6, max = 30)
     private String password;
     
     @NotNull(message="User must have a role!")
