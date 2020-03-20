@@ -5,7 +5,7 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import { Row, Col, Button } from "antd";
 
-class ShowPendingGames extends Component {
+class ShowUserPendingGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -122,11 +122,12 @@ class ShowPendingGames extends Component {
                   <Col lg={4} md={4} sm={4} xs={4}>{time}</Col>
                   <Col lg={4} md={4} sm={4} xs={4}>{location}</Col>
                   <Col lg={4} sm={4}>
-                    <Row justify='center'>
+                    <Row justify='left'>
                       <Col>
                         <Button
                           type="button"
                           className="btn btn-success"
+                          style={{width: '100%',}}
                           onClick={() =>
                             this.approveGame(display)
                           }
@@ -140,6 +141,7 @@ class ShowPendingGames extends Component {
                         <Button
                           type="button"
                           danger
+                          style={{width: '130%'}}
                           onClick={() => this.denyGame(id)}
                         >
                           Deny
@@ -165,4 +167,4 @@ const mapStatetoProps = state => {
     token: state.userReducer.token
   };
 };
-export default connect(mapStatetoProps, null)(ShowPendingGames);
+export default connect(mapStatetoProps, null)(ShowUserPendingGames);
