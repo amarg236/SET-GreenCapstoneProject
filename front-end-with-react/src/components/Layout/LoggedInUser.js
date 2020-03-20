@@ -8,6 +8,7 @@ import AdminDashboard from "./UserRoleView/AdminDashboard";
 import { connect } from "react-redux";
 import { Layout } from "antd";
 const { Content } = Layout;
+
 class LoggedInUser extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +18,6 @@ class LoggedInUser extends Component {
   }
 
   render() {
-    // return <Cal />;
     //we are gonna put sliders and other contents in front page
     console.log(this.props.role);
 

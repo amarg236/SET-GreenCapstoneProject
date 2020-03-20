@@ -48,6 +48,13 @@ class CreateGame extends Component {
     // timeFinal: ""
   };
 
+  componentDidMount() {
+    let HOMETEAM = "https://www.something.com";
+    let URL2 = "https://www.something1.com";
+    let URL3 = "https://www.something2.com";
+    let URL1 = "https://www.something.com";
+  }
+
   //added in antdesign
   dateFormat = "YYYY-MM-DD";
   monthFormat = "YYYY/MM";
@@ -121,14 +128,14 @@ class CreateGame extends Component {
 
       awayteam: this.state.againstTeam,
       awaydistrict: {
-        districtName: "D1",
-        id: 1
+        districtName: "District 1-5A",
+        id: 15
       },
       duration: gameDuration,
       hometeam: this.state.homeTeam,
       homedistrict: {
-        districtName: "D1",
-        id: 1
+        districtName: "District 1-5A",
+        id: 15
       },
       location: this.state.gameLocation
       //time: moment(this.gameDate).format("YYYY-MM-DD HH:mm")
@@ -160,8 +167,8 @@ class CreateGame extends Component {
     const validateMessages = {
       required: "This field is required!",
       types: {
-        email: "Not a validate email!",
-        number: "Not a validate number!"
+        email: "Not a valid email!",
+        number: "Not a valid number!"
       },
       number: {
         range: "Must be between ${min} and ${max}"
