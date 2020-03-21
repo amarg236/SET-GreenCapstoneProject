@@ -12,7 +12,7 @@ import com.setgreen.model.mail.Mail;
 public class MailHandler {
 	private JavaMailSenderImpl mailSender;
 	private static final String EMAIL_SENDER = "Bbaronx@gmail.com";
-	private static final String HOSTNAME = "https://d3dqstghi7h8sb.cloudfront.net/";
+	private static final String HOSTNAME = "http://localhost:3000/"/*"https://d3dqstghi7h8sb.cloudfront.net/"*/;
 	@Autowired
 	public MailHandler(JavaMailSenderImpl ms) {
 		ms.setHost("email-smtp.us-east-1.amazonaws.com");
