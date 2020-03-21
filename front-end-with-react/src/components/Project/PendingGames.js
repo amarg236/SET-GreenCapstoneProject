@@ -5,7 +5,6 @@ import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { Table } from "antd";
 import { connect } from "react-redux";
-import reqwest from 'reqwest';
 
 class PendingGame extends Component {
   constructor(props) {
@@ -76,7 +75,6 @@ class PendingGame extends Component {
         // Need to fix this later on
         // window.location.reload();
       });
-
   }
 
   denyGame(id) {
@@ -140,7 +138,8 @@ class PendingGame extends Component {
                         <td>{awayteam}</td>
                         <td>{time}</td>
                         <td>{location}</td>
-                        /*<td>
+                        /*
+                        <td>
                           <button
                             type="button"
                             className="btn btn-success"
@@ -187,22 +186,26 @@ class PendingGame extends Component {
   }
 }
 
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  sorter: true,
-  render: name => `${name.first} ${name.last}`,
-  width: '20%',
-}, {
-  title: 'Gender',
-  dataIndex: 'gender',
-  filters: [
-    { text: 'Male', value: 'male' },
-    { text: 'Female', value: 'female' },
-  ],
-  width: '20%',
-}, {
-  title: 'Email',
-  dataIndex: 'email',
-}];
+const columns = [
+  {
+    title: "Name",
+    dataIndex: "name",
+    sorter: true,
+    render: name => `${name.first} ${name.last}`,
+    width: "20%"
+  },
+  {
+    title: "Gender",
+    dataIndex: "gender",
+    filters: [
+      { text: "Male", value: "male" },
+      { text: "Female", value: "female" }
+    ],
+    width: "20%"
+  },
+  {
+    title: "Email",
+    dataIndex: "email"
+  }
+];
 export default PendingGame;
