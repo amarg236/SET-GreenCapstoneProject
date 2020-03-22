@@ -49,10 +49,10 @@ class CreateGame extends Component {
   };
 
   componentDidMount() {
-    let HOMETEAM = "https://www.something.com";
-    let URL2 = "https://www.something1.com";
-    let URL3 = "https://www.something2.com";
-    let URL1 = "https://www.something.com";
+    // let HOMETEAM = "https://www.something.com";
+    // let URL2 = "https://www.something1.com";
+    // let URL3 = "https://www.something2.com";
+    // let URL1 = "https://www.something.com";
   }
 
   //added in antdesign

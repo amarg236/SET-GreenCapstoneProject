@@ -24,17 +24,28 @@ import AddSchool from "./components/ManageTeam/AddSchool";
 import AddTeam from "./components/ManageTeam/AddTeam";
 import AddDistrict from "./components/ManageTeam/AddDistrict";
 import InviteToSystem from "./components/ManageUser/InviteToSystem";
+import VerifyAccount from "./components/EmailConfirmation/VerifyAccount";
+import ChangePassword from "./components/EmailConfirmation/ChangePassword";
 
 class App extends React.Component {
   render() {
     return (
       <Router history={history}>
-        <Layout style={{height:"100vh", overflow:'hidden'}}>
+        <Layout style={{ height: "100vh", overflow: "hidden" }}>
           <SidebarComp />
           <Layout className="site-layout">
             <HeaderRoot />
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route
+                exact
+                // path={queryString.stringifyUrl({
+                //   url: "localhost:3000/api/auth/login",
+                //   query: { u: "u" }
+                // })}
+                path="/api/auth/login"
+                component={VerifyAccount}
+              />
               <ProtectedRoute
                 exact
                 path="/dashboard"
@@ -44,6 +55,11 @@ class App extends React.Component {
                 exact
                 path="/addDistrict"
                 component={AddDistrict}
+              />
+              <ProtectedRoute
+                exact
+                path="/changePassword"
+                component={ChangePassword}
               />
               <ProtectedRoute exact path="/addSchool" component={AddSchool} />
               <ProtectedRoute exact path="/createGame" component={CreateGame} />
