@@ -116,13 +116,6 @@ class AdminSidebar extends Component {
           </span>
           <span>Settings</span>
         </Menu.Item>
-
-        <Menu.Item key="logOut">
-          <span>
-            <LogoutOutlined />
-          </span>
-          <span>Log Out</span>
-        </Menu.Item>
       </Menu>
     );
   }
