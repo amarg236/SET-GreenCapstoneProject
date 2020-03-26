@@ -2,8 +2,16 @@ import React, { Component } from "react";
 
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import ViewSchool from "./ViewSchool";
-import { Form, Input, Button, Layout, List, Select, Skeleton } from "antd";
+import {
+  Modal,
+  Form,
+  Input,
+  Button,
+  Layout,
+  List,
+  Select,
+  Skeleton
+} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 const { Content } = Layout;
 const { Option } = Select;
@@ -15,7 +23,7 @@ class AddTeam extends Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-    this.schoolSubmit = this.schoolSubmit.bind(this);
+    this.teamSubmit = this.teamSubmit.bind(this);
   }
 
   state = {
@@ -23,13 +31,18 @@ class AddTeam extends Component {
       id: "",
       districtName: ""
     },
+    schoolId: "",
+    teamClass: "",
+    teamName: "",
     district: "",
     schoolAddress: "",
     schoolName: "",
     initLoading: true,
     loading: false,
     data: [],
-    list: []
+    list: [],
+    school: [],
+    internalName: ""
   };
 
   componentDidMount() {
@@ -57,31 +70,49 @@ class AddTeam extends Component {
   onChangeSchoolName = e => {
     this.setState({ schoolName: e.target.value });
   };
-  onChangeSchoolAddress = e => {
-    this.setState({ schoolAddress: e.target.value });
+  onChangeTeamName = e => {
+    this.setState({ teamName: e.target.value });
+  };
+  onChangeInternalName = e => {
+    this.setState({ internalName: e.target.value });
   };
 
-  schoolSubmit(e) {
+  success = () => {
+    Modal.success({
+      content: "Team has been successfully added"
+    });
+  };
+
+  teamSubmit(e) {
     e.preventDefault();
-    const schoolObj = {
-      address: this.state.schoolAddress,
-      name: this.state.schoolName,
-      district: {
-        id: this.state.selectedD.id,
-        districtName: this.state.selectedD.districtName
+    const teamObject = {
+      internalName: this.state.internalName,
+      tmName: this.state.teamName,
+      tmClass: this.state.teamClass,
+      school: {
+        id: this.state.schoolId
       }
     };
+    console.log(teamObject);
     axios
-      .post(Authtoken.getBaseUrl() + "/api/location/school/add", schoolObj, {
+      .post(Authtoken.getBaseUrl() + "/api/team/add", teamObject, {
         headers: {
           Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
         }
       })
       .then(res => {
-        window.alert("The School has been added successfully!!");
-        window.location.reload();
+        this.success();
       });
   }
+  handleSchool = schoolValue => {
+    // const schoolV = JSON.parse(schoolValue);
+    console.log(schoolValue);
+    this.setState({ schoolId: schoolValue });
+  };
+  teamClass = teamClass => {
+    // console.log(teamClass);
+    this.setState({ teamClass: teamClass });
+  };
 
   handleChange(value) {
     const dummy = JSON.parse(value);
@@ -91,10 +122,29 @@ class AddTeam extends Component {
         districtName: dummy.districtName
       }
     }));
+    //fetching schools
+    const schoolBody = {
+      districtName: dummy.districtName,
+      id: dummy.id
+    };
+    axios
+      .post(
+        Authtoken.getBaseUrl() + "/api/location/school/get/district",
+        schoolBody,
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
+          }
+        }
+      )
+      .then(res => {
+        this.setState({ school: res.data.result });
+      });
   }
 
   render() {
-    const { initLoading, loading, list } = this.state;
+    // const { initLoading, loading, list } = this.state;
 
     const layout = {
       labelCol: {
@@ -136,38 +186,6 @@ class AddTeam extends Component {
             onSubmit={this.districtSubmit}
             validateMessages={validateMessages}
           >
-            <Form.Item
-              label="School Name"
-              name="schoolName"
-              rules={[
-                {
-                  required: true
-                }
-              ]}
-            >
-              <Input
-                size="large"
-                value={this.state.schoolName}
-                onChange={this.onChangeSchoolName}
-                placeholder="Enter School Name"
-              />
-            </Form.Item>
-            <Form.Item
-              label="Address"
-              name="schoolAddress"
-              rules={[
-                {
-                  required: true
-                }
-              ]}
-            >
-              <Input
-                size="large"
-                value={this.state.schoolAddress}
-                onChange={this.onChangeSchoolAddress}
-                placeholder="Enter School Name"
-              />
-            </Form.Item>
             <Form.Item label="Select District" name="districtName">
               <Select
                 size="large"
@@ -186,14 +204,89 @@ class AddTeam extends Component {
                 ))}
               </Select>
             </Form.Item>
+
+            <Form.Item label="Select School" name="schoolName">
+              <Select
+                size="large"
+                defaultValue="Select Options"
+                style={{ width: 120 }}
+                onChange={this.handleSchool}
+              >
+                {this.state.school.map(schoolMap => (
+                  <Select.Option
+                    key={schoolMap.id}
+                    // value={index}
+                    value={schoolMap.id}
+                  >
+                    {schoolMap.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+
+            <Form.Item label="Team Class" name="teamClass">
+              <Select
+                size="large"
+                defaultValue=""
+                style={{ width: 120 }}
+                onChange={this.teamClass}
+              >
+                <Select.Option
+                  // value={index}
+                  value="Junior Varsity"
+                >
+                  Junior Varsity
+                </Select.Option>
+                <Select.Option
+                  // value={index}
+                  value="Varsity"
+                >
+                  Varsity
+                </Select.Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              label="Internal Name"
+              name="internalName"
+              rules={[
+                {
+                  required: true
+                }
+              ]}
+            >
+              <Input
+                size="large"
+                value={this.state.internalName}
+                onChange={this.onChangeInternalName}
+                placeholder="Arbitrary Name"
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Team Name"
+              name="teamName"
+              rules={[
+                {
+                  required: true
+                }
+              ]}
+            >
+              <Input
+                size="large"
+                value={this.state.teamName}
+                onChange={this.onChangeTeamName}
+                placeholder="Enter Team Name"
+              />
+            </Form.Item>
+
             <Form.Item {...tailLayout}>
-              <Button type="primary" onClick={this.schoolSubmit}>
-                Add School
+              <Button type="primary" onClick={this.teamSubmit}>
+                Add Team
               </Button>
             </Form.Item>
           </Form>
         </div>
-        <ViewSchool />
       </Content>
     );
   }

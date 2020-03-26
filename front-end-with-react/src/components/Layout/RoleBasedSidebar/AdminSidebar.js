@@ -92,6 +92,12 @@ class AdminSidebar extends Component {
             </span>
             <span>Add School</span>
           </Menu.Item>
+          <Menu.Item onClick={handleClick} key="addTeam">
+            <span>
+              <FileAddOutlined />
+            </span>
+            <span>Add Team</span>
+          </Menu.Item>
         </SubMenu>
 
         <SubMenu
@@ -103,11 +109,23 @@ class AdminSidebar extends Component {
             </span>
           }
         >
+          <Menu.Item onClick={handleClick} key="manageUser">
+            <span>
+              <UserAddOutlined />
+            </span>
+            <span>Manage User</span>
+          </Menu.Item>
           <Menu.Item onClick={handleClick} key="inviteToSystem">
             <span>
               <UserAddOutlined />
             </span>
             <span>Invite User</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="inviteAssignor">
+            <span>
+              <UserAddOutlined />
+            </span>
+            <span>Invite Assignor</span>
           </Menu.Item>
         </SubMenu>
         <Menu.Item key="setting">
