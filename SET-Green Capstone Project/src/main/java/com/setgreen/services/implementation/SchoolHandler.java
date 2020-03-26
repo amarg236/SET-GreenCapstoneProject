@@ -29,7 +29,7 @@ public class SchoolHandler {
 	 * @return Response body with all schools in a district
 	 */
 	public ResponseBody<Iterable<School>> getAllSchoolsInDistrict(District d){
-		return new ResponseBody<Iterable<School>>(HttpStatus.ACCEPTED.value(), "Schools Found", sr.findInDistrict(d.getDistrictName()));
+		return new ResponseBody<Iterable<School>>(HttpStatus.ACCEPTED.value(), "Schools Found", sr.findByDistrict_Id(d.getId()));
 	}
 	
 	/**adds a school

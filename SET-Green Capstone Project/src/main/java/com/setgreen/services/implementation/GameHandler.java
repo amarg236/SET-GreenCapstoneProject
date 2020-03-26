@@ -1,5 +1,7 @@
 package com.setgreen.services.implementation;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,6 @@ import com.setgreen.util.DataObject;
 public class GameHandler {
 	@Autowired
 	private GameRepo gr;
-	@Autowired
-	private RoleRepo rr;
 	@Autowired
 	private TeamsRepo tr;
 	
@@ -118,36 +118,36 @@ public class GameHandler {
 		}
 	}
 
-	public ResponseBody<Iterable<Game>> getGamesUserVerified(District d) {
+	public ResponseBody<List<Game>> getGamesUserVerified(District d) {
 		try{
-			Iterable<Game> g;
+			List<Game> g;
 			g = gr.findInDistrictAccepted(d.getDistrictName());
-			return new ResponseBody<Iterable<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
+			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
 		}
 		catch(Exception e) {
-			return new ResponseBody<Iterable<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games", null);
+			return new ResponseBody<List<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games", null);
 		}
 	}
 	
-	public ResponseBody<Iterable<Game>> getGames(School s, boolean findAll) { //FIXME URGENT doesn't care about district. Fix that
+	public ResponseBody<List<Game>> getGames(School s, boolean findAll) { //FIXME URGENT doesn't care about district. Fix that
 		try{
-			Iterable<Game> g;
+			List<Game> g;
 			if(findAll) {
 				g = gr.findInSchoolAll(s.getName());
 			}
 			else {
 				g = gr.findInSchoolVerified(s.getName());
 			}
-			return new ResponseBody<Iterable<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
+			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
 		}
 		catch(Exception e) {
-			return new ResponseBody<Iterable<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games "+e, null);
+			return new ResponseBody<List<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games "+e, null);
 		}
 	}
 	
-	public ResponseBody<Iterable<Game>> getGames(District d, boolean findAll){
+	public ResponseBody<List<Game>> getGames(District d, boolean findAll){
 		try {
-			Iterable<Game> g;
+			List<Game> g;
 			
 				if(findAll) {
 					g = gr.findInDistrictAll(d.getDistrictName());
@@ -155,18 +155,21 @@ public class GameHandler {
 				else {
 					g = gr.findInDistrictVerified(d.getDistrictName());
 				}
-			return new ResponseBody<Iterable<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
+			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
 		}
 		catch(Exception e) {
-			return new ResponseBody<Iterable<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games", null);
+			return new ResponseBody<List<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games", null);
 		}
 	}
 	
-	public ResponseBody<Iterable<Game>> allGames() {
-		return new ResponseBody<Iterable<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findAll());
+	public ResponseBody<List<Game>> allGames() {
+		LinkedList<Game> ll = new LinkedList<Game>();
+		Iterable<Game> i = gr.findAll();
+		i.forEach(ll::add);
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", ll);
 	}
-	public ResponseBody<Iterable<Game>> allVerifiedGames(){
-		return new ResponseBody<Iterable<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findAllVerified());
+	public ResponseBody<List<Game>> allVerifiedGames(){
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findAllVerified());
 	}
 
 	public ResponseBody<Game> RequestReschedule(Game g) {
@@ -186,7 +189,7 @@ public class GameHandler {
 		return getGameById(new DataObject<Long>(id));
 	}
 	
-	public ResponseBody<Iterable<Game>> unverifiedGames(School s) {
-		return new ResponseBody<Iterable<Game>>(HttpStatus.ACCEPTED.value(), "Found Games", gr.findByApprovedFalse());
+	public ResponseBody<List<Game>> unverifiedGames(School s) {
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found Games", gr.findByApprovedFalse());
 	}
 }

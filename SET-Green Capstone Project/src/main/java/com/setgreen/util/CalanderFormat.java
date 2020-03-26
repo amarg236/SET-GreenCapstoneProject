@@ -2,6 +2,7 @@ package com.setgreen.util;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import com.setgreen.model.Game;
 import com.setgreen.model.ResponseBody;
@@ -26,21 +27,21 @@ public class CalanderFormat {
 		ownr = g.getId().intValue();
 	}
 	
-	public static ResponseBody<String> format(ResponseBody<Iterable<Game>> rb) {
-		ResponseBody<String> rtrn = new ResponseBody<String>(rb.getHttpStatusCode(), "calander formatted", null);
+	public static ResponseBody<String> format(ResponseBody<List<Game>> responseBody) {
+		ResponseBody<String> rtrn = new ResponseBody<String>(responseBody.getHttpStatusCode(), "calander formatted", null);
 		if(rtrn.getHttpStatusCode() == 202) {
 			try {
-				Iterable<Game> ig = (Iterable<Game>) rb.getResult();
+				Iterable<Game> ig = (Iterable<Game>) responseBody.getResult();
 				String s = "{\"EventsData\":[";
 				for(Game g : ig) {
 					s += new CalanderFormat(g).toString() + ",";
 				}
 				s=s.substring(0, s.length()-2);
 				s+="]}";
-				rtrn = new ResponseBody<String>(rb.getHttpStatusCode(), "calander formatted", s);
+				rtrn = new ResponseBody<String>(responseBody.getHttpStatusCode(), "calander formatted", s);
 			}
 			catch(Exception e) {
-				rb.setResult(null);
+				responseBody.setResult(null);
 			}
 		}
 		return rtrn;
