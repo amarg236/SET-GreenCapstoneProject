@@ -2,6 +2,7 @@ package com.setgreen.services.usergroups;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.setgreen.model.Game;
@@ -21,15 +22,18 @@ public class UserScheduler extends UserUnfound {
 		return RoleName.USER;
 	}
 	@Override
-	public ResponseBody<Game> createGame(Game g) {
+	public ResponseBody<Game> createGame(Authentication auth, Game g) {
 		g.setApproved(false);
 		g.setAwayAccepted(false);
+		g.setUAcceptor(null);
+		g.setUApprover(null);
+		g.setURequester(auth.getName());
 		return gh.saveGame(g);
 	}
 
 	@Override
-	public ResponseBody<Long> approveGame(Long g) {
-		return gh.teamVerifyGame(g);
+	public ResponseBody<Long> approveGame(Authentication auth, Long g) {
+		return gh.teamVerifyGame(auth, g);
 	}
 
 	@Override
@@ -57,7 +61,7 @@ public class UserScheduler extends UserUnfound {
 	}
 	
 	@Override
-	public ResponseBody<Game> rescheduleGame(Game g) {
+	public ResponseBody<Game> rescheduleGame(Authentication auth, Game g) {
 		Game ng = gh.getGameById(g.getId());
 		ng.setDuration(g.getDuration());
 		ng.setTime(g.getTime());

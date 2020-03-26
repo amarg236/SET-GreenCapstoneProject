@@ -12,4 +12,6 @@ public interface TeamsService {
 	ResponseBody<Teams> getTeamsByName(String tm);
 
 	ResponseBody<Iterable<Teams>> getTeamsByDistrict(District d);
+
+	ResponseBody<Teams> getTeamsById(Teams t);
 }

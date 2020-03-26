@@ -57,6 +57,13 @@ public class TeamController {
 	public ResponseBody<Iterable<Teams>> getTeamsByDistrict(@RequestBody District d){
 		return tmRpo.getTeamsByDistrict(d);
 	}
+	/**
+	 * @return a team by ID
+	 */
+	@PostMapping("get/byId")
+	public ResponseBody<Teams> getaTeamsById(@RequestBody Teams t){
+		return tmRpo.getTeamsById(t);
+	}
 	/** takes a bad day and saves it
 	 * @param d Day to set as a bad day for a given team
 	 * @return ResponseBody with status of request and day sent

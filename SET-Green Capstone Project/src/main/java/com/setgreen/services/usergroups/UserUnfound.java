@@ -1,6 +1,7 @@
 package com.setgreen.services.usergroups;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.setgreen.model.District;
@@ -45,12 +46,12 @@ public class UserUnfound extends UserReference {
 	}
 
 	@Override
-	public ResponseBody<Game> createGame(Game g) {
+	public ResponseBody<Game> createGame(Authentication auth, Game g) {
 		return forbiddenAccess(g);
 	}
 
 	@Override
-	public ResponseBody<Long> approveGame(Long g) {
+	public ResponseBody<Long> approveGame(Authentication auth, Long g) {
 		return forbiddenAccess(g);
 	}
 
@@ -60,7 +61,7 @@ public class UserUnfound extends UserReference {
 	}
 
 	@Override
-	public ResponseBody<Game> rescheduleGame(Game g) {
+	public ResponseBody<Game> rescheduleGame(Authentication auth, Game g) {
 		return forbiddenAccess(g);
 	}
 
@@ -137,5 +138,4 @@ public class UserUnfound extends UserReference {
 	public ResponseBody<IdealDay> removeIdealDay(IdealDay d) {
 		return forbiddenAccess(d);
 	}
-
 }

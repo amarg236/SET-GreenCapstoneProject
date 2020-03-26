@@ -1,12 +1,12 @@
 package com.setgreen.services.implementation;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +17,6 @@ import com.setgreen.model.Role;
 import com.setgreen.model.School;
 import com.setgreen.model.mail.Mail;
 import com.setgreen.repositories.GameRepo;
-import com.setgreen.repositories.RoleRepo;
 import com.setgreen.repositories.TeamsRepo;
 import com.setgreen.services.mailservice.MailHandler;
 import com.setgreen.util.DataObject;
@@ -82,8 +81,9 @@ public class GameHandler {
 		}
 	}
 	@Transactional
-	public ResponseBody<Long> teamVerifyGame(Long g) {//TODO verification of team
+	public ResponseBody<Long> teamVerifyGame(Authentication auth, Long g) {//TODO verification of team
 		try{
+			gr.updateUAcceptor(g, auth.getName());
 			gr.updateAccept(g, true);
 			return new ResponseBody<Long>(HttpStatus.ACCEPTED.value(), "Game Accepted", g);
 		}
@@ -107,9 +107,13 @@ public class GameHandler {
 	 * @return Response body detailing the status of the verification
 	 */
 	@Transactional
-	public ResponseBody<Long> adminVerifyGame(Long g) {
+	public ResponseBody<Long> adminVerifyGame(Authentication auth, Long g) {
 		try {
-			gr.updateVerify(g.longValue(), true);
+			if(!gr.findById(g).get().isAwayAccepted()) {
+				gr.updateUAcceptor(g, auth.getName());
+				gr.updateVerify(g.longValue(), true);
+			}
+			gr.updateUApprover(g, auth.getName());
 			gr.updateAccept(g.longValue(), true);
 			return new ResponseBody<Long>(HttpStatus.ACCEPTED.value(), "Game Verified", g);
 		}

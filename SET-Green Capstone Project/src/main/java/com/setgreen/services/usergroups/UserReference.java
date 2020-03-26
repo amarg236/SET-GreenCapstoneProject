@@ -2,6 +2,7 @@ package com.setgreen.services.usergroups;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.setgreen.model.District;
@@ -94,13 +95,13 @@ public abstract class UserReference {
 	 * @param g game to create
 	 * @return responsebody status of creation
 	 */
-	public abstract ResponseBody<Game> createGame(Game g);
+	public abstract ResponseBody<Game> createGame(Authentication auth, Game g);
 	/** assignor+, verify a game for the "fixed" schedule
 	 *  userlevels, accept a game offer
 	 * @param g game to verify
 	 * @return responsebody status of request
 	 */
-	public abstract ResponseBody<Long> approveGame(Long g);
+	public abstract ResponseBody<Long> approveGame(Authentication auth, Long g);
 	/** assignor+, reject a game to be added to 'fixed" schedule
 	 * userlevel, deny game offer
 	 * @param g game to reject
@@ -112,7 +113,7 @@ public abstract class UserReference {
 	 * @param g game to reschedule
 	 * @return responsebody status of rescheduling
 	 */
-	public abstract ResponseBody<Game> rescheduleGame(Game g);
+	public abstract ResponseBody<Game> rescheduleGame(Authentication auth, Game g);
 	/** assignor+, remove a game from the system
 	 * @param id game to remove
 	 * @return responsebody with game and status

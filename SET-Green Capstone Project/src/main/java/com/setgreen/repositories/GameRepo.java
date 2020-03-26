@@ -33,8 +33,17 @@ public interface GameRepo extends CrudRepository<Game, Long>{
     
     @Modifying
     @Query("UPDATE Game g set awayAccepted = (:tf) WHERE g.id = (:id) AND awayAccepted != TRUE")
-	public void updateAccept(Long id, boolean tf);
+	public void updateAccept(@Param("id") Long id, @Param("tf") boolean tf);
 
+    @Modifying
+    @Query("UPDATE Game g set uAcceptor = (:u) WHERE g.id = (:id) AND awayAccepted != TRUE")
+	public void updateUAcceptor(@Param("id") Long id, @Param("u") String u);
+
+    @Modifying
+    @Query("UPDATE Game g set uApprover = (:u) WHERE g.id = (:id) AND awayAccepted != TRUE")
+	public void updateUApprover(@Param("id") Long id, @Param("u") String u);
+
+    
     @Query("SELECT g FROM Game g WHERE g.approved = TRUE")
 	public List<Game> findAllVerified();
     
