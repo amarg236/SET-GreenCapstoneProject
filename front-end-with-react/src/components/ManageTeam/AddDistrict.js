@@ -121,6 +121,7 @@ class AddDistrict extends Component {
 
     return (
       <Content
+        className="mediaAD"
         style={{
           padding: 24,
           margin: 0,

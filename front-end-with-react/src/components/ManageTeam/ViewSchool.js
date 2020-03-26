@@ -76,6 +76,7 @@ class ViewSchool extends Component {
 
     return (
       <Content
+        className="mediaVS"
         style={{
           paddingTop: 10,
           margin: 0,

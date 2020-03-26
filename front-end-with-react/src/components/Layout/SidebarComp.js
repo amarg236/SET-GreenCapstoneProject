@@ -61,13 +61,6 @@ class SidebarComp extends Component {
               </span>
               <span>HOME</span>
             </Menu.Item>
-
-            <Menu.Item key="logOut">
-              <span>
-                <LogoutOutlined />
-              </span>
-              <span>Log Out</span>
-            </Menu.Item>
           </Menu>
         );
     }

@@ -5,6 +5,7 @@ import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { Table } from "antd";
 import { connect } from "react-redux";
+import "../../stylesheets/mediaQue.css";
 
 class PendingGame extends Component {
   constructor(props) {
@@ -105,7 +106,7 @@ class PendingGame extends Component {
         <div>
           <h3 className="text-center">Pending Games</h3>
           <br />
-          <Table className="table-striped hover table-responsive-sm ">
+          <Table className="mediaPG">
             <thead>
               <tr>
                 <th>Home Team</th>

@@ -126,6 +126,7 @@ class InviteToSystem extends Component {
 
     return (
       <Content
+        className="mediaIU"
         style={{
           padding: 24,
           margin: 0,
@@ -214,7 +215,7 @@ class InviteToSystem extends Component {
                 defaultValue="Select Role"
                 onChange={this.chooseRole}
                 value={this.state.role}
-                style={{ width: "450px", minWidth: "auto" }}
+                style={{ width: "250px", minWidth: "auto" }}
               >
                 <Select.Option value="USER">USER</Select.Option>
 
@@ -225,7 +226,7 @@ class InviteToSystem extends Component {
             <Form.Item label="Select School" size="large" name="school">
               <Select
                 defaultValue="Select Options"
-                style={{ width: "450px", minWidth: "auto" }}
+                style={{ width: "250px", minWidth: "auto" }}
                 onChange={this.handleChange}
               >
                 {this.state.data.map(item => (
