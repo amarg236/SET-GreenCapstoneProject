@@ -92,6 +92,12 @@ class AdminSidebar extends Component {
             </span>
             <span>Add School</span>
           </Menu.Item>
+          <Menu.Item onClick={handleClick} key="addTeam">
+            <span>
+              <FileAddOutlined />
+            </span>
+            <span>Add Team</span>
+          </Menu.Item>
         </SubMenu>
 
         <SubMenu
