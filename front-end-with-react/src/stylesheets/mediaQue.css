@@ -1,0 +1,41 @@
+/* main App.js media query */
+
+@media (max-width: 500px) {
+  .que {
+    width: 900%;
+  }
+}
+
+@media (max-width: 500px) {
+  .mediaCG {
+    width: 100vw;
+  }
+
+  .mediaVS {
+    width: 100vw;
+  }
+
+  .AdminMediaVG {
+    width: 100vw;
+  }
+
+  .mediaAD {
+    width: 100vw;
+  }
+
+  .mediaAS {
+    width: 100vw;
+  }
+
+  .mediaIU {
+    width: 100vw;
+  }
+
+  .mediaAppG {
+    width: 100vw;
+  }
+
+  .mediaPG {
+    width: 100vw;
+  }
+}

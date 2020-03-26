@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import "./stylesheets/mediaQue.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Router, Switch, Route } from "react-router-dom";
 import SignIn from "./components/Project/SignIn";
@@ -35,6 +36,7 @@ class App extends React.Component {
           <SidebarComp />
           <Layout className="site-layout">
             <HeaderRoot />
+
             <Switch>
               <Route exact path="/" component={Home} />
               <Route
@@ -81,6 +83,7 @@ class App extends React.Component {
             </Switch>
           </Layout>
         </Layout>
+
         <FooterComp />
       </Router>
     );

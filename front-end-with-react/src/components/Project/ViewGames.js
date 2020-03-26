@@ -25,6 +25,7 @@ class ViewGames extends Component {
       case "ADMIN":
         return (
           <Content
+            className="AdminMediaVG"
             style={{
               padding: 5,
               margin: 0,
@@ -40,12 +41,12 @@ class ViewGames extends Component {
       case "USER":
         return (
           <Content
+            className="UserMediaVG"
             style={{
               padding: 3,
               margin: 0,
               minHeight: 580
             }}
-            className="site-layout-background"
           >
             <ShowUserPendingGames />
             <ApproveGame />
@@ -55,6 +56,7 @@ class ViewGames extends Component {
       case "ASSIGNOR":
         return (
           <Content
+            className="AssignorMediaVG"
             style={{
               padding: 24,
               margin: 0,
@@ -69,6 +71,7 @@ class ViewGames extends Component {
       default:
         return (
           <Content
+            className="DefaultMediaVG"
             style={{
               padding: 24,
               margin: 0,
