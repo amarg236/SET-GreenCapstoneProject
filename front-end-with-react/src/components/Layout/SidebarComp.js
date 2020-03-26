@@ -29,9 +29,9 @@ class SidebarComp extends Component {
   checkWidth = () => () => {
     const match = window.matchMedia(`(max-width: 768px)`);
     if (match) {
-      this.setState({ collapsed: true, collapsedWidth: 0 });
-    } else {
       this.setState({ collapsedWidth: 80 });
+    } else {
+      this.setState({ collapsed: true, collapsedWidth: 0 });
     }
   };
 

@@ -24,6 +24,8 @@ import AddSchool from "./components/ManageTeam/AddSchool";
 import AddTeam from "./components/ManageTeam/AddTeam";
 import AddDistrict from "./components/ManageTeam/AddDistrict";
 import InviteToSystem from "./components/ManageUser/InviteToSystem";
+import InviteAssignor from "./components/ManageUser/InviteAssignor";
+import ManageUser from "./components/ManageUser/MangeUser";
 import VerifyAccount from "./components/EmailConfirmation/VerifyAccount";
 import ChangePassword from "./components/EmailConfirmation/ChangePassword";
 
@@ -65,10 +67,16 @@ class App extends React.Component {
               <ProtectedRoute exact path="/createGame" component={CreateGame} />
               <ProtectedRoute exact path="/viewGames" component={ViewGames} />
               <ProtectedRoute exact path="/addTeam" component={AddTeam} />
+              <ProtectedRoute exact path="/manageUser" component={ManageUser} />
               <ProtectedRoute
                 exact
                 path="/inviteToSystem"
                 component={InviteToSystem}
+              />
+              <ProtectedRoute
+                exact
+                path="/inviteAssignor"
+                component={InviteAssignor}
               />
 
               <ProtectedRoute
