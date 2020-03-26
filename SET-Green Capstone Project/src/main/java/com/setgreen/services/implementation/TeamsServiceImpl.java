@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.setgreen.model.District;
 import com.setgreen.model.ResponseBody;
+import com.setgreen.model.School;
 import com.setgreen.model.Teams;
 import com.setgreen.repositories.SchoolRepo;
 import com.setgreen.repositories.TeamsRepo;
@@ -58,5 +59,10 @@ public class TeamsServiceImpl implements TeamsService{
 	@Override
 	public ResponseBody<Teams> getTeamsById(Teams t) {
 		return new ResponseBody<Teams>(HttpStatus.ACCEPTED.value(), "Teams found", tr.findById(t.getId()).get());
+	}
+
+	@Override
+	public ResponseBody<Iterable<Teams>> getTeamsBySchool(School s) {
+		return new ResponseBody<Iterable<Teams>>(HttpStatus.ACCEPTED.value(), "Teams found", tr.findBySchool_Id(s.getId()));
 	}
 }

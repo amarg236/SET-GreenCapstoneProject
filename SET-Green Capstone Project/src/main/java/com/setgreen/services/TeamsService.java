@@ -2,6 +2,7 @@ package com.setgreen.services;
 
 import com.setgreen.model.District;
 import com.setgreen.model.ResponseBody;
+import com.setgreen.model.School;
 import com.setgreen.model.Teams;
 
 public interface TeamsService {
@@ -14,4 +15,6 @@ public interface TeamsService {
 	ResponseBody<Iterable<Teams>> getTeamsByDistrict(District d);
 
 	ResponseBody<Teams> getTeamsById(Teams t);
+
+	ResponseBody<Iterable<Teams>> getTeamsBySchool(School s);
 }
