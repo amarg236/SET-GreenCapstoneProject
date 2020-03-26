@@ -35,13 +35,6 @@ class LoginComp extends React.Component {
       wrapperCol: { offset: 8, span: 16 }
     };
 
-    // const onFinish = values => {
-    //   console.log("Success:", values);
-    // };
-
-    // const onFinishFailed = errorInfo => {
-    //   console.log("Failed:", errorInfo);
-    // };
     console.log();
 
     return (
