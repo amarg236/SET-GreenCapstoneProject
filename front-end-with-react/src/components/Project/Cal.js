@@ -1,4 +1,5 @@
 import React from "react";
+import "../../stylesheets/cal.css";
 import axios from "axios";
 import moment from "moment";
 import Authtoken from "../../Utility/AuthToken";
@@ -15,7 +16,6 @@ import {
   ViewDirective
 } from "@syncfusion/ej2-react-schedule";
 import { extend } from "@syncfusion/ej2-base";
-// import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import { Layout } from "antd";
 const { Content } = Layout;
 
@@ -23,8 +23,6 @@ function processData(rawEvents) {
   console.log(rawEvents.result);
   return rawEvents.result.map(event => ({
     Id: event.id,
-    // StartTime: "2020-03-08 12:30",
-    // EndTime: "2020-03-08 13:00",
     StartTime: moment(event.time, "YYYY-MM-DD HH:mm").toISOString(),
     EndTime: moment(event.time, "YYYY-MM-DD HH:mm")
       .add(event.duration, "minute")
@@ -39,7 +37,6 @@ class Cal extends React.Component {
     this.state = {
       jData: []
     };
-    // this.data = extend([], localStorage.getItem("jsonFeed"), null, true);
   }
 
   componentDidMount() {
@@ -51,8 +48,6 @@ class Cal extends React.Component {
         }
       })
       .then(res => {
-        // this.setState({ jData: res.data });
-        // console.log(res.data, processData(res.data));
         console.log(res.data.result);
         this.setState({ jData: extend([], processData(res.data), null, true) });
       });
@@ -81,6 +76,12 @@ class Cal extends React.Component {
     this.scheduleObj.exportToExcel(exportValues);
   }
 
+  eventTemplate(props){
+   // if(approved){
+      return(<div className='template-wrap'> {props.Subject} </div>);
+  //  }
+  }
+
   // Links that could be helpful
   // https://github.com/syncfusion/ej2-react-samples/blob/master/src/schedule/local-data.jsx
 
@@ -97,8 +98,7 @@ class Cal extends React.Component {
         <ScheduleComponent
           cssClass="excel-export"
           currentView="Month"
-          // eventSettings={{ dataSource: this.data }}
-          eventSettings={{ dataSource: this.state.jData }}
+          eventSettings={{ dataSource: this.state.jData, template: this.eventTemplate.bind(this) }}
           id="schedule"
           ref={t => (this.scheduleObj = t)}
           actionBegin={this.onActionBegin.bind(this)}
