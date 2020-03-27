@@ -35,9 +35,7 @@ const userReducer = (state = initialState, action) => {
       };
     case "SCHOOL_AND_DISTRICT":
       return {
-        username: action.username,
-        message: action.message,
-        role: action.role,
+        ...state,
         mySchool: action.school,
         schoolDistrict: action.district
       };

@@ -114,7 +114,7 @@ class CreateGame extends Component {
       .set("minutes", 0);
     const startTime = moment(this.state.gameStartTime, "HH:mm");
     const endTime = moment(this.state.gameEndTime, "HH:mm");
-    
+
     const gameStart = moment(startDate)
       .add(startTime.hours(), "hour")
       .add(startTime.minutes(), "minute");
@@ -138,7 +138,7 @@ class CreateGame extends Component {
       },
       location: this.state.gameLocation
     };
-    
+
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/save", gameObject, {
         headers: {
@@ -152,6 +152,8 @@ class CreateGame extends Component {
   }
 
   render() {
+    console.log(this.props.mySchool);
+    console.log(this.props.schoolDistrict);
     console.log("typee", this.props.ifcollapsed);
     const layout = {
       labelCol: {
@@ -209,6 +211,7 @@ class CreateGame extends Component {
                 placeholder="Enter Home Team"
               />
             </Form.Item>
+
             <Form.Item
               name="gameDate"
               label="Choose Date"
@@ -288,7 +291,9 @@ class CreateGame extends Component {
 const mapStatetoProps = state => {
   return {
     token: state.userReducer.token,
-    ifcollapsed: state.userReducer.sidebarCollapased
+    ifcollapsed: state.userReducer.sidebarCollapased,
+    mySchool: state.userReducer.mySchool,
+    schoolDistrict: state.userReducer.schoolDistrict
   };
 };
 export default connect(mapStatetoProps)(CreateGame);

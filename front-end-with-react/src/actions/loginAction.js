@@ -28,24 +28,28 @@ export const loginAction = (username, password) => {
                 console.log(saveDatainFormat.role);
                 if (saveDatainFormat.role === "USER") {
                   dispatch({
-                    type: "SCHOOL_AND_DISTRICT",
+                    type: "LOGIN_ACTION",
                     username,
-                    role: saveDatainFormat.role,
+                    role: saveDatainFormat.role
+                  });
+                  dispatch({
+                    type: "SCHOOL_AND_DISTRICT",
                     school: res.data.result.roles[0].school,
                     district: res.data.result.roles[0].school.district
                   });
+                } else {
+                  dispatch({
+                    type: "LOGIN_ACTION",
+                    username,
+                    role: saveDatainFormat.role
+                  });
                 }
-                dispatch({
-                  type: "LOGIN_ACTION",
-                  username,
-                  role: saveDatainFormat.role
-                });
 
                 // res.data.result.map(getRoles => console.log(getRoles));
               }
             });
 
-          // history.push("./dashboard");
+          history.push("./dashboard");
         }
       })
       .catch(e => {
