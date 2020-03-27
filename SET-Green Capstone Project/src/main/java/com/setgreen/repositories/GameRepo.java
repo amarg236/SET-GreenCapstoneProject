@@ -8,7 +8,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.setgreen.model.District;
 import com.setgreen.model.Game;
 
 @Repository
@@ -18,28 +17,37 @@ public interface GameRepo extends CrudRepository<Game, Long>{
     public void updateVerify(@Param("id") long id, @Param("tf") boolean tf);
 
     @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d)")
-	public Iterable<Game> findInDistrictAll(@Param("d") String d);
+	public List<Game> findInDistrictAll(@Param("d") String d);
     
     @Query("SELECT g FROM Game g WHERE (g.hometeam = (:n) OR g.awayteam = (:n))")
-	public Iterable<Game> findInSchoolAll(@Param("n") String n);
+	public List<Game> findInSchoolAll(@Param("n") String n);
     
     @Query("SELECT g FROM Game g WHERE (g.hometeam = (:n) OR g.awayteam = (:n)) AND g.approved = TRUE")
-	public Iterable<Game> findInSchoolVerified(@Param("n") String n);
+	public List<Game> findInSchoolVerified(@Param("n") String n);
     
     @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d) AND g.approved = TRUE")
-    public Iterable<Game> findInDistrictVerified(@Param("d") String d);
+    public List<Game> findInDistrictVerified(@Param("d") String d);
 
     @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d) AND g.awayAccepted = TRUE")
-    public Iterable<Game> findInDistrictAccepted(@Param("d") String d);
+    public List<Game> findInDistrictAccepted(@Param("d") String d);
     
     @Modifying
     @Query("UPDATE Game g set awayAccepted = (:tf) WHERE g.id = (:id) AND awayAccepted != TRUE")
-	public void updateAccept(Long id, boolean tf);
+	public void updateAccept(@Param("id") Long id, @Param("tf") boolean tf);
 
-    @Query("SELECT g FROM Game g WHERE g.approved = TRUE")
-	public Iterable<Game> findAllVerified();
+    @Modifying
+    @Query("UPDATE Game g set uAcceptor = (:u) WHERE g.id = (:id) AND awayAccepted != TRUE")
+	public void updateUAcceptor(@Param("id") Long id, @Param("u") String u);
+
+    @Modifying
+    @Query("UPDATE Game g set uApprover = (:u) WHERE g.id = (:id) AND awayAccepted != TRUE")
+	public void updateUApprover(@Param("id") Long id, @Param("u") String u);
+
     
-    List<Game> findAllByAwayAcceptedTrue();
+    @Query("SELECT g FROM Game g WHERE g.approved = TRUE")
+	public List<Game> findAllVerified();
+    
+    public List<Game> findAllByAwayAcceptedTrue();
 
-	public Iterable<Game> findByApprovedFalse();
+	public List<Game> findByApprovedFalse();
 }

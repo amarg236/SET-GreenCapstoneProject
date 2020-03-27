@@ -12,4 +12,6 @@ public interface TeamsRepo extends CrudRepository<Teams, Long> {
 
 	Iterable<Teams> findBySchool_District_Id(Long id);
 
+	Iterable<Teams> findBySchool_Id(Long id);
+
 }

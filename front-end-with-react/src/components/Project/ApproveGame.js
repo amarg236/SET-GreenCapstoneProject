@@ -33,7 +33,7 @@ class ApproveGame extends Component {
     console.log(this.state.game);
 
     return (
-      <div style={{marginTop: '2%'}}>
+      <div className="mediaAppG" style={{ marginTop: "2%" }}>
         <Row>
           <Col style={{ textAlign: "center" }} span={24}>
             <h4>Approved Games</h4>
@@ -46,10 +46,18 @@ class ApproveGame extends Component {
             backgroundColor: "#dddd"
           }}
         >
-          <Col lg={6} md={5} sm={5} xs={6}>Home Team</Col>
-          <Col lg={6} md={5} sm={5} xs={6}>Away Team</Col>
-          <Col lg={4} md={4} sm={4} xs={4}>Time</Col>
-          <Col lg={4} md={4} sm={4} xs={4}>Location</Col>
+          <Col lg={6} md={5} sm={5} xs={6}>
+            Home Team
+          </Col>
+          <Col lg={6} md={5} sm={5} xs={6}>
+            Away Team
+          </Col>
+          <Col lg={4} md={4} sm={4} xs={4}>
+            Time
+          </Col>
+          <Col lg={4} md={4} sm={4} xs={4}>
+            Location
+          </Col>
           <Col lg={2} md={3}></Col>
           <Col lg={2} md={3}></Col>
         </Row>
@@ -77,18 +85,24 @@ class ApproveGame extends Component {
                     backgroundColor: "#ffff"
                   }}
                 >
-                  <Col lg={6} md={5} sm={5} xs={6}>{hometeam}</Col>
-                  <Col lg={6} md={5} sm={5} xs={6}>{awayteam}</Col>
-                  <Col lg={4} md={4} sm={4} xs={4}>{time}</Col>
-                  <Col lg={4} md={4} sm={4} xs={4}>{location}</Col>
+                  <Col lg={6} md={5} sm={5} xs={6}>
+                    {hometeam}
+                  </Col>
+                  <Col lg={6} md={5} sm={5} xs={6}>
+                    {awayteam}
+                  </Col>
+                  <Col lg={4} md={4} sm={4} xs={4}>
+                    {time}
+                  </Col>
+                  <Col lg={4} md={4} sm={4} xs={4}>
+                    {location}
+                  </Col>
                   <Col lg={4} sm={4}>
-                    <Row justify='center'>
+                    <Row justify="center">
                       <Col>
-                        <Button
-                          type="button"
-                          className="btn btn-success">
+                        <Button type="button" className="btn btn-success">
                           Reschedule
-                    </Button>
+                        </Button>
                       </Col>
                     </Row>
                   </Col>
@@ -107,4 +121,3 @@ const mapStatetoProps = state => {
   };
 };
 export default connect(mapStatetoProps, null)(ApproveGame);
-

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
+import "../../stylesheets/mediaQue.css";
 
 import {
   Form,
@@ -31,6 +32,7 @@ class CreateGame extends Component {
     );
     this.onChangeGameTime = this.onChangeGameTime.bind(this);
     this.gameSubmit = this.gameSubmit.bind(this);
+    this.chooseClass = this.chooseClass.bind(this);
   }
 
   state = {
@@ -96,6 +98,15 @@ class CreateGame extends Component {
     this.setState({ againstTeamDistrict: e.target.value });
   }
 
+  chooseClass() {
+    const ch = this.props.ifcollapsed;
+    if (!ch) {
+      return "`CGForm`";
+    } else {
+      return "`xform`";
+    }
+  }
+
   gameSubmit(e) {
     e.preventDefault();
     const startDate = moment(this.state.gameDate)
@@ -141,6 +152,7 @@ class CreateGame extends Component {
   }
 
   render() {
+    console.log("typee", this.props.ifcollapsed);
     const layout = {
       labelCol: {
         span: 4
@@ -162,6 +174,7 @@ class CreateGame extends Component {
 
     return (
       <Content
+        className="mediaCG"
         style={{
           padding: 24,
           margin: 0,
@@ -274,7 +287,8 @@ class CreateGame extends Component {
 
 const mapStatetoProps = state => {
   return {
-    token: state.userReducer.token
+    token: state.userReducer.token,
+    ifcollapsed: state.userReducer.sidebarCollapased
   };
 };
 export default connect(mapStatetoProps)(CreateGame);

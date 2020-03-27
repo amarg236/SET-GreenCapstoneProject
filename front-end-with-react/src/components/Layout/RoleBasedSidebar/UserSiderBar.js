@@ -31,8 +31,7 @@ class UserSidebar extends Component {
         className="sidebarProperty"
         defaultSelectedKeys={["1"]}
         defaultOpenKeys={["sub1"]}
-        style={{ height: "100%", borderRight: 0,
-                 paddingRight: "0" }}
+        style={{ height: "100%", borderRight: 0, paddingRight: "0" }}
       >
         <Menu.Item onClick={handleClick} key="dashboard">
           <span>
@@ -90,13 +89,6 @@ class UserSidebar extends Component {
             <SettingOutlined />
           </span>
           <span>Settings</span>
-        </Menu.Item>
-
-        <Menu.Item key="logOut">
-          <span>
-            <LogoutOutlined />
-          </span>
-          <span>Log Out</span>
         </Menu.Item>
       </Menu>
     );

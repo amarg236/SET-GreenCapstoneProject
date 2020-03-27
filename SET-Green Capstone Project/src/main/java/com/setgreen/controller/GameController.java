@@ -29,7 +29,7 @@ public class GameController {
 	
 	@PostMapping("save")
 	public ResponseBody<Game> save(@RequestBody Game g, Authentication auth){
-		return hlp.getRoleByTeam(auth, g.getHometeam()).createGame(g);
+		return hlp.getRoleByTeam(auth, g.getHometeam()).createGame(auth, g);
 	}
 	
 	@PostMapping("delete")
@@ -38,12 +38,12 @@ public class GameController {
 	}
 	@PostMapping("modify")
 	public ResponseBody<Game> modify(@RequestBody Game g, Authentication auth) {
-		return hlp.getRoleByLocation(auth, gh.getGameById(g.getId()).getHomedistrict()).rescheduleGame(g);
+		return hlp.getRoleByLocation(auth, gh.getGameById(g.getId()).getHomedistrict()).rescheduleGame(auth, g);
 	}
 	
 	@PostMapping("accept")
 	public ResponseBody<Long> accept(@RequestBody Game g, Authentication auth) {//NOTE this MUST use getGameById as we're actively changing the game's parameters.
-		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId()).getAwayteam()).approveGame(g.getId());
+		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId()).getAwayteam()).approveGame(auth, g.getId());
 	}
 	
 	/** Gets all the verified games in a district
@@ -51,31 +51,31 @@ public class GameController {
 	 * @return ResponseBody status of request
 	 */
 	@PostMapping("get/district")
-	public ResponseBody<Iterable<Game>> getDistrict(@RequestBody District d) {
+	public ResponseBody<List<Game>> getDistrict(@RequestBody District d) {
 		return gh.getGames(d, false);
 	}
 	
 	@PostMapping("get/district/all")
-	public ResponseBody<Iterable<Game>> getDistrictAll(@RequestBody District d) {
+	public ResponseBody<List<Game>> getDistrictAll(@RequestBody District d) {
 		return gh.getGames(d, true);
 	}
 	
 	@PostMapping("get/BySchool")
-	public ResponseBody<Iterable<Game>> getSchool(@RequestBody School s) {
+	public ResponseBody<List<Game>> getSchool(@RequestBody School s) {
 		return gh.getGames(s, false);
 	}
 	
 	@PostMapping("get/BySchool/all")
-	public ResponseBody<Iterable<Game>> getSchoolAll(@RequestBody School s) {
+	public ResponseBody<List<Game>> getSchoolAll(@RequestBody School s) {
 		return gh.getGames(s, true);
 	}
 	
 	@PostMapping("get/all")
-	public ResponseBody<Iterable<Game>> getAll() {
+	public ResponseBody<List<Game>> getAll() {
 		return gh.allGames();
 	}
 	@PostMapping("get/BySchool/unverified")
-	public ResponseBody<Iterable<Game>> getAll(@RequestBody School s){
+	public ResponseBody<List<Game>> getAll(@RequestBody School s){
 		return gh.unverifiedGames(s);
 	}
 }

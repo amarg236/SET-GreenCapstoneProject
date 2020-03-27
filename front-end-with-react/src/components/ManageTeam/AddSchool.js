@@ -117,6 +117,7 @@ class AddSchool extends Component {
 
     return (
       <Content
+        className="mediaAS"
         style={{
           padding: 24,
           margin: 0,

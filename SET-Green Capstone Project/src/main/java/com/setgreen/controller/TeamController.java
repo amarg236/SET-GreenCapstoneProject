@@ -1,4 +1,4 @@
-package com.setgreen.controller;
+ package com.setgreen.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.setgreen.model.District;
 import com.setgreen.model.ResponseBody;
+import com.setgreen.model.School;
 import com.setgreen.model.Teams;
 import com.setgreen.model.scheduling.BadDay;
 import com.setgreen.model.scheduling.IdealDay;
@@ -56,6 +57,17 @@ public class TeamController {
 	@PostMapping("get/byDistrict")
 	public ResponseBody<Iterable<Teams>> getTeamsByDistrict(@RequestBody District d){
 		return tmRpo.getTeamsByDistrict(d);
+	}
+	@PostMapping("get/bySchool")
+	public ResponseBody<Iterable<Teams>> getTeamsBySchool(@RequestBody School s){
+		return tmRpo.getTeamsBySchool(s);
+	}
+	/**
+	 * @return a team by ID
+	 */
+	@PostMapping("get/byId")
+	public ResponseBody<Teams> getaTeamsById(@RequestBody Teams t){
+		return tmRpo.getTeamsById(t);
 	}
 	/** takes a bad day and saves it
 	 * @param d Day to set as a bad day for a given team

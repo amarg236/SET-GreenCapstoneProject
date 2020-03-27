@@ -55,6 +55,6 @@ public class AdminControlController{
     }
     @PostMapping("game/verify")
     public ResponseBody<Long> verifyGame(@RequestBody Game g, Authentication auth) {
-    	return hlp.getRoleByBest(auth).approveGame(g.getId());
+    	return hlp.getRoleByBest(auth).approveGame(auth, g.getId());
     }
 }

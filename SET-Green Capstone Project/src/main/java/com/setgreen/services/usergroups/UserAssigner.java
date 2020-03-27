@@ -1,5 +1,6 @@
 package com.setgreen.services.usergroups;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.setgreen.model.District;
@@ -40,8 +41,8 @@ public class UserAssigner extends UserScheduler /*implements UserReference*/  {
 		return uh.updateProfile(u);
 	}
 	@Override
-	public ResponseBody<Long> approveGame(Long g){
-		return gh.adminVerifyGame(g);
+	public ResponseBody<Long> approveGame(Authentication auth, Long g){
+		return gh.adminVerifyGame(auth, g);
 	}
 	@Override
 	public ResponseBody<Long> deleteGame(DataObject<Long> g) {

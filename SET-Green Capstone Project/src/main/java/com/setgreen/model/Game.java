@@ -37,6 +37,9 @@ public class Game implements Serializable{
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	Date time;
 	int duration;
+	String uRequester;
+	String uAcceptor;
+	String uApprover;
 	boolean approved;
 	boolean awayAccepted;
 }
