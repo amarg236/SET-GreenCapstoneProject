@@ -17,12 +17,35 @@ export const loginAction = (username, password) => {
             role: res.data.roles[0].authority
           };
           localStorage.setItem("userInfo", JSON.stringify(saveDatainFormat));
-          dispatch({
-            type: "LOGIN_ACTION",
-            username,
-            role: saveDatainFormat.role
-          });
-          history.push("./dashboard");
+          //Following below is the code for adding school and district iassociated with user in redux state
+
+          axios
+            .post(Authtoken.getBaseUrl() + "/api/auth/find/email", {
+              data: username
+            })
+            .then(res => {
+              if (res.data.httpStatusCode === 202) {
+                console.log(saveDatainFormat.role);
+                if (saveDatainFormat.role === "USER") {
+                  dispatch({
+                    type: "SCHOOL_AND_DISTRICT",
+                    username,
+                    role: saveDatainFormat.role,
+                    school: res.data.result.roles[0].school,
+                    district: res.data.result.roles[0].school.district
+                  });
+                }
+                dispatch({
+                  type: "LOGIN_ACTION",
+                  username,
+                  role: saveDatainFormat.role
+                });
+
+                // res.data.result.map(getRoles => console.log(getRoles));
+              }
+            });
+
+          // history.push("./dashboard");
         }
       })
       .catch(e => {
