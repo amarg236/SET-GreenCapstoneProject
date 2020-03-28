@@ -51,7 +51,46 @@ class CreateGame extends Component {
   };
 
   componentDidMount() {
-    // let HOMETEAM = "https://www.something.com";
+    let ben = this.props.mySchool.id;
+    console.log("I am ben");
+    console.log(ben);
+    function getTeam() {
+      const forTeam = {
+        id: ben
+      };
+      return axios.post(
+        Authtoken.getBaseUrl() + "/api/team/get/bySchool",
+        forTeam,
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
+          }
+        }
+      );
+    }
+    function awayDistrict() {
+      return axios.post(
+        Authtoken.getBaseUrl() + "/api/location/district/get",
+        {},
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
+          }
+        }
+      );
+    }
+    axios.all([getTeam(), awayDistrict()]).then(
+      axios.spread((firstResponse, secondResponse) => {
+        // Both requests are now complete
+        console.log("this is me team");
+        console.log(firstResponse);
+        console.log("this is me second respose");
+        console.log(secondResponse);
+      })
+    );
+
     // let URL2 = "https://www.something1.com";
     // let URL3 = "https://www.something2.com";
     // let URL1 = "https://www.something.com";
@@ -150,6 +189,9 @@ class CreateGame extends Component {
         window.location.reload();
       });
   }
+  // handleHomeTeam=()=> {
+
+  // }
 
   render() {
     console.log(this.props.mySchool);
@@ -196,6 +238,27 @@ class CreateGame extends Component {
             onSubmit={this.gameSubmit}
             validateMessages={validateMessages}
           >
+            {
+              //   <Form.Item label="Select Home Team" name="homeTeam">
+              //   <Select
+              //     size="large"
+              //     defaultValue="Select Options"
+              //     style={{ width: 120 }}
+              //     onChange={this.handleHomeTeam}
+              //   >
+              //     {this.props.map(item => (
+              //       <Select.Option
+              //         key={item.id}
+              //         // value={index}
+              //         value={JSON.stringify(item)}
+              //       >
+              //         {item.districtName}
+              //       </Select.Option>
+              //     ))}
+              //   </Select>
+              // </Form.Item>
+            }
+
             <Form.Item
               name="hometeam"
               label="Home Team"
