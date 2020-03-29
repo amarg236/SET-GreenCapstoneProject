@@ -5,7 +5,9 @@ const initialState = {
   username: JSON.parse(localStorage.getItem("userInfo"))?.username,
   token: JSON.parse(localStorage.getItem("userInfo"))?.token.split(" ")[1],
   message: "",
-  role: JSON.parse(localStorage.getItem("userInfo"))?.role
+  role: JSON.parse(localStorage.getItem("userInfo"))?.role,
+  mySchool: [],
+  schoolDistrict: []
 };
 
 const userReducer = (state = initialState, action) => {
@@ -30,6 +32,12 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         sidebarCollapased: !state.sidebarCollapased
+      };
+    case "SCHOOL_AND_DISTRICT":
+      return {
+        ...state,
+        mySchool: action.school,
+        schoolDistrict: action.district
       };
     default:
       return state;
