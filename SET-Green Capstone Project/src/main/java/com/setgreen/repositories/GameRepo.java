@@ -20,10 +20,10 @@ public interface GameRepo extends CrudRepository<Game, Long>{
 	public List<Game> findInDistrictAll(@Param("d") String d);
     
     @Query("SELECT g FROM Game g WHERE (g.hometeam = (:n) OR g.awayteam = (:n))")
-	public List<Game> findInSchoolAll(@Param("n") String n);
+	public List<Game> findByTeamAll(@Param("n") String n);
     
     @Query("SELECT g FROM Game g WHERE (g.hometeam = (:n) OR g.awayteam = (:n)) AND g.approved = TRUE")
-	public List<Game> findInSchoolVerified(@Param("n") String n);
+	public List<Game> findByTeamVerified(@Param("n") String n);
     
     @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d) AND g.approved = TRUE")
     public List<Game> findInDistrictVerified(@Param("d") String d);

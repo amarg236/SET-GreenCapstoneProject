@@ -15,8 +15,10 @@ import com.setgreen.model.Game;
 import com.setgreen.model.ResponseBody;
 import com.setgreen.model.Role;
 import com.setgreen.model.School;
+import com.setgreen.model.Teams;
 import com.setgreen.model.mail.Mail;
 import com.setgreen.repositories.GameRepo;
+import com.setgreen.repositories.SchoolRepo;
 import com.setgreen.repositories.TeamsRepo;
 import com.setgreen.services.mailservice.MailHandler;
 import com.setgreen.util.DataObject;
@@ -27,7 +29,6 @@ public class GameHandler {
 	private GameRepo gr;
 	@Autowired
 	private TeamsRepo tr;
-	
 	/**Attempts to save a game, and send an email to the involved coaches.
 	 * @param g Game to save
 	 * @return ResponseBody result of attempting to save game
@@ -133,14 +134,30 @@ public class GameHandler {
 		}
 	}
 	
-	public ResponseBody<List<Game>> getGames(School s, boolean findAll) { //FIXME URGENT doesn't care about district. Fix that
+	public ResponseBody<List<Game>> getGames(Teams s, boolean findAll) { //FIXME URGENT doesn't care about district. Fix that
 		try{
 			List<Game> g;
 			if(findAll) {
-				g = gr.findInSchoolAll(s.getName());
+				g = gr.findByTeamAll(s.getTmName());
 			}
 			else {
-				g = gr.findInSchoolVerified(s.getName());
+				g = gr.findByTeamVerified(s.getTmName());
+			}
+			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
+		}
+		catch(Exception e) {
+			return new ResponseBody<List<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games "+e, null);
+		}
+	}
+	
+	public ResponseBody<List<Game>> getGamesId(Teams s, boolean findAll) { //FIXME URGENT doesn't care about district. Fix that
+		try{
+			List<Game> g;
+			if(findAll) {
+				g = gr.findByTeamAll(tr.findById(s.getId()).get().getTmName());
+			}
+			else {
+				g = gr.findByTeamVerified(tr.findById(s.getId()).get().getTmName());
 			}
 			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
 		}

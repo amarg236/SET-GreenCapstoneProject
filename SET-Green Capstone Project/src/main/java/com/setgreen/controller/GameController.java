@@ -14,6 +14,7 @@ import com.setgreen.model.District;
 import com.setgreen.model.Game;
 import com.setgreen.model.ResponseBody;
 import com.setgreen.model.School;
+import com.setgreen.model.Teams;
 import com.setgreen.services.implementation.GameHandler;
 import com.setgreen.util.DataObject;
 
@@ -60,16 +61,24 @@ public class GameController {
 		return gh.getGames(d, true);
 	}
 	
-	@PostMapping("get/BySchool")
-	public ResponseBody<List<Game>> getSchool(@RequestBody School s) {
+	@PostMapping("get/ByTeam")
+	public ResponseBody<List<Game>> getSchool(@RequestBody Teams s) {
 		return gh.getGames(s, false);
 	}
 	
-	@PostMapping("get/BySchool/all")
-	public ResponseBody<List<Game>> getSchoolAll(@RequestBody School s) {
+	@PostMapping("get/ByTeam/all")
+	public ResponseBody<List<Game>> getSchoolAll(@RequestBody Teams s) {
 		return gh.getGames(s, true);
 	}
+	@PostMapping("get/ByTeamId")
+	public ResponseBody<List<Game>> getSchoolId(@RequestBody Teams s) {
+		return gh.getGamesId(s, false);
+	}
 	
+	@PostMapping("get/ByTeamId/all")
+	public ResponseBody<List<Game>> getSchoolIdAll(@RequestBody Teams s) {
+		return gh.getGamesId(s, true);
+	}
 	@PostMapping("get/all")
 	public ResponseBody<List<Game>> getAll() {
 		return gh.allGames();
