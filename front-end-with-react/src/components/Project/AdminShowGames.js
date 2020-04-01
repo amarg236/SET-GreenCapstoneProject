@@ -5,7 +5,7 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import { Row, Col, Button } from "antd";
 
-class ShowUserPendingGames extends Component {
+class AdminShowGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,52 +19,16 @@ class ShowUserPendingGames extends Component {
   }
 
   componentDidMount() {
-    //getting current users team and school
-
-    const currentSchool = {
-      id: this.props.mySchool.id
-    };
+    console.log(this.props.token);
+    const emptyBody = {};
     axios
-      .post(Authtoken.getBaseUrl() + "/api/team/get/bySchool", currentSchool, {
+      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyBody, {
         headers: {
           Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
         }
       })
       .then(res => {
-        console.log("current school teams");
-        console.log(res.data.result);
-        console.log("length here");
-        console.log(res.data.result.length);
-        for (let index = 0; index < res.data.result.length; index++) {
-          console.log("printing uder the loop");
-          console.log(res.data.result[index].id);
-          const emptyBody = {
-            id: res.data.result[index].id
-          };
-          axios
-            .post(
-              Authtoken.getBaseUrl() + "/api/game/get/ByTeamId/all",
-              emptyBody,
-              {
-                headers: {
-                  Authorization:
-                    "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-                }
-              }
-            )
-            .then(res => {
-              // console.log("i am resut of nested loop");
-              // console.log(res.data.result);
-
-              res.data.result.map(gamefromaxio => {
-                this.setState({
-                  game: [...this.state.game, gamefromaxio],
-                  loading: false
-                });
-              });
-            });
-        }
-        // this.setState({ awaySchoolTeamList: res.data.result });
+        this.setState({ game: res.data.result, loading: false });
       });
   }
 
@@ -214,9 +178,7 @@ class ShowUserPendingGames extends Component {
 
 const mapStatetoProps = state => {
   return {
-    token: state.userReducer.token,
-    mySchool: state.userReducer.mySchool,
-    schoolDistrict: state.userReducer.schoolDistrict
+    token: state.userReducer.token
   };
 };
-export default connect(mapStatetoProps, null)(ShowUserPendingGames);
+export default connect(mapStatetoProps, null)(AdminShowGames);

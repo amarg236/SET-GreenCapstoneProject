@@ -4,6 +4,7 @@ import "./SignIn";
 import AssignorGames from "./AssignorGames";
 import PendingGame from "./PendingGames";
 import ShowUserPendingGames from "./ShowUserPendingGames";
+import AdminShowGames from "./AdminShowGames";
 import ApproveGame from "./ApproveGame";
 import { connect } from "react-redux";
 import { Layout } from "antd";
@@ -33,7 +34,7 @@ class ViewGames extends Component {
             }}
             className=" site-layout-background"
           >
-            <ShowUserPendingGames />
+            <AdminShowGames />
             <ApproveGame />
           </Content>
         );
