@@ -49,7 +49,7 @@ public class User  {
     @NotBlank(message = "Last name cannot be empty")
     private String lastname;
 
-    @NotBlank(message = "Password cannot be empty")
+    //@NotBlank(message = "Password cannot be empty")
     private String password;
 
     @JsonFormat(pattern = "yyyy-mm-dd")

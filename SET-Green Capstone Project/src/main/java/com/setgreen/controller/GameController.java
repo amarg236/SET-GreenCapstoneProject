@@ -30,12 +30,12 @@ public class GameController {
 	
 	@PostMapping("save")
 	public ResponseBody<Game> save(@RequestBody Game g, Authentication auth){
-		return hlp.getRoleByTeam(auth, g.getHometeam()).createGame(auth, g);
+		return hlp.getRoleByTeam(auth, g).createGame(auth, g);
 	}
 	
 	@PostMapping("delete")
 	public ResponseBody<Long> delete(@RequestBody DataObject<Long> id, Authentication auth) {
-		return hlp.getRoleByTeam(auth, gh.getGameById(id).getHometeam()).deleteGame(id);
+		return hlp.getRoleByTeam(auth, gh.getGameById(id)).deleteGame(id);
 	}
 	@PostMapping("modify")
 	public ResponseBody<Game> modify(@RequestBody Game g, Authentication auth) {
@@ -44,7 +44,7 @@ public class GameController {
 	
 	@PostMapping("accept")
 	public ResponseBody<Long> accept(@RequestBody Game g, Authentication auth) {//NOTE this MUST use getGameById as we're actively changing the game's parameters.
-		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId()).getAwayteam()).approveGame(auth, g.getId());
+		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).approveGame(auth, g.getId());
 	}
 	
 	/** Gets all the verified games in a district

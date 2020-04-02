@@ -22,6 +22,7 @@ import com.setgreen.repositories.SchoolRepo;
 import com.setgreen.repositories.TeamsRepo;
 import com.setgreen.services.mailservice.MailHandler;
 import com.setgreen.util.DataObject;
+import com.setgreen.util.Debugger;
 
 @Service
 public class GameHandler {
@@ -51,7 +52,9 @@ public class GameHandler {
 			catch(NullPointerException e) {
 				str = "No coaches of that email found.";
 			}
+			System.out.println(g);
 			gr.save(g);
+			
 			return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), /*"Game Saved"*/ str, g);
 		}
 		catch(Exception e) {
