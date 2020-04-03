@@ -6,15 +6,16 @@ import UserSidebar from "./RoleBasedSidebar/UserSiderBar";
 import AssignorSidebar from "./RoleBasedSidebar/AssignorSidebar";
 import AdminSidebar from "./RoleBasedSidebar/AdminSidebar";
 import { toggleAction } from "../../actions/toggleAction";
-import styled from "styled-components";
+
 import device from "../../Utility/media";
+
 import { HomeOutlined, LogoutOutlined } from "@ant-design/icons";
 const { Sider } = Layout;
 
 class SidebarComp extends Component {
   state = {
-    collapsed: false,
-    collapsedWidth: 80
+    collapsed: this.props.toggelState,
+    collapsedWidth: 0
   };
 
   componentDidMount() {

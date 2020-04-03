@@ -38,6 +38,7 @@ class CreateGame extends Component {
 
   state = {
     homeTeam: "",
+    homeTeamId: "",
     homeTeamObj: [],
     awaySchoolObj: [],
     awaySchoolList: [],
@@ -180,11 +181,13 @@ class CreateGame extends Component {
       },
       duration: gameDuration,
       hometeam: this.state.homeTeam,
+      hometeamId: this.state.homeTeamId,
       homedistrict: {
         districtName: this.props.schoolDistrict.districtName,
         id: this.props.schoolDistrict.id
       },
-      location: this.state.gameLocation
+      location: this.state.gameLocation,
+      urequester: this.props.currentUser
     };
 
     console.log(gameObject);
@@ -200,7 +203,10 @@ class CreateGame extends Component {
       });
   }
   handleHomeTeam = value => {
-    this.setState({ homeTeam: value });
+    const passedValue = JSON.parse(value);
+    // console.log(passedValue);
+    this.setState({ homeTeam: passedValue.tmName });
+    this.setState({ homeTeamId: passedValue.id });
   };
   handleAwayTeam = value => {
     this.setState({ againstTeam: value });
@@ -237,7 +243,7 @@ class CreateGame extends Component {
   handleDistrict = value => {
     console.log("I have been executed");
     const dummy = JSON.parse(value);
-    console.log("I have been executed");
+    console.log("Dummy data result below");
     console.log(dummy);
     this.setState({ againstTeamDistrict: dummy.districtName });
     this.setState({ againstTeamDistrictId: dummy.id });
@@ -331,7 +337,7 @@ class CreateGame extends Component {
                     <Select.Option
                       key={homeTeamDetails.id}
                       // value={index}
-                      value={homeTeamDetails.tmName}
+                      value={JSON.stringify(homeTeamDetails)}
                     >
                       {homeTeamDetails.tmName}
                     </Select.Option>
@@ -455,6 +461,7 @@ class CreateGame extends Component {
 
 const mapStatetoProps = state => {
   return {
+    currentUser: state.userReducer.username,
     token: state.userReducer.token,
     ifcollapsed: state.userReducer.sidebarCollapased,
     mySchool: state.userReducer.mySchool,

@@ -40,23 +40,18 @@ class HeaderRoot extends Component {
     return (
       <Header className="site-layout-background" style={{ padding: 0 }}>
         <Row justify="space-between" className="nav_bar">
-          {
-            // <Col lg={4} md={2} xs={1}></Col>
-            <Col lg={4} md={2} xs={1}>
-              <span className="nav_bar_toggle">
-                {React.createElement(
-                  this.props.toggelState
-                    ? MenuUnfoldOutlined
-                    : MenuFoldOutlined,
-                  {
-                    className: "trigger",
-                    onClick: this.toggle
-                  }
-                )}
-              </span>
-            </Col>
-          }
-
+          <Col lg={4} md={2} xs={1}></Col>
+          <Col lg={4} md={2} xs={1}>
+            <span className="nav_bar_toggle">
+              {React.createElement(
+                this.props.toggelState ? MenuUnfoldOutlined : MenuFoldOutlined,
+                {
+                  className: "trigger",
+                  onClick: this.toggle
+                }
+              )}
+            </span>
+          </Col>
           <Col lg={10} md={0} xs={0}></Col>
           <Col lg={3} md={3} xs={5}>
             {this.props.username ? (

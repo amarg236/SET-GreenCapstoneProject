@@ -37,6 +37,15 @@ export const loginAction = (username, password) => {
                     school: res.data.result.roles[0].school,
                     district: res.data.result.roles[0].school.district
                   });
+                  const homeSchoolDetails = {
+                    currenthomeSchool: res.data.result.roles[0].school,
+                    currenthomeDistrict:
+                      res.data.result.roles[0].school.district
+                  };
+                  localStorage.setItem(
+                    "homeSchool",
+                    JSON.stringify(homeSchoolDetails)
+                  );
                 } else {
                   dispatch({
                     type: "LOGIN_ACTION",
@@ -44,12 +53,11 @@ export const loginAction = (username, password) => {
                     role: saveDatainFormat.role
                   });
                 }
+                history.push("./dashboard");
 
                 // res.data.result.map(getRoles => console.log(getRoles));
               }
             });
-
-          history.push("./dashboard");
         }
       })
       .catch(e => {

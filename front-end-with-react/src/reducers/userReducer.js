@@ -6,8 +6,11 @@ const initialState = {
   token: JSON.parse(localStorage.getItem("userInfo"))?.token.split(" ")[1],
   message: "",
   role: JSON.parse(localStorage.getItem("userInfo"))?.role,
-  mySchool: [],
-  schoolDistrict: []
+  mySchool: JSON.parse(localStorage.getItem("homeSchool"))?.currenthomeSchool,
+  schoolDistrict: JSON.parse(localStorage.getItem("homeSchool"))
+    ?.currenthomeDistrict
+  // mySchool: [],
+  // schoolDistrict: []
 };
 
 const userReducer = (state = initialState, action) => {

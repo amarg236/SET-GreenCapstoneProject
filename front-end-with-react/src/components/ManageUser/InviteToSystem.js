@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 
-import { Form, Input, Button, Layout, Select } from "antd";
+import { Form, Input, Button, Layout, Select, Modal } from "antd";
 const { Content } = Layout;
 
 class InviteToSystem extends Component {
@@ -90,6 +90,7 @@ class InviteToSystem extends Component {
         // window.alert("User has been invited successfully!!");
         // window.location.reload();
         console.log(res);
+        this.success();
         // console.log(res.data);
       });
   };
@@ -102,6 +103,11 @@ class InviteToSystem extends Component {
 
   chooseRole = pick => {
     this.setState({ role: pick });
+  };
+  success = () => {
+    Modal.success({
+      content: "User has been successfully invited"
+    });
   };
 
   render() {
