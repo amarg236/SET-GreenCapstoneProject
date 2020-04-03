@@ -25,6 +25,7 @@ public class Game implements Serializable{
 	 */
 	private static final long serialVersionUID = 4946784525722445495L;
 	Long hometeamId;
+	Long awayteamId;
 	String hometeam;
 	@OneToOne
 	District homedistrict;

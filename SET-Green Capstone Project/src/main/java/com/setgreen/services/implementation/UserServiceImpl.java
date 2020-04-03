@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
 	public ResponseBody<User> fetchByEmail(String s) {
 		ResponseBody<User> rb = emailFetch(s);
-		rb.getResult().setPassword(null);
+		//rb.getResult().setPassword(null);
 		return rb;
 	}
 

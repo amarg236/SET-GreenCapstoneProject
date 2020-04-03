@@ -81,7 +81,7 @@ public class ControllerAssistant {
 		RoleName rtrn = RoleName.UNFOUND;
 		Iterable<Role> rls = us.fetchByEmail(auth.getName()).getResult().getRoles();
 		for(Role x : rls) {
-			//try {//XXX IMPROVE this could be more efficient, especially if the given team doesn't exist.
+			try {//XXX IMPROVE this could be more efficient, especially if the given team doesn't exist.
 				if(x.getRole().hasDistrict()) {
 					if(t.getSchool().getDistrict().equals(x.getSchool().getDistrict()) && x.getRole().userLevel() > rtrn.userLevel()) {
 						rtrn = x.getRole();
@@ -92,10 +92,10 @@ public class ControllerAssistant {
 						rtrn = x.getRole();
 					}
 				}
-			//}
-			//catch(Exception e) {
-			//	rtrn = findRoleByBest(auth);
-			//}
+			}
+			catch(Exception e) {
+				rtrn = findRoleByBest(auth);
+			}
 		}
 		return rtrn;
 		//return findRoleByBest(auth);//rtrn;

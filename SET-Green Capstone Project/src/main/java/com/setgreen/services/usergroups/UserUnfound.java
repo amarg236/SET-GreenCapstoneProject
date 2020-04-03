@@ -106,7 +106,7 @@ public class UserUnfound extends UserReference {
 	}
 
 	@Override
-	public ResponseBody<User> updatePassword(User u, User u2) {
+	public ResponseBody<User> updtePassword(User u, User u2) {
 		return forbiddenAccess(u);
 	}
 

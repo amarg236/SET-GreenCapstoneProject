@@ -165,7 +165,7 @@ public abstract class UserReference {
 	 * @param u user to update
 	 * @return responsebody with user that is updated
 	 */
-	public abstract ResponseBody<User> updatePassword(User u, User u2);
+	public abstract ResponseBody<User> updtePassword(User u, User u2);
 	
 	/**
 	 * @param d day you want to add

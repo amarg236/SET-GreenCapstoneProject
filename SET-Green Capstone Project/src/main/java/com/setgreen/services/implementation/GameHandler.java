@@ -55,7 +55,7 @@ public class GameHandler {
 			System.out.println(g);
 			gr.save(g);
 			
-			return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), /*"Game Saved"*/ str, g);
+			return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), "Game Saved", g);
 		}
 		catch(Exception e) {
 			return new ResponseBody<Game>(HttpStatus.NOT_ACCEPTABLE.value(), "Did not save game "+e, g);

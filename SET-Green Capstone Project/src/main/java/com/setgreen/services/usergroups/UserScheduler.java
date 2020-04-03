@@ -100,7 +100,7 @@ public class UserScheduler extends UserUnfound {
 	}
 
 	@Override
-	public ResponseBody<User> updatePassword(User u, User u2) {
+	public ResponseBody<User> updtePassword(User u, User u2) {
 		return uh.updatePassword(u, u);
 	}
 	
