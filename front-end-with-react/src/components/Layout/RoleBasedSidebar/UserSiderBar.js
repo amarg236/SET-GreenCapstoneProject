@@ -13,14 +13,14 @@ import {
   SettingOutlined,
   CalendarOutlined,
   ApartmentOutlined,
-  AppstoreAddOutlined
+  AppstoreAddOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 class UserSidebar extends Component {
   render() {
-    const handleClick = e => {
+    const handleClick = (e) => {
       history.push("/".concat(e.key));
     };
 
@@ -67,22 +67,6 @@ class UserSidebar extends Component {
           </span>
           <span>View Game</span>
         </Menu.Item>
-        <SubMenu
-          key="sub2"
-          title={
-            <span>
-              <ApartmentOutlined />
-              <span>Manage Team</span>
-            </span>
-          }
-        >
-          <Menu.Item onClick={handleClick} key="addTeam">
-            <span>
-              <AppstoreAddOutlined />
-            </span>
-            <span>Add Team</span>
-          </Menu.Item>
-        </SubMenu>
 
         <Menu.Item key="setting">
           <span>
@@ -95,10 +79,10 @@ class UserSidebar extends Component {
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
     role: state.userReducer.role,
-    toggelState: state.userReducer.sidebarCollapased
+    toggelState: state.userReducer.sidebarCollapased,
   };
 };
 

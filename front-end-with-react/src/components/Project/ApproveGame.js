@@ -11,21 +11,58 @@ class ApproveGame extends Component {
     this.state = {
       loading: true,
       game: [],
-      school: []
+      school: [],
     };
   }
 
   componentDidMount() {
-    console.log(this.props.token);
-    const emptyBody = {};
+    //getting current users team and school
+
+    const currentSchool = {
+      id: this.props.mySchool.id,
+    };
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyBody, {
+      .post(Authtoken.getBaseUrl() + "/api/team/get/bySchool", currentSchool, {
         headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
       })
-      .then(res => {
-        this.setState({ game: res.data.result, loading: false });
+      .then((res) => {
+        console.log("current school teams");
+        console.log(res.data.result);
+        console.log("length here");
+        console.log(res.data.result.length);
+        for (let index = 0; index < res.data.result.length; index++) {
+          console.log("printing uder the loop");
+          console.log(res.data.result[index].id);
+          const emptyBody = {
+            id: res.data.result[index].id,
+          };
+          axios
+            .post(
+              Authtoken.getBaseUrl() + "/api/game/get/ByTeamId/all",
+              emptyBody,
+              {
+                headers: {
+                  Authorization:
+                    "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+                },
+              }
+            )
+            .then((res) => {
+              // console.log("i am resut of nested loop");
+              // console.log(res.data.result);
+
+              res.data.result.map((gamefromaxio) => {
+                this.setState({
+                  game: [...this.state.game, gamefromaxio],
+                  loading: false,
+                });
+              });
+            });
+        }
+        // this.setState({ awaySchoolTeamList: res.data.result });
       });
   }
 
@@ -43,7 +80,7 @@ class ApproveGame extends Component {
           style={{
             padding: "10px",
             color: "#006ca1",
-            backgroundColor: "#dddd"
+            backgroundColor: "#dddd",
           }}
         >
           <Col lg={6} md={5} sm={5} xs={6}>
@@ -62,7 +99,7 @@ class ApproveGame extends Component {
           <Col lg={2} md={3}></Col>
         </Row>
         {this.state.game &&
-          this.state.game.map(display => {
+          this.state.game.map((display) => {
             const {
               id,
               hometeam,
@@ -73,16 +110,16 @@ class ApproveGame extends Component {
               duration,
               location,
               approved,
-              awayAccepted
+              awayAccepted,
             } = display;
-            if (approved && awayAccepted) {
+            if (awayAccepted) {
               return (
                 <Row
                   rowkey={id}
                   style={{
                     padding: "5px",
                     marginTop: "2px",
-                    backgroundColor: "#ffff"
+                    backgroundColor: "#ffff",
                   }}
                 >
                   <Col lg={6} md={5} sm={5} xs={6}>
@@ -115,9 +152,11 @@ class ApproveGame extends Component {
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
-    token: state.userReducer.token
+    token: state.userReducer.token,
+    mySchool: state.userReducer.mySchool,
+    schoolDistrict: state.userReducer.schoolDistrict,
   };
 };
 export default connect(mapStatetoProps, null)(ApproveGame);

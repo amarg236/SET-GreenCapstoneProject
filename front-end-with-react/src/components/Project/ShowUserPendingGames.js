@@ -11,7 +11,7 @@ class ShowUserPendingGames extends Component {
     this.state = {
       loading: true,
       game: [],
-      school: []
+      school: [],
     };
 
     this.approveGame = this.approveGame.bind(this);
@@ -22,15 +22,16 @@ class ShowUserPendingGames extends Component {
     //getting current users team and school
 
     const currentSchool = {
-      id: this.props.mySchool.id
+      id: this.props.mySchool.id,
     };
     axios
       .post(Authtoken.getBaseUrl() + "/api/team/get/bySchool", currentSchool, {
         headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
       })
-      .then(res => {
+      .then((res) => {
         console.log("current school teams");
         console.log(res.data.result);
         console.log("length here");
@@ -39,7 +40,7 @@ class ShowUserPendingGames extends Component {
           console.log("printing uder the loop");
           console.log(res.data.result[index].id);
           const emptyBody = {
-            id: res.data.result[index].id
+            id: res.data.result[index].id,
           };
           axios
             .post(
@@ -48,18 +49,18 @@ class ShowUserPendingGames extends Component {
               {
                 headers: {
                   Authorization:
-                    "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-                }
+                    "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+                },
               }
             )
-            .then(res => {
-              // console.log("i am resut of nested loop");
-              // console.log(res.data.result);
+            .then((res) => {
+              console.log("i am resut of nested loop");
+              console.log(res.data.result);
 
-              res.data.result.map(gamefromaxio => {
+              res.data.result.map((gamefromaxio) => {
                 this.setState({
                   game: [...this.state.game, gamefromaxio],
-                  loading: false
+                  loading: false,
                 });
               });
             });
@@ -71,36 +72,37 @@ class ShowUserPendingGames extends Component {
   approveGame(display) {
     console.log(display);
     const aemptyObj = {
-      id: display.id
+      id: display.id,
     };
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/accept", display, {
+      .post(Authtoken.getBaseUrl() + "/api/game/accept", aemptyObj, {
         headers: {
-          Authorization: "Bearer " + this.props.token
-        }
+          Authorization: "Bearer " + this.props.token,
+        },
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         window.alert("The game has been approved!");
       });
   }
 
   denyGame(id) {
-    console.log("i am here");
+    console.log("this is my id");
+    console.log(id);
     const emptyObj = {
-      data: id
+      data: id,
     };
 
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
         headers: {
-          Authorization: "Bearer " + this.props.token
-        }
+          Authorization: "Bearer " + this.props.token,
+        },
       })
-      .then(res => {
+      .then((res) => {
         window.alert("The game has been denied!");
         // This needs fix later on
-        window.location.reload();
+        // window.location.reload();
         // history.push("./viewGames");
       });
   }
@@ -119,7 +121,7 @@ class ShowUserPendingGames extends Component {
           style={{
             padding: "10px",
             color: "#006ca1",
-            backgroundColor: "#dddd"
+            backgroundColor: "#dddd",
           }}
         >
           <Col lg={6} md={5} sm={5} xs={6}>
@@ -138,7 +140,7 @@ class ShowUserPendingGames extends Component {
           <Col lg={2} md={3}></Col>
         </Row>
         {this.state.game &&
-          this.state.game.map(display => {
+          this.state.game.map((display) => {
             const {
               id,
               hometeam,
@@ -149,16 +151,16 @@ class ShowUserPendingGames extends Component {
               duration,
               location,
               approved,
-              awayAccepted
+              awayAccepted,
             } = display;
             if (!approved && !awayAccepted) {
               return (
                 <Row
-                  rowkey={id}
+                  key={id}
                   style={{
                     padding: "5px",
                     marginTop: "2px",
-                    backgroundColor: "#ffff"
+                    backgroundColor: "#ffff",
                   }}
                 >
                   <Col lg={6} md={5} sm={5} xs={6}>
@@ -212,11 +214,11 @@ class ShowUserPendingGames extends Component {
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
     token: state.userReducer.token,
     mySchool: state.userReducer.mySchool,
-    schoolDistrict: state.userReducer.schoolDistrict
+    schoolDistrict: state.userReducer.schoolDistrict,
   };
 };
 export default connect(mapStatetoProps, null)(ShowUserPendingGames);

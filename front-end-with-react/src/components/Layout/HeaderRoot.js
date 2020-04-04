@@ -6,6 +6,9 @@ import { connect } from "react-redux";
 import LoginComp from "../../components/Project/LoginComp";
 import Logout from "../../components/Project/Logout";
 import { toggleAction } from "../../actions/toggleAction";
+import MediaQuery from "react-responsive";
+import device from "../../Utility/media";
+
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -20,8 +23,29 @@ class HeaderRoot extends Component {
     super(props);
     this.state = {
       collapsed: this.props.toggelState
+      // showFoldOut: false
     };
   }
+
+  // componentDidMount() {
+  //   this.checkWidth();
+  //   window.addEventListener("resize", this.checkWidth());
+  // }
+
+  // componentWillUnmount() {
+  //   window.removeEventListener("resize", this.checkWidth());
+  // }
+
+  // checkWidth = () => () => {
+  //   if (window.matchMedia(device.mobileL).matches) {
+  //     console.log("fold in");
+  //     this.setState({ showFoldOut: false });
+  //   } else {
+  //     console.log("show that foldout");
+
+  //     this.setState({ showFoldOut: true });
+  //   }
+  // };
 
   logout = async () => {
     await Authtoken.logOut();
@@ -40,18 +64,24 @@ class HeaderRoot extends Component {
     return (
       <Header className="site-layout-background" style={{ padding: 0 }}>
         <Row justify="space-between" className="nav_bar">
-          <Col lg={4} md={2} xs={1}></Col>
           <Col lg={4} md={2} xs={1}>
-            <span className="nav_bar_toggle">
-              {React.createElement(
-                this.props.toggelState ? MenuUnfoldOutlined : MenuFoldOutlined,
-                {
-                  className: "trigger",
-                  onClick: this.toggle
-                }
-              )}
-            </span>
+            {
+              //   this.state.showFoldOut ? (
+              //   <span className="nav_bar_toggle">
+              //     {React.createElement(
+              //       this.props.toggelState
+              //         ? MenuUnfoldOutlined
+              //         : MenuFoldOutlined,
+              //       {
+              //         className: "trigger",
+              //         onClick: this.toggle
+              //       }
+              //     )}
+              //   </span>
+              // ) : null
+            }
           </Col>
+          <Col lg={4} md={2} xs={1}></Col>
           <Col lg={10} md={0} xs={0}></Col>
           <Col lg={3} md={3} xs={5}>
             {this.props.username ? (

@@ -1,19 +1,50 @@
+import "../../App.css";
 import React, { Component } from "react";
-import "../../stylesheets/createGame.css";
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
-import { Table } from "antd";
 import { connect } from "react-redux";
-import "../../stylesheets/mediaQue.css";
 
-class PendingGame extends Component {
+import {
+  Row,
+  Col,
+  Button,
+  PageHeader,
+  Tabs,
+  Statistic,
+  Descriptions,
+} from "antd";
+
+const { TabPane } = Tabs;
+
+const renderContent = (display, column = 2) => (
+  <Descriptions size="small" column={column}>
+    <Descriptions.Item label="Home Team">{display.location}</Descriptions.Item>
+    <Descriptions.Item label="Away Team">
+      <a>{display.awayteam}</a>
+    </Descriptions.Item>
+    <Descriptions.Item label="Game Duration">
+      {display.duration} minutes
+    </Descriptions.Item>
+  </Descriptions>
+);
+
+const Content = ({ children, extra }) => {
+  return (
+    <div className="content">
+      <div className="main">{children}</div>
+      <div className="extra">{extra}</div>
+    </div>
+  );
+};
+
+class PendingGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
       game: [],
-      school: []
+      school: [],
     };
 
     this.approveGame = this.approveGame.bind(this);
@@ -21,79 +52,90 @@ class PendingGame extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.token);
-    const emptyBody = {};
+    //getting current users team and school
+
+    const currentSchool = {
+      id: this.props.mySchool.id,
+    };
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyBody, {
+      .post(Authtoken.getBaseUrl() + "/api/team/get/bySchool", currentSchool, {
         headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
       })
-      .then(res => {
-        this.setState({ game: res.data.result, loading: false });
+      .then((res) => {
+        console.log("current school teams");
+        console.log(res.data.result);
+        console.log("length here");
+        console.log(res.data.result.length);
+        for (let index = 0; index < res.data.result.length; index++) {
+          console.log("printing uder the loop");
+          console.log(res.data.result[index].id);
+          const emptyBody = {
+            id: res.data.result[index].id,
+          };
+          axios
+            .post(
+              Authtoken.getBaseUrl() + "/api/game/get/ByTeamId/all",
+              emptyBody,
+              {
+                headers: {
+                  Authorization:
+                    "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+                },
+              }
+            )
+            .then((res) => {
+              console.log("i am resut of nested loop");
+              console.log(res.data.result);
+
+              res.data.result.map((gamefromaxio) => {
+                this.setState({
+                  game: [...this.state.game, gamefromaxio],
+                  loading: false,
+                });
+              });
+            });
+        }
+        // this.setState({ awaySchoolTeamList: res.data.result });
       });
   }
 
-  approveGame(
-    // id,
-    // hometeam,
-    // homedistrict,
-    // awayteam,
-    // awaydistrict,
-    // time,
-    // duration,
-    // location,
-    // approved,
-    // awayAccepted
-    display
-  ) {
+  approveGame(display) {
     console.log(display);
     const aemptyObj = {
-      // id,
-      // time,
-      // awayAccepted,
-      // approved: true,
-      // awayteam,
-      // awaydistrict,
-      // duration,
-      // hometeam,
-      // homedistrict,
-      // location
-      // display
-      id: display.id
+      id: display.id,
     };
-    // console.log(display.id);
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/accept", display, {
+      .post(Authtoken.getBaseUrl() + "/api/game/accept", aemptyObj, {
         headers: {
-          Authorization: "Bearer " + this.props.token
-        }
+          Authorization: "Bearer " + this.props.token,
+        },
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         window.alert("The game has been approved!");
-        //history.push("./viewGames");
-        // Need to fix this later on
-        // window.location.reload();
       });
   }
 
   denyGame(id) {
-    console.log("i am here");
+    console.log("this is my id");
+    console.log(id);
     const emptyObj = {
-      data: id
+      data: id,
     };
 
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
         headers: {
-          Authorization: "Bearer " + this.props.token
-        }
+          Authorization: "Bearer " + this.props.token,
+        },
       })
-      .then(res => {
+      .then((res) => {
         window.alert("The game has been denied!");
         // This needs fix later on
-        window.location.reload();
+        // window.location.reload();
         // history.push("./viewGames");
       });
   }
@@ -103,82 +145,51 @@ class PendingGame extends Component {
 
     return (
       <div>
-        <div>
-          <h3 className="text-center">Pending Games</h3>
-          <br />
-          <Table className="mediaPG">
-            <thead>
-              <tr>
-                <th>Home Team</th>
-                <th>Playing Against</th>
-                <th>Time</th>
-                <th>Location</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.game &&
-                this.state.game.map(display => {
-                  const {
-                    id,
-                    hometeam,
-                    homedistrict,
-                    awayteam,
-                    awaydistrict,
-                    time,
-                    duration,
-                    location,
-                    approved,
-                    awayAccepted
-                  } = display;
-                  if (!approved) {
-                    return (
-                      <tr key={id}>
-                        <td>{hometeam}</td>
-                        <td>{awayteam}</td>
-                        <td>{time}</td>
-                        <td>{location}</td>
-                        /*
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-success"
-                            onClick={() =>
-                              this.approveGame(
-                                // id,
-                                // hometeam,
-                                // homedistrict,
-                                // awayteam,
-                                // awaydistrict,
-                                // time,
-                                // duration,
-                                // location,
-                                // approved,
-                                // awayAccepted
-                                display
-                              )
-                            }
-                          >
-                            Approve
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-danger"
-                            onClick={() => this.denyGame(id)}
-                          >
-                            Deny
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  }
-                })}
-            </tbody>
-          </Table>
-        </div>
+        <PageHeader>
+          <h4 style={{ textAlign: "center" }}>Pending Games</h4>
+        </PageHeader>
+
+        {this.state.game &&
+          this.state.game.map((display) => {
+            const {
+              id,
+              hometeam,
+              homedistrict,
+              awayteam,
+              awaydistrict,
+              time,
+              duration,
+              location,
+              approved,
+              awayAccepted,
+            } = display;
+            if (!approved && !awayAccepted) {
+              return (
+                <PageHeader
+                  key={id}
+                  className="site-page-header-responsive"
+                  // onBack={() => window.history.back()}
+                  title={hometeam.concat(" vs ").concat(awayteam)}
+                  subTitle={time}
+                  extra={[
+                    <Button key="2" onClick={() => this.denyGame(id)}>
+                      Deny
+                    </Button>,
+                    <Button
+                      key="1"
+                      type="primary"
+                      onClick={() => this.approveGame(display)}
+                    >
+                      Accept
+                    </Button>,
+                  ]}
+                >
+                  <Content>{renderContent(display)}</Content>
+                </PageHeader>
+              );
+            }
+          })}
+
         {
           // Approved Games
         }
@@ -187,26 +198,11 @@ class PendingGame extends Component {
   }
 }
 
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    sorter: true,
-    render: name => `${name.first} ${name.last}`,
-    width: "20%"
-  },
-  {
-    title: "Gender",
-    dataIndex: "gender",
-    filters: [
-      { text: "Male", value: "male" },
-      { text: "Female", value: "female" }
-    ],
-    width: "20%"
-  },
-  {
-    title: "Email",
-    dataIndex: "email"
-  }
-];
-export default PendingGame;
+const mapStatetoProps = (state) => {
+  return {
+    token: state.userReducer.token,
+    mySchool: state.userReducer.mySchool,
+    schoolDistrict: state.userReducer.schoolDistrict,
+  };
+};
+export default connect(mapStatetoProps, null)(PendingGames);

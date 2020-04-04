@@ -1,20 +1,21 @@
-#components-layout-demo-custom-trigger .trigger {
+/* #components-layout-demo-custom-trigger .trigger {
   font-size: 18px;
   line-height: 64px;
   padding: 0 24px;
   cursor: pointer;
   transition: color 0.3s;
-}
+} */
 
-#components-layout-demo-custom-trigger .trigger:hover {
+/* #components-layout-demo-custom-trigger .trigger:hover {
   color: #1890ff;
-}
+} */
 
-#components-layout-demo-custom-trigger {
+/* #components-layout-demo-custom-trigger {
   height: 32px;
   background: rgba(255, 255, 255, 0.2);
   margin: 16px;
-}
+} */
+
 .logo {
   height: 32px;
   color: white;
@@ -40,4 +41,8 @@
   font-size: 20px;
   cursor: pointer;
   transition: all 0.3s, padding 0s;
+}
+
+.site-page-header-responsive {
+  border: 1px solid rgb(235, 237, 240);
 }

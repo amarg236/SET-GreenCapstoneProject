@@ -30,7 +30,7 @@ class ViewGames extends Component {
             style={{
               padding: 5,
               margin: 0,
-              minHeight: 580
+              minHeight: 580,
             }}
             className=" site-layout-background"
           >
@@ -44,13 +44,12 @@ class ViewGames extends Component {
           <Content
             className="UserMediaVG"
             style={{
-              padding: 3,
+              padding: 5,
               margin: 0,
-              minHeight: 580
+              minHeight: 580,
             }}
           >
-            <ShowUserPendingGames />
-            <ApproveGame />
+            <PendingGame />
           </Content>
         );
 
@@ -61,7 +60,7 @@ class ViewGames extends Component {
             style={{
               padding: 24,
               margin: 0,
-              minHeight: 580
+              minHeight: 580,
             }}
             className=" site-layout-background"
           >
@@ -76,7 +75,7 @@ class ViewGames extends Component {
             style={{
               padding: 24,
               margin: 0,
-              minHeight: 580
+              minHeight: 580,
             }}
             className="site-layout-background"
           >
@@ -89,9 +88,11 @@ class ViewGames extends Component {
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
-    role: state.userReducer.role
+    role: state.userReducer.role,
+    mySchool: state.userReducer.mySchool,
+    schoolDistrict: state.userReducer.schoolDistrict,
   };
 };
 
