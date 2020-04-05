@@ -115,7 +115,13 @@ class AssignorSidebar extends Component {
             <span>
               <UserAddOutlined />
             </span>
-            <span>Manage User</span>
+            <span>Unverified User</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="allUsers">
+            <span>
+              <UserAddOutlined />
+            </span>
+            <span>Verified User</span>
           </Menu.Item>
           <Menu.Item onClick={handleClick} key="inviteToSystem">
             <span>
