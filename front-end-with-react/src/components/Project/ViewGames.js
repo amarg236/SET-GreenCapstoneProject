@@ -35,7 +35,6 @@ class ViewGames extends Component {
             className=" site-layout-background"
           >
             <AdminShowGames />
-            <AcceptedGame />
           </Content>
         );
 
@@ -53,7 +52,7 @@ class ViewGames extends Component {
           </Content>
         );
 
-      case "ASSIGNOR":
+      case "ASSIGNER":
         return (
           <Content
             className="AssignorMediaVG"
@@ -64,8 +63,7 @@ class ViewGames extends Component {
             }}
             className=" site-layout-background"
           >
-            <ShowUserPendingGames />
-            <AcceptedGame />
+            <AdminShowGames />
           </Content>
         );
       default:

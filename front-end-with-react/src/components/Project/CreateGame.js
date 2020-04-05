@@ -56,6 +56,7 @@ class CreateGame extends Component {
     //   .format("HH:mm"),
     gameLocation: "",
     againstTeam: "",
+    awayteamId: "",
     againstSchool: "",
     againstTeamDistrict: "",
     againstTeamDistrictId: "",
@@ -176,6 +177,7 @@ class CreateGame extends Component {
       time: moment(gameStart).format("YYYY-MM-DD HH:mm"),
 
       awayteam: this.state.againstTeam,
+      awayteamId: this.state.awayteamId,
       awaydistrict: {
         districtName: this.state.againstTeamDistrict,
         id: this.state.againstTeamDistrictId,
@@ -211,7 +213,10 @@ class CreateGame extends Component {
     this.setState({ homeTeamId: passedValue.id });
   };
   handleAwayTeam = (value) => {
-    this.setState({ againstTeam: value });
+    const getFromValue = JSON.parse(value);
+    console.log(getFromValue);
+    this.setState({ againstTeam: getFromValue.tmName });
+    this.setState({ awayteamId: getFromValue.id });
   };
 
   handleSchool = (value) => {
@@ -448,7 +453,7 @@ class CreateGame extends Component {
                   <Select.Option
                     key={teamMap.id}
                     // value={index}
-                    value={teamMap.tmName}
+                    value={JSON.stringify(teamMap)}
                   >
                     {teamMap.tmName}
                   </Select.Option>
