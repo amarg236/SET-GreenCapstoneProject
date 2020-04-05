@@ -44,7 +44,10 @@ public class AdminControlController{
 
     }
 */    
-    
+    @PostMapping("/user/remove")
+    public ResponseBody<User> removeUser(@RequestBody User u, Authentication auth){
+    	return hlp.getRoleByBest(auth).removeUser(u);
+    }
     @PostMapping("day/ban") //XXX TEST
     public ResponseBody<EventDay> banDay(@RequestBody EventDay d, Authentication auth) {
     	return hlp.getRoleByBest(auth).addEventDay(d);

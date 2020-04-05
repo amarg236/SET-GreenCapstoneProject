@@ -15,7 +15,7 @@ import com.setgreen.model.User;
  *
  */
 @Service
-public class UserAdmin extends UserAssigner{
+public class UserAdmin extends UserAssignor{
 	@Override
 	public RoleName getName() {
 		return RoleName.ADMIN;
@@ -30,7 +30,7 @@ public class UserAdmin extends UserAssigner{
 	
 	@Override
 	public ResponseBody<User> removeUser(User u) {
-		return stubbed(u);
+		return uh.deleteUser(u);
 	}
 	
 	@Override

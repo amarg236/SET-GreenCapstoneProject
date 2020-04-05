@@ -93,6 +93,20 @@ public class ControllerAssistant {
 					}
 				}
 			}
+			/*
+				Iterable<Role> schRls = t.getSchool().getRoles();
+				for(Role xsqrd : schRls) {
+					if(x.getRole().hasDistrict()) {
+						if(x.getUser().equals(xsqrd.getUser()) && x.getRole().userLevel() > rtrn.userLevel()) {
+							rtrn = x.getRole();
+						}
+						else if(x.getRole().userLevel()>rtrn.userLevel()) {
+							rtrn = x.getRole();
+						}
+					}
+				}
+			}
+			 */
 			catch(Exception e) {
 				rtrn = findRoleByBest(auth);
 			}

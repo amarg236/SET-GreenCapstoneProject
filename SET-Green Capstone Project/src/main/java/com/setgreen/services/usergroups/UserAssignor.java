@@ -15,7 +15,7 @@ import com.setgreen.model.scheduling.EventDay;
 import com.setgreen.model.scheduling.IdealDay;
 import com.setgreen.util.DataObject;
 @Service
-public class UserAssigner extends UserScheduler /*implements UserReference*/  {
+public class UserAssignor extends UserScheduler /*implements UserReference*/  {
 	@Override
 	public RoleName getName() {
 		return RoleName.ASSIGNER;

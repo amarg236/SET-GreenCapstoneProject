@@ -16,14 +16,14 @@ public enum RoleName {
 			return false;
 		}
     },
-    ASSIGNER{ //Assigners
+    ASSIGNER{ //Assigners 
 		@Override
 		public int userLevel() {
 			return 8000;
 		}
 		@Override
 		public boolean hasDistrict() {
-			return true;
+			return false;
 		}
     },
     USER{ //Schedulers

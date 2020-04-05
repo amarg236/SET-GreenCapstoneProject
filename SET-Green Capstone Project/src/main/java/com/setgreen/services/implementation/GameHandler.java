@@ -156,12 +156,13 @@ public class GameHandler {
 	public ResponseBody<List<Game>> getGamesId(Teams s, boolean findAll) { //FIXME URGENT doesn't care about district. Fix that
 		try{
 			List<Game> g;
-			if(findAll) {
-				g = gr.findByTeamAll(tr.findById(s.getId()).get().getTmName());
-			}
-			else {
-				g = gr.findByTeamVerified(tr.findById(s.getId()).get().getTmName());
-			}
+//			if(findAll) {
+//				g = gr.findByTeamAll(tr.findById(s.getId()).get().getTmName());
+//			}
+//			else {
+//				g = gr.findByTeamVerified(tr.findById(s.getId()).get().getTmName());
+//			}
+			g = gr.findByHometeamIdOrAwayteamIdAndApproved(s.getId(), s.getId(), findAll);
 			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
 		}
 		catch(Exception e) {

@@ -19,4 +19,6 @@ public interface UserService {
 
 	ResponseBody<User> updatePassword(User u, User u2);
 
+	ResponseBody<User> deleteUser(User u);
+
 }

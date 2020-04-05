@@ -32,18 +32,18 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@Override//FIXME URGENT creating users needs school and that needs district, on top of roles. Not inserted right atm.
+	@Override
 	public ResponseBody<User> saveUser(SignUpForm suf){
 		try {
 			User ud = new User(suf);
-			Set<Role> sor = ud.getRoles();
+			/*Set<Role> sor = ud.getRoles();
 			for(Role r : sor) {
 				sor.remove(r);
 				r.setSchool(sr.findById(r.getSchool().getId()).get());
 				Debugger.cout(r.toString()+"\n");
 				sor.add(r);
 			}
-			ud.setRoles(sor);
+			ud.setRoles(sor);*/ //TODO WHY did I do this. Must have been important to me at the time.
 			MailHandler m = new MailHandler(new JavaMailSenderImpl());
 			ud.setPassword(m.genLink());
 			//XXX DEBUG
@@ -135,6 +135,15 @@ public class UserServiceImpl implements UserService {
 		return rb;
 	}
 
+	public ResponseBody<User> deleteUser(User u){
+		try {
+			userRepo.deleteById(u.getId());
+			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "User Deleted", u);
+		}
+		catch(Exception e) {
+			return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "Could not delete user: "+e, u);
+		}
+	}
 
 	@Override
 	public ResponseBody<User> updateProfile(User u) {

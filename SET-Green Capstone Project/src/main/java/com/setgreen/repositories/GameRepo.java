@@ -50,4 +50,6 @@ public interface GameRepo extends CrudRepository<Game, Long>{
     public List<Game> findAllByAwayAcceptedTrue();
 
 	public List<Game> findByApprovedFalse();
+
+	public List<Game> findByHometeamIdOrAwayteamIdAndApproved(Long homeId, Long awayId, boolean findAll);
 }

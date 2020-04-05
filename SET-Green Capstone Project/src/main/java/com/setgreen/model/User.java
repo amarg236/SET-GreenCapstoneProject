@@ -59,9 +59,8 @@ public class User  {
     private Date update_At;
 
 
-    @OneToMany(cascade=CascadeType.ALL)
-    private Set<Role> roles = new HashSet<>();//TODO figure out why UserPrinciple needs this.
-
+    @OneToMany()
+    private Set<Role> roles = new HashSet<>();
     private Boolean Verified;
 
     public User() {
