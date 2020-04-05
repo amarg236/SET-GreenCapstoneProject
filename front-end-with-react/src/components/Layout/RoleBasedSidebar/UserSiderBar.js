@@ -14,6 +14,8 @@ import {
   CalendarOutlined,
   ApartmentOutlined,
   AppstoreAddOutlined,
+  FileDoneOutlined,
+  AppstoreOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -50,23 +52,48 @@ class UserSidebar extends Component {
           </span>
           <span>Game Calendar</span>
         </Menu.Item>
-
-        <Menu.Item onClick={handleClick} key="createGame">
-          <span>
-            <a href="/createGame">
-              <FileAddOutlined />
-            </a>
-          </span>
-          <span>Create Game</span>
-        </Menu.Item>
-        <Menu.Item onClick={handleClick} key="viewGames">
-          <span>
-            <a href="/viewGames">
-              <EyeOutlined />
-            </a>
-          </span>
-          <span>View Game</span>
-        </Menu.Item>
+        <SubMenu
+          key="sub1"
+          title={
+            <span>
+              <AppstoreOutlined />
+              <span>Manage Game</span>
+            </span>
+          }
+        >
+          <Menu.Item onClick={handleClick} key="createGame">
+            <span>
+              <a href="/createGame">
+                <FileAddOutlined />
+              </a>
+            </span>
+            <span>Create Game</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="viewGames">
+            <span>
+              <a href="/viewGames">
+                <EyeOutlined />
+              </a>
+            </span>
+            <span>Pending Game</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="acceptedGame">
+            <span>
+              <a href="/viewGames">
+                <FileDoneOutlined />
+              </a>
+            </span>
+            <span>Accepted Game</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="approvedGames">
+            <span>
+              <a href="/approved">
+                <EyeOutlined />
+              </a>
+            </span>
+            <span>Approved Game</span>
+          </Menu.Item>
+        </SubMenu>
 
         <Menu.Item key="setting">
           <span>

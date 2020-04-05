@@ -29,6 +29,8 @@ import InviteAssignor from "./components/ManageUser/InviteAssignor";
 import ManageUser from "./components/ManageUser/MangeUser";
 import VerifyAccount from "./components/EmailConfirmation/VerifyAccount";
 import ChangePassword from "./components/EmailConfirmation/ChangePassword";
+import AcceptedGame from "./components/Project/AcceptedGame";
+import ApprovedGame from "./components/Project/ApprovedGame";
 
 class App extends React.Component {
   render() {
@@ -67,9 +69,19 @@ class App extends React.Component {
               />
               <ProtectedRoute exact path="/addSchool" component={AddSchool} />
               <ProtectedRoute exact path="/createGame" component={CreateGame} />
+              <ProtectedRoute
+                exact
+                path="/acceptedGame"
+                component={AcceptedGame}
+              />
               <ProtectedRoute exact path="/viewGames" component={ViewGames} />
               <ProtectedRoute exact path="/addTeam" component={AddTeam} />
               <ProtectedRoute exact path="/manageUser" component={ManageUser} />
+              <ProtectedRoute
+                exact
+                path="/approvedGames"
+                component={ApprovedGame}
+              />
               <ProtectedRoute
                 exact
                 path="/inviteToSystem"
@@ -98,9 +110,9 @@ class App extends React.Component {
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
-    role: state.userReducer.role
+    role: state.userReducer.role,
   };
 };
 

@@ -38,7 +38,7 @@ const Content = ({ children, extra }) => {
   );
 };
 
-class PendingGames extends Component {
+class AcceptedGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,8 +47,7 @@ class PendingGames extends Component {
       school: [],
     };
 
-    this.approveGame = this.approveGame.bind(this);
-    this.denyGame = this.denyGame.bind(this);
+    this.reschedule = this.reschedule.bind(this);
   }
 
   componentDidMount() {
@@ -102,42 +101,25 @@ class PendingGames extends Component {
       });
   }
 
-  approveGame(display) {
+  reschedule(display) {
+    console.log("this is schedule game");
     console.log(display);
-    const aemptyObj = {
-      id: display.id,
-    };
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/accept", aemptyObj, {
-        headers: {
-          Authorization: "Bearer " + this.props.token,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        window.alert("The game has been approved!");
-      });
-  }
+    // const emptyObj = {
+    //   data: id,
+    // };
 
-  denyGame(id) {
-    console.log("this is my id");
-    console.log(id);
-    const emptyObj = {
-      data: id,
-    };
-
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
-        headers: {
-          Authorization: "Bearer " + this.props.token,
-        },
-      })
-      .then((res) => {
-        window.alert("The game has been denied!");
-        // This needs fix later on
-        // window.location.reload();
-        // history.push("./viewGames");
-      });
+    // axios
+    //   .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
+    //     headers: {
+    //       Authorization: "Bearer " + this.props.token,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     window.alert("The game has been denied!");
+    //     // This needs fix later on
+    //     // window.location.reload();
+    //     // history.push("./viewGames");
+    //   });
   }
 
   render() {
@@ -147,12 +129,13 @@ class PendingGames extends Component {
       <div
         style={{
           backgroundColor: "#ffff",
+          marginTop: "10px",
           padding: "20px",
           boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
         }}
       >
         <PageHeader>
-          <h4 style={{ textAlign: "center" }}>Pending Games</h4>
+          <h4 style={{ textAlign: "center" }}>Accepted Games</h4>
         </PageHeader>
 
         {this.state.game &&
@@ -169,7 +152,7 @@ class PendingGames extends Component {
               approved,
               awayAccepted,
             } = display;
-            if (!approved && !awayAccepted) {
+            if (awayAccepted) {
               return (
                 <PageHeader
                   key={id}
@@ -178,15 +161,12 @@ class PendingGames extends Component {
                   title={hometeam.concat(" vs ").concat(awayteam)}
                   subTitle={time}
                   extra={[
-                    <Button key="2" onClick={() => this.denyGame(id)}>
-                      Deny
-                    </Button>,
                     <Button
                       key="1"
-                      type="primary"
-                      onClick={() => this.approveGame(display)}
+                      type="dashed"
+                      onClick={() => this.schedule(display)}
                     >
-                      Accept
+                      Reschedule
                     </Button>,
                   ]}
                 >
@@ -211,4 +191,4 @@ const mapStatetoProps = (state) => {
     schoolDistrict: state.userReducer.schoolDistrict,
   };
 };
-export default connect(mapStatetoProps, null)(PendingGames);
+export default connect(mapStatetoProps, null)(AcceptedGame);

@@ -43,6 +43,10 @@
   transition: all 0.3s, padding 0s;
 }
 
+/*
+pending page
+*/
 .site-page-header-responsive {
-  border: 1px solid rgb(235, 237, 240);
+  /* border: 1px solid rgb(235, 237, 240); */
+  border-top: 1px solid #dddd;
 }

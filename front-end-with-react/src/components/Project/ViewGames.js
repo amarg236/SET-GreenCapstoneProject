@@ -5,7 +5,7 @@ import AssignorGames from "./AssignorGames";
 import PendingGame from "./PendingGames";
 import ShowUserPendingGames from "./ShowUserPendingGames";
 import AdminShowGames from "./AdminShowGames";
-import ApproveGame from "./ApproveGame";
+import AcceptedGame from "./AcceptedGame";
 import { connect } from "react-redux";
 import { Layout } from "antd";
 const { Content } = Layout;
@@ -35,7 +35,7 @@ class ViewGames extends Component {
             className=" site-layout-background"
           >
             <AdminShowGames />
-            <ApproveGame />
+            <AcceptedGame />
           </Content>
         );
 
@@ -65,7 +65,7 @@ class ViewGames extends Component {
             className=" site-layout-background"
           >
             <ShowUserPendingGames />
-            <ApproveGame />
+            <AcceptedGame />
           </Content>
         );
       default:
