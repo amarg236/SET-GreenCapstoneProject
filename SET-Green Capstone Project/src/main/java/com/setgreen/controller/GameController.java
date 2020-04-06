@@ -80,12 +80,12 @@ public class GameController {
 	public ResponseBody<List<Game>> getSchoolAll(@RequestBody Teams s) {
 		return gh.getGames(s, true);
 	}
-	@PostMapping("get/ByTeamId")
+	@PostMapping("get/ByTeamId/all")
 	public ResponseBody<List<Game>> getSchoolId(@RequestBody Teams s) {
 		return gh.getGamesId(s, false);
 	}
 	
-	@PostMapping("get/ByTeamId/all")
+	@PostMapping("get/ByTeamId")
 	public ResponseBody<List<Game>> getSchoolIdAll(@RequestBody Teams s) {
 		return gh.getGamesId(s, true);
 	}
@@ -94,7 +94,30 @@ public class GameController {
 	public ResponseBody<List<Game>> getSchoolIdRejected(@RequestBody Teams s) {
 		return gh.getGamesId(s, true);
 	}
-	
+	@PostMapping("get/ByTeamId/home") //Home games that are awayAccepted
+	public ResponseBody<List<Game>> getTeamIdHome(@RequestBody Teams t){
+		return gh.getHomeGames(t);
+	}
+	@PostMapping("get/ByTeamId/away") //Away games that are awayAccepted
+	public ResponseBody<List<Game>> getTeamIdAway(@RequestBody Teams t){
+		return gh.getAwayGames(t);
+	}
+	@PostMapping("get/ByTeamId/home/notAccepted") //Home games that are NOT awayAccepted
+	public ResponseBody<List<Game>> getTeamIdHomeUnverified(@RequestBody Teams t){
+		return gh.getHomeGamesNoV(t);
+	}
+	@PostMapping("get/ByTeamId/away/notAccepted") //Away games that are NOT awayAccepted
+	public ResponseBody<List<Game>> getTeamIdAwayUnverified(@RequestBody Teams t){
+		return gh.getAwayGamesNoV(t);
+	}
+	@PostMapping("get/ByTeamId/home/notApproved") //Away games that are NOT approved
+	public ResponseBody<List<Game>> getTeamIdHomeAdminUnverified(@RequestBody Teams t){
+		return gh.getHomeGamesNoAdminV(t);
+	}
+	@PostMapping("get/ByTeamId/away/notApproved") //Away games that are NOT approved
+	public ResponseBody<List<Game>> getTeamIdAwayAdminUnverified(@RequestBody Teams t){
+		return gh.getAwayGamesNoAdminV(t);
+	}
 	@PostMapping("get/all")
 	public ResponseBody<List<Game>> getAll() {
 		return gh.allGames();

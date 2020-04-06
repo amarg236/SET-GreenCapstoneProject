@@ -65,4 +65,16 @@ public interface GameRepo extends CrudRepository<Game, Long>{
 	@Modifying
     @Query("UPDATE Game g set homeNotification = (:tf) WHERE g.id = (:id)")
 	public void updateHometeamNotification(@Param("id") long id, @Param("tf") boolean tf);
+
+	public List<Game> findByHometeamIdAndAwayAcceptedTrue(long id);
+
+	public List<Game> findByAwayteamIdAndAwayAcceptedTrue(long id);
+
+	public List<Game> findByHometeamIdAndAwayAcceptedFalse(long id);
+
+	public List<Game> findByAwayteamIdAndAwayAcceptedFalse(long id);
+
+	public List<Game> findByHometeamIdAndApprovedFalse(long id);
+
+	public List<Game> findByAwayteamIdAndApprovedFalse(long id);
 }

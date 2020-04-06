@@ -163,7 +163,7 @@ public class GameHandler {
 		}
 	}
 	
-	public ResponseBody<List<Game>> getGamesId(Teams s, boolean findAll) { //FIXME URGENT doesn't care about district. Fix that
+	public ResponseBody<List<Game>> getGamesId(Teams s, boolean findAll) {
 		try{
 			List<Game> g;
 //			if(findAll) {
@@ -259,5 +259,23 @@ public class GameHandler {
 				return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), "Awayteam Notification handled", g);
 			}
 		}
+	}
+	public ResponseBody<List<Game>> getHomeGames(Teams t) {
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByHometeamIdAndAwayAcceptedTrue(t.getId()));
+	}
+	public ResponseBody<List<Game>> getAwayGames(Teams t) {
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByAwayteamIdAndAwayAcceptedTrue(t.getId()));
+	}
+	public ResponseBody<List<Game>> getHomeGamesNoV(Teams t) {
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByHometeamIdAndAwayAcceptedFalse(t.getId()));
+	}
+	public ResponseBody<List<Game>> getAwayGamesNoV(Teams t) {
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByAwayteamIdAndAwayAcceptedFalse(t.getId()));
+	}
+	public ResponseBody<List<Game>> getHomeGamesNoAdminV(Teams t) {
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByHometeamIdAndApprovedFalse(t.getId()));
+	}
+	public ResponseBody<List<Game>> getAwayGamesNoAdminV(Teams t) {
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByAwayteamIdAndApprovedFalse(t.getId()));
 	}
 }
