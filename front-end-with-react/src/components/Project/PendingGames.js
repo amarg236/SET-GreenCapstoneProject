@@ -103,14 +103,14 @@ class PendingGames extends Component {
   }
 
   approveGame(display) {
-    console.log(display);
     const aemptyObj = {
       id: display.id,
     };
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/accept", aemptyObj, {
         headers: {
-          Authorization: "Bearer " + this.props.token,
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
         },
       })
       .then((res) => {
@@ -120,8 +120,6 @@ class PendingGames extends Component {
   }
 
   denyGame(id) {
-    console.log("this is my id");
-    console.log(id);
     const emptyObj = {
       data: id,
     };
@@ -129,7 +127,8 @@ class PendingGames extends Component {
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
         headers: {
-          Authorization: "Bearer " + this.props.token,
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
         },
       })
       .then((res) => {
