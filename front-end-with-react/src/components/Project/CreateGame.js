@@ -190,7 +190,6 @@ class CreateGame extends Component {
         id: this.props.schoolDistrict.id,
       },
       location: this.state.gameLocation,
-      urequester: this.props.currentUser,
     };
 
     console.log(gameObject);
