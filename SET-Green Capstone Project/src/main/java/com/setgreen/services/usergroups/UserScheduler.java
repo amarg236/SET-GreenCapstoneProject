@@ -1,5 +1,7 @@
 package com.setgreen.services.usergroups;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -8,10 +10,12 @@ import org.springframework.stereotype.Service;
 import com.setgreen.model.Game;
 import com.setgreen.model.ResponseBody;
 import com.setgreen.model.RoleName;
+import com.setgreen.model.Teams;
 import com.setgreen.model.User;
 import com.setgreen.model.scheduling.BadDay;
 import com.setgreen.model.scheduling.IdealDay;
 import com.setgreen.util.DataObject;
+import com.setgreen.model.Role;
 @Service
 public class UserScheduler extends UserUnfound {
 
@@ -25,9 +29,12 @@ public class UserScheduler extends UserUnfound {
 	public ResponseBody<Game> createGame(Authentication auth, Game g) {
 		g.setApproved(false);
 		g.setAwayAccepted(false);
+		g.setRejected(false);
 		g.setUAcceptor(null);
 		g.setUApprover(null);
 		g.setURequester(auth.getName());
+		g.setHomeNotification(false);
+		g.setAwayNotification(true);
 		return gh.saveGame(g);
 	}
 
@@ -37,8 +44,8 @@ public class UserScheduler extends UserUnfound {
 	}
 
 	@Override
-	public ResponseBody<Game> rejectGame(Game g) {
-		return gh.rejectGame(g);
+	public ResponseBody<Game> rejectGame(Authentication auth, Game g) {
+		return gh.rejectGame(auth, g, false);
 	}
 
 	@Override
@@ -104,4 +111,21 @@ public class UserScheduler extends UserUnfound {
 		return uh.updatePassword(u, u);
 	}
 	
+	@Override
+	public ResponseBody<Game> validateRejection(Authentication auth, Game gm) {
+		Game g = gh.getGameById(gm.getId());
+		Iterable<Role> LoR = rh.findByEmail(auth.getName());
+		for(Role x : LoR) {
+			Set<Teams> tms = x.getSchool().getTeams();
+			for(Teams y : tms) {
+				if(y.getTmName().equals(g.getHometeam())) {
+					return gh.validateRejection(g, true);
+				}
+				else if(y.getTmName().equals(g.getAwayteam())) {
+					return gh.validateRejection(g, false);
+				}
+			}
+		}
+		return new ResponseBody<Game>(HttpStatus.BAD_REQUEST.value(), "Failed to handle notification", gm);
+	}
 }

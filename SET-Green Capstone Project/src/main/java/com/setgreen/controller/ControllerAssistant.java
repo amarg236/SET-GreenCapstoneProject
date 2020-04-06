@@ -45,6 +45,11 @@ public class ControllerAssistant {
 	protected UserReference getRoleByTeam(Authentication auth, Teams t) {
 		return rn.build(findRoleByTeam(auth, t));
 	}
+	/**
+	 * @param auth authentication
+	 * @param g game we're referencing to get hometeam for
+	 * @return role of user in the team
+	 */
 	protected UserReference getRoleByTeam(Authentication auth, Game g) {
 		Teams t = new Teams();
 		t.setId(g.getHometeamId());

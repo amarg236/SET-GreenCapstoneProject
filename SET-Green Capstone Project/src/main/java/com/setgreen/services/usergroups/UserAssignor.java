@@ -4,6 +4,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.setgreen.model.District;
+import com.setgreen.model.Game;
 import com.setgreen.model.ResponseBody;
 import com.setgreen.model.RoleName;
 import com.setgreen.model.School;
@@ -44,6 +45,12 @@ public class UserAssignor extends UserScheduler /*implements UserReference*/  {
 	public ResponseBody<Long> approveGame(Authentication auth, Long g){
 		return gh.adminVerifyGame(auth, g);
 	}
+	
+	@Override
+	public ResponseBody<Game> rejectGame(Authentication auth, Game g) {
+		return gh.rejectGame(auth, g, true);
+	}
+	
 	@Override
 	public ResponseBody<Long> deleteGame(DataObject<Long> g) {
 		return gh.deleteGame(g.getData());

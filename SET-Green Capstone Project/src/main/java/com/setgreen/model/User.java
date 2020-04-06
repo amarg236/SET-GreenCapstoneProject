@@ -59,7 +59,7 @@ public class User  {
     private Date update_At;
 
 
-    @OneToMany()
+    @OneToMany(cascade=CascadeType.ALL)
     private Set<Role> roles = new HashSet<>();
     private Boolean Verified;
 

@@ -107,7 +107,7 @@ public abstract class UserReference {
 	 * @param g game to reject
 	 * @return responsebody status of request
 	 */
-	public abstract ResponseBody<Game> rejectGame(Game g);
+	public abstract ResponseBody<Game> rejectGame(Authentication auth, Game g);
 	/** assignor+, reschedule a game on request
 	 * userlevel, request to reschedule a game
 	 * @param g game to reschedule
@@ -190,4 +190,13 @@ public abstract class UserReference {
 	 * @return responsebody with status
 	 */
 	public abstract ResponseBody<IdealDay> removeIdealDay(IdealDay d);
+
+	/**
+	 * used for users when seeing a game has been rejected. Cleans up everything
+	 * For admin, just delete the game.
+	 * @param auth
+	 * @param g
+	 * @return game you validated rejection for
+	 */
+	public abstract ResponseBody<Game> validateRejection(Authentication auth, Game g);
 }

@@ -16,19 +16,19 @@ public interface GameRepo extends CrudRepository<Game, Long>{
     @Query("UPDATE Game g set approved = (:tf) WHERE g.id = (:id)")
     public void updateVerify(@Param("id") long id, @Param("tf") boolean tf);
 
-    @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d)")
+    @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d) AND g.rejected = FALSE")
 	public List<Game> findInDistrictAll(@Param("d") String d);
     
-    @Query("SELECT g FROM Game g WHERE (g.hometeam = (:n) OR g.awayteam = (:n))")
+    @Query("SELECT g FROM Game g WHERE (g.hometeam = (:n) OR g.awayteam = (:n)) AND g.rejected = FALSE")
 	public List<Game> findByTeamAll(@Param("n") String n);
     
-    @Query("SELECT g FROM Game g WHERE (g.hometeam = (:n) OR g.awayteam = (:n)) AND g.approved = TRUE")
+    @Query("SELECT g FROM Game g WHERE (g.hometeam = (:n) OR g.awayteam = (:n)) AND g.approved = TRUE AND g.rejected = FALSE")
 	public List<Game> findByTeamVerified(@Param("n") String n);
     
-    @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d) AND g.approved = TRUE")
+    @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d) AND g.approved = TRUE AND g.rejected = FALSE")
     public List<Game> findInDistrictVerified(@Param("d") String d);
 
-    @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d) AND g.awayAccepted = TRUE")
+    @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d) AND g.awayAccepted = TRUE AND g.rejected = FALSE")
     public List<Game> findInDistrictAccepted(@Param("d") String d);
     
     @Modifying
@@ -45,11 +45,24 @@ public interface GameRepo extends CrudRepository<Game, Long>{
 
     
     @Query("SELECT g FROM Game g WHERE g.approved = TRUE")
-	public List<Game> findAllVerified();
+	public List<Game> findAllVerifiedAndRejectedFalse();
     
-    public List<Game> findAllByAwayAcceptedTrue();
+    public List<Game> findAllByAwayAcceptedTrueAndRejectedFalse();
 
-	public List<Game> findByApprovedFalse();
+	public List<Game> findByApprovedFalseAndRejectedFalse();
 
-	public List<Game> findByHometeamIdOrAwayteamIdAndApproved(Long homeId, Long awayId, boolean findAll);
+	public List<Game> findByHometeamIdOrAwayteamIdAndApprovedAndRejectedFalse(Long homeId, Long awayId, boolean findAll);
+	
+	@Modifying
+    @Query("UPDATE Game g set rejected = TRUE, awayNotification = (:tf), homeNotification = TRUE WHERE g.id = (:id) AND awayAccepted != TRUE")
+	public void updateRejected(@Param("id") Long id, @Param("tf") boolean tf);
+
+	public List<Game> findByHometeamIdOrAwayteamIdAndRejected(long id, long id2, boolean tf);
+
+	@Modifying
+    @Query("UPDATE Game g set awayNotification = (:tf) WHERE g.id = (:id)")
+	public void updateAwayteamNotification(@Param("id") long id, @Param("tf") boolean tf);
+	@Modifying
+    @Query("UPDATE Game g set homeNotification = (:tf) WHERE g.id = (:id)")
+	public void updateHometeamNotification(@Param("id") long id, @Param("tf") boolean tf);
 }

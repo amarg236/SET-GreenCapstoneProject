@@ -42,6 +42,16 @@ public class GameController {
 		return hlp.getRoleByLocation(auth, gh.getGameById(g.getId()).getHomedistrict()).rescheduleGame(auth, g);
 	}
 	
+	@PostMapping("reject")
+	public ResponseBody<Game> reject(@RequestBody Game g, Authentication auth){
+		return hlp.getRoleByTeam(auth, g).rejectGame(auth, g);
+	}
+	
+	@PostMapping("reject/clear")
+	public ResponseBody<Game> clearReject(@RequestBody Game g, Authentication auth){
+		return hlp.getRoleByTeam(auth, g).validateRejection(auth, g);
+	}
+	
 	@PostMapping("accept")
 	public ResponseBody<Long> accept(@RequestBody Game g, Authentication auth) {//NOTE this MUST use getGameById as we're actively changing the game's parameters.
 		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).approveGame(auth, g.getId());
@@ -79,6 +89,12 @@ public class GameController {
 	public ResponseBody<List<Game>> getSchoolIdAll(@RequestBody Teams s) {
 		return gh.getGamesId(s, true);
 	}
+	
+	@PostMapping("get/ByTeamId/rejected")
+	public ResponseBody<List<Game>> getSchoolIdRejected(@RequestBody Teams s) {
+		return gh.getGamesId(s, true);
+	}
+	
 	@PostMapping("get/all")
 	public ResponseBody<List<Game>> getAll() {
 		return gh.allGames();

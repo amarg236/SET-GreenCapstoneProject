@@ -44,6 +44,9 @@ public class Game implements Serializable{
 	String uApprover;
 	boolean approved;
 	boolean awayAccepted;
+	boolean rejected;
+	boolean homeNotification;
+	boolean awayNotification;
 }
 
 

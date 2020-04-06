@@ -56,7 +56,7 @@ public class UserUnfound extends UserReference {
 	}
 
 	@Override
-	public ResponseBody<Game> rejectGame(Game g) {
+	public ResponseBody<Game> rejectGame(Authentication auth, Game g) {
 		return forbiddenAccess(g);
 	}
 
@@ -137,5 +137,9 @@ public class UserUnfound extends UserReference {
 	@Override
 	public ResponseBody<IdealDay> removeIdealDay(IdealDay d) {
 		return forbiddenAccess(d);
+	}
+	@Override
+	public ResponseBody<Game> validateRejection(Authentication auth, Game g) {
+		return forbiddenAccess(g);
 	}
 }

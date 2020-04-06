@@ -96,16 +96,26 @@ public class GameHandler {
 		}
 	}
 	@Transactional
-	public ResponseBody<Game> rejectGame(Game g){ //TODO this should remove game and inform other guy
+	public ResponseBody<Game> rejectGame(Authentication auth, Game g, boolean isAdminApprover){
 		try {
-			gr.updateAccept(g.getId(), false);
+			
+			if(isAdminApprover) {
+				gr.updateVerify(g.getId(), false);
+				gr.updateUApprover(g.getId(), auth.getName());
+				gr.updateRejected(g.getId(), true);
+			}
+			else {
+				gr.updateAccept(g.getId(), false);
+				gr.updateUAcceptor(g.getId(), auth.getName());
+				gr.updateRejected(g.getId(), false);
+			}
+			
 			return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), "Game Rejected", g);
 		}
 		catch(Exception e) {
 			return new ResponseBody<Game>(HttpStatus.NOT_ACCEPTABLE.value(), "Could Not Reject Game", g);
 		}
 	}
-	
 	/**
 	 * @param g ID of a game to verify
 	 * @return Response body detailing the status of the verification
@@ -162,7 +172,18 @@ public class GameHandler {
 //			else {
 //				g = gr.findByTeamVerified(tr.findById(s.getId()).get().getTmName());
 //			}
-			g = gr.findByHometeamIdOrAwayteamIdAndApproved(s.getId(), s.getId(), findAll);
+			g = gr.findByHometeamIdOrAwayteamIdAndApprovedAndRejectedFalse(s.getId(), s.getId(), findAll);
+			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
+		}
+		catch(Exception e) {
+			return new ResponseBody<List<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games "+e, null);
+		}
+	}
+	
+	public ResponseBody<List<Game>> getGamesRejected(Teams s){
+		try {
+			List<Game> g;
+			g = gr.findByHometeamIdOrAwayteamIdAndRejected(s.getId(), s.getId(), true);
 			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
 		}
 		catch(Exception e) {
@@ -194,7 +215,7 @@ public class GameHandler {
 		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", ll);
 	}
 	public ResponseBody<List<Game>> allVerifiedGames(){
-		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findAllVerified());
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findAllVerifiedAndRejectedFalse());
 	}
 
 	public ResponseBody<Game> RequestReschedule(Game g) {
@@ -207,7 +228,7 @@ public class GameHandler {
 	}
 
 	public ResponseBody<List<Game>> JsonGetAll(){
-		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findAllByAwayAcceptedTrue());
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findAllByAwayAcceptedTrueAndRejectedFalse());
 	}
 
 	public Game getGameById(Long id) {
@@ -215,6 +236,28 @@ public class GameHandler {
 	}
 	
 	public ResponseBody<List<Game>> unverifiedGames(School s) {
-		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found Games", gr.findByApprovedFalse());
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found Games", gr.findByApprovedFalseAndRejectedFalse());
+	}
+	public ResponseBody<Game> validateRejection(Game g, boolean hometeamViewing) {
+		if(hometeamViewing) {
+			if(!g.isAwayNotification()) {
+				gr.deleteById(g.getId());
+				return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), "Game deleted", g);
+			}
+			else {
+				gr.updateHometeamNotification(g.getId(), false);
+				return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), "Hometeam Notification handled", g);
+			}
+		}
+		else {
+			if(!g.isHomeNotification()) {
+				gr.deleteById(g.getId());
+				return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), "Game deleted", g);
+			}
+			else {
+				gr.updateAwayteamNotification(g.getId(), false);
+				return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), "Awayteam Notification handled", g);
+			}
+		}
 	}
 }
