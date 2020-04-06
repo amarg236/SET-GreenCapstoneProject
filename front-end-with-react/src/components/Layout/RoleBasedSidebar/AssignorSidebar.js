@@ -28,7 +28,7 @@ class AssignorSidebar extends Component {
         className="sidebarProperty"
         defaultSelectedKeys={["1"]}
         defaultOpenKeys={["sub1"]}
-        style={{ height: "100%", borderRight: 0 }}
+        style={{ height: "100%", borderRight: 0, overflow: 'auto' }}
       >
         <Menu.Item onClick={handleClick} key="dashboard">
           <span>

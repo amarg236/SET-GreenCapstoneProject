@@ -35,7 +35,8 @@ class Cal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      jData: []
+      jData: [],
+      game: []
     };
   }
 
@@ -49,7 +50,7 @@ class Cal extends React.Component {
       })
       .then(res => {
         console.log(res.data.result);
-        this.setState({ jData: extend([], processData(res.data), null, true) });
+        this.setState({ jData: extend([], processData(res.data), null, true), game: res.data.result });
       });
   }
 
@@ -77,10 +78,9 @@ class Cal extends React.Component {
   }
 
   eventTemplate(props){
-   // if(approved){
       return(<div className='template-wrap'> {props.Subject} </div>);
-  //  }
-  }
+    }
+    
 
   // Links that could be helpful
   // https://github.com/syncfusion/ej2-react-samples/blob/master/src/schedule/local-data.jsx

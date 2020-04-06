@@ -33,7 +33,7 @@ class ApproveGame extends Component {
     console.log(this.state.game);
 
     return (
-      <div className="mediaAppG" style={{ marginTop: "2%" }}>
+      <div>
         <Row>
           <Col style={{ textAlign: "center" }} span={24}>
             <h4>Approved Games</h4>
