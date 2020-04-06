@@ -19,7 +19,6 @@ class AssignorDashboard extends Component {
           <h1 className="display-4">Hello, ASSIGNOR!</h1>
           <p className="lead">This is a Assignor Dashboard</p>
         </div>
-        <Cal />
       </div>
     );
   }

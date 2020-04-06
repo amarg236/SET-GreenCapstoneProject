@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
+import "../../stylesheets/mediaQue.css";
 
 import {
   Form,
@@ -12,7 +13,9 @@ import {
   Button,
   Layout,
   DatePicker,
-  TimePicker
+  TimePicker,
+  Select,
+  Card,
 } from "antd";
 const { Content } = Layout;
 const { RangePicker } = TimePicker;
@@ -20,7 +23,7 @@ const { RangePicker } = TimePicker;
 class CreateGame extends Component {
   constructor(props) {
     super(props);
-    this.onChangeHomeTeam = this.onChangeHomeTeam.bind(this);
+
     this.onChangeGameDate = this.onChangeGameDate.bind(this);
     this.onChangeGameStartTime = this.onChangeGameStartTime.bind(this);
     this.onChangeGameEndTime = this.onChangeGameEndTime.bind(this);
@@ -31,10 +34,20 @@ class CreateGame extends Component {
     );
     this.onChangeGameTime = this.onChangeGameTime.bind(this);
     this.gameSubmit = this.gameSubmit.bind(this);
+    this.chooseClass = this.chooseClass.bind(this);
   }
 
   state = {
     homeTeam: "",
+    homeTeamId: "",
+    homeTeamObj: [],
+    awaySchoolObj: [],
+    awaySchoolList: [],
+    awaySchoolTeamList: [],
+    selectedDistrict: {
+      id: "",
+      districtName: "",
+    },
     gameDate: moment().format("YYYY-MM-DD"),
     gameStartTime: moment().format("HH:mm"),
     gameEndTime: moment().format("HH:mm"),
@@ -43,16 +56,55 @@ class CreateGame extends Component {
     //   .format("HH:mm"),
     gameLocation: "",
     againstTeam: "",
+    awayteamId: "",
+    againstSchool: "",
     againstTeamDistrict: "",
-    gameTime: ""
+    againstTeamDistrictId: "",
+    gameTime: "",
     // timeFinal: ""
   };
 
   componentDidMount() {
-    // let HOMETEAM = "https://www.something.com";
-    // let URL2 = "https://www.something1.com";
-    // let URL3 = "https://www.something2.com";
-    // let URL1 = "https://www.something.com";
+    console.log(this.props.schoolDistrict);
+    console.log(this.props.schoolDistrict.id);
+    let ben = this.props.mySchool.id;
+    console.log("I am ben");
+    console.log(ben);
+    function getTeam() {
+      const forTeam = {
+        id: ben,
+      };
+      return axios.post(
+        Authtoken.getBaseUrl() + "/api/team/get/bySchool",
+        forTeam,
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
+        }
+      );
+    }
+    function awayDistrict() {
+      return axios.post(
+        Authtoken.getBaseUrl() + "/api/location/district/get",
+        {},
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
+        }
+      );
+    }
+    axios.all([getTeam(), awayDistrict()]).then(
+      axios.spread((getHomeTeamResponse, getDistrictResponse) => {
+        // Both requests are now complete
+
+        this.setState({ homeTeamObj: getHomeTeamResponse.data.result });
+        this.setState({ awaySchoolObj: getDistrictResponse.data.result });
+      })
+    );
   }
 
   //added in antdesign
@@ -67,9 +119,10 @@ class CreateGame extends Component {
     // console.log(time.format("HH:mm"));
   }
 
-  onChangeHomeTeam = e => {
-    this.setState({ homeTeam: e.target.value });
-  };
+  // onChangeHomeTeam = value => {
+  //   // this.setState({ homeTeam: e.target.value });
+  //   console.log(value);
+  // };
 
   onChangeGameDate(date, dateString) {
     // console.log(date);
@@ -96,6 +149,15 @@ class CreateGame extends Component {
     this.setState({ againstTeamDistrict: e.target.value });
   }
 
+  chooseClass() {
+    const ch = this.props.ifcollapsed;
+    if (!ch) {
+      return "`CGForm`";
+    } else {
+      return "`xform`";
+    }
+  }
+
   gameSubmit(e) {
     e.preventDefault();
     const startDate = moment(this.state.gameDate)
@@ -103,7 +165,7 @@ class CreateGame extends Component {
       .set("minutes", 0);
     const startTime = moment(this.state.gameStartTime, "HH:mm");
     const endTime = moment(this.state.gameEndTime, "HH:mm");
-    
+
     const gameStart = moment(startDate)
       .add(startTime.hours(), "hour")
       .add(startTime.minutes(), "minute");
@@ -115,64 +177,164 @@ class CreateGame extends Component {
       time: moment(gameStart).format("YYYY-MM-DD HH:mm"),
 
       awayteam: this.state.againstTeam,
+      awayteamId: this.state.awayteamId,
       awaydistrict: {
-        districtName: "District 1-5A",
-        id: 15
+        districtName: this.state.againstTeamDistrict,
+        id: this.state.againstTeamDistrictId,
       },
       duration: gameDuration,
       hometeam: this.state.homeTeam,
+      hometeamId: this.state.homeTeamId,
       homedistrict: {
-        districtName: "District 1-5A",
-        id: 15
+        districtName: this.props.schoolDistrict.districtName,
+        id: this.props.schoolDistrict.id,
       },
-      location: this.state.gameLocation
+      location: this.state.gameLocation,
+      urequester: this.props.currentUser,
     };
-    
+
+    console.log(gameObject);
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/save", gameObject, {
         headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
       })
-      .then(res => {
+      .then((res) => {
         window.alert("The Game has been created successfully!!");
-        window.location.reload();
+        // window.location.reload();
       });
   }
+  handleHomeTeam = (value) => {
+    const passedValue = JSON.parse(value);
+    // console.log(passedValue);
+    this.setState({ homeTeam: passedValue.tmName });
+    this.setState({ homeTeamId: passedValue.id });
+  };
+  handleAwayTeam = (value) => {
+    const getFromValue = JSON.parse(value);
+    console.log(getFromValue);
+    this.setState({ againstTeam: getFromValue.tmName });
+    this.setState({ awayteamId: getFromValue.id });
+  };
+
+  handleSchool = (value) => {
+    const schoolV = JSON.parse(value);
+    console.log(schoolV);
+    console.log("I got printed here");
+    console.log(schoolV.name);
+    this.setState({ againstSchool: schoolV.name });
+
+    // this.setState({ schoolId: schoolValue.id });
+    const awayTeamBody = {
+      id: schoolV.id,
+    };
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/team/get/bySchool", awayTeamBody, {
+        headers: {
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        // console.log("i am team  by school id");
+        console.log(res.data.result);
+        this.setState({ awaySchoolTeamList: res.data.result });
+      });
+  };
+  teamClass = (teamClass) => {
+    console.log(teamClass);
+    // this.setState({ teamClass: teamClass });
+  };
+
+  handleDistrict = (value) => {
+    console.log("I have been executed");
+    const dummy = JSON.parse(value);
+    console.log("Dummy data result below");
+    console.log(dummy);
+    this.setState({ againstTeamDistrict: dummy.districtName });
+    this.setState({ againstTeamDistrictId: dummy.id });
+    this.setState({
+      selectedDistrict: {
+        id: dummy.id,
+        districtName: dummy.districtName,
+      },
+    });
+    console.log("I have been executed");
+    //fetching school depending upon the value of district
+    const schoolBody = {
+      districtName: dummy.districtName,
+      id: dummy.id,
+    };
+    axios
+      .post(
+        Authtoken.getBaseUrl() + "/api/location/school/get/district",
+        schoolBody,
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
+        }
+      )
+      .then((res) => {
+        console.log("i am school by district");
+        console.log(res.data.result);
+        this.setState({ awaySchoolList: res.data.result });
+      });
+    //fetching away school team depending upon the value of school
+  };
 
   render() {
+    console.log("school here");
+    console.log(this.state.awaySchoolList);
+    console.log("school here");
+    console.log("typee", this.props.ifcollapsed);
     const layout = {
       labelCol: {
-        span: 4
+        span: 4,
       },
       wrapperCol: {
-        span: 12
-      }
+        span: 12,
+      },
     };
     const validateMessages = {
       required: "This field is required!",
       types: {
         email: "Not a valid email!",
-        number: "Not a valid number!"
+        number: "Not a valid number!",
       },
       number: {
-        range: "Must be between ${min} and ${max}"
-      }
+        range: "Must be between ${min} and ${max}",
+      },
     };
-
+    console.log("thi sis new schoo list");
+    console.log(this.state.awaySchoolList);
     return (
       <Content
+        className="mediaCG"
         style={{
           padding: 24,
           margin: 0,
-          minHeight: 580
+          minHeight: 580,
         }}
       >
         <div
           style={{
+            backgroundColor: "#dddd",
+            padding: "20px",
+            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
+          }}
+        >
+          <p>Home School: {this.props.mySchool.name}</p>
+          <p>Home District: {this.props.schoolDistrict.districtName}</p>
+        </div>
+        <div
+          style={{
             backgroundColor: "#ffff",
             padding: "20px",
-            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)"
+            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
           }}
         >
           <Form
@@ -181,28 +343,34 @@ class CreateGame extends Component {
             onSubmit={this.gameSubmit}
             validateMessages={validateMessages}
           >
-            <Form.Item
-              name="hometeam"
-              label="Home Team"
-              rules={[
-                {
-                  // required: true
-                }
-              ]}
-            >
-              <Input
-                value={this.state.homeTeam}
-                onChange={this.onChangeHomeTeam}
-                placeholder="Enter Home Team"
-              />
-            </Form.Item>
+            {
+              <Form.Item label="Select Home Team" name="homeTeam">
+                <Select
+                  size="large"
+                  defaultValue="Select Options"
+                  style={{ width: 120 }}
+                  onChange={this.handleHomeTeam}
+                >
+                  {this.state.homeTeamObj.map((homeTeamDetails) => (
+                    <Select.Option
+                      key={homeTeamDetails.id}
+                      // value={index}
+                      value={JSON.stringify(homeTeamDetails)}
+                    >
+                      {homeTeamDetails.tmName}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            }
+
             <Form.Item
               name="gameDate"
               label="Choose Date"
               rules={[
                 {
-                  required: true
-                }
+                  required: true,
+                },
               ]}
             >
               <DatePicker
@@ -217,8 +385,8 @@ class CreateGame extends Component {
               label="Choose Time"
               rules={[
                 {
-                  required: true
-                }
+                  required: true,
+                },
               ]}
             >
               <RangePicker
@@ -236,24 +404,61 @@ class CreateGame extends Component {
                 placeholder="Location"
               />
             </Form.Item>
-
-            <Form.Item name="awayschool" label="Away School">
-              <Input
-                onChange={this.onChangeAgainstTeam}
-                value={this.state.againstTeam}
-                placeholder="Away School"
-              />
+            {
+              <Form.Item label="Select District" name="districtName">
+                <Select
+                  size="large"
+                  defaultValue="Select Options"
+                  style={{ width: 120 }}
+                  value={this.state.againstTeamDistrict}
+                  onChange={this.handleDistrict}
+                >
+                  {this.state.awaySchoolObj.map((item, index) => (
+                    <Select.Option
+                      key={index}
+                      // value={index}
+                      value={JSON.stringify(item)}
+                    >
+                      {item.districtName}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            }
+            <Form.Item label="Select School" name="schoolName">
+              <Select
+                size="large"
+                defaultValue="Select Options"
+                style={{ width: 120 }}
+                value={this.state.againstSchool}
+                onChange={this.handleSchool}
+              >
+                {this.state.awaySchoolList.map((schoolMap, index) => (
+                  <Select.Option key={index} value={JSON.stringify(schoolMap)}>
+                    {schoolMap.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
-            <Form.Item
-              placeholder="Away Team"
-              name="awayteam"
-              label="Away Team"
-            >
-              <Input
-                onChange={this.onChangeAgainstTeamDistrict}
-                value={this.state.againstTeamDistrict}
-                placeholder="Away Team"
-              />
+
+            <Form.Item label="Select Team" name="awayTeam">
+              <Select
+                size="large"
+                defaultValue="Select Options"
+                style={{ width: 120 }}
+                value={this.state.againstTeam}
+                onChange={this.handleAwayTeam}
+              >
+                {this.state.awaySchoolTeamList.map((teamMap) => (
+                  <Select.Option
+                    key={teamMap.id}
+                    // value={index}
+                    value={JSON.stringify(teamMap)}
+                  >
+                    {teamMap.tmName}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
 
             <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
@@ -272,9 +477,13 @@ class CreateGame extends Component {
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
-    token: state.userReducer.token
+    currentUser: state.userReducer.username,
+    token: state.userReducer.token,
+    ifcollapsed: state.userReducer.sidebarCollapased,
+    mySchool: state.userReducer.mySchool,
+    schoolDistrict: state.userReducer.schoolDistrict,
   };
 };
 export default connect(mapStatetoProps)(CreateGame);

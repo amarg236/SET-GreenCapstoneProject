@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 
-import { Form, Input, Button, Layout, Select } from "antd";
+import { Form, Input, Button, Layout, Select, Modal } from "antd";
 const { Content } = Layout;
 
 class InviteToSystem extends Component {
@@ -90,6 +90,7 @@ class InviteToSystem extends Component {
         // window.alert("User has been invited successfully!!");
         // window.location.reload();
         console.log(res);
+        this.success();
         // console.log(res.data);
       });
   };
@@ -102,6 +103,11 @@ class InviteToSystem extends Component {
 
   chooseRole = pick => {
     this.setState({ role: pick });
+  };
+  success = () => {
+    Modal.success({
+      content: "User has been successfully invited"
+    });
   };
 
   render() {
@@ -126,6 +132,7 @@ class InviteToSystem extends Component {
 
     return (
       <Content
+        className="mediaIU"
         style={{
           padding: 24,
           margin: 0,
@@ -214,7 +221,7 @@ class InviteToSystem extends Component {
                 defaultValue="Select Role"
                 onChange={this.chooseRole}
                 value={this.state.role}
-                style={{ width: "450px", minWidth: "auto" }}
+                style={{ width: "250px", minWidth: "auto" }}
               >
                 <Select.Option value="USER">USER</Select.Option>
 
@@ -225,7 +232,7 @@ class InviteToSystem extends Component {
             <Form.Item label="Select School" size="large" name="school">
               <Select
                 defaultValue="Select Options"
-                style={{ width: "450px", minWidth: "auto" }}
+                style={{ width: "250px", minWidth: "auto" }}
                 onChange={this.handleChange}
               >
                 {this.state.data.map(item => (

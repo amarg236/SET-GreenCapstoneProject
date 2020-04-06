@@ -6,7 +6,6 @@ import UserSidebar from "./RoleBasedSidebar/UserSiderBar";
 import AssignorSidebar from "./RoleBasedSidebar/AssignorSidebar";
 import AdminSidebar from "./RoleBasedSidebar/AdminSidebar";
 import { toggleAction } from "../../actions/toggleAction";
-import styled from "styled-components";
 import device from "../../Utility/media";
 import { HomeOutlined, LogoutOutlined } from "@ant-design/icons";
 const { Sider } = Layout;
@@ -14,7 +13,7 @@ const { Sider } = Layout;
 class SidebarComp extends Component {
   state = {
     collapsed: false,
-    collapsedWidth: 80
+    collapsedWidth: 80,
   };
 
   componentDidMount() {
@@ -26,11 +25,25 @@ class SidebarComp extends Component {
     window.removeEventListener("resize", this.checkWidth());
   }
 
+  onCollapse = (collapsed) => {
+    console.log(collapsed);
+    this.setState({ collapsed });
+  };
+  // whileMobileView = () => {};
+
   checkWidth = () => () => {
-    const match = window.matchMedia(`(max-width: 768px)`);
-    if (match) {
-      this.setState({ collapsedWidth: 80 });
+    if (window.matchMedia(device.mobileL).matches) {
+      if (window.matchMedia(device.tablet).matches) {
+        console.log("desktop or laptop view");
+        this.setState({ collapsed: false, collapsedWidth: 80 });
+      } else {
+        //for tabletview
+        console.log("tablet view");
+        this.setState({ collapsed: true, collapsedWidth: 0 });
+      }
     } else {
+      console.log("mobile view");
+
       this.setState({ collapsed: true, collapsedWidth: 0 });
     }
   };
@@ -40,7 +53,7 @@ class SidebarComp extends Component {
       case "ADMIN":
         return <AdminSidebar />;
 
-      case "ASSIGNOR":
+      case "ASSIGNER":
         return <AssignorSidebar />;
 
       case "USER":
@@ -61,13 +74,6 @@ class SidebarComp extends Component {
               </span>
               <span>HOME</span>
             </Menu.Item>
-
-            <Menu.Item key="logOut">
-              <span>
-                <LogoutOutlined />
-              </span>
-              <span>Log Out</span>
-            </Menu.Item>
           </Menu>
         );
     }
@@ -84,25 +90,28 @@ class SidebarComp extends Component {
       We are putting it as null because we are using our own trigger symbol.
       */
       <Sider
-        trigger={null}
-        breakpoint="md"
         collapsible
         collapsed={this.state.collapsed}
+        onCollapse={this.onCollapse}
+        // zeroWidthTriggerStyle={}
+        // breakpoint="md"
+        // collapsible
+        // collapsed={this.state.collapsed}
         collapsedWidth={this.state.collapsedWidth}
-        onBreakpoint={broken => {
-          // return `collapsedWidth="0"`;
-          // console.log(broken);
-          // if (broken == true) {
-          //   this.props.toggle();
-          // } else if (broken == false) {
-          //   this.props.toggle();
-          // console.log(broken);
-          // }
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
-        collapsed={this.props.toggelState}
+        // onBreakpoint={broken => {
+        //   // return `collapsedWidth="0"`;
+        //   // console.log(broken);
+        //   // if (broken == true) {
+        //   //   this.props.toggle();
+        //   // } else if (broken == false) {
+        //   //   this.props.toggle();
+        //   // console.log(broken);
+        //   // }
+        // }}
+        // onCollapse={(collapsed, type) => {
+        //   console.log(collapsed, type);
+        // }}
+        // collapsed={this.props.toggelState}
       >
         <div className="logo">SET GREEN</div>
         {this.renderSwitch(this.props.role)}
@@ -111,16 +120,16 @@ class SidebarComp extends Component {
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
     role: state.userReducer.role,
-    toggelState: state.userReducer.sidebarCollapased
+    toggelState: state.userReducer.sidebarCollapased,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    toggle: () => dispatch(toggleAction())
+    toggle: (argument) => dispatch(toggleAction(argument)),
   };
 };
 

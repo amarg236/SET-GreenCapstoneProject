@@ -1,11 +1,44 @@
+import "../../App.css";
 import React, { Component } from "react";
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
-import { Row, Col, Button } from "antd";
 
-class ShowUserPendingGames extends Component {
+import {
+  Row,
+  Col,
+  Button,
+  PageHeader,
+  Tabs,
+  Statistic,
+  Descriptions,
+} from "antd";
+
+const { TabPane } = Tabs;
+
+const renderContent = (display, column = 2) => (
+  <Descriptions size="small" column={column}>
+    <Descriptions.Item label="Home Team">{display.location}</Descriptions.Item>
+    <Descriptions.Item label="Away Team">
+      <a>{display.awayteam}</a>
+    </Descriptions.Item>
+    <Descriptions.Item label="Game Duration">
+      {display.duration} minutes
+    </Descriptions.Item>
+  </Descriptions>
+);
+
+const Content = ({ children, extra }) => {
+  return (
+    <div className="content">
+      <div className="main">{children}</div>
+      <div className="extra">{extra}</div>
+    </div>
+  );
+};
+
+class ApprovedGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -111,34 +144,17 @@ class ShowUserPendingGames extends Component {
     console.log(this.state.game);
 
     return (
-      <div>
-        <Row>
-          <Col style={{ textAlign: "center" }} span={24}>
-            <h4>Pending Games</h4>
-          </Col>
-        </Row>
-        <Row
-          style={{
-            padding: "10px",
-            color: "#006ca1",
-            backgroundColor: "#dddd",
-          }}
-        >
-          <Col lg={6} md={5} sm={5} xs={6}>
-            Home Team
-          </Col>
-          <Col lg={6} md={5} sm={5} xs={6}>
-            Away Team
-          </Col>
-          <Col lg={4} md={4} sm={4} xs={4}>
-            Time
-          </Col>
-          <Col lg={4} md={4} sm={4} xs={4}>
-            Location
-          </Col>
-          <Col lg={2} md={3}></Col>
-          <Col lg={2} md={3}></Col>
-        </Row>
+      <div
+        style={{
+          backgroundColor: "#ffff",
+          marginTop: "10px",
+          padding: "20px",
+          boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
+        }}
+      >
+        <PageHeader>
+          <h4 style={{ textAlign: "center" }}>Pending Games</h4>
+        </PageHeader>
         {this.state.game &&
           this.state.game.map((display) => {
             const {
@@ -153,55 +169,29 @@ class ShowUserPendingGames extends Component {
               approved,
               awayAccepted,
             } = display;
-            if (!approved && !awayAccepted) {
+            if (approved) {
               return (
-                <Row
+                <PageHeader
                   key={id}
-                  style={{
-                    padding: "5px",
-                    marginTop: "2px",
-                    backgroundColor: "#ffff",
-                  }}
+                  className="site-page-header-responsive"
+                  // onBack={() => window.history.back()}
+                  title={hometeam.concat(" vs ").concat(awayteam)}
+                  subTitle={time}
+                  extra={[
+                    <Button key="2" onClick={() => this.denyGame(id)}>
+                      Deny
+                    </Button>,
+                    <Button
+                      key="1"
+                      type="primary"
+                      onClick={() => this.approveGame(display)}
+                    >
+                      Accept
+                    </Button>,
+                  ]}
                 >
-                  <Col lg={6} md={5} sm={5} xs={6}>
-                    {hometeam}
-                  </Col>
-                  <Col lg={6} md={5} sm={5} xs={6}>
-                    {awayteam}
-                  </Col>
-                  <Col lg={4} md={4} sm={4} xs={4}>
-                    {time}
-                  </Col>
-                  <Col lg={4} md={4} sm={4} xs={4}>
-                    {location}
-                  </Col>
-                  <Col lg={4} sm={4}>
-                    <Row justify="left">
-                      <Col>
-                        <Button
-                          type="button"
-                          className="btn btn-success"
-                          style={{ width: "100%" }}
-                          onClick={() => this.approveGame(display)}
-                        >
-                          Approve
-                        </Button>
-                        <Col></Col>
-                        <Col></Col>
-                      </Col>
-                      <Col>
-                        <Button
-                          type="button"
-                          danger
-                          style={{ width: "130%" }}
-                          onClick={() => this.denyGame(id)}
-                        >
-                          Deny
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
+                  <Content>{renderContent(display)}</Content>
+                </PageHeader>
               );
             }
           })}
@@ -221,4 +211,4 @@ const mapStatetoProps = (state) => {
     schoolDistrict: state.userReducer.schoolDistrict,
   };
 };
-export default connect(mapStatetoProps, null)(ShowUserPendingGames);
+export default connect(mapStatetoProps, null)(ApprovedGame);

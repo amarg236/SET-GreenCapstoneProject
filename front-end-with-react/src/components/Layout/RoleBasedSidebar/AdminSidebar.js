@@ -15,12 +15,12 @@ import {
   CalendarOutlined,
   AppstoreOutlined,
   ApartmentOutlined,
-  UserAddOutlined
+  UserAddOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
-const handleClick = e => {
+const handleClick = (e) => {
   history.push("/".concat(e.key));
 };
 
@@ -57,12 +57,14 @@ class AdminSidebar extends Component {
             </span>
           }
         >
-          <Menu.Item onClick={handleClick} key="createGame">
-            <span>
-              <FileAddOutlined />
-            </span>
-            <span>Create Game</span>
-          </Menu.Item>
+          {
+            //   <Menu.Item onClick={handleClick} key="createGame">
+            //   <span>
+            //     <FileAddOutlined />
+            //   </span>
+            //   <span>Create Game</span>
+            // </Menu.Item>
+          }
           <Menu.Item onClick={handleClick} key="viewGames">
             <span>
               <EyeOutlined />
@@ -113,7 +115,13 @@ class AdminSidebar extends Component {
             <span>
               <UserAddOutlined />
             </span>
-            <span>Manage User</span>
+            <span>Unverified User</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="allUsers">
+            <span>
+              <UserAddOutlined />
+            </span>
+            <span>Verified User</span>
           </Menu.Item>
           <Menu.Item onClick={handleClick} key="inviteToSystem">
             <span>
@@ -134,22 +142,15 @@ class AdminSidebar extends Component {
           </span>
           <span>Settings</span>
         </Menu.Item>
-
-        <Menu.Item key="logOut">
-          <span>
-            <LogoutOutlined />
-          </span>
-          <span>Log Out</span>
-        </Menu.Item>
       </Menu>
     );
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
     role: state.userReducer.role,
-    toggelState: state.userReducer.sidebarCollapased
+    toggelState: state.userReducer.sidebarCollapased,
   };
 };
 

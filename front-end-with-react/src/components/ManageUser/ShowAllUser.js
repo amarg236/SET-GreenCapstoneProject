@@ -20,7 +20,7 @@ const Content = ({ children, extra }) => {
   );
 };
 
-class ManageUser extends Component {
+class ShowAllUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +33,7 @@ class ManageUser extends Component {
     console.log(this.props.token);
     const emptyBody = {};
     axios
-      .get(Authtoken.getBaseUrl() + "/api/admin/viewUnverifiedUser", {
+      .get(Authtoken.getBaseUrl() + "/api/test/showUser", {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -82,12 +82,12 @@ class ManageUser extends Component {
         }}
       >
         <PageHeader>
-          <h4 style={{ textAlign: "center" }}>Unverified Users</h4>
+          <h4 style={{ textAlign: "center" }}>Verified Users</h4>
         </PageHeader>
 
         {this.state.users.map((details) => {
-          const { id, email, firstname, lastname } = details;
-          if (id) {
+          const { id, email, firstname, lastname, verified } = details;
+          if (verified) {
             return (
               <PageHeader
                 key={id}
@@ -115,4 +115,4 @@ class ManageUser extends Component {
   }
 }
 
-export default ManageUser;
+export default ShowAllUser;

@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import "./stylesheets/mediaQue.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Router, Switch, Route } from "react-router-dom";
 import SignIn from "./components/Project/SignIn";
@@ -28,6 +29,9 @@ import InviteAssignor from "./components/ManageUser/InviteAssignor";
 import ManageUser from "./components/ManageUser/MangeUser";
 import VerifyAccount from "./components/EmailConfirmation/VerifyAccount";
 import ChangePassword from "./components/EmailConfirmation/ChangePassword";
+import AcceptedGame from "./components/Project/AcceptedGame";
+import ApprovedGame from "./components/Project/ApprovedGame";
+import ShowAllUser from "./components/ManageUser/ShowAllUser";
 
 class App extends React.Component {
   render() {
@@ -37,6 +41,7 @@ class App extends React.Component {
           <SidebarComp />
           <Layout className="site-layout">
             <HeaderRoot />
+
             <Switch>
               <Route exact path="/" component={Home} />
               <Route
@@ -65,9 +70,20 @@ class App extends React.Component {
               />
               <ProtectedRoute exact path="/addSchool" component={AddSchool} />
               <ProtectedRoute exact path="/createGame" component={CreateGame} />
+              <ProtectedRoute
+                exact
+                path="/acceptedGame"
+                component={AcceptedGame}
+              />
               <ProtectedRoute exact path="/viewGames" component={ViewGames} />
               <ProtectedRoute exact path="/addTeam" component={AddTeam} />
               <ProtectedRoute exact path="/manageUser" component={ManageUser} />
+              <ProtectedRoute exact path="/allUsers" component={ShowAllUser} />
+              <ProtectedRoute
+                exact
+                path="/approvedGames"
+                component={ApprovedGame}
+              />
               <ProtectedRoute
                 exact
                 path="/inviteToSystem"
@@ -89,15 +105,16 @@ class App extends React.Component {
             </Switch>
           </Layout>
         </Layout>
+
         <FooterComp />
       </Router>
     );
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
-    role: state.userReducer.role
+    role: state.userReducer.role,
   };
 };
 

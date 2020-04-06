@@ -28,7 +28,7 @@ class LoggedInUser extends Component {
             style={{
               padding: 5,
               margin: 0,
-              minHeight: 580
+              minHeight: 580,
             }}
             className=" site-layout-background"
           >
@@ -42,7 +42,7 @@ class LoggedInUser extends Component {
             style={{
               padding: 3,
               margin: 0,
-              minHeight: 580
+              minHeight: 580,
             }}
             className="site-layout-background"
           >
@@ -50,13 +50,13 @@ class LoggedInUser extends Component {
           </Content>
         );
 
-      case "ASSIGNOR":
+      case "ASSIGNER":
         return (
           <Content
             style={{
               padding: 24,
               margin: 0,
-              minHeight: 580
+              minHeight: 580,
             }}
             className=" site-layout-background"
           >
@@ -69,12 +69,12 @@ class LoggedInUser extends Component {
             style={{
               padding: 24,
               margin: 0,
-              minHeight: 580
+              minHeight: 580,
             }}
             className="site-layout-background"
           >
             <h1 className="display-4">
-              Sorry! Will are not a valid user. You will be logged out. Bye bye
+              Sorry! You are not a valid user. You will be logged out. Bye bye
             </h1>
             <Cal />
           </Content>
@@ -83,9 +83,9 @@ class LoggedInUser extends Component {
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
-    role: state.userReducer.role
+    role: state.userReducer.role,
   };
 };
 

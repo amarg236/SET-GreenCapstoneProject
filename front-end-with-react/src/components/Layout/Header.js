@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import "../../stylesheets/header.css";
-import GreenBackground from "./GreenBackground";
-import ProfileButton from "../Buttons/ProfileButton";
 import SettingsButton from "../Buttons/SettingsButton";
 import NotificationButton from "../Buttons/NotificationButton";
+import history from "../../Utility/history";
 import { connect } from "react-redux";
 import { logoutAction } from "../../actions/loginAction";
+import { Menu, Dropdown } from "antd";
 
 class Header extends Component {
   logout = async () => {
     this.props.logout();
+  };
+  viewProfile = () => {
+    console.log("view profile");
+    history.push("/".concat(e.key));
   };
 
   render() {
@@ -33,28 +37,18 @@ class Header extends Component {
 
           {/* Userprofile icon */}
           <li className="nav-item dropdown">
-            <div
-              className="nav-link nav-button"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <ProfileButton />
-            </div>
-            <div
-              className="dropdown-menu dropdown-menu-right"
-              aria-labelledby="navbarDropdown"
-            >
-              <a className="dropdown-item" href="#">
-                View Profile
-              </a>
-              <div className="dropdown-divider"></div>
-              <a className="dropdown-item" href="#" onClick={this.logout}>
-                Logout
-              </a>
-            </div>
+            <Menu>
+              <Menu.Item onClick={this.viewProfile()}>
+                <span>
+                  <a href="/userProfile">View Profile</a>
+                </span>
+              </Menu.Item>
+              <Menu.Item onClick={this.logout()} key="logOut">
+                <span>
+                  <p>User Profile</p>
+                </span>
+              </Menu.Item>
+            </Menu>
           </li>
         </ul>
       </div>
