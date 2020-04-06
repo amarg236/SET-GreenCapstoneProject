@@ -19,7 +19,7 @@ class InviteAssignor extends Component {
     role: "",
     school: "",
     data: [],
-    initLoading: true
+    initLoading: true,
   };
 
   componentDidMount() {
@@ -31,45 +31,45 @@ class InviteAssignor extends Component {
         {
           headers: {
             Authorization:
-              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-          }
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
         }
       )
-      .then(res => {
+      .then((res) => {
         console.log(res.data.result);
         this.setState({
           initLoading: false,
-          data: res.data.result
+          data: res.data.result,
         });
       });
   }
 
-  onChangeFirstName = e => {
+  onChangeFirstName = (e) => {
     this.setState({ firstname: e.target.value });
   };
 
-  onChangeLastName = e => {
+  onChangeLastName = (e) => {
     this.setState({ lastname: e.target.value });
   };
-  onChangeEmail = e => {
+  onChangeEmail = (e) => {
     this.setState({ email: e.target.value });
   };
-  onChangePassword = e => {
+  onChangePassword = (e) => {
     this.setState({ password: e.target.value });
   };
 
-  onChangeSchool = e => {
+  onChangeSchool = (e) => {
     this.setState({ school: e.target.value });
   };
 
-  inviteUser = values => {
+  inviteUser = (values) => {
     // console.log(values);
     const school = {
-      id: this.state.school
+      id: this.state.school,
     };
     const role = {
       role: this.state.role,
-      school
+      school,
     };
 
     const objCreate = {
@@ -77,16 +77,17 @@ class InviteAssignor extends Component {
       lastname: this.state.lastname,
       email: this.state.email,
       password: this.state.password,
-      role
+      role: "ASSIGNER",
     };
 
     axios
-      .post(Authtoken.getBaseUrl() + "/api/auth/createuser", objCreate, {
+      .post(Authtoken.getBaseUrl() + "/api/test/makeUser", objCreate, {
         headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
       })
-      .then(res => {
+      .then((res) => {
         // window.alert("User has been invited successfully!!");
         // window.location.reload();
         console.log(res);
@@ -101,7 +102,7 @@ class InviteAssignor extends Component {
   //     this.setState({ school: value });
   //   };
 
-  chooseRole = pick => {
+  chooseRole = (pick) => {
     this.setState({ role: pick });
   };
 
@@ -111,21 +112,21 @@ class InviteAssignor extends Component {
     // value={item.id}
     const layout = {
       labelCol: {
-        span: 4
+        span: 4,
       },
       wrapperCol: {
-        span: 12
-      }
+        span: 12,
+      },
     };
     const validateMessages = {
       required: "This field is required!",
       types: {
         email: "Not a validate email!",
-        number: "Not a validate number!"
+        number: "Not a validate number!",
       },
       number: {
-        range: "Must be between ${min} and ${max}"
-      }
+        range: "Must be between ${min} and ${max}",
+      },
     };
 
     return (
@@ -133,14 +134,14 @@ class InviteAssignor extends Component {
         style={{
           padding: 24,
           margin: 0,
-          minHeight: 580
+          minHeight: 580,
         }}
       >
         <div
           style={{
             backgroundColor: "#ffff",
             padding: "20px",
-            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)"
+            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
           }}
         >
           <Form
@@ -154,8 +155,8 @@ class InviteAssignor extends Component {
               label="First Name"
               rules={[
                 {
-                  required: true
-                }
+                  required: true,
+                },
               ]}
             >
               <Input
@@ -169,8 +170,8 @@ class InviteAssignor extends Component {
               label="Last Name"
               rules={[
                 {
-                  required: true
-                }
+                  required: true,
+                },
               ]}
             >
               <Input
@@ -185,8 +186,8 @@ class InviteAssignor extends Component {
               label="Email"
               rules={[
                 {
-                  required: true
-                }
+                  required: true,
+                },
               ]}
             >
               <Input
@@ -202,8 +203,8 @@ class InviteAssignor extends Component {
               label="Password"
               rules={[
                 {
-                  required: true
-                }
+                  required: true,
+                },
               ]}
             >
               <Input.Password

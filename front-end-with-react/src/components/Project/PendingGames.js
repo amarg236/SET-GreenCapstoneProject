@@ -77,7 +77,8 @@ class PendingGames extends Component {
           };
           axios
             .post(
-              Authtoken.getBaseUrl() + "/api/game/get/ByTeamId/all",
+              Authtoken.getBaseUrl() +
+                "/api/game/get/ByTeamId/away/notAccepted",
               emptyBody,
               {
                 headers: {
@@ -119,19 +120,23 @@ class PendingGames extends Component {
       });
   }
 
-  denyGame(id) {
+  denyGame(display) {
+    console.log(display);
     const emptyObj = {
-      data: id,
+      id: display.id,
+      hometeamId: display.hometeamId,
+      hometeam: display.hometeam,
     };
 
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
+      .post(Authtoken.getBaseUrl() + "/api/game/reject", emptyObj, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
         },
       })
       .then((res) => {
+        console.log(res);
         window.alert("The game has been denied!");
         // This needs fix later on
         // window.location.reload();
@@ -152,6 +157,10 @@ class PendingGames extends Component {
       >
         <PageHeader>
           <h4 style={{ textAlign: "center" }}>Pending Games</h4>
+          <p style={{ textAlign: "center" }}>
+            Games requested by away team have against your team but you haven't
+            accepted yet.
+          </p>
         </PageHeader>
 
         {this.state.game &&
@@ -167,8 +176,9 @@ class PendingGames extends Component {
               location,
               approved,
               awayAccepted,
+              rejected,
             } = display;
-            if (!approved && !awayAccepted) {
+            if (!rejected) {
               return (
                 <PageHeader
                   key={id}
@@ -177,7 +187,7 @@ class PendingGames extends Component {
                   title={hometeam.concat(" vs ").concat(awayteam)}
                   subTitle={time}
                   extra={[
-                    <Button key="2" onClick={() => this.denyGame(id)}>
+                    <Button key="2" onClick={() => this.denyGame(display)}>
                       Deny
                     </Button>,
                     <Button

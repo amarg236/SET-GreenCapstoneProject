@@ -16,6 +16,9 @@ import {
   AppstoreAddOutlined,
   FileDoneOutlined,
   AppstoreOutlined,
+  ClockCircleOutlined,
+  DeleteRowOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -77,18 +80,34 @@ class UserSidebar extends Component {
             </span>
             <span>Pending Game</span>
           </Menu.Item>
+          <Menu.Item onClick={handleClick} key="requestedGames">
+            <span>
+              <a href="/requestedGames">
+                <ClockCircleOutlined />
+              </a>
+            </span>
+            <span>Requested Games</span>
+          </Menu.Item>
           <Menu.Item onClick={handleClick} key="acceptedGame">
             <span>
               <a href="/viewGames">
-                <FileDoneOutlined />
+                <CheckOutlined />
               </a>
             </span>
-            <span>Accepted Game</span>
+            <span>Waiting Assignor</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="rejectedGames">
+            <span>
+              <a href="/rejectedGames">
+                <DeleteRowOutlined />
+              </a>
+            </span>
+            <span>Rejected Game</span>
           </Menu.Item>
           <Menu.Item onClick={handleClick} key="approvedGames">
             <span>
               <a href="/approved">
-                <EyeOutlined />
+                <CheckOutlined />
               </a>
             </span>
             <span>Approved Game</span>

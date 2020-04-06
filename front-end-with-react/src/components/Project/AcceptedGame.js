@@ -135,7 +135,10 @@ class AcceptedGame extends Component {
         }}
       >
         <PageHeader>
-          <h4 style={{ textAlign: "center" }}>Accepted Games</h4>
+          <h4 style={{ textAlign: "center" }}>Waiting for Assignor Approval</h4>
+          <p style={{ textAlign: "center" }}>
+            Games you have accepted and waiting for assignor approval.
+          </p>
         </PageHeader>
 
         {this.state.game &&
@@ -152,7 +155,7 @@ class AcceptedGame extends Component {
               approved,
               awayAccepted,
             } = display;
-            if (awayAccepted) {
+            if (awayAccepted && !approved) {
               return (
                 <PageHeader
                   key={id}
