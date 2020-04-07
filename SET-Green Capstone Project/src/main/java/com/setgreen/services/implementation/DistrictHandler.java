@@ -16,7 +16,7 @@ import com.setgreen.repositories.DistrictRepo;
 public class DistrictHandler {
 	@Autowired
 	DistrictRepo dr;
-	public ResponseBody<District> saveDistrict(District d){
+	public ResponseBody<District> saveDistrict(District d){//TODO: District uniqueness
 		try {
 			dr.save(d);
 			return new ResponseBody<District>(HttpStatus.ACCEPTED.value(), "Created new District", d);

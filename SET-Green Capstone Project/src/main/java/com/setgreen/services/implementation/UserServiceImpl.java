@@ -38,10 +38,12 @@ public class UserServiceImpl implements UserService {
 			User ud = new User(suf);
 			Set<Role> sor = ud.getRoles();
 			//XXX DO NOT EVER REMOVE THIS CODE UNDER PAIN OF DEATH. IT PLEASES THE DARK GODS OF CREATION, ALLOWING THE SICK DANCE OF DATA MANIPULATION TO CONTINUE. FORSAKING THIS CODE IS PUNISHABLE BY BEING TOLD YOU ARE, AND I QUOTE "in for a rough time."
-			try { //THIS LINE
-				for(Role r : sor) { //THAT INCLUDES THIS LINE
+			try { //THAT INCLUDES THIS LINE
+				for(Role r : sor) { //THIS LINE
 					sor.remove(r); //THIS LINE
-					r.setSchool(sr.findById(r.getSchool().getId()).get()); //THIS LINE
+					if(r.getRole().hasDistrict()) { //THIS LINE
+						r.setSchool(sr.findById(r.getSchool().getId()).get()); //THIS LINE
+					}
 					Debugger.cout(r.toString()+"\n");//not this one
 					sor.add(r); //THIS LINE
 				} //THIS LINE

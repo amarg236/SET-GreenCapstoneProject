@@ -122,6 +122,10 @@ public class GameController {
 	public ResponseBody<List<Game>> getAll() {
 		return gh.allGames();
 	}
+	@PostMapping("get/all/notApproved")
+	public ResponseBody<List<Game>> getAllNotApproved(){
+		return gh.allGameNoV();
+	}
 	@PostMapping("get/BySchool/unverified")
 	public ResponseBody<List<Game>> getAll(@RequestBody School s){
 		return gh.unverifiedGames(s);

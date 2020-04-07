@@ -87,6 +87,8 @@ public class GameHandler {
 	@Transactional
 	public ResponseBody<Long> teamVerifyGame(Authentication auth, Long g) {//TODO verification of team
 		try{
+			gr.updateAwayteamNotification(g, false);
+			//gr.updateHometeamNotification(g, true); FIXME implement clear for notifications
 			gr.updateUAcceptor(g, auth.getName());
 			gr.updateAccept(g, true);
 			return new ResponseBody<Long>(HttpStatus.ACCEPTED.value(), "Game Accepted", g);
@@ -113,7 +115,7 @@ public class GameHandler {
 			return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), "Game Rejected", g);
 		}
 		catch(Exception e) {
-			return new ResponseBody<Game>(HttpStatus.NOT_ACCEPTABLE.value(), "Could Not Reject Game", g);
+			return new ResponseBody<Game>(HttpStatus.NOT_ACCEPTABLE.value(), "Could Not Reject Game: " + e, g);
 		}
 	}
 	/**
@@ -125,10 +127,10 @@ public class GameHandler {
 		try {
 			if(!gr.findById(g).get().isAwayAccepted()) {
 				gr.updateUAcceptor(g, auth.getName());
-				gr.updateVerify(g.longValue(), true);
+				gr.updateAccept(g.longValue(), true);
 			}
 			gr.updateUApprover(g, auth.getName());
-			gr.updateAccept(g.longValue(), true);
+			gr.updateVerify(g, true);
 			return new ResponseBody<Long>(HttpStatus.ACCEPTED.value(), "Game Verified", g);
 		}
 		catch(Exception e) {
@@ -277,5 +279,8 @@ public class GameHandler {
 	}
 	public ResponseBody<List<Game>> getAwayGamesNoAdminV(Teams t) {
 		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByAwayteamIdAndApprovedFalse(t.getId()));
+	}
+	public ResponseBody<List<Game>> allGameNoV() {
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByApprovedFalse());
 	}
 }

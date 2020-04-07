@@ -1,5 +1,7 @@
 package com.setgreen.controller;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -51,16 +53,27 @@ public class ControllerAssistant {
 	 * @return role of user in the team
 	 */
 	protected UserReference getRoleByTeam(Authentication auth, Game g) {
-		Teams t = new Teams();
-		t.setId(g.getHometeamId());
-		t.setTmName(g.getHometeam());
 		try {
-			t = ts.getTeamsById(t).getResult();
+			Set<Role> r = us.fetchByEmail(g.getURequester()).getResult().getRoles();
+			RoleName rtrn = RoleName.UNFOUND;
+			for(Role x : r) {
+				if(x.getRole().hasDistrict() && x.getRole().userLevel() > rtrn.userLevel()) {
+					Iterable<Teams> tms = x.getSchool().getTeams();
+					for(Teams t : tms) {
+						if(t.getSchool().equals(x.getSchool()) && x.getRole().userLevel() > rtrn.userLevel()) {
+							rtrn = x.getRole();
+						}
+					}
+				}
+				else if(x.getRole().userLevel() > rtrn.userLevel()) {
+					rtrn = x.getRole();
+				}
+			}
+			return rn.build(rtrn);
 		}
 		catch(Exception e) {
-			t = ts.getTeamsByName(t.getTmName()).getResult();
+			return getRoleByBest(auth);
 		}
-		return getRoleByTeam(auth, t);
 	}
 	/** gets the best role the user has
 	 * @param auth

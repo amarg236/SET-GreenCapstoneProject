@@ -14,7 +14,7 @@ import com.setgreen.model.Game;
 public interface GameRepo extends CrudRepository<Game, Long>{
     @Modifying
     @Query("UPDATE Game g set approved = (:tf) WHERE g.id = (:id)")
-    public void updateVerify(@Param("id") long id, @Param("tf") boolean tf);
+    public void updateVerify(@Param("id") Long id, @Param("tf") boolean tf);
 
     @Query("SELECT g FROM Game g WHERE g.homedistrict = (:d) OR g.awaydistrict = (:d) AND g.rejected = FALSE")
 	public List<Game> findInDistrictAll(@Param("d") String d);
@@ -36,11 +36,11 @@ public interface GameRepo extends CrudRepository<Game, Long>{
 	public void updateAccept(@Param("id") Long id, @Param("tf") boolean tf);
 
     @Modifying
-    @Query("UPDATE Game g set uAcceptor = (:u) WHERE g.id = (:id) AND awayAccepted != TRUE")
+    @Query("UPDATE Game g set uAcceptor = (:u) WHERE g.id = (:id)")
 	public void updateUAcceptor(@Param("id") Long id, @Param("u") String u);
 
     @Modifying
-    @Query("UPDATE Game g set uApprover = (:u) WHERE g.id = (:id) AND awayAccepted != TRUE")
+    @Query("UPDATE Game g set uApprover = (:u) WHERE g.id = (:id)")
 	public void updateUApprover(@Param("id") Long id, @Param("u") String u);
 
     
@@ -77,4 +77,6 @@ public interface GameRepo extends CrudRepository<Game, Long>{
 	public List<Game> findByHometeamIdAndApprovedFalse(long id);
 
 	public List<Game> findByAwayteamIdAndApprovedFalse(long id);
+
+	public List<Game> findByApprovedFalse();
 }
