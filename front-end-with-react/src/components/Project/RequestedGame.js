@@ -38,7 +38,7 @@ const Content = ({ children, extra }) => {
   );
 };
 
-class ApprovedGame extends Component {
+class RequestedGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -77,7 +77,8 @@ class ApprovedGame extends Component {
           };
           axios
             .post(
-              Authtoken.getBaseUrl() + "/api/game/get/ByTeamId/all",
+              Authtoken.getBaseUrl() +
+                "/api/game/get/ByTeamId/home/notAccepted",
               emptyBody,
               {
                 headers: {
@@ -103,7 +104,6 @@ class ApprovedGame extends Component {
   }
 
   approveGame(display) {
-    console.log(display);
     const aemptyObj = {
       id: display.id,
     };
@@ -121,14 +121,12 @@ class ApprovedGame extends Component {
   }
 
   denyGame(id) {
-    console.log("this is my id");
-    console.log(id);
     const emptyObj = {
       data: id,
     };
 
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/reject", emptyObj, {
+      .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -155,8 +153,12 @@ class ApprovedGame extends Component {
         }}
       >
         <PageHeader>
-          <h4 style={{ textAlign: "center" }}>Pending Games</h4>
+          <h4 style={{ textAlign: "center" }}>Requested Games</h4>
+          <p style={{ textAlign: "center" }}>
+            Games you have request but haven't been accepted by away team
+          </p>
         </PageHeader>
+
         {this.state.game &&
           this.state.game.map((display) => {
             const {
@@ -170,8 +172,9 @@ class ApprovedGame extends Component {
               location,
               approved,
               awayAccepted,
+              rejected,
             } = display;
-            if (approved) {
+            if (!approved && !rejected) {
               return (
                 <PageHeader
                   key={id}
@@ -213,4 +216,4 @@ const mapStatetoProps = (state) => {
     schoolDistrict: state.userReducer.schoolDistrict,
   };
 };
-export default connect(mapStatetoProps, null)(ApprovedGame);
+export default connect(mapStatetoProps, null)(RequestedGame);

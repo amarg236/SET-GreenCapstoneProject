@@ -45,7 +45,8 @@ class Cal extends React.Component {
     axios
       .post(Authtoken.getBaseUrl() + "/api/public/get/game/json", emptyBody, {
         headers: {
-          Authorization: "Bearer " + this.props.token,
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
         },
       })
       .then((res) => {

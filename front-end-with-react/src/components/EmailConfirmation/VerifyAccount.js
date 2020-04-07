@@ -14,7 +14,7 @@ class VerifyAccount extends Component {
     this.state = {
       loading: true,
       username: "",
-      password: ""
+      password: "",
     };
   }
 
@@ -23,7 +23,7 @@ class VerifyAccount extends Component {
     console.log(this.props.location.search);
     this.setState({
       username: queryString.parse(this.props.location.search).u,
-      password: queryString.parse(this.props.location.search).p
+      password: queryString.parse(this.props.location.search).p,
     });
     if (this.state.username) {
       this.setState({ loading: false });
@@ -39,7 +39,7 @@ class VerifyAccount extends Component {
           Authtoken.getBaseUrl() +
             `/api/auth/login?u=${this.state.username}&p=${this.state.password}`
         )
-        .then(res => {
+        .then((res) => {
           console.log(res);
 
           if (res.data.success) {
@@ -48,13 +48,13 @@ class VerifyAccount extends Component {
             const saveDatainFormat = {
               username: this.state.username,
               token: res.data.token,
-              role: res.data.roles[0].authority
+              role: res.data.roles[0].authority,
             };
             localStorage.setItem("userInfo", JSON.stringify(saveDatainFormat));
             history.push("/changePassword");
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     }
@@ -65,7 +65,7 @@ class VerifyAccount extends Component {
         style={{
           padding: 24,
           margin: 0,
-          minHeight: 580
+          minHeight: 580,
         }}
       >
         {this.state.loading ? <h6>Loading ...</h6> : null}
