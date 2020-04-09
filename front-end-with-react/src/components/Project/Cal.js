@@ -4,6 +4,8 @@ import axios from "axios";
 import moment from "moment";
 import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
+import { Schedule } from "@syncfusion/ej2-react-schedule";
+import CalCSV from "./CalCSV";
 
 import {
   Inject,
@@ -50,8 +52,9 @@ class Cal extends React.Component {
         },
       })
       .then((res) => {
-        console.log(res.data.result);
+        console.log(("clear", res.data.result));
         this.setState({ jData: extend([], processData(res.data), null, true) });
+        console.log("jDATA", this.state.jData);
       });
   }
 
@@ -72,7 +75,15 @@ class Cal extends React.Component {
   }
   onExportClick() {
     let exportValues = {
-      //fields: ['Date', 'Time', 'Level', 'Home-Team', 'Home-Level', 'Away-Team', 'Away-Level'],
+      fields: [
+        "Date",
+        "Time",
+        "Level",
+        "Home-Team",
+        "Home-Level",
+        "Away-Team",
+        "Away-Level",
+      ],
       exportType: "csv",
     };
     this.scheduleObj.exportToExcel(exportValues);
@@ -97,6 +108,11 @@ class Cal extends React.Component {
         }}
         className="site-layout-background"
       >
+        {/**download csv file */}
+        <div className="toCSV">
+          <CalCSV dataCSV={this.state.jData} />
+        </div>
+
         <ScheduleComponent
           cssClass="excel-export"
           currentView="Month"

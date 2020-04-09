@@ -57,12 +57,12 @@ class UserProfile extends Component {
               {this.state.lastName}
             </Card.Text>
             <Card.Text>
-              <b>School:</b> {this.props.mySchool.name}
+              <b>School:</b> {this.props.mySchool}
               <span> </span>
               {this.state.lastName}
             </Card.Text>
             <Card.Text>
-              <b>District:</b> {this.props.schoolDistrict.districtName}
+              <b>District:</b> {this.props.schoolDistrict}
               <span> </span>
               {this.state.lastName}
             </Card.Text>
