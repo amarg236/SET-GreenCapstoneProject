@@ -38,9 +38,9 @@ public class ControllerAssistant {
 	 * @param d
 	 * @return
 	 */
-	protected UserReference getRoleByLocation(Authentication auth, District d) {
-		return rn.build(findRoleByLocation(auth, d));
-	}
+	//protected UserReference getRoleByLocation(Authentication auth, District d) {
+	//	return rn.build(findRoleByLocation(auth, d));
+	//}
 //	protected UserReference getRoleByTeam(Authentication auth, String team) {
 //		return rn.build(findRoleByTeam(auth, team));
 //	}
@@ -79,7 +79,7 @@ public class ControllerAssistant {
 	 * @param auth
 	 * @return
 	 */
-	private RoleName findRoleByBest(Authentication auth) {
+	private RoleName findRoleByBest(Authentication auth) {//FIXME SECURITY HOLE "BEST ROLE" doesn't always apply to current context, remove this method eventually
 		RoleName rtrn = RoleName.UNFOUND;
 		for(Object o : auth.getAuthorities().toArray()) {//us.fetchByEmail(auth.getName()).getResult().getRoles()) {
 			try {
@@ -111,20 +111,6 @@ public class ControllerAssistant {
 					}
 				}
 			}
-			/*
-				Iterable<Role> schRls = t.getSchool().getRoles();
-				for(Role xsqrd : schRls) {
-					if(x.getRole().hasDistrict()) {
-						if(x.getUser().equals(xsqrd.getUser()) && x.getRole().userLevel() > rtrn.userLevel()) {
-							rtrn = x.getRole();
-						}
-						else if(x.getRole().userLevel()>rtrn.userLevel()) {
-							rtrn = x.getRole();
-						}
-					}
-				}
-			}
-			 */
 			catch(Exception e) {
 				rtrn = findRoleByBest(auth);
 			}

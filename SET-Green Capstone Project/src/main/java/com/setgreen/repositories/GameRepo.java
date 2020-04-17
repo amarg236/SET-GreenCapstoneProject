@@ -50,8 +50,9 @@ public interface GameRepo extends CrudRepository<Game, Long>{
     public List<Game> findAllByAwayAcceptedTrueAndRejectedFalse();
 
 	public List<Game> findByApprovedFalseAndRejectedFalse();
-
-	public List<Game> findByHometeamIdOrAwayteamIdAndApprovedAndRejectedFalse(Long homeId, Long awayId, boolean findAll);
+	
+	@Query("SELECT g FROM Game g WHERE (g.hometeamId = (:hId) OR g.awayteamId = (:aId)) AND g.approved = (:isAprvd) AND g.rejected = (:isRjctd)")
+	public List<Game> getByGameExample(@Param("hId") Long homeId, @Param("aId") Long awayId, @Param("isAprvd") boolean apprvd, @Param("isRjctd") boolean rjctd);
 	
 	@Modifying
     @Query("UPDATE Game g set rejected = TRUE, awayNotification = (:tf), homeNotification = TRUE WHERE g.id = (:id) AND awayAccepted != TRUE")

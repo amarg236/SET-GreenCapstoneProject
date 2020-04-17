@@ -152,10 +152,6 @@ public abstract class UserReference {
 	 * @return responsebody status
 	 */
 	public abstract ResponseBody<EventDay> removeEventDay(EventDay d);
-	//public void downloadSchedule(); //TODO is this a backend task?
-
-//	public ResponseBody<Game> manageSchedule(Game g); //TODO this is an action not a method
-//	public ResponseBody<Iterable<Game>> viewSchedule(); //TODO is this better in public hooks?
 	/** all, Update a user's profile info
 	 * @param u User to modify
 	 * @return responsebody with status

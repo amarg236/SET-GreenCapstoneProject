@@ -149,7 +149,7 @@ public class GameHandler {
 		}
 	}
 	
-	public ResponseBody<List<Game>> getGames(Teams s, boolean findAll) { //FIXME URGENT doesn't care about district. Fix that
+	public ResponseBody<List<Game>> getGames(Teams s, boolean findAll) {
 		try{
 			List<Game> g;
 			if(findAll) {
@@ -165,21 +165,30 @@ public class GameHandler {
 		}
 	}
 	
-	public ResponseBody<List<Game>> getGamesId(Teams s, boolean findAll) {
+	public ResponseBody<List<Game>> getGamesId(Game gm) {
 		try{
+			try {
+				if(gm.getAwayteamId() < 0) {throw new Exception("AwayteamOutOfBounds");} //See if we have an awayteamid
+			}
+			catch(Exception e) {
+				gm.setAwayteamId(gm.getHometeamId()); //if we don't use hometeam id instead, if that's missing we crash
+			}
 			List<Game> g;
-//			if(findAll) {
-//				g = gr.findByTeamAll(tr.findById(s.getId()).get().getTmName());
-//			}
-//			else {
-//				g = gr.findByTeamVerified(tr.findById(s.getId()).get().getTmName());
-//			}
-			g = gr.findByHometeamIdOrAwayteamIdAndApprovedAndRejectedFalse(s.getId(), s.getId(), findAll);
+			System.out.println(gm);
+			g = gr.getByGameExample(gm.getHometeamId(), gm.getAwayteamId(), gm.isApproved(), gm.isRejected());
 			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
 		}
 		catch(Exception e) {
 			return new ResponseBody<List<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games "+e, null);
 		}
+	}
+	
+	public ResponseBody<List<Game>> getGamesId(Teams s, boolean approved, boolean rejected) {
+		Game g = new Game();
+		g.setHometeamId(s.getId());
+		g.setApproved(approved);
+		g.setRejected(rejected);
+		return getGamesId(g);
 	}
 	
 	public ResponseBody<List<Game>> getGamesRejected(Teams s){
@@ -283,4 +292,5 @@ public class GameHandler {
 	public ResponseBody<List<Game>> allGameNoV() {
 		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByApprovedFalse());
 	}
+	
 }

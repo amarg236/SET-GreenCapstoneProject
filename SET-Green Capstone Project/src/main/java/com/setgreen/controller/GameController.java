@@ -39,7 +39,7 @@ public class GameController {
 	}
 	@PostMapping("modify")
 	public ResponseBody<Game> modify(@RequestBody Game g, Authentication auth) {
-		return hlp.getRoleByLocation(auth, gh.getGameById(g.getId()).getHomedistrict()).rescheduleGame(auth, g);
+		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).rescheduleGame(auth, g);
 	}
 	
 	@PostMapping("reject")
@@ -71,6 +71,24 @@ public class GameController {
 		return gh.getGames(d, true);
 	}
 	
+	/*
+	 * get by game template
+	 * game must have:
+	 * 	hometeamId
+	 * 	accepted
+	 * 	approved
+	 * Optional:
+	 * 	awayteamId
+	 */
+	@PostMapping("get/ByGame/matched")
+	public ResponseBody<List<Game>> getSchoolIdMatched(@RequestBody Game g){
+		System.out.println(">>>"+g);
+		return gh.getGamesId(g);
+	}
+	
+	// ==================== get/ByTeamId/* ==================== //
+	// Team requires: teamname                                  //
+	// ======================================================== //
 	@PostMapping("get/ByTeam")
 	public ResponseBody<List<Game>> getSchool(@RequestBody Teams s) {
 		return gh.getGames(s, false);
@@ -80,19 +98,22 @@ public class GameController {
 	public ResponseBody<List<Game>> getSchoolAll(@RequestBody Teams s) {
 		return gh.getGames(s, true);
 	}
+	
+	// ==================== get/ByTeamId/* ==================== //
+	// Team requires: id                                        //
+	// ======================================================== //
 	@PostMapping("get/ByTeamId/all")
 	public ResponseBody<List<Game>> getSchoolId(@RequestBody Teams s) {
-		return gh.getGamesId(s, false);
+		return gh.getGamesId(s, false, false);
 	}
 	
 	@PostMapping("get/ByTeamId")
 	public ResponseBody<List<Game>> getSchoolIdAll(@RequestBody Teams s) {
-		return gh.getGamesId(s, true);
+		return gh.getGamesId(s, true, false);
 	}
-	
 	@PostMapping("get/ByTeamId/rejected")
-	public ResponseBody<List<Game>> getSchoolIdRejected(@RequestBody Teams s) {
-		return gh.getGamesId(s, true);
+	public ResponseBody<List<Game>> getSchoolIdRejected(@RequestBody Teams s) { //All games that are rejected for this team
+		return gh.getGamesId(s, true, false);
 	}
 	@PostMapping("get/ByTeamId/home") //Home games that are awayAccepted
 	public ResponseBody<List<Game>> getTeamIdHome(@RequestBody Teams t){
@@ -118,6 +139,10 @@ public class GameController {
 	public ResponseBody<List<Game>> getTeamIdAwayAdminUnverified(@RequestBody Teams t){
 		return gh.getAwayGamesNoAdminV(t);
 	}
+	
+	// ==================== get/all/* ==================== //
+	// Requires nothing	                                   //
+	// =================================================== //
 	@PostMapping("get/all")
 	public ResponseBody<List<Game>> getAll() {
 		return gh.allGames();
@@ -126,6 +151,10 @@ public class GameController {
 	public ResponseBody<List<Game>> getAllNotApproved(){
 		return gh.allGameNoV();
 	}
+	
+	// ==================== get/BySchool/* ==================== //
+	// Requires nothing	                                   //
+	// =================================================== //
 	@PostMapping("get/BySchool/unverified")
 	public ResponseBody<List<Game>> getAll(@RequestBody School s){
 		return gh.unverifiedGames(s);

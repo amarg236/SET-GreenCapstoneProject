@@ -35,5 +35,13 @@ public interface UserRepo extends JpaRepository<User, Long> {
     @Query("UPDATE User u set verified = (:tf) WHERE u.email = (:who)")
     public void updateVerify(@Param("who") String who, @Param("tf") boolean tf);
 
+    @Modifying
+    @Query("UPDATE User u set firstname = (:fn), lastname = (:ln) WHERE u.id = (:who)")
+	public void updateName( @Param("fn") String firstname, @Param("ln") String lastname, @Param("who") Long id);
+
+    @Modifying
+    @Query("UPDATE User u set verified = (:tf) WHERE u.email = (:who)")
+	public void updateVerify(@Param("who") Long id, @Param("tf") boolean toSet);
+
 
 }

@@ -34,18 +34,6 @@ public class UserAdmin extends UserAssignor{
 	}
 	
 	@Override
-	public ResponseBody<User> verifyUser(User u){
-		return stubbed(u);
-	}
-	
-	@Override
-	public ResponseBody<User> manageUser(User u) {
-		return stubbed(u);//uh.updateProfile(u);
-	}
-	
-	
-	
-	@Override
 	public ResponseBody<District> addDistrict(District d) {
 		return dh.saveDistrict(d);
 	}

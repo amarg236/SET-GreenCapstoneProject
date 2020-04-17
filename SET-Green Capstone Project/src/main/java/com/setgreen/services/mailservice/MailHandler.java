@@ -22,8 +22,8 @@ public class MailHandler {
 		mailSender = ms;
 	}
 	
-	//TODO this method is kinda debug and can send any email message to anyone, that's a bit undesirable for security reasons.
-	public void sendMailMessage(Mail m) {
+	
+	private void sendMailMessage(Mail m) {
 		SimpleMailMessage msg = new SimpleMailMessage();
 		msg.setFrom(EMAIL_SENDER);
 		msg.setTo(m.getSendTo());
@@ -35,8 +35,10 @@ public class MailHandler {
 	public String debugMessage(Mail m) {
 		return "To: " + m.getSendTo() + "\nSubject: " + m.getSubjectLine() + "\nMessage " + m.getEmailContent();
 	}
-	
-	public Mail inviteUser(User toInvite) throws UnsupportedEncodingException {
+	public void inviteUser(User toInvite) throws UnsupportedEncodingException {
+		sendMailMessage(_inviteUser(toInvite));
+	}
+	public Mail _inviteUser(User toInvite) throws UnsupportedEncodingException {
 		Mail m = new Mail();
 		m.setSendTo(toInvite.getEmail());
 		m.setSubjectLine("Invite to schedule games");//XXX BETTER LINK SYSTEM

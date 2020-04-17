@@ -21,4 +21,6 @@ public interface UserService {
 
 	ResponseBody<User> deleteUser(User u);
 
+	ResponseBody<User> verifyUser(User u, boolean toSet);
+
 }

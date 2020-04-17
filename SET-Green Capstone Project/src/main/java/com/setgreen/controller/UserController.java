@@ -69,8 +69,7 @@ public class UserController {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) return errorMap;
 
-         ResponseBody<User> rb = userService.loginAttempt(loginRequest); //TESTME userValid.findByEmail(loginRequest.getUsername());
-         System.out.print(rb);//TODO Debug remove
+         ResponseBody<User> rb = userService.loginAttempt(loginRequest);
          User user = null;
          if(rb.getHttpStatusCode() == HttpStatus.ACCEPTED.value()) {
         	 user = rb.getResult();
@@ -116,7 +115,6 @@ public class UserController {
     	try {
     		//To get around null checking we test to see if the user is not verified.
     		//If the user is not verified or their value is null we throw an error and the catch allows them to log in.
-    		//XXX MAKE verified FALSE BY DEFAULT. Then I wouldn't have to do this hackass solution.
     		if(!usr.getVerified()) {
     			throw new Exception("User Not Verified");
     		}
@@ -150,11 +148,16 @@ public class UserController {
     		u2.setEmail(auth.getName());
     	return userService.updatePassAndVerify(u, u2);
     }
-
+    
+    @PostMapping("edit")
+    public ResponseBody<User> editDetails(@RequestBody User u, Authentication auth){
+    	u.setEmail(auth.getName());
+    	return userService.updateProfile(u);
+    }
 
     /**
      * @param newUser New user object, must not be blank.
-     * @param result for error binding //TODO get Sonom to explain this one better
+     * @param result for error binding
      * @return ResponseEntity that represents the status of the registration attempt
      */
     @PostMapping("createuser")
@@ -166,6 +169,7 @@ public class UserController {
      * @param s Email to search for
      * @return Responsebody with a user by that email if it exists, null otherwise
      */
+    //FIXME Remove or secure
     @PostMapping("find/email")
     public ResponseBody<User> getByEmail(@RequestBody DataObject<String> s) {
     	return userService.fetchByEmail(s.getData());

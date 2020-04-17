@@ -34,13 +34,9 @@ public class UserAssignor extends UserScheduler /*implements UserReference*/  {
 	
 	@Override
 	public ResponseBody<User> verifyUser(User u){
-		return stubbed(u);
+		return uh.verifyUser(u, u.getVerified());
 	}
 	
-	@Override
-	public ResponseBody<User> manageUser(User u) {
-		return uh.updateProfile(u);
-	}
 	@Override
 	public ResponseBody<Long> approveGame(Authentication auth, Long g){
 		return gh.adminVerifyGame(auth, g);

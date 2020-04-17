@@ -58,10 +58,10 @@ public class UserServiceImpl implements UserService {
 			//XXX DEBUG
 			String s = "User Saved";
 			if(Debugger.MODE_ON) {
-				s = m.debugMessage(m.inviteUser(ud));
+				s = m.debugMessage(m._inviteUser(ud));
 			}
 			else {
-				m.sendMailMessage(m.inviteUser(ud));
+				m.inviteUser(ud);
 			}
 			//END DEBUG
 			ud.setPassword(bCryptPasswordEncoder.encode(ud.getPassword()));
@@ -139,7 +139,7 @@ public class UserServiceImpl implements UserService {
 	public ResponseBody<User> updatePassAndVerify(User u, User u2) {
 		ResponseBody<User> rb = updatePassword(u, u2);
 		if(rb.getHttpStatusCode()==HttpStatus.ACCEPTED.value()) {
-			userRepo.updateVerify(u.getEmail(), true);
+			
 		}
 		return rb;
 	}
@@ -154,10 +154,33 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	@Override
+	@Override //XXX TESTME
 	public ResponseBody<User> updateProfile(User u) {
-		// TODO Auto-generated method stub
-		return null;
+		try{
+			if(u.getId().equals(userRepo.findByEmail(u.getEmail()).getId())) {
+				userRepo.updateName(u.getFirstname(), u.getLastname(), u.getId());
+				return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "profile updated", userRepo.findById(u.getId()).get());
+			}
+			throw new Exception("FailToMatchUser");
+		}
+		catch(Exception e) {
+			return new ResponseBody<User>(HttpStatus.BAD_GATEWAY.value(), "Error updating profile: "+e, u);
+		}
+	}
+
+
+	@Override
+	@Transactional
+	public ResponseBody<User> verifyUser(User u, boolean toSet) {
+		try {
+			userRepo.updateVerify(u.getId(), toSet);
+			User anon = userRepo.findById(u.getId()).get();
+			anon.setPassword("-");
+			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "verification updated", anon);
+		}
+		catch(Exception e) {
+			return new ResponseBody<User>(HttpStatus.BAD_GATEWAY.value(), "Error updating profile: "+e, u);
+		}
 	}
 
 }

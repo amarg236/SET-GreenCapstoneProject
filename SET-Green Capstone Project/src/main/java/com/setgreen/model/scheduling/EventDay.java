@@ -21,4 +21,5 @@ public class EventDay {
 	private String dte;
 	@JsonIgnore
 	private String reason;
+	//FIXME Add district
 }

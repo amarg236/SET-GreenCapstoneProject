@@ -48,6 +48,16 @@ public class AdminControlController{
     public ResponseBody<User> removeUser(@RequestBody User u, Authentication auth){
     	return hlp.getRoleByBest(auth).removeUser(u);
     }
+    
+    /*
+     * updates verification status of user
+     * BODY:
+     * 	{"id":long, "verified":bool}
+     */
+    @PostMapping("/user/update/verify") //XXX TEST
+    public ResponseBody<User> updateUserVerify(@RequestBody User u, Authentication auth){
+    	return hlp.getRoleByBest(auth).verifyUser(u);
+    }
     @PostMapping("day/ban") //XXX TEST
     public ResponseBody<EventDay> banDay(@RequestBody EventDay d, Authentication auth) {
     	return hlp.getRoleByBest(auth).addEventDay(d);
