@@ -139,7 +139,7 @@ public class UserServiceImpl implements UserService {
 	public ResponseBody<User> updatePassAndVerify(User u, User u2) {
 		ResponseBody<User> rb = updatePassword(u, u2);
 		if(rb.getHttpStatusCode()==HttpStatus.ACCEPTED.value()) {
-			
+			userRepo.updateVerify(u.getEmail(), true);
 		}
 		return rb;
 	}
@@ -183,4 +183,51 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Transactional
+	@Override
+	public void zeroTempPassword(String email) {
+		userRepo.updateTmpPwd(userRepo.findByEmail(email).getId(),0);
+	}
+	
+	@Transactional
+	@Override
+	public ResponseBody<User> resetForgotPassword(String pw){
+		try {
+			User u = userRepo.findByTmpPwd(pw.hashCode());
+			userRepo.updateTmpPwd(u.getId(), 0);
+			userRepo.updateVerify(u.getId(), false);
+			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "good", u);
+		}
+		catch(Exception e){
+			Debugger.cout("resetForgotPassword triggered an error: " + e + "\n");
+			return new ResponseBody<User>(HttpStatus.BAD_GATEWAY.value(), "Error in zeroTempPassword: "+e, null);
+		}
+	}
+	
+	@Transactional
+	@Override
+	public void forgotPassword(String email) {
+		try {
+    		User u = userRepo.findByEmail(email);
+    		MailHandler mh = new MailHandler(new JavaMailSenderImpl());
+    		String tempPw = mh.genLink(25);
+			try {
+				
+				User v = userRepo.findByTmpPwd(tempPw.hashCode()); //see if someone has our tmpPwd
+				while(v.getVerified() || !v.getVerified()) { //we crash if v doesn't exist.
+					Debugger.cout(">>FORGOT PASSWORD LOOP\n");
+					tempPw = mh.genLink(25);
+					v = userRepo.findByTmpPwd(tempPw.hashCode());
+				}
+			}
+			catch(Exception e){
+				mh.forgotPassword(email, tempPw);
+	    		userRepo.updateTmpPwd(u.getId(), tempPw.hashCode()); //when we crash (because user is not found) we email and update temp password
+			}
+    		
+    	}
+    	catch(Exception e) {
+    		Debugger.cout("forgotPassword error: " + e + "\n");
+    	}
+	}
 }

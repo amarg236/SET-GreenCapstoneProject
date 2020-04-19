@@ -79,7 +79,7 @@ public abstract class UserReference {
 	 * @return responsebody status of request
 	 */
 	public abstract ResponseBody<User> removeUser(User u);
-	/** assignor+, change a user's access level or information
+	/** user+, change your first and last name
 	 * @param u
 	 * @return
 	 */

@@ -17,8 +17,8 @@ public class MailHandler {
 	public MailHandler(JavaMailSenderImpl ms) {
 		ms.setHost("email-smtp.us-east-1.amazonaws.com");
 		ms.setPort(587);
-		ms.setUsername("AKIAXJKN3KOWCWAMOSPU");
-		ms.setPassword("BMWcww0kVhm4N0Kujxr6cf9vVkzQBmxakgSHP7rt4HL1");
+		ms.setUsername(""); //TODO fix emails
+		ms.setPassword("");
 		mailSender = ms;
 	}
 	
@@ -45,11 +45,22 @@ public class MailHandler {
 		m.setEmailContent("You have been invited to join an email scheduling system.\nFollow this link to finish the sign up process: "+HOSTNAME+"api/auth/login?u="+URLEncoder.encode(toInvite.getEmail(), "UTF-8")+"&p="+toInvite.getPassword());
 		return m;
 	}
-	public String genLink() {//XXX MOVE TO UTILITY CLASS. If we have time to do that. Also it should be named "genString()" and have an override of "genString(int lengthOfString)" if I find the time
+	public void forgotPassword(String who, String tempPw) throws UnsupportedEncodingException{
+		Mail m = new Mail();
+		m.setSendTo(who);
+		m.setSubjectLine("Soccer Scheduling Forgotten Password");
+		m.setEmailContent("A request to change your password has been recieved. If you did not send this request, you may safely ignore this email.\n\nClick this link to reset your password:\n"+HOSTNAME+"api/auth/resetPassword"+"&pwd="+tempPw);
+		sendMailMessage(m);
+	}
+	public String genLink() {
+		return genLink(30);
+	}
+	
+	public String genLink(int length) {//XXX MOVE TO UTILITY CLASS. If we have time to do that. Also it should be named "genString()" and have an override of "genString(int lengthOfString)" if I find the time
 		String s = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		s = s+s.toLowerCase()+"0123456789";
 		Random r = new Random();
-		byte[] a = new byte[30];
+		byte[] a = new byte[length];
 		r.nextBytes(a);
 		String k = "";
 		for(byte b : a) {

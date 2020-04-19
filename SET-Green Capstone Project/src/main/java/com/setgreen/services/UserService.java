@@ -23,4 +23,10 @@ public interface UserService {
 
 	ResponseBody<User> verifyUser(User u, boolean toSet);
 
+	void forgotPassword(String email);
+	
+	void zeroTempPassword(String email);
+
+	ResponseBody<User> resetForgotPassword(String pw);
+
 }

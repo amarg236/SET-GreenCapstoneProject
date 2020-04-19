@@ -76,7 +76,10 @@ public class UserController {
          }
         
          if(user == null) return new ResponseEntity<>("Username not found. Please enter correct username.",HttpStatus.BAD_REQUEST);
-            if (user.getVerified()) {//XXX ENCAPSULATE. This is shared here and the other login method, it should be its own method
+         if(user.getTmpPwd() != 0) {
+ 			userService.zeroTempPassword(user.getEmail());
+ 		}
+            if (user.getVerified()) {
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
                         		loginRequest.getUsername(),
@@ -99,18 +102,18 @@ public class UserController {
      * @param result For binding result
      * @return A message saying email is already verified or a JWT token
      */
-    @GetMapping("login") //TODO URGENT add some JS to take to a login page.
+    @GetMapping("login")
     public ResponseEntity<?> firstTimeLogin(@RequestParam(value="u") String u, @RequestParam(value="p") String p) {
     	LoginRequest loginRequest = new LoginRequest();//Hacks on hacks.
     	loginRequest.setPassword(p);
     	loginRequest.setUsername(u);
-    	 ResponseBody<User> rb = userService.loginAttempt(loginRequest); //TESTME userValid.findByEmail(loginRequest.getUsername());
+    	 ResponseBody<User> rb = userService.loginAttempt(loginRequest);
          Debugger.cout(rb.toString());
          User usr = null;
          UserDetails uds = null;
          if(rb.getHttpStatusCode() == HttpStatus.ACCEPTED.value()) {
         	 usr = rb.getResult();
-        	 uds = ud.loadUserByUsername(usr.getEmail());
+        	 uds = ud.loadUserByUsername(usr.getEmail()); //TODO WHY IS THIS HERE?
          }
     	try {
     		//To get around null checking we test to see if the user is not verified.
@@ -120,23 +123,29 @@ public class UserController {
     		}
     	}
     	catch(Exception e) {
-    		Debugger.cout("\n>>"+usr.toString()+"\n>>"+loginRequest.getPassword()+"\n>>>>"+uds.toString());
     		Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                     		loginRequest.getUsername(),
                             loginRequest.getPassword()
                     )
             );
-    		Debugger.cout("/n>>>"+authentication.toString());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
-
+            
             return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, authentication.getAuthorities().toArray()));
     	}
     	return new ResponseEntity<>("Email already verified",HttpStatus.BAD_REQUEST);
     }
-    
+    @PostMapping("forgotPassword") //{"email":someText}
+    public void forgotMePassword(@RequestBody User u) {
+    	userService.forgotPassword(u.getEmail());
+    }
+    @GetMapping("restPassword") // .../resetPassword&pwd=[tempPassword]
+    public ResponseEntity<?> resetPassword(@RequestParam("pwd") String pwd){
+	     ResponseBody<User> rb = userService.resetForgotPassword(pwd);
+	     return firstTimeLogin(rb.getResult().getEmail(), rb.getResult().getPassword());
+    }
     /**
      * @param u User object with the new password already set
      * @return ResponseEntity

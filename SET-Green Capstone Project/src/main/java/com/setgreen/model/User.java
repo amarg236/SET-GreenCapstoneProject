@@ -58,7 +58,9 @@ public class User  {
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date update_At;
 
-
+    //Should be unique
+    private int tmpPwd;
+    
     @OneToMany(cascade=CascadeType.ALL)
     private Set<Role> roles = new HashSet<>();
     private Boolean Verified;

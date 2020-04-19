@@ -103,7 +103,7 @@ public class UserScheduler extends UserUnfound {
 	}
 	@Override
 	public ResponseBody<User> updateProfile(User u) {
-		return stubbed(u);//uh.updateProfile(u);
+		return uh.updateProfile(u);
 	}
 
 	@Override
