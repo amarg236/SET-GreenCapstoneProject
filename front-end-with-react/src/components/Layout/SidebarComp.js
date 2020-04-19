@@ -6,6 +6,7 @@ import UserSidebar from "./RoleBasedSidebar/UserSiderBar";
 import AssignorSidebar from "./RoleBasedSidebar/AssignorSidebar";
 import AdminSidebar from "./RoleBasedSidebar/AdminSidebar";
 import { toggleAction } from "../../actions/toggleAction";
+import { isMobile } from "react-device-detect";
 import device from "../../Utility/media";
 import { HomeOutlined, LogoutOutlined } from "@ant-design/icons";
 const { Sider } = Layout;
@@ -17,6 +18,10 @@ class SidebarComp extends Component {
   };
 
   componentDidMount() {
+    if (isMobile) {
+      console.log("This is mobile");
+      this.setState({ collapsed: true, collapsedWidth: 0 });
+    }
     this.checkWidth();
     window.addEventListener("resize", this.checkWidth());
   }
@@ -29,7 +34,6 @@ class SidebarComp extends Component {
     console.log(collapsed);
     this.setState({ collapsed });
   };
-  // whileMobileView = () => {};
 
   checkWidth = () => () => {
     if (window.matchMedia(device.mobileL).matches) {
@@ -78,10 +82,6 @@ class SidebarComp extends Component {
         );
     }
   }
-  // toggle = () => {
-  //   this.props.toggle();
-  //   console.log(this.props.toggelState);
-  // };
 
   render() {
     return (
@@ -93,25 +93,7 @@ class SidebarComp extends Component {
         collapsible
         collapsed={this.state.collapsed}
         onCollapse={this.onCollapse}
-        // zeroWidthTriggerStyle={}
-        // breakpoint="md"
-        // collapsible
-        // collapsed={this.state.collapsed}
         collapsedWidth={this.state.collapsedWidth}
-        // onBreakpoint={broken => {
-        //   // return `collapsedWidth="0"`;
-        //   // console.log(broken);
-        //   // if (broken == true) {
-        //   //   this.props.toggle();
-        //   // } else if (broken == false) {
-        //   //   this.props.toggle();
-        //   // console.log(broken);
-        //   // }
-        // }}
-        // onCollapse={(collapsed, type) => {
-        //   console.log(collapsed, type);
-        // }}
-        // collapsed={this.props.toggelState}
       >
         <div className="logo">SET GREEN</div>
         {this.renderSwitch(this.props.role)}

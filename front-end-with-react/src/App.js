@@ -34,6 +34,7 @@ import ApprovedGame from "./components/Project/ApprovedGame";
 import ShowAllUser from "./components/ManageUser/ShowAllUser";
 import RequestedGames from "./components/Project/RequestedGame";
 import RejectedGames from "./components/Project/RejectedGames";
+import TestCreateGane from "./components/Project/TestCreateGame";
 
 class App extends React.Component {
   render() {
@@ -71,7 +72,11 @@ class App extends React.Component {
                 component={ChangePassword}
               />
               <ProtectedRoute exact path="/addSchool" component={AddSchool} />
-              <ProtectedRoute exact path="/createGame" component={CreateGame} />
+              <ProtectedRoute
+                exact
+                path="/createGame"
+                component={TestCreateGane}
+              />
               <ProtectedRoute
                 exact
                 path="/acceptedGame"

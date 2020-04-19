@@ -12,7 +12,7 @@ import device from "../../Utility/media";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  UserOutlined
+  UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Row, Col, Button, Avatar, Dropdown } from "antd";
 
@@ -22,7 +22,7 @@ class HeaderRoot extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: this.props.toggelState
+      collapsed: this.props.toggelState,
       // showFoldOut: false
     };
   }
@@ -111,16 +111,16 @@ class HeaderRoot extends Component {
     );
   }
 }
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
     username: state.userReducer.username,
-    toggelState: state.userReducer.sidebarCollapased
+    toggelState: state.userReducer.sidebarCollapased,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    toggle: () => dispatch(toggleAction())
+    toggle: () => dispatch(toggleAction()),
   };
 };
 export default connect(

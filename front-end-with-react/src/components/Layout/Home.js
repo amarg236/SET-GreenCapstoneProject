@@ -15,15 +15,13 @@ class Home extends Component {
   }
 
   render() {
-    // return <Cal />;
-    //we are gonna put sliders and other contents in front page
     return (
       <Content
         className="site-layout-background"
         style={{
           padding: 24,
           margin: 0,
-          minHeight: 580
+          minHeight: 580,
         }}
       >
         <Carousel autoplay>
