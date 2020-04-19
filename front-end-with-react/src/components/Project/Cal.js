@@ -4,6 +4,7 @@ import axios from "axios";
 import moment from "moment";
 import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
+import { isMobile } from "react-device-detect";
 
 import {
   Inject,
@@ -37,10 +38,17 @@ class Cal extends React.Component {
     super(props);
     this.state = {
       jData: [],
+      currentView: "Month",
     };
   }
 
   componentDidMount() {
+    // Changing the view for mobile when opened with mobile
+    // Changin to weekly view for mobile
+    if (isMobile) {
+      this.setState({ currentView: "Week" });
+    }
+
     const emptyBody = {};
     axios
       .post(Authtoken.getBaseUrl() + "/api/public/get/game/json", emptyBody, {
@@ -99,7 +107,7 @@ class Cal extends React.Component {
       >
         <ScheduleComponent
           cssClass="excel-export"
-          currentView="Month"
+          currentView={this.state.currentView}
           eventSettings={{
             dataSource: this.state.jData,
             template: this.eventTemplate.bind(this),
