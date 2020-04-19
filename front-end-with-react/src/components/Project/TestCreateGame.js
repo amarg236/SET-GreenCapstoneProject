@@ -176,14 +176,14 @@ class TestCreateGame extends Component {
     const gameObject = {
       time: moment(gameStart).format("YYYY-MM-DD HH:mm"),
 
-      awayteam: this.state.againstTeam,
+      awayteam: this.state.againstSchool.concat(" ", this.state.againstTeam),
       awayteamId: this.state.awayteamId,
       awaydistrict: {
         districtName: this.state.againstTeamDistrict,
         id: this.state.againstTeamDistrictId,
       },
       duration: gameDuration,
-      hometeam: this.state.homeTeam,
+      hometeam: this.props.mySchool.name.concat(" ", this.state.homeTeam),
       hometeamId: this.state.homeTeamId,
       homedistrict: {
         districtName: this.props.schoolDistrict.districtName,
@@ -395,6 +395,7 @@ class TestCreateGame extends Component {
                 onChange={this.onChangeGameTime}
               />
             </Form.Item>
+
             <Form.Item name="location" label="Location" rules={[{}]}>
               <Input
                 onChange={this.onChangeGameLocation}
@@ -438,6 +439,7 @@ class TestCreateGame extends Component {
                 ))}
               </Select>
             </Form.Item>
+
             <Form.Item label="Select Team" name="awayTeam">
               <Select
                 size="large"
@@ -457,6 +459,7 @@ class TestCreateGame extends Component {
                 ))}
               </Select>
             </Form.Item>
+
             <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
               <Button
                 type="primary"

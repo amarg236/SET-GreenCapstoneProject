@@ -176,14 +176,14 @@ class CreateGame extends Component {
     const gameObject = {
       time: moment(gameStart).format("YYYY-MM-DD HH:mm"),
 
-      awayteam: this.state.againstTeam,
+      awayteam: this.state.againstSchool.concat(" ", this.state.againstTeam),
       awayteamId: this.state.awayteamId,
       awaydistrict: {
         districtName: this.state.againstTeamDistrict,
         id: this.state.againstTeamDistrictId,
       },
       duration: gameDuration,
-      hometeam: this.state.homeTeam,
+      hometeam: this.props.mySchool.name.concat(" ", this.state.homeTeam),
       hometeamId: this.state.homeTeamId,
       homedistrict: {
         districtName: this.props.schoolDistrict.districtName,
