@@ -112,53 +112,48 @@ class Cal extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>
-          <CalCSV />
-        </div>
-        <Content
-          style={{
-            padding: "10px",
-            margin: 0,
-            minHeight: 580,
-          }}
-          className="site-layout-background"
-        >
-          {/* *download csv file
+      <Content
+        style={{
+          padding: "10px",
+          margin: 0,
+          minHeight: 580,
+        }}
+        className="site-layout-background"
+      >
+        {/* *download csv file
         <div className="toCSV">
           <CalCSV dataCSV={this.state.jData} />
         </div> */}
 
-          <ScheduleComponent
-            cssClass="excel-export"
-            currentView="Month"
-            eventSettings={{
-              dataSource: this.state.jData,
-              template: this.eventTemplate.bind(this),
-            }}
-            id="schedule"
-            ref={(t) => (this.scheduleObj = t)}
-            actionBegin={this.onActionBegin.bind(this)}
-            readonly={true}
-            style={{
-              maxHeight: "55%",
-              minHeight: "100%",
-              minWidth: "46vh",
-              marginLeft: "0",
-            }}
-          >
-            {
-              <ViewsDirective>
-                <ViewDirective option="Month" />
-                <ViewDirective option="Week" />
-                <ViewDirective option="Day" />
-              </ViewsDirective>
-            }
+        <ScheduleComponent
+          cssClass="excel-export"
+          currentView="Month"
+          eventSettings={{
+            dataSource: this.state.jData,
+            template: this.eventTemplate.bind(this),
+          }}
+          id="schedule"
+          ref={(t) => (this.scheduleObj = t)}
+          actionBegin={this.onActionBegin.bind(this)}
+          readonly={true}
+          style={{
+            maxHeight: "55%",
+            minHeight: "100%",
+            minWidth: "46vh",
+            marginLeft: "0",
+          }}
+        >
+          {
+            <ViewsDirective>
+              <ViewDirective option="Month" />
+              <ViewDirective option="Week" />
+              <ViewDirective option="Day" />
+            </ViewsDirective>
+          }
 
-            <Inject services={[Day, Week, Month]} />
-          </ScheduleComponent>
-        </Content>
-      </div>
+          <Inject services={[Day, Week, Month]} />
+        </ScheduleComponent>
+      </Content>
     );
   }
 }
