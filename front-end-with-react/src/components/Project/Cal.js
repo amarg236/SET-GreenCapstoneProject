@@ -12,18 +12,16 @@ import {
   ScheduleComponent,
   Day,
   Week,
-  ExcelExport,
   ViewsDirective,
   Month,
   ViewDirective,
 } from "@syncfusion/ej2-react-schedule";
+
 import { extend } from "@syncfusion/ej2-base";
 import { Layout } from "antd";
 const { Content } = Layout;
 
 function processData(rawEvents) {
-  console.log("all data");
-  console.log(rawEvents.result);
   return rawEvents.result.map((event) => ({
     Id: event.id,
     StartTime: moment(event.time, "YYYY-MM-DD HH:mm").toISOString(),
@@ -34,6 +32,20 @@ function processData(rawEvents) {
     Location: event.location,
   }));
 }
+
+// function formatData(response) {
+//   const result = response.result;
+//   let i;
+
+//   for( i=0, i < result.length, i++)
+//   {
+
+//   }
+
+//   console.log("formatDate", justDate);
+//   return "";
+// }
+
 class Cal extends React.Component {
   constructor(props) {
     super(props);
@@ -52,13 +64,12 @@ class Cal extends React.Component {
         },
       })
       .then((res) => {
-        console.log(("clear", res.data.result));
         this.setState({ jData: extend([], processData(res.data), null, true) });
-        console.log("jDATA", this.state.jData);
+        // for formatting csv
+        // this.setState({ fData: extend([], formatData(res.data), null, true) });
+        // console.log("jDATA", this.state.jData);
       });
   }
-
-  async fetchData() {}
 
   onActionBegin(args) {
     if (args.requestType === "toolbarItemRendering") {
@@ -73,6 +84,7 @@ class Cal extends React.Component {
       args.items.push(exportItem);
     }
   }
+
   onExportClick() {
     let exportValues = {
       fields: [
@@ -100,48 +112,53 @@ class Cal extends React.Component {
 
   render() {
     return (
-      <Content
-        style={{
-          padding: "10px",
-          margin: 0,
-          minHeight: 580,
-        }}
-        className="site-layout-background"
-      >
-        {/**download csv file */}
+      <div>
+        <div>
+          <CalCSV />
+        </div>
+        <Content
+          style={{
+            padding: "10px",
+            margin: 0,
+            minHeight: 580,
+          }}
+          className="site-layout-background"
+        >
+          {/* *download csv file
         <div className="toCSV">
           <CalCSV dataCSV={this.state.jData} />
-        </div>
+        </div> */}
 
-        <ScheduleComponent
-          cssClass="excel-export"
-          currentView="Month"
-          eventSettings={{
-            dataSource: this.state.jData,
-            template: this.eventTemplate.bind(this),
-          }}
-          id="schedule"
-          ref={(t) => (this.scheduleObj = t)}
-          actionBegin={this.onActionBegin.bind(this)}
-          readonly={true}
-          style={{
-            maxHeight: "55%",
-            minHeight: "100%",
-            minWidth: "46vh",
-            marginLeft: "0",
-          }}
-        >
-          {
-            <ViewsDirective>
-              <ViewDirective option="Month" />
-              <ViewDirective option="Week" />
-              <ViewDirective option="Day" />
-            </ViewsDirective>
-          }
+          <ScheduleComponent
+            cssClass="excel-export"
+            currentView="Month"
+            eventSettings={{
+              dataSource: this.state.jData,
+              template: this.eventTemplate.bind(this),
+            }}
+            id="schedule"
+            ref={(t) => (this.scheduleObj = t)}
+            actionBegin={this.onActionBegin.bind(this)}
+            readonly={true}
+            style={{
+              maxHeight: "55%",
+              minHeight: "100%",
+              minWidth: "46vh",
+              marginLeft: "0",
+            }}
+          >
+            {
+              <ViewsDirective>
+                <ViewDirective option="Month" />
+                <ViewDirective option="Week" />
+                <ViewDirective option="Day" />
+              </ViewsDirective>
+            }
 
-          <Inject services={[Day, Week, Month, ExcelExport]} />
-        </ScheduleComponent>
-      </Content>
+            <Inject services={[Day, Week, Month]} />
+          </ScheduleComponent>
+        </Content>
+      </div>
     );
   }
 }

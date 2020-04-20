@@ -7,7 +7,12 @@
   width: 100%;
 }
 
-.toCSV {
-  text-align: center;
-  padding: 15px;
+.none {
+  text-decoration: none;
+  color: gainsboro;
+}
+
+.none:hover {
+  text-decoration: none;
+  color: aliceblue;
 }
