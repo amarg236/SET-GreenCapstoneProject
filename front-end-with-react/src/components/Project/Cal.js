@@ -31,6 +31,8 @@ function processData(rawEvents) {
       .toISOString(),
     Subject: `${event.hometeam} vs ${event.awayteam}`,
     Location: event.location,
+    PartialApproved: event.awayAccepted,
+    FullyApproved: event.approved,
   }));
 }
 
@@ -65,13 +67,15 @@ class Cal extends React.Component {
 
     const emptyBody = {};
     axios
-      .post(Authtoken.getBaseUrl() + "/api/public/get/game/json", emptyBody, {
+      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyBody, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
         },
       })
       .then((res) => {
+        console.log("this is response");
+        console.log(res);
         this.setState({ jData: extend([], processData(res.data), null, true) });
         // for formatting csv
         // this.setState({ fData: extend([], formatData(res.data), null, true) });
@@ -110,9 +114,18 @@ class Cal extends React.Component {
   }
 
   eventTemplate(props) {
-    // if(approved){
-    return <div className="template-wrap"> {props.Subject} </div>;
-    //  }
+    console.log(props);
+    if (props.PartialApproved && props.FullyApproved) {
+      return <div className="template-wrap"> {props.Subject} </div>;
+    } else if (props.PartialApproved || props.FullyApproved);
+    {
+      return (
+        <div style={{ backgroundColor: "orange" }} className="template-wrap">
+          {" "}
+          {props.Subject}{" "}
+        </div>
+      );
+    }
   }
 
   // Links that could be helpful
