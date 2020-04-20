@@ -5,24 +5,24 @@ import moment from "moment";
 import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import { isMobile } from "react-device-detect";
+import { Schedule } from "@syncfusion/ej2-react-schedule";
+import CalCSV from "./CalCSV";
 
 import {
   Inject,
   ScheduleComponent,
   Day,
   Week,
-  ExcelExport,
   ViewsDirective,
   Month,
   ViewDirective,
 } from "@syncfusion/ej2-react-schedule";
+
 import { extend } from "@syncfusion/ej2-base";
 import { Layout } from "antd";
 const { Content } = Layout;
 
 function processData(rawEvents) {
-  console.log("all data");
-  console.log(rawEvents.result);
   return rawEvents.result.map((event) => ({
     Id: event.id,
     StartTime: moment(event.time, "YYYY-MM-DD HH:mm").toISOString(),
@@ -33,6 +33,20 @@ function processData(rawEvents) {
     Location: event.location,
   }));
 }
+
+// function formatData(response) {
+//   const result = response.result;
+//   let i;
+
+//   for( i=0, i < result.length, i++)
+//   {
+
+//   }
+
+//   console.log("formatDate", justDate);
+//   return "";
+// }
+
 class Cal extends React.Component {
   constructor(props) {
     super(props);
@@ -58,12 +72,12 @@ class Cal extends React.Component {
         },
       })
       .then((res) => {
-        console.log(res.data.result);
         this.setState({ jData: extend([], processData(res.data), null, true) });
+        // for formatting csv
+        // this.setState({ fData: extend([], formatData(res.data), null, true) });
+        // console.log("jDATA", this.state.jData);
       });
   }
-
-  async fetchData() {}
 
   onActionBegin(args) {
     if (args.requestType === "toolbarItemRendering") {
@@ -78,9 +92,18 @@ class Cal extends React.Component {
       args.items.push(exportItem);
     }
   }
+
   onExportClick() {
     let exportValues = {
-      //fields: ['Date', 'Time', 'Level', 'Home-Team', 'Home-Level', 'Away-Team', 'Away-Level'],
+      fields: [
+        "Date",
+        "Time",
+        "Level",
+        "Home-Team",
+        "Home-Level",
+        "Away-Team",
+        "Away-Level",
+      ],
       exportType: "csv",
     };
     this.scheduleObj.exportToExcel(exportValues);
@@ -105,6 +128,11 @@ class Cal extends React.Component {
         }}
         className="site-layout-background"
       >
+        {/* *download csv file
+        <div className="toCSV">
+          <CalCSV dataCSV={this.state.jData} />
+        </div> */}
+
         <ScheduleComponent
           cssClass="excel-export"
           currentView={this.state.currentView}
@@ -131,7 +159,7 @@ class Cal extends React.Component {
             </ViewsDirective>
           }
 
-          <Inject services={[Day, Week, Month, ExcelExport]} />
+          <Inject services={[Day, Week, Month]} />
         </ScheduleComponent>
       </Content>
     );

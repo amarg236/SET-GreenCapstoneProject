@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import { Menu, Layout } from "antd";
 import history from "../../../Utility/history";
+
+//components
+import CalCSV from "../../Project/CalCSV";
 import Dashboard from "../../Layout/LoggedInUser";
 
 import {
   DashboardOutlined,
   FileAddOutlined,
+  DownloadOutlined,
   EyeOutlined,
   LogoutOutlined,
   SettingOutlined,
@@ -113,6 +117,15 @@ class UserSidebar extends Component {
             <span>Approved Game</span>
           </Menu.Item>
         </SubMenu>
+
+        <Menu.Item key="export">
+          <span>
+            <DownloadOutlined />
+          </span>
+          <span>
+            <CalCSV />
+          </span>
+        </Menu.Item>
 
         <Menu.Item key="setting">
           <span>

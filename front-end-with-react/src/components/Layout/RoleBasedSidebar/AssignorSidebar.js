@@ -3,12 +3,16 @@ import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import history from "../../../Utility/history";
 import { Menu, Layout } from "antd";
+
+//component
+import CalCSV from "../../Project/CalCSV";
 import AddSchool from "../../ManageTeam/AddSchool";
 
 import {
   DashboardOutlined,
   FileAddOutlined,
   EyeOutlined,
+  DownloadOutlined,
   SettingOutlined,
   LogoutOutlined,
   TeamOutlined,
@@ -136,6 +140,16 @@ class AssignorSidebar extends Component {
             <span>Invite Assignor</span>
           </Menu.Item>
         </SubMenu>
+
+        <Menu.Item key="export">
+          <span>
+            <DownloadOutlined />
+          </span>
+          <span>
+            <CalCSV />
+          </span>
+        </Menu.Item>
+
         <Menu.Item key="setting">
           <span>
             <SettingOutlined />

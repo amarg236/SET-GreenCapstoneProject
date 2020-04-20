@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import LoginComp from "../../components/Project/LoginComp";
 import Logout from "../../components/Project/Logout";
 import { toggleAction } from "../../actions/toggleAction";
-import MediaQuery from "react-responsive";
+// import MediaQuery from "react-responsive";
 import device from "../../Utility/media";
 
 import {

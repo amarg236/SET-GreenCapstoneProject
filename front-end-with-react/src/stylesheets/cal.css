@@ -1,8 +1,18 @@
-.e-schedule .e-appointment-details{
-    padding: 0 !important;
+.e-schedule .e-appointment-details {
+  padding: 0 !important;
 }
 
-.template-wrap{
-    background: green;
-    width: 100%;
+.template-wrap {
+  background: green;
+  width: 100%;
+}
+
+.none {
+  text-decoration: none;
+  color: gainsboro;
+}
+
+.none:hover {
+  text-decoration: none;
+  color: aliceblue;
 }

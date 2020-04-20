@@ -8,7 +8,7 @@ const initialState = {
   role: JSON.parse(localStorage.getItem("userInfo"))?.role,
   mySchool: JSON.parse(localStorage.getItem("homeSchool"))?.currenthomeSchool,
   schoolDistrict: JSON.parse(localStorage.getItem("homeSchool"))
-    ?.currenthomeDistrict
+    ?.currenthomeDistrict,
   // mySchool: [],
   // schoolDistrict: []
 };
@@ -19,28 +19,28 @@ const userReducer = (state = initialState, action) => {
       return {
         username: action.username,
         message: action.message,
-        role: action.role
+        role: action.role,
       };
     case "LOGIN_ERROR":
       return {
-        message: action.message
+        message: action.message,
       };
     case "LOG_OFF":
       return {
         username: "",
         token: "",
-        role: ""
+        role: "",
       };
     case "SIDEBAR_TOGGLE":
       return {
         ...state,
-        sidebarCollapased: !state.sidebarCollapased
+        sidebarCollapased: !state.sidebarCollapased,
       };
     case "SCHOOL_AND_DISTRICT":
       return {
         ...state,
         mySchool: action.school,
-        schoolDistrict: action.district
+        schoolDistrict: action.district,
       };
     default:
       return state;
