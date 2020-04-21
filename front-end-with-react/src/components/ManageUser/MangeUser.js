@@ -49,7 +49,7 @@ class ManageUser extends Component {
     console.log("this is my id");
     console.log(id);
     const emptyObj = {
-      id: id,
+      id,
     };
 
     axios
@@ -92,9 +92,7 @@ class ManageUser extends Component {
               <PageHeader
                 key={id}
                 className="site-page-header-responsive"
-                // onBack={() => window.history.back()}
                 title={firstname.concat(" ").concat(lastname)}
-                // subTitle={time}
                 extra={[
                   <Button key="1" onClick={() => this.deleteUser(id)}>
                     Delete User

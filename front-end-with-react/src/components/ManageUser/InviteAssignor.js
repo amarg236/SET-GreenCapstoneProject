@@ -198,22 +198,6 @@ class InviteAssignor extends Component {
               />
             </Form.Item>
 
-            <Form.Item
-              name="password"
-              label="Password"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-            >
-              <Input.Password
-                onChange={this.onChangePassword}
-                value={this.state.password}
-                placeholder="Enter Password"
-              />
-            </Form.Item>
-
             <Form.Item label="Role" size="large" name="role">
               <Select
                 defaultValue="Select Role"
@@ -221,8 +205,6 @@ class InviteAssignor extends Component {
                 value={this.state.role}
                 style={{ width: "450px", minWidth: "auto" }}
               >
-                <Select.Option value="USER">USER</Select.Option>
-
                 <Select.Option value="ASSIGNOR">ASSIGNOR</Select.Option>
               </Select>
             </Form.Item>

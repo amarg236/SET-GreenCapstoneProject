@@ -35,6 +35,7 @@ import ShowAllUser from "./components/ManageUser/ShowAllUser";
 import RequestedGames from "./components/Project/RequestedGame";
 import RejectedGames from "./components/Project/RejectedGames";
 import TestCreateGane from "./components/Project/TestCreateGame";
+import Error404 from "./components/Layout/Error";
 
 class App extends React.Component {
   render() {
@@ -118,7 +119,7 @@ class App extends React.Component {
                 component={UserProfile}
               />
               <ProtectedRoute exact path="/calander" component={Cal} />
-              <Route path="*" component={() => "404 NOT FOUND"} />
+              <Route path="*" component={Error404} />
             </Switch>
           </Layout>
         </Layout>
