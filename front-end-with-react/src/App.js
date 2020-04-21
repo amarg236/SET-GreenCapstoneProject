@@ -36,6 +36,7 @@ import RequestedGames from "./components/Project/RequestedGame";
 import RejectedGames from "./components/Project/RejectedGames";
 import TestCreateGane from "./components/Project/TestCreateGame";
 import Error404 from "./components/Layout/Error";
+import ExportCSV from "./components/Project/ExportToCSV";
 
 class App extends React.Component {
   render() {
@@ -118,6 +119,7 @@ class App extends React.Component {
                 path="/userProfile"
                 component={UserProfile}
               />
+              <ProtectedRoute exact path="/exportCSV" component={ExportCSV} />
               <ProtectedRoute exact path="/calander" component={Cal} />
               <Route path="*" component={Error404} />
             </Switch>

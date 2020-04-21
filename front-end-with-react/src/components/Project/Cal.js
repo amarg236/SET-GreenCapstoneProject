@@ -6,7 +6,6 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import { isMobile } from "react-device-detect";
 import { Schedule } from "@syncfusion/ej2-react-schedule";
-import CalCSV from "./CalCSV";
 
 import {
   Inject,
@@ -35,19 +34,6 @@ function processData(rawEvents) {
     FullyApproved: event.approved,
   }));
 }
-
-// function formatData(response) {
-//   const result = response.result;
-//   let i;
-
-//   for( i=0, i < result.length, i++)
-//   {
-
-//   }
-
-//   console.log("formatDate", justDate);
-//   return "";
-// }
 
 class Cal extends React.Component {
   constructor(props) {
@@ -141,11 +127,6 @@ class Cal extends React.Component {
         }}
         className="site-layout-background"
       >
-        {/* *download csv file
-        <div className="toCSV">
-          <CalCSV dataCSV={this.state.jData} />
-        </div> */}
-
         <ScheduleComponent
           cssClass="excel-export"
           currentView={this.state.currentView}
