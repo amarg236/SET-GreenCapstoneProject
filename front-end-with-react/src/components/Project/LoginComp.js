@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import AuthToken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import { loginAction } from "../../actions/loginAction";
-import { Modal, Form, Input, Button, Checkbox } from "antd";
+import { Modal, Form, Input, Button, Checkbox, message } from "antd";
 
 class LoginComp extends React.Component {
   constructor(props) {
@@ -29,10 +29,13 @@ class LoginComp extends React.Component {
 
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
   wrongPassword = () => {
-    Modal.error({
-      title: "Wrong Credentials",
-      content: "The credentials you have entered is worng. Please try again.",
-    });
+    message.error(
+      "The credentials you have entered is worng. Please try again."
+    );
+    // Modal.error({
+    //   title: "Wrong Credentials",
+    //   content: "The credentials you have entered is worng. Please try again.",
+    // });
   };
 
   render() {
