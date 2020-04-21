@@ -28,7 +28,10 @@ public class TestingController {
     private UserService us;
     @GetMapping("showUser")
     public List<User> showusers(){
-        return viewUserService.ViewUsers();
+    	if(Debugger.MODE_ON) {
+    		return viewUserService.ViewUsers();
+    	}
+    	return null;
     }
     
     @PostMapping("makeUser")

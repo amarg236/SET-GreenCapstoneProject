@@ -4,6 +4,7 @@ import com.setgreen.model.ResponseBody;
 import com.setgreen.model.SignUpForm;
 import com.setgreen.model.User;
 import com.setgreen.payload.LoginRequest;
+import com.setgreen.payload.PasswordChangeRequest;
 
 public interface UserService {
 
@@ -27,6 +28,8 @@ public interface UserService {
 	
 	void zeroTempPassword(String email);
 
-	ResponseBody<User> resetForgotPassword(String pw);
+	ResponseBody<User> resetForgotPassword(PasswordChangeRequest p);
+
+	ResponseBody<User> getByTmpPwd(String pwd);
 
 }

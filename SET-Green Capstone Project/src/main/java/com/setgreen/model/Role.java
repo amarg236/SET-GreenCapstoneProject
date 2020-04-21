@@ -18,7 +18,7 @@ public class Role {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private School school;
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;

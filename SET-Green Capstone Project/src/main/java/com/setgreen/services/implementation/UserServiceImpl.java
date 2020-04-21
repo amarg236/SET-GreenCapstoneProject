@@ -14,6 +14,7 @@ import com.setgreen.model.Role;
 import com.setgreen.model.SignUpForm;
 import com.setgreen.model.User;
 import com.setgreen.payload.LoginRequest;
+import com.setgreen.payload.PasswordChangeRequest;
 import com.setgreen.repositories.RoleRepo;
 import com.setgreen.repositories.SchoolRepo;
 import com.setgreen.repositories.UserRepo;
@@ -67,6 +68,9 @@ public class UserServiceImpl implements UserService {
 			ud.setPassword(bCryptPasswordEncoder.encode(ud.getPassword()));
 			userRepo.save(ud);
 			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), s, ud);
+		}
+		catch(org.springframework.mail.MailSendException mse) {
+			return new ResponseBody<User>(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Email address does not exist", new User());
 		}
 		catch(Exception e) {
 			return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "Error creating user: " + e.getLocalizedMessage(), new User());
@@ -189,13 +193,35 @@ public class UserServiceImpl implements UserService {
 		userRepo.updateTmpPwd(userRepo.findByEmail(email).getId(),0);
 	}
 	
-	@Transactional
-	@Override
-	public ResponseBody<User> resetForgotPassword(String pw){
+	public ResponseBody<User> getByTmpPwd(String pw){
 		try {
 			User u = userRepo.findByTmpPwd(pw.hashCode());
-			userRepo.updateTmpPwd(u.getId(), 0);
-			userRepo.updateVerify(u.getId(), false);
+			if(u.getTmpPwd() !=0) {
+				return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "user", u);
+			}
+			else {
+				throw new Exception("NoTempPassword");
+			}
+		}
+		catch(Exception e) {
+			return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), new User());
+		}
+		
+	}
+	
+	@Transactional
+	@Override
+	public ResponseBody<User> resetForgotPassword(PasswordChangeRequest p){
+		try {
+			User u = userRepo.findByTmpPwd(p.getAccessKey().hashCode());
+			if(u.getTmpPwd() != 0) {
+				userRepo.updateTmpPwd(u.getId(), 0);
+				userRepo.updatePassword(u.getEmail(), p.getNewPassword());
+			}
+			else {
+				throw new Exception("NonRequestedPasswordResetException");
+			}
+			u.setPassword("-");
 			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "good", u);
 		}
 		catch(Exception e){
@@ -209,6 +235,7 @@ public class UserServiceImpl implements UserService {
 	public void forgotPassword(String email) {
 		try {
     		User u = userRepo.findByEmail(email);
+    		if(u.getVerified());//null test
     		MailHandler mh = new MailHandler(new JavaMailSenderImpl());
     		String tempPw = mh.genLink(25);
 			try {

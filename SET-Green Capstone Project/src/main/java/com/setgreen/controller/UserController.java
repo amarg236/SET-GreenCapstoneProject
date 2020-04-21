@@ -26,6 +26,7 @@ import com.setgreen.model.SignUpForm;
 import com.setgreen.model.User;
 import com.setgreen.payload.JWTLoginSuccessResponse;
 import com.setgreen.payload.LoginRequest;
+import com.setgreen.payload.PasswordChangeRequest;
 import com.setgreen.security.JwtTokenProvider;
 import com.setgreen.services.MapValidationErrorService;
 import com.setgreen.services.UserService;
@@ -141,10 +142,17 @@ public class UserController {
     public void forgotMePassword(@RequestBody User u) {
     	userService.forgotPassword(u.getEmail());
     }
-    @GetMapping("restPassword") // .../resetPassword&pwd=[tempPassword]
-    public ResponseEntity<?> resetPassword(@RequestParam("pwd") String pwd){
-	     ResponseBody<User> rb = userService.resetForgotPassword(pwd);
-	     return firstTimeLogin(rb.getResult().getEmail(), rb.getResult().getPassword());
+    @PostMapping("resetPassword") //{"newPassword"="new account password", "accessKey"="pwd from url"}
+    public ResponseBody<User> resetPassword(@RequestBody PasswordChangeRequest p){
+    	return userService.resetForgotPassword(p);
+    }
+    @GetMapping("resetPassword") // .../resetPassword?pwd=[tempPassword]
+    public ResponseBody<User> resetPassword(@RequestParam("pwd") String pwd){
+	     ResponseBody<User> rb = userService.getByTmpPwd(pwd);
+	     User u = rb.getResult();
+	     u.setPassword("-");
+	     rb.setResult(u);
+	     return rb;
     }
     /**
      * @param u User object with the new password already set
