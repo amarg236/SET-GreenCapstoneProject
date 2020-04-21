@@ -74,7 +74,7 @@ class LoginComp extends React.Component {
           initialValues={{ remember: true }}
         >
           <Form.Item
-            label="Username"
+            label="Email"
             name="username"
             onChange={(e) => this.setState({ username: e.target.value })}
             rules={[
