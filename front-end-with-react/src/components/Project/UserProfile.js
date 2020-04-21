@@ -5,12 +5,13 @@ import axios from "axios";
 import { Card } from "react-bootstrap";
 import { connect } from "react-redux";
 import Authtoken from "../../Utility/AuthToken";
+
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: "...",
-      lastName: "...",
+      firstName: "",
+      lastName: "",
     };
   }
 
@@ -18,6 +19,7 @@ class UserProfile extends Component {
     const dataBody = {
       data: this.props.username,
     };
+
     axios
       .post(Authtoken.getBaseUrl() + "/api/auth/find/email", dataBody, {
         headers: {
@@ -26,12 +28,13 @@ class UserProfile extends Component {
         },
       })
       .then((res) => {
+        console.log("res data", res.data);
         if (res.data.httpStatusCode === 202) {
-          console.log(res.data);
           this.setState({
             firstName: res.data.result.firstname,
             lastName: res.data.result.lastname,
           });
+          console.log("asd", res);
         }
       })
       .catch((e) => {
