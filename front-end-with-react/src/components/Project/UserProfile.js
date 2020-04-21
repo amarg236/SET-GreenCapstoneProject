@@ -59,16 +59,19 @@ class UserProfile extends Component {
               <span> </span>
               {this.state.lastName}
             </Card.Text>
-            <Card.Text>
-              <b>School:</b> {this.props.mySchool}
-              <span> </span>
-              {this.state.lastName}
-            </Card.Text>
-            <Card.Text>
-              <b>District:</b> {this.props.schoolDistrict}
-              <span> </span>
-              {this.state.lastName}
-            </Card.Text>
+            {this.props.mySchool ? (
+              <span>
+                <Card.Text>
+                  <b>School:</b> {this.props.mySchool.name}
+                  <span> </span>
+                </Card.Text>
+                <Card.Text>
+                  <b>District:</b> {this.props.schoolDistrict.districtName}
+                  <span> </span>
+                  {this.state.lastName}
+                </Card.Text>
+              </span>
+            ) : null}
           </Card.Body>
         </Card>
       </div>
@@ -76,12 +79,35 @@ class UserProfile extends Component {
   }
 }
 const mapStatetoProps = (state) => {
-  return {
-    username: state.userReducer.username,
-    role: state.userReducer.role,
-    token: state.userReducer.token,
-    mySchool: state.userReducer.mySchool,
-    schoolDistrict: state.userReducer.schoolDistrict,
-  };
+  switch (state.userReducer.role) {
+    case "ASSIGNER":
+      return {
+        username: state.userReducer.username,
+        role: state.userReducer.role,
+        token: state.userReducer.token,
+      };
+    case "ADMIN":
+      return {
+        username: state.userReducer.username,
+        role: state.userReducer.role,
+        token: state.userReducer.token,
+      };
+    case "USER":
+      return {
+        username: state.userReducer.username,
+        role: state.userReducer.role,
+        token: state.userReducer.token,
+        mySchool: state.userReducer.mySchool,
+        schoolDistrict: state.userReducer.schoolDistrict,
+      };
+    default:
+      return {
+        username: null,
+        role: null,
+        token: null,
+        mySchool: null,
+        schoolDistrict: null,
+      };
+  }
 };
 export default connect(mapStatetoProps)(UserProfile);

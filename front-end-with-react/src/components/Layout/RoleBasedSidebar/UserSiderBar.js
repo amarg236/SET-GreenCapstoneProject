@@ -5,7 +5,7 @@ import { Menu, Layout } from "antd";
 import history from "../../../Utility/history";
 
 //components
-import CalCSV from "../../Project/CalCSV";
+
 import Dashboard from "../../Layout/LoggedInUser";
 
 import {
@@ -118,13 +118,11 @@ class UserSidebar extends Component {
           </Menu.Item>
         </SubMenu>
 
-        <Menu.Item key="export">
+        <Menu.Item onClick={handleClick} key="approvedGames" key="exportCSV">
           <span>
             <DownloadOutlined />
           </span>
-          <span>
-            <CalCSV />
-          </span>
+          <span>Export CSV</span>
         </Menu.Item>
 
         <Menu.Item key="setting">

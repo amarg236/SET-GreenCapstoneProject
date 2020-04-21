@@ -1,9 +1,9 @@
 import history from "../Utility/history";
 
 export const toggleAction = () => {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({
-      type: "SIDEBAR_TOGGLE",
+      type: "SIDEBAR_TOGGLE"
     });
   };
 };

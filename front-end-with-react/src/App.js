@@ -34,6 +34,9 @@ import ApprovedGame from "./components/Project/ApprovedGame";
 import ShowAllUser from "./components/ManageUser/ShowAllUser";
 import RequestedGames from "./components/Project/RequestedGame";
 import RejectedGames from "./components/Project/RejectedGames";
+import TestCreateGane from "./components/Project/TestCreateGame";
+import Error404 from "./components/Layout/Error";
+import ExportCSV from "./components/Project/ExportToCSV";
 
 class App extends React.Component {
   render() {
@@ -71,7 +74,11 @@ class App extends React.Component {
                 component={ChangePassword}
               />
               <ProtectedRoute exact path="/addSchool" component={AddSchool} />
-              <ProtectedRoute exact path="/createGame" component={CreateGame} />
+              <ProtectedRoute
+                exact
+                path="/createGame"
+                component={TestCreateGane}
+              />
               <ProtectedRoute
                 exact
                 path="/acceptedGame"
@@ -112,8 +119,9 @@ class App extends React.Component {
                 path="/userProfile"
                 component={UserProfile}
               />
+              <ProtectedRoute exact path="/exportCSV" component={ExportCSV} />
               <ProtectedRoute exact path="/calander" component={Cal} />
-              <Route path="*" component={() => "404 NOT FOUND"} />
+              <Route path="*" component={Error404} />
             </Switch>
           </Layout>
         </Layout>

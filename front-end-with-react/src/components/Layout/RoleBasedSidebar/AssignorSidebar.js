@@ -5,7 +5,7 @@ import history from "../../../Utility/history";
 import { Menu, Layout } from "antd";
 
 //component
-import CalCSV from "../../Project/CalCSV";
+
 import AddSchool from "../../ManageTeam/AddSchool";
 
 import {
@@ -141,13 +141,11 @@ class AssignorSidebar extends Component {
           </Menu.Item>
         </SubMenu>
 
-        <Menu.Item key="export">
+        <Menu.Item onClick={handleClick} key="approvedGames" key="exportCSV">
           <span>
             <DownloadOutlined />
           </span>
-          <span>
-            <CalCSV />
-          </span>
+          <span>Export CSV</span>
         </Menu.Item>
 
         <Menu.Item key="setting">
