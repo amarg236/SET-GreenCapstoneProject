@@ -51,9 +51,15 @@ class VerifyAccount extends Component {
               role: res.data.roles[0].authority,
             };
             localStorage.setItem("userInfo", JSON.stringify(saveDatainFormat));
-            window.location =
-              "http://setgscheduling.s3-website.us-east-2.amazonaws.com/changePassword";
-            // history.push("/changePassword");
+            // window.location =
+            //   "http://setgscheduling.s3-website.us-east-2.amazonaws.com/changePassword";
+            setTimeout(() => {
+              history.push("/changePassword");
+            }, 3000);
+            setTimeout(() => {
+              history.push("/changePassword");
+            }, 3000);
+
             // history.push("/changePassword");
           }
         })
