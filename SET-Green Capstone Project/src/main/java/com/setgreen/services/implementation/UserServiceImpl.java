@@ -56,6 +56,9 @@ public class UserServiceImpl implements UserService {
 			//and that's it.
 			MailHandler m = new MailHandler(new JavaMailSenderImpl());
 			ud.setPassword(m.genLink());
+			
+			ud.setPassword(bCryptPasswordEncoder.encode(ud.getPassword()));
+			userRepo.save(ud);
 			//XXX DEBUG
 			String s = "User Saved";
 			if(Debugger.MODE_ON) {
@@ -65,11 +68,11 @@ public class UserServiceImpl implements UserService {
 				m.inviteUser(ud);
 			}
 			//END DEBUG
-			ud.setPassword(bCryptPasswordEncoder.encode(ud.getPassword()));
-			userRepo.save(ud);
 			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), s, ud);
 		}
 		catch(org.springframework.mail.MailSendException mse) {
+			User rmv = userRepo.findByEmail(suf.getEmail());
+			userRepo.deleteById(rmv.getId());
 			return new ResponseBody<User>(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Email address does not exist", new User());
 		}
 		catch(Exception e) {

@@ -57,6 +57,18 @@ public class GameController {
 		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).approveGame(auth, g.getId());
 	}
 	
+	@PostMapping("accept/bulk")
+	public ResponseBody<Long>[] acceptBulk(@RequestBody DataObject<Long[]> dta, Authentication auth){
+		ResponseBody<Long>[] rb; //new ResponseBody<DataObject<Integer>>[dta.getData().length];
+		rb = new ResponseBody[dta.getData().length];
+		for(int i = 0; i < rb.length; i++) {
+			Game g = new Game();
+			g.setId(dta.getData()[i]);
+			rb[i] = accept(g, auth);
+		}
+		return rb;
+	}
+	
 	/** Gets all the verified games in a district
 	 * @param district String name of district for games
 	 * @return ResponseBody status of request
@@ -82,7 +94,6 @@ public class GameController {
 	 */
 	@PostMapping("get/ByGame/matched")
 	public ResponseBody<List<Game>> getSchoolIdMatched(@RequestBody Game g){
-		System.out.println(">>>"+g);
 		return gh.getGamesId(g);
 	}
 	
@@ -155,8 +166,8 @@ public class GameController {
 	// ==================== get/BySchool/* ==================== //
 	// Requires nothing	                                   //
 	// =================================================== //
-	@PostMapping("get/BySchool/unverified")
-	public ResponseBody<List<Game>> getAll(@RequestBody School s){
-		return gh.unverifiedGames(s);
-	}
+//	@PostMapping("get/BySchool/unverified")
+//	public ResponseBody<List<Game>> getAll(@RequestBody School s){
+//		return gh.unverifiedGames(s);
+//	}
 }

@@ -26,20 +26,20 @@ public class TestingController {
     private ViewUserService viewUserService;
     @Autowired
     private UserService us;
-    @GetMapping("showUser")
+    @GetMapping("showUser")//FIXME debuger
     public List<User> showusers(){
-    	if(Debugger.MODE_ON) {
+    	//if(Debugger.MODE_ON) {
     		return viewUserService.ViewUsers();
-    	}
-    	return null;
+    	//}
+    	//return null;
     }
     
     @PostMapping("makeUser")
     public ResponseBody<User> mu(@RequestBody SignUpForm u){
-    	if(Debugger.MODE_ON) {
+    	//if(Debugger.MODE_ON) {
     		return us.saveUser(u);
-    	}
-    	return null;
+    	//}
+    	//return null;
     }
 
 }

@@ -27,7 +27,7 @@ import com.setgreen.services.implementation.TeamsServiceImpl;
 import com.setgreen.util.DataObject;
 @Service
 public abstract class UserReference {
-	
+
 	public UserReference() {
 //		gh = new GameHandler();
 //		ur = new UserServiceImpl();
