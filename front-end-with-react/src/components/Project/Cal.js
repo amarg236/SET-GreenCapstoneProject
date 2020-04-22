@@ -69,36 +69,6 @@ class Cal extends React.Component {
       });
   }
 
-  onActionBegin(args) {
-    if (args.requestType === "toolbarItemRendering") {
-      let exportItem = {
-        align: "Right",
-        showTextOn: "Both",
-        prefixIcon: "e-icon-schedule-excel-export",
-        text: "Excel Export",
-        cssClass: "e-excel-export",
-        click: this.onExportClick.bind(this),
-      };
-      args.items.push(exportItem);
-    }
-  }
-
-  onExportClick() {
-    let exportValues = {
-      fields: [
-        "Date",
-        "Time",
-        "Level",
-        "Home-Team",
-        "Home-Level",
-        "Away-Team",
-        "Away-Level",
-      ],
-      exportType: "csv",
-    };
-    this.scheduleObj.exportToExcel(exportValues);
-  }
-
   eventTemplate(props) {
     console.log(props);
     if (props.PartialApproved && props.FullyApproved) {
@@ -128,15 +98,12 @@ class Cal extends React.Component {
         className="site-layout-background"
       >
         <ScheduleComponent
-          cssClass="excel-export"
           currentView={this.state.currentView}
           eventSettings={{
             dataSource: this.state.jData,
             template: this.eventTemplate.bind(this),
           }}
           id="schedule"
-          ref={(t) => (this.scheduleObj = t)}
-          actionBegin={this.onActionBegin.bind(this)}
           readonly={true}
           style={{
             maxHeight: "55%",
