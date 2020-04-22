@@ -4,7 +4,8 @@ import "./SignIn";
 import AssignorGames from "./AssignorGames";
 import PendingGame from "./PendingGames";
 import ShowUserPendingGames from "./ShowUserPendingGames";
-import ApproveGame from "./ApproveGame";
+import AdminShowGames from "./AdminShowGames";
+import AcceptedGame from "./AcceptedGame";
 import { connect } from "react-redux";
 import { Layout } from "antd";
 const { Content } = Layout;
@@ -29,12 +30,11 @@ class ViewGames extends Component {
             style={{
               padding: 5,
               margin: 0,
-              minHeight: 580
+              minHeight: 580,
             }}
             className=" site-layout-background"
           >
-            <ShowUserPendingGames />
-            <ApproveGame />
+            <AdminShowGames />
           </Content>
         );
 
@@ -43,29 +43,27 @@ class ViewGames extends Component {
           <Content
             className="UserMediaVG"
             style={{
-              padding: 3,
+              padding: 5,
               margin: 0,
-              minHeight: 580
+              minHeight: 580,
             }}
           >
-            <ShowUserPendingGames />
-            <ApproveGame />
+            <PendingGame />
           </Content>
         );
 
-      case "ASSIGNOR":
+      case "ASSIGNER":
         return (
           <Content
             className="AssignorMediaVG"
             style={{
               padding: 24,
               margin: 0,
-              minHeight: 580
+              minHeight: 580,
             }}
             className=" site-layout-background"
           >
-            <ShowUserPendingGames />
-            <ApproveGame />
+            <AdminShowGames />
           </Content>
         );
       default:
@@ -75,7 +73,7 @@ class ViewGames extends Component {
             style={{
               padding: 24,
               margin: 0,
-              minHeight: 580
+              minHeight: 580,
             }}
             className="site-layout-background"
           >
@@ -88,9 +86,11 @@ class ViewGames extends Component {
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
-    role: state.userReducer.role
+    role: state.userReducer.role,
+    mySchool: state.userReducer.mySchool,
+    schoolDistrict: state.userReducer.schoolDistrict,
   };
 };
 

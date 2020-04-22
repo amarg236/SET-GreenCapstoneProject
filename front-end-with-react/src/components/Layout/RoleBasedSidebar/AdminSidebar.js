@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import history from "../../../Utility/history";
 import { Menu, Layout } from "antd";
+
+// components
+
 import AddSchool from "../../ManageTeam/AddSchool";
 
 import {
   DashboardOutlined,
   FileAddOutlined,
+  DownloadOutlined,
   EyeOutlined,
   SettingOutlined,
   LogoutOutlined,
@@ -15,12 +19,12 @@ import {
   CalendarOutlined,
   AppstoreOutlined,
   ApartmentOutlined,
-  UserAddOutlined
+  UserAddOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
-const handleClick = e => {
+const handleClick = (e) => {
   history.push("/".concat(e.key));
 };
 
@@ -57,12 +61,14 @@ class AdminSidebar extends Component {
             </span>
           }
         >
-          <Menu.Item onClick={handleClick} key="createGame">
-            <span>
-              <FileAddOutlined />
-            </span>
-            <span>Create Game</span>
-          </Menu.Item>
+          {
+            //   <Menu.Item onClick={handleClick} key="createGame">
+            //   <span>
+            //     <FileAddOutlined />
+            //   </span>
+            //   <span>Create Game</span>
+            // </Menu.Item>
+          }
           <Menu.Item onClick={handleClick} key="viewGames">
             <span>
               <EyeOutlined />
@@ -113,7 +119,13 @@ class AdminSidebar extends Component {
             <span>
               <UserAddOutlined />
             </span>
-            <span>Manage User</span>
+            <span>Unverified User</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="allUsers">
+            <span>
+              <UserAddOutlined />
+            </span>
+            <span>Verified User</span>
           </Menu.Item>
           <Menu.Item onClick={handleClick} key="inviteToSystem">
             <span>
@@ -128,6 +140,14 @@ class AdminSidebar extends Component {
             <span>Invite Assignor</span>
           </Menu.Item>
         </SubMenu>
+
+        <Menu.Item onClick={handleClick} key="approvedGames" key="exportCSV">
+          <span>
+            <DownloadOutlined />
+          </span>
+          <span>Export CSV</span>
+        </Menu.Item>
+
         <Menu.Item key="setting">
           <span>
             <SettingOutlined />
@@ -139,10 +159,10 @@ class AdminSidebar extends Component {
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
     role: state.userReducer.role,
-    toggelState: state.userReducer.sidebarCollapased
+    toggelState: state.userReducer.sidebarCollapased,
   };
 };
 

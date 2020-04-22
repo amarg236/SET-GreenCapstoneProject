@@ -38,7 +38,7 @@ const Content = ({ children, extra }) => {
   );
 };
 
-class PendingGames extends Component {
+class AcceptedGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,8 +47,7 @@ class PendingGames extends Component {
       school: [],
     };
 
-    this.approveGame = this.approveGame.bind(this);
-    this.denyGame = this.denyGame.bind(this);
+    this.reschedule = this.reschedule.bind(this);
   }
 
   componentDidMount() {
@@ -77,8 +76,7 @@ class PendingGames extends Component {
           };
           axios
             .post(
-              Authtoken.getBaseUrl() +
-                "/api/game/get/ByTeamId/away/notAccepted",
+              Authtoken.getBaseUrl() + "/api/game/get/ByTeamId/all",
               emptyBody,
               {
                 headers: {
@@ -103,45 +101,25 @@ class PendingGames extends Component {
       });
   }
 
-  approveGame(display) {
-    const aemptyObj = {
-      id: display.id,
-    };
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/accept", aemptyObj, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        window.alert("The game has been approved!");
-      });
-  }
-
-  denyGame(display) {
+  reschedule(display) {
+    console.log("this is schedule game");
     console.log(display);
-    const emptyObj = {
-      id: display.id,
-      hometeamId: display.hometeamId,
-      hometeam: display.hometeam,
-    };
+    // const emptyObj = {
+    //   data: id,
+    // };
 
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/reject", emptyObj, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        window.alert("The game has been denied!");
-        // This needs fix later on
-        // window.location.reload();
-        // history.push("./viewGames");
-      });
+    // axios
+    //   .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
+    //     headers: {
+    //       Authorization: "Bearer " + this.props.token,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     window.alert("The game has been denied!");
+    //     // This needs fix later on
+    //     // window.location.reload();
+    //     // history.push("./viewGames");
+    //   });
   }
 
   render() {
@@ -151,15 +129,15 @@ class PendingGames extends Component {
       <div
         style={{
           backgroundColor: "#ffff",
+          marginTop: "10px",
           padding: "20px",
           boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
         }}
       >
         <PageHeader>
-          <h4 style={{ textAlign: "center" }}>Pending Games</h4>
+          <h4 style={{ textAlign: "center" }}>Waiting for Assignor Approval</h4>
           <p style={{ textAlign: "center" }}>
-            Games requested by away team have against your team but you haven't
-            accepted yet.
+            Games you have accepted and waiting for assignor approval.
           </p>
         </PageHeader>
 
@@ -176,9 +154,8 @@ class PendingGames extends Component {
               location,
               approved,
               awayAccepted,
-              rejected,
             } = display;
-            if (!rejected) {
+            if (awayAccepted && !approved) {
               return (
                 <PageHeader
                   key={id}
@@ -187,15 +164,12 @@ class PendingGames extends Component {
                   title={hometeam.concat(" vs ").concat(awayteam)}
                   subTitle={time}
                   extra={[
-                    <Button key="2" onClick={() => this.denyGame(display)}>
-                      Deny
-                    </Button>,
                     <Button
                       key="1"
-                      type="primary"
-                      onClick={() => this.approveGame(display)}
+                      type="dashed"
+                      onClick={() => this.schedule(display)}
                     >
-                      Accept
+                      Reschedule
                     </Button>,
                   ]}
                 >
@@ -220,4 +194,4 @@ const mapStatetoProps = (state) => {
     schoolDistrict: state.userReducer.schoolDistrict,
   };
 };
-export default connect(mapStatetoProps, null)(PendingGames);
+export default connect(mapStatetoProps, null)(AcceptedGame);

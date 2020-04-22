@@ -3,24 +3,33 @@ import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import { Menu, Layout } from "antd";
 import history from "../../../Utility/history";
+
+//components
+
 import Dashboard from "../../Layout/LoggedInUser";
 
 import {
   DashboardOutlined,
   FileAddOutlined,
+  DownloadOutlined,
   EyeOutlined,
   LogoutOutlined,
   SettingOutlined,
   CalendarOutlined,
   ApartmentOutlined,
-  AppstoreAddOutlined
+  AppstoreAddOutlined,
+  FileDoneOutlined,
+  AppstoreOutlined,
+  ClockCircleOutlined,
+  DeleteRowOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 class UserSidebar extends Component {
   render() {
-    const handleClick = e => {
+    const handleClick = (e) => {
       history.push("/".concat(e.key));
     };
 
@@ -50,39 +59,71 @@ class UserSidebar extends Component {
           </span>
           <span>Game Calendar</span>
         </Menu.Item>
-
-        <Menu.Item onClick={handleClick} key="createGame">
-          <span>
-            <a href="/createGame">
-              <FileAddOutlined />
-            </a>
-          </span>
-          <span>Create Game</span>
-        </Menu.Item>
-        <Menu.Item onClick={handleClick} key="viewGames">
-          <span>
-            <a href="/viewGames">
-              <EyeOutlined />
-            </a>
-          </span>
-          <span>View Game</span>
-        </Menu.Item>
         <SubMenu
-          key="sub2"
+          key="sub1"
           title={
             <span>
-              <ApartmentOutlined />
-              <span>Manage Team</span>
+              <AppstoreOutlined />
+              <span>Manage Game</span>
             </span>
           }
         >
-          <Menu.Item onClick={handleClick} key="addTeam">
+          <Menu.Item onClick={handleClick} key="createGame">
             <span>
-              <AppstoreAddOutlined />
+              <a href="/createGame">
+                <FileAddOutlined />
+              </a>
             </span>
-            <span>Add Team</span>
+            <span>Create Game</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="viewGames">
+            <span>
+              <a href="/viewGames">
+                <EyeOutlined />
+              </a>
+            </span>
+            <span>Pending Game</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="requestedGames">
+            <span>
+              <a href="/requestedGames">
+                <ClockCircleOutlined />
+              </a>
+            </span>
+            <span>Requested Games</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="acceptedGame">
+            <span>
+              <a href="/viewGames">
+                <CheckOutlined />
+              </a>
+            </span>
+            <span>Waiting Assignor</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="rejectedGames">
+            <span>
+              <a href="/rejectedGames">
+                <DeleteRowOutlined />
+              </a>
+            </span>
+            <span>Rejected Game</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="approvedGames">
+            <span>
+              <a href="/approved">
+                <CheckOutlined />
+              </a>
+            </span>
+            <span>Approved Game</span>
           </Menu.Item>
         </SubMenu>
+
+        <Menu.Item onClick={handleClick} key="approvedGames" key="exportCSV">
+          <span>
+            <DownloadOutlined />
+          </span>
+          <span>Export CSV</span>
+        </Menu.Item>
 
         <Menu.Item key="setting">
           <span>
@@ -95,10 +136,10 @@ class UserSidebar extends Component {
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
     role: state.userReducer.role,
-    toggelState: state.userReducer.sidebarCollapased
+    toggelState: state.userReducer.sidebarCollapased,
   };
 };
 

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 
-import { Form, Input, Button, Layout, Select } from "antd";
+import { Form, Input, Button, Layout, Select, Modal } from "antd";
 const { Content } = Layout;
 
 class InviteToSystem extends Component {
@@ -19,7 +19,7 @@ class InviteToSystem extends Component {
     role: "",
     school: "",
     data: [],
-    initLoading: true
+    initLoading: true,
   };
 
   componentDidMount() {
@@ -31,45 +31,45 @@ class InviteToSystem extends Component {
         {
           headers: {
             Authorization:
-              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-          }
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
         }
       )
-      .then(res => {
+      .then((res) => {
         console.log(res.data);
         this.setState({
           initLoading: false,
-          data: res.data.result
+          data: res.data.result,
         });
       });
   }
 
-  onChangeFirstName = e => {
+  onChangeFirstName = (e) => {
     this.setState({ firstname: e.target.value });
   };
 
-  onChangeLastName = e => {
+  onChangeLastName = (e) => {
     this.setState({ lastname: e.target.value });
   };
-  onChangeEmail = e => {
+  onChangeEmail = (e) => {
     this.setState({ email: e.target.value });
   };
-  onChangePassword = e => {
+  onChangePassword = (e) => {
     this.setState({ password: e.target.value });
   };
 
-  onChangeSchool = e => {
+  onChangeSchool = (e) => {
     this.setState({ school: e.target.value });
   };
 
-  inviteUser = values => {
+  inviteUser = (values) => {
     // console.log(values);
     const school = {
-      id: this.state.school
+      id: this.state.school,
     };
     const role = {
       role: this.state.role,
-      school
+      school,
     };
 
     const objCreate = {
@@ -77,51 +77,58 @@ class InviteToSystem extends Component {
       lastname: this.state.lastname,
       email: this.state.email,
       password: this.state.password,
-      role
+      role,
     };
 
     axios
       .post(Authtoken.getBaseUrl() + "/api/auth/createuser", objCreate, {
         headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
       })
-      .then(res => {
+      .then((res) => {
         // window.alert("User has been invited successfully!!");
         // window.location.reload();
         console.log(res);
+        this.success();
         // console.log(res.data);
       });
   };
 
-  handleChange = value => {
+  handleChange = (value) => {
     // console.log(value);
     // const dummy = JSON.parse(value);
     this.setState({ school: value });
   };
 
-  chooseRole = pick => {
+  chooseRole = (pick) => {
     this.setState({ role: pick });
+  };
+  success = () => {
+    Modal.success({
+      content: "User has been successfully invited",
+    });
   };
 
   render() {
     const layout = {
       labelCol: {
-        span: 4
+        span: 4,
       },
       wrapperCol: {
-        span: 12
-      }
+        span: 12,
+      },
     };
     const validateMessages = {
       required: "This field is required!",
       types: {
         email: "Not a validate email!",
-        number: "Not a validate number!"
+        number: "Not a validate number!",
       },
       number: {
-        range: "Must be between ${min} and ${max}"
-      }
+        range: "Must be between ${min} and ${max}",
+      },
     };
 
     return (
@@ -130,14 +137,14 @@ class InviteToSystem extends Component {
         style={{
           padding: 24,
           margin: 0,
-          minHeight: 580
+          minHeight: 580,
         }}
       >
         <div
           style={{
             backgroundColor: "#ffff",
             padding: "20px",
-            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)"
+            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
           }}
         >
           <Form
@@ -151,8 +158,8 @@ class InviteToSystem extends Component {
               label="First Name"
               rules={[
                 {
-                  required: true
-                }
+                  required: true,
+                },
               ]}
             >
               <Input
@@ -166,8 +173,8 @@ class InviteToSystem extends Component {
               label="Last Name"
               rules={[
                 {
-                  required: true
-                }
+                  required: true,
+                },
               ]}
             >
               <Input
@@ -182,8 +189,8 @@ class InviteToSystem extends Component {
               label="Email"
               rules={[
                 {
-                  required: true
-                }
+                  required: true,
+                },
               ]}
             >
               <Input
@@ -193,22 +200,23 @@ class InviteToSystem extends Component {
                 placeholder="Enter Email"
               />
             </Form.Item>
-
-            <Form.Item
-              name="password"
-              label="Password"
-              rules={[
-                {
-                  required: true
-                }
-              ]}
-            >
-              <Input.Password
-                onChange={this.onChangePassword}
-                value={this.state.password}
-                placeholder="Enter Password"
-              />
-            </Form.Item>
+            {
+              // <Form.Item
+              //   name="password"
+              //   label="Password"
+              //   rules={[
+              //     {
+              //       required: true,
+              //     },
+              //   ]}
+              // >
+              //   <Input.Password
+              //     onChange={this.onChangePassword}
+              //     value={this.state.password}
+              //     placeholder="Enter Password"
+              //   />
+              // </Form.Item>
+            }
 
             <Form.Item label="Role" size="large" name="role">
               <Select
@@ -219,7 +227,9 @@ class InviteToSystem extends Component {
               >
                 <Select.Option value="USER">USER</Select.Option>
 
-                <Select.Option value="ASSIGNOR">ASSIGNOR</Select.Option>
+                {
+                  // <Select.Option value="ASSIGNOR">ASSIGNOR</Select.Option>
+                }
               </Select>
             </Form.Item>
 
@@ -229,7 +239,7 @@ class InviteToSystem extends Component {
                 style={{ width: "250px", minWidth: "auto" }}
                 onChange={this.handleChange}
               >
-                {this.state.data.map(item => (
+                {this.state.data.map((item) => (
                   <Select.Option
                     key={item.id}
                     // value={index}

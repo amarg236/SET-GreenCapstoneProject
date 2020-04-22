@@ -4,57 +4,70 @@ import axios from "axios";
 import moment from "moment";
 import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
+import { isMobile } from "react-device-detect";
+import { Schedule } from "@syncfusion/ej2-react-schedule";
 
 import {
   Inject,
   ScheduleComponent,
   Day,
   Week,
-  ExcelExport,
   ViewsDirective,
   Month,
-  ViewDirective
+  ViewDirective,
 } from "@syncfusion/ej2-react-schedule";
+
 import { extend } from "@syncfusion/ej2-base";
 import { Layout } from "antd";
 const { Content } = Layout;
 
 function processData(rawEvents) {
-  console.log(rawEvents.result);
-  return rawEvents.result.map(event => ({
+  return rawEvents.result.map((event) => ({
     Id: event.id,
     StartTime: moment(event.time, "YYYY-MM-DD HH:mm").toISOString(),
     EndTime: moment(event.time, "YYYY-MM-DD HH:mm")
       .add(event.duration, "minute")
       .toISOString(),
     Subject: `${event.hometeam} vs ${event.awayteam}`,
-    Location: event.location
+    Location: event.location,
+    PartialApproved: event.awayAccepted,
+    FullyApproved: event.approved,
   }));
 }
+
 class Cal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       jData: [],
-      game: []
+      currentView: "Month",
     };
   }
 
   componentDidMount() {
+    // Changing the view for mobile when opened with mobile
+    // Changin to weekly view for mobile
+    if (isMobile) {
+      this.setState({ currentView: "Week" });
+    }
+
     const emptyBody = {};
     axios
-      .post(Authtoken.getBaseUrl() + "/api/public/get/game/json", emptyBody, {
+      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyBody, {
         headers: {
-          Authorization: "Bearer " + this.props.token
-        }
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
       })
-      .then(res => {
-        console.log(res.data.result);
-        this.setState({ jData: extend([], processData(res.data), null, true), game: res.data.result });
+      .then((res) => {
+        console.log("this is response");
+        console.log(res);
+        this.setState({ jData: extend([], processData(res.data), null, true) });
+        // for formatting csv
+        // this.setState({ fData: extend([], formatData(res.data), null, true) });
+        // console.log("jDATA", this.state.jData);
       });
   }
-
-  async fetchData() {}
 
   onActionBegin(args) {
     if (args.requestType === "toolbarItemRendering") {
@@ -64,23 +77,42 @@ class Cal extends React.Component {
         prefixIcon: "e-icon-schedule-excel-export",
         text: "Excel Export",
         cssClass: "e-excel-export",
-        click: this.onExportClick.bind(this)
+        click: this.onExportClick.bind(this),
       };
       args.items.push(exportItem);
     }
   }
+
   onExportClick() {
     let exportValues = {
-      //fields: ['Date', 'Time', 'Level', 'Home-Team', 'Home-Level', 'Away-Team', 'Away-Level'],
-      exportType: "csv"
+      fields: [
+        "Date",
+        "Time",
+        "Level",
+        "Home-Team",
+        "Home-Level",
+        "Away-Team",
+        "Away-Level",
+      ],
+      exportType: "csv",
     };
     this.scheduleObj.exportToExcel(exportValues);
   }
 
-  eventTemplate(props){
-      return(<div className='template-wrap'> {props.Subject} </div>);
+  eventTemplate(props) {
+    console.log(props);
+    if (props.PartialApproved && props.FullyApproved) {
+      return <div className="template-wrap"> {props.Subject} </div>;
+    } else if (props.PartialApproved || props.FullyApproved);
+    {
+      return (
+        <div style={{ backgroundColor: "orange" }} className="template-wrap">
+          {" "}
+          {props.Subject}{" "}
+        </div>
+      );
     }
-    
+  }
 
   // Links that could be helpful
   // https://github.com/syncfusion/ej2-react-samples/blob/master/src/schedule/local-data.jsx
@@ -91,23 +123,26 @@ class Cal extends React.Component {
         style={{
           padding: "10px",
           margin: 0,
-          minHeight: 580
+          minHeight: 580,
         }}
         className="site-layout-background"
       >
         <ScheduleComponent
           cssClass="excel-export"
-          currentView="Month"
-          eventSettings={{ dataSource: this.state.jData, template: this.eventTemplate.bind(this) }}
+          currentView={this.state.currentView}
+          eventSettings={{
+            dataSource: this.state.jData,
+            template: this.eventTemplate.bind(this),
+          }}
           id="schedule"
-          ref={t => (this.scheduleObj = t)}
+          ref={(t) => (this.scheduleObj = t)}
           actionBegin={this.onActionBegin.bind(this)}
           readonly={true}
           style={{
             maxHeight: "55%",
             minHeight: "100%",
             minWidth: "46vh",
-            marginLeft: "0"
+            marginLeft: "0",
           }}
         >
           {
@@ -118,15 +153,15 @@ class Cal extends React.Component {
             </ViewsDirective>
           }
 
-          <Inject services={[Day, Week, Month, ExcelExport]} />
+          <Inject services={[Day, Week, Month]} />
         </ScheduleComponent>
       </Content>
     );
   }
 }
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
-    token: state.userReducer.token
+    token: state.userReducer.token,
   };
 };
 

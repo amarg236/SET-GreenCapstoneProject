@@ -10,31 +10,31 @@ class UserProfile extends Component {
     super(props);
     this.state = {
       firstName: "...",
-      lastName: "..."
+      lastName: "...",
     };
   }
 
   componentDidMount() {
     const dataBody = {
-      data: this.props.username
+      data: this.props.username,
     };
     axios
       .post(Authtoken.getBaseUrl() + "/api/auth/find/email", dataBody, {
         headers: {
           Authorization:
-            "Bearer " + JSON.parse(localStorage.getItem("userInfo")).token
-        }
+            "Bearer " + JSON.parse(localStorage.getItem("userInfo")).token,
+        },
       })
-      .then(res => {
+      .then((res) => {
         if (res.data.httpStatusCode === 202) {
           console.log(res.data);
           this.setState({
             firstName: res.data.result.firstname,
-            lastName: res.data.result.lastname
+            lastName: res.data.result.lastname,
           });
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.log("couldn't connect to the server");
       });
   }
@@ -56,17 +56,55 @@ class UserProfile extends Component {
               <span> </span>
               {this.state.lastName}
             </Card.Text>
+            {this.props.mySchool ? (
+              <span>
+                <Card.Text>
+                  <b>School:</b> {this.props.mySchool.name}
+                  <span> </span>
+                </Card.Text>
+                <Card.Text>
+                  <b>District:</b> {this.props.schoolDistrict.districtName}
+                  <span> </span>
+                  {this.state.lastName}
+                </Card.Text>
+              </span>
+            ) : null}
           </Card.Body>
         </Card>
       </div>
     );
   }
 }
-const mapStatetoProps = state => {
-  return {
-    username: state.userReducer.username,
-    role: state.userReducer.role,
-    token: state.userReducer.token
-  };
+const mapStatetoProps = (state) => {
+  switch (state.userReducer.role) {
+    case "ASSIGNER":
+      return {
+        username: state.userReducer.username,
+        role: state.userReducer.role,
+        token: state.userReducer.token,
+      };
+    case "ADMIN":
+      return {
+        username: state.userReducer.username,
+        role: state.userReducer.role,
+        token: state.userReducer.token,
+      };
+    case "USER":
+      return {
+        username: state.userReducer.username,
+        role: state.userReducer.role,
+        token: state.userReducer.token,
+        mySchool: state.userReducer.mySchool,
+        schoolDistrict: state.userReducer.schoolDistrict,
+      };
+    default:
+      return {
+        username: null,
+        role: null,
+        token: null,
+        mySchool: null,
+        schoolDistrict: null,
+      };
+  }
 };
 export default connect(mapStatetoProps)(UserProfile);

@@ -20,7 +20,7 @@ const Content = ({ children, extra }) => {
   );
 };
 
-class ManageUser extends Component {
+class ShowAllUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +33,7 @@ class ManageUser extends Component {
     console.log(this.props.token);
     const emptyBody = {};
     axios
-      .get(Authtoken.getBaseUrl() + "/api/admin/viewUnverifiedUser", {
+      .get(Authtoken.getBaseUrl() + "/api/test/showUser", {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -49,7 +49,7 @@ class ManageUser extends Component {
     console.log("this is my id");
     console.log(id);
     const emptyObj = {
-      id,
+      id: id,
     };
 
     axios
@@ -82,17 +82,19 @@ class ManageUser extends Component {
         }}
       >
         <PageHeader>
-          <h4 style={{ textAlign: "center" }}>Unverified Users</h4>
+          <h4 style={{ textAlign: "center" }}>Verified Users</h4>
         </PageHeader>
 
         {this.state.users.map((details) => {
-          const { id, email, firstname, lastname } = details;
-          if (id) {
+          const { id, email, firstname, lastname, verified } = details;
+          if (verified) {
             return (
               <PageHeader
                 key={id}
                 className="site-page-header-responsive"
+                // onBack={() => window.history.back()}
                 title={firstname.concat(" ").concat(lastname)}
+                // subTitle={time}
                 extra={[
                   <Button key="1" onClick={() => this.deleteUser(id)}>
                     Delete User
@@ -113,4 +115,4 @@ class ManageUser extends Component {
   }
 }
 
-export default ManageUser;
+export default ShowAllUser;

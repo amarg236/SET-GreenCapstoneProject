@@ -29,6 +29,14 @@ import InviteAssignor from "./components/ManageUser/InviteAssignor";
 import ManageUser from "./components/ManageUser/MangeUser";
 import VerifyAccount from "./components/EmailConfirmation/VerifyAccount";
 import ChangePassword from "./components/EmailConfirmation/ChangePassword";
+import AcceptedGame from "./components/Project/AcceptedGame";
+import ApprovedGame from "./components/Project/ApprovedGame";
+import ShowAllUser from "./components/ManageUser/ShowAllUser";
+import RequestedGames from "./components/Project/RequestedGame";
+import RejectedGames from "./components/Project/RejectedGames";
+import TestCreateGane from "./components/Project/TestCreateGame";
+import Error404 from "./components/Layout/Error";
+import ExportCSV from "./components/Project/ExportToCSV";
 
 class App extends React.Component {
   render() {
@@ -66,10 +74,35 @@ class App extends React.Component {
                 component={ChangePassword}
               />
               <ProtectedRoute exact path="/addSchool" component={AddSchool} />
-              <ProtectedRoute exact path="/createGame" component={CreateGame} />
+              <ProtectedRoute
+                exact
+                path="/createGame"
+                component={TestCreateGane}
+              />
+              <ProtectedRoute
+                exact
+                path="/acceptedGame"
+                component={AcceptedGame}
+              />
               <ProtectedRoute exact path="/viewGames" component={ViewGames} />
               <ProtectedRoute exact path="/addTeam" component={AddTeam} />
               <ProtectedRoute exact path="/manageUser" component={ManageUser} />
+              <ProtectedRoute exact path="/allUsers" component={ShowAllUser} />
+              <ProtectedRoute
+                exact
+                path="/rejectedGames"
+                component={RejectedGames}
+              />
+              <ProtectedRoute
+                exact
+                path="/requestedGames"
+                component={RequestedGames}
+              />
+              <ProtectedRoute
+                exact
+                path="/approvedGames"
+                component={ApprovedGame}
+              />
               <ProtectedRoute
                 exact
                 path="/inviteToSystem"
@@ -86,8 +119,9 @@ class App extends React.Component {
                 path="/userProfile"
                 component={UserProfile}
               />
+              <ProtectedRoute exact path="/exportCSV" component={ExportCSV} />
               <ProtectedRoute exact path="/calander" component={Cal} />
-              <Route path="*" component={() => "404 NOT FOUND"} />
+              <Route path="*" component={Error404} />
             </Switch>
           </Layout>
         </Layout>
@@ -98,9 +132,9 @@ class App extends React.Component {
   }
 }
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   return {
-    role: state.userReducer.role
+    role: state.userReducer.role,
   };
 };
 

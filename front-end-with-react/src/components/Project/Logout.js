@@ -1,11 +1,17 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import history from "../../Utility/history";
 import { logoutAction } from "../../actions/loginAction";
+import { Menu, Layout } from "antd";
 
 class Header extends Component {
-  logout = async () => {
+  logout = () => {
     this.props.logout();
+  };
+  viewProfile = () => {
+    console.log("view profile");
+    history.push("/userProfile");
   };
 
   render() {
@@ -15,19 +21,23 @@ class Header extends Component {
           backgroundColor: "#ffff",
           borderRadius: "7px",
           padding: "10px",
-          boxSshadow: "0 2px 6px white",
           marginTop: "10px",
-          borderRight: "2px solid #dddd",
           borderTop: "2px solid #dddd"
         }}
       >
-        <a className="dropdown-item" href="#">
-          View Profile
-        </a>
-        <div className="dropdown-divider"></div>
-        <a className="dropdown-item" href="#" onClick={this.logout}>
-          Logout
-        </a>
+        <Menu>
+          <Menu.Item onClick={this.viewProfile}>
+            <span>
+              <p>View Profile</p>
+            </span>
+          </Menu.Item>
+
+          <Menu.Item onClick={this.logout} key="logOut">
+            <span>
+              <p>Log Out</p>
+            </span>
+          </Menu.Item>
+        </Menu>
       </div>
     );
   }
