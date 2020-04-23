@@ -140,7 +140,7 @@ class AdminShowGames extends Component {
               approved,
               awayAccepted,
             } = display;
-            if (!approved) {
+            if (awayAccepted && !approved) {
               return (
                 <PageHeader
                   key={id}

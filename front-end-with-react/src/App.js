@@ -37,6 +37,7 @@ import RejectedGames from "./components/Project/RejectedGames";
 import TestCreateGane from "./components/Project/TestCreateGame";
 import Error404 from "./components/Layout/Error";
 import ExportCSV from "./components/Project/ExportToCSV";
+import TestPending from "./components/Project/TestPending";
 
 class App extends React.Component {
   render() {
@@ -84,7 +85,7 @@ class App extends React.Component {
                 path="/acceptedGame"
                 component={AcceptedGame}
               />
-              <ProtectedRoute exact path="/viewGames" component={ViewGames} />
+              <ProtectedRoute exact path="/viewGames" component={TestPending} />
               <ProtectedRoute exact path="/addTeam" component={AddTeam} />
               <ProtectedRoute exact path="/manageUser" component={ManageUser} />
               <ProtectedRoute exact path="/allUsers" component={ShowAllUser} />
