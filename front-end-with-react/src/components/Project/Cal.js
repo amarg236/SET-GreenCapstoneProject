@@ -19,6 +19,7 @@ import {
 
 import { extend } from "@syncfusion/ej2-base";
 import { Layout } from "antd";
+import CalFilter from "./CalFilter";
 const { Content } = Layout;
 
 function processData(rawEvents) {
@@ -97,6 +98,7 @@ class Cal extends React.Component {
         }}
         className="site-layout-background"
       >
+        <CalFilter/>
         <ScheduleComponent
           currentView={this.state.currentView}
           eventSettings={{
