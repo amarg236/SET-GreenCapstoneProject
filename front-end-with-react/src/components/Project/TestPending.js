@@ -6,9 +6,22 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import moment from "moment";
 
-import { Row, Layout, Col, Button, Table, Statistic, Descriptions } from "antd";
+import {
+  Tabs,
+  Row,
+  Layout,
+  Col,
+  Button,
+  Table,
+  Statistic,
+  Descriptions,
+} from "antd";
 const { Content } = Layout;
+const { TabPane } = Tabs;
 
+function callback(key) {
+  console.log(key);
+}
 class TestPending extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +29,7 @@ class TestPending extends Component {
       loading: true,
       game: [],
       school: [],
+      isRejected: null,
     };
   }
 
@@ -126,13 +140,14 @@ class TestPending extends Component {
     console.log("render>>");
     console.log(game);
 
-    const tableData = game.map((row) => ({
+    const processedData = game.map((row) => ({
       key: row.id,
       homeTeam: row.hometeam,
       awayTeam: row.awayteam,
       location: row.location,
       time: moment(row.time).format("MM/DD HH:mm"),
     }));
+    const tableData = processedData;
 
     const columns = [
       {
@@ -192,6 +207,7 @@ class TestPending extends Component {
       },
     };
 
+    console.log(tableData);
     return (
       <Content
         className="site-layout-background"
@@ -201,36 +217,73 @@ class TestPending extends Component {
           minHeight: 580,
         }}
       >
-        <div style={{ marginBottom: "16px" }}>
-          <Button
-            style={{ marginRight: "8px" }}
-            type="primary"
-            onClick={this.setAgeSort}
-          >
-            All Games
-          </Button>
-          <Button
-            style={{ marginRight: "8px" }}
-            type="secondary"
-            onClick={this.clearFilters}
-          >
-            Pending Games
-          </Button>
-          <Button
-            type="dashed"
-            style={{ marginRight: "8px" }}
-            danger
-            onClick={this.clearAll}
-          >
-            Approved Games
-          </Button>
-        </div>
-        <Table
-          rowSelection={rowSelection}
-          columns={columns}
-          dataSource={tableData}
-          size="small"
-        />
+        <Tabs defaultActiveKey="1" onChange={callback}>
+          <TabPane tab="All Games" key="1">
+            <div style={{ marginBottom: "16px" }}>
+              <Button
+                style={{ marginRight: "8px" }}
+                type="primary"
+                onClick={this.setAgeSort}
+              >
+                All Games
+              </Button>
+              <Button
+                style={{ marginRight: "8px" }}
+                type="secondary"
+                onClick={this.clearFilters}
+              >
+                Pending Games
+              </Button>
+              <Button
+                type="dashed"
+                style={{ marginRight: "8px" }}
+                danger
+                onClick={this.clearAll}
+              >
+                Approved Games
+              </Button>
+            </div>
+            <Table
+              rowSelection={rowSelection}
+              columns={columns}
+              dataSource={tableData}
+              size="small"
+            />
+          </TabPane>
+
+          <TabPane tab="Pending Games" key="2">
+            <div style={{ marginBottom: "16px" }}>
+              <Button
+                style={{ marginRight: "8px" }}
+                type="primary"
+                onClick={this.setAgeSort}
+              >
+                All Games
+              </Button>
+              <Button
+                style={{ marginRight: "8px" }}
+                type="secondary"
+                onClick={this.clearFilters}
+              >
+                Pending Games
+              </Button>
+              <Button
+                type="dashed"
+                style={{ marginRight: "8px" }}
+                danger
+                onClick={this.clearAll}
+              >
+                Approved Games
+              </Button>
+            </div>
+            <Table
+              rowSelection={rowSelection}
+              columns={columns}
+              dataSource={tableData}
+              size="small"
+            />
+          </TabPane>
+        </Tabs>
       </Content>
     );
   }
