@@ -45,6 +45,11 @@ public class TeamController {
 		return hlp.getRoleByTeam(auth, t).addTeam(t);
 	}
 	
+	@PostMapping("delete")
+	public ResponseBody<Teams> removeTeam(@RequestBody Teams t, Authentication auth){
+		return hlp.getRoleByTeam(auth, t).removeTeam(t);
+	}
+	
 	/**
 	 * @return all teams in the database
 	 */

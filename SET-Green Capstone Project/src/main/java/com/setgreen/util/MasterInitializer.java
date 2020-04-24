@@ -41,7 +41,6 @@ public class MasterInitializer implements CommandLineRunner{
 		try {
 			Properties p = new Properties();
 			p.load(new FileReader("sysstart.config"));
-			
 			User u = new User();
 			u.setPassword(p.getProperty("password"));
 			u.setEmail(p.getProperty("username"));
