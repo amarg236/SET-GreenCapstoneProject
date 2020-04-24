@@ -22,6 +22,7 @@ const { TabPane } = Tabs;
 function callback(key) {
   console.log(key);
 }
+
 class TestPending extends Component {
   constructor(props) {
     super(props);
@@ -149,6 +150,8 @@ class TestPending extends Component {
     }));
     const tableData = processedData;
 
+    const getFilteredData = (rejected) => columns.filter({});
+
     const columns = [
       {
         title: "HomeTeam",
@@ -244,6 +247,7 @@ class TestPending extends Component {
               </Button>
             </div>
             <Table
+              hideOnSinglePage
               rowSelection={rowSelection}
               columns={columns}
               dataSource={tableData}
