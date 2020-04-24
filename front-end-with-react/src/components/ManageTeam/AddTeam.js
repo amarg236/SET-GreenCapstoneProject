@@ -341,6 +341,7 @@ class AddTeam extends Component {
             </Form.Item>
           </Form>
         </div>
+        <ViewTeam />
       </Content>
     );
   }
