@@ -20,6 +20,7 @@ const userReducer = (state = initialState, action) => {
         username: action.username,
         message: action.message,
         role: action.role,
+        token: action.token,
       };
     case "LOGIN_ERROR":
       return {
