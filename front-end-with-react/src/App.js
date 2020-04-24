@@ -38,6 +38,7 @@ import TestCreateGane from "./components/Project/TestCreateGame";
 import Error404 from "./components/Layout/Error";
 import ExportCSV from "./components/Project/ExportToCSV";
 import TestPending from "./components/Project/TestPending";
+import AdminViewGame from "./components/Project/AdminShowGames";
 
 class App extends React.Component {
   render() {
@@ -119,6 +120,11 @@ class App extends React.Component {
                 exact
                 path="/userProfile"
                 component={UserProfile}
+              />
+              <ProtectedRoute
+                exact
+                path="/adminViewGame"
+                component={AdminViewGame}
               />
               <ProtectedRoute exact path="/exportCSV" component={ExportCSV} />
               <ProtectedRoute exact path="/calander" component={Cal} />

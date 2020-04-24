@@ -4,39 +4,14 @@ import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
+import moment from "moment";
 
-import {
-  Row,
-  Col,
-  Button,
-  PageHeader,
-  Tabs,
-  Statistic,
-  Descriptions,
-} from "antd";
+import { Row, Layout, Col, Button, Table } from "antd";
+const { Content } = Layout;
 
-const { TabPane } = Tabs;
-
-const renderContent = (display, column = 2) => (
-  <Descriptions size="small" column={column}>
-    <Descriptions.Item label="Home Team">{display.location}</Descriptions.Item>
-    <Descriptions.Item label="Away Team">
-      <a>{display.awayteam}</a>
-    </Descriptions.Item>
-    <Descriptions.Item label="Game Duration">
-      {display.duration} minutes
-    </Descriptions.Item>
-  </Descriptions>
-);
-
-const Content = ({ children, extra }) => {
-  return (
-    <div className="content">
-      <div className="main">{children}</div>
-      <div className="extra">{extra}</div>
-    </div>
-  );
-};
+function callback(key) {
+  console.log(key);
+}
 
 class AdminShowGames extends Component {
   constructor(props) {
@@ -45,35 +20,40 @@ class AdminShowGames extends Component {
       loading: true,
       game: [],
       school: [],
+      isRejected: null,
     };
-
-    this.approveGame = this.approveGame.bind(this);
-    this.denyGame = this.denyGame.bind(this);
   }
 
-  componentDidMount() {
-    const currentSchool = {};
-    axios
-      .post(
-        Authtoken.getBaseUrl() + "/api/game/get/BySchool/unverified",
-        currentSchool,
+  async componentDidMount() {
+    //getting current users team and school
+
+    const emptyObj = {};
+
+    try {
+      const res = await axios.post(
+        Authtoken.getBaseUrl() + "/api/game/get/all",
+        emptyObj,
         {
           headers: {
             Authorization:
               "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
           },
         }
-      )
-      .then((res) => {
-        console.log(res.data.result);
-        this.setState({
-          game: res.data.result,
-          loading: false,
-        });
-      });
-  }
+      );
 
-  approveGame(display) {
+      this.setState({
+        game: res.data.result,
+        loading: false,
+      });
+    } catch (e) {
+      console.error(`Problem fetching data ${e}`);
+    }
+    // this.setState({ awaySchoolTeamList: res.data.result });
+  }
+  // rowSelection objects indicates the need for row selection
+
+  // Approve Games
+  approveGame = (display) => {
     console.log(display);
     const aemptyObj = {
       id: display.id,
@@ -81,96 +61,156 @@ class AdminShowGames extends Component {
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/accept", aemptyObj, {
         headers: {
-          Authorization: "Bearer " + this.props.token,
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
         },
       })
       .then((res) => {
         console.log(res);
         window.alert("The game has been approved!");
       });
-  }
+  };
 
-  denyGame(id) {
-    console.log("this is my id");
-    console.log(id);
+  // Deny Game function
+  denyGame = (display) => {
+    console.log(display.id);
     const emptyObj = {
-      data: id,
+      id: display.id,
+      // hometeamId: display.hometeamId,
+      // hometeam: display.hometeam,
     };
-
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
+      .post(Authtoken.getBaseUrl() + "/api/game/reject", emptyObj, {
         headers: {
-          Authorization: "Bearer " + this.props.token,
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
         },
       })
       .then((res) => {
+        console.log(res);
         window.alert("The game has been denied!");
         // This needs fix later on
         // window.location.reload();
         // history.push("./viewGames");
       });
-  }
+  };
 
   render() {
-    console.log(this.state.game);
+    const { game } = this.state;
+    console.log("render>>");
+    console.log(game);
 
+    const processedData = game.map((row) => ({
+      key: row.id,
+      homeTeam: row.hometeam,
+      awayTeam: row.awayteam,
+      location: row.location,
+      time: moment(row.time).format("MM/DD HH:mm"),
+    }));
+    const tableData = processedData;
+
+    const getFilteredData = (rejected) => columns.filter({});
+
+    const columns = [
+      {
+        title: "HomeTeam",
+        dataIndex: "homeTeam",
+        key: "homeTeam",
+      },
+      {
+        title: "AwayTeam",
+        dataIndex: "awayTeam",
+        key: "awayTeam",
+      },
+      {
+        title: "Location",
+        dataIndex: "location",
+        key: "location",
+      },
+      {
+        title: "Time",
+        dataIndex: "time",
+        key: "time",
+      },
+      {
+        title: "Action",
+        dataIndex: "",
+        key: "x",
+        render: (record) => (
+          <span>
+            <Button
+              onClick={() => this.approveGame(record)}
+              type="link"
+              style={{ marginRight: 16 }}
+            >
+              Approve
+            </Button>
+            <Button onClick={() => this.denyGame(record)} type="link">
+              Deny
+            </Button>
+          </span>
+        ),
+      },
+    ];
+
+    const rowSelection = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        console.log(
+          `selectedRowKeys: ${selectedRowKeys}`,
+          "selectedRows: ",
+          selectedRows
+        );
+      },
+      onSelect: (record, selected, selectedRows) => {
+        console.log(record, selected, selectedRows);
+      },
+      onSelectAll: (selected, selectedRows, changeRows) => {
+        console.log(selected, selectedRows, changeRows);
+      },
+    };
+
+    console.log(tableData);
     return (
-      <div
+      <Content
+        className="site-layout-background"
         style={{
-          backgroundColor: "#ffff",
-          padding: "20px",
-          boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
+          padding: 24,
+          margin: 0,
+          minHeight: 580,
         }}
       >
-        <PageHeader>
-          <h4 style={{ textAlign: "center" }}>Pending Games</h4>
-        </PageHeader>
-
-        {this.state.game &&
-          this.state.game.map((display) => {
-            const {
-              id,
-              hometeam,
-              homedistrict,
-              awayteam,
-              awaydistrict,
-              time,
-              duration,
-              location,
-              approved,
-              awayAccepted,
-            } = display;
-            if (awayAccepted && !approved) {
-              return (
-                <PageHeader
-                  key={id}
-                  className="site-page-header-responsive"
-                  // onBack={() => window.history.back()}
-                  title={hometeam.concat(" vs ").concat(awayteam)}
-                  subTitle={time}
-                  extra={[
-                    <Button key="2" onClick={() => this.denyGame(id)}>
-                      Deny
-                    </Button>,
-                    <Button
-                      key="1"
-                      type="primary"
-                      onClick={() => this.approveGame(display)}
-                    >
-                      Approve
-                    </Button>,
-                  ]}
-                >
-                  <Content>{renderContent(display)}</Content>
-                </PageHeader>
-              );
-            }
-          })}
-
-        {
-          // Approved Games
-        }
-      </div>
+        <div style={{ marginBottom: "16px" }}>
+          <Button
+            style={{ marginRight: "8px" }}
+            type="primary"
+            onClick={this.setAgeSort}
+          >
+            All Games
+          </Button>
+          <Button
+            style={{ marginRight: "8px" }}
+            type="secondary"
+            onClick={this.clearFilters}
+          >
+            Pending Games
+          </Button>
+          <Button
+            type="dashed"
+            style={{ marginRight: "8px" }}
+            danger
+            onClick={this.clearAll}
+          >
+            Approved Games
+          </Button>
+        </div>
+        <Table
+          hideOnSinglePage
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={tableData}
+          size="small"
+        />
+      </Content>
     );
   }
 }
@@ -178,8 +218,6 @@ class AdminShowGames extends Component {
 const mapStatetoProps = (state) => {
   return {
     token: state.userReducer.token,
-    mySchool: state.userReducer.mySchool,
-    schoolDistrict: state.userReducer.schoolDistrict,
   };
 };
 export default connect(mapStatetoProps, null)(AdminShowGames);

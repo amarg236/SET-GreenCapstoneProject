@@ -89,8 +89,6 @@ class ViewGames extends Component {
 const mapStatetoProps = (state) => {
   return {
     role: state.userReducer.role,
-    mySchool: state.userReducer.mySchool,
-    schoolDistrict: state.userReducer.schoolDistrict,
   };
 };
 

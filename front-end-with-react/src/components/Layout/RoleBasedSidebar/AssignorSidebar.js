@@ -69,7 +69,7 @@ class AssignorSidebar extends Component {
             //       <span>Create Game</span>
             //     </Menu.Item>
           }
-          <Menu.Item onClick={handleClick} key="viewGames">
+          <Menu.Item onClick={handleClick} key="adminViewGame">
             <span>
               <EyeOutlined />
             </span>
