@@ -54,7 +54,7 @@ class VerifyAccount extends Component {
             // window.location =
             //   "http://setgscheduling.s3-website.us-east-2.amazonaws.com/changePassword";
             setTimeout(() => {
-              history.push("/changePassword");
+              history.push("./");
             }, 3000);
             setTimeout(() => {
               history.push("/changePassword");

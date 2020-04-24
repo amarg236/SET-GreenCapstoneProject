@@ -36,9 +36,9 @@ class ChangePassword extends Component {
         console.log(res);
         this.success();
 
-        setTimeout(() => {
-          this.logout();
-        }, 3000);
+        // setTimeout(() => {
+        //   this.logout();
+        // }, 3000);
       });
   };
 
