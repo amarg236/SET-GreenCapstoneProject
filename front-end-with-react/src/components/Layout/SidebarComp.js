@@ -95,7 +95,9 @@ class SidebarComp extends Component {
         onCollapse={this.onCollapse}
         collapsedWidth={this.state.collapsedWidth}
       >
-        <div className="logo">SET GREEN</div>
+        <div className="logo">
+          <a href="./">SET GREEN</a>{" "}
+        </div>
         {this.renderSwitch(this.props.role)}
       </Sider>
     );
