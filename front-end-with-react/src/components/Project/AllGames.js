@@ -5,6 +5,7 @@ import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import moment from "moment";
+import TestPendingGames from "./TestPending";
 
 import {
   Tabs,
@@ -23,7 +24,7 @@ function callback(key) {
   console.log(key);
 }
 
-class TestPending extends Component {
+class AllGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -167,37 +168,13 @@ class TestPending extends Component {
           minHeight: 580,
         }}
       >
-        <div style={{ marginBottom: "16px" }}>
-          <Button
-            style={{ marginRight: "8px" }}
-            type="primary"
-            onClick={this.setAgeSort}
-          >
-            All Games
-          </Button>
-          <Button
-            style={{ marginRight: "8px" }}
-            type="secondary"
-            onClick={this.clearFilters}
-          >
-            Pending Games
-          </Button>
-          <Button
-            type="dashed"
-            style={{ marginRight: "8px" }}
-            danger
-            onClick={this.clearAll}
-          >
-            Approved Games
-          </Button>
-        </div>
+        <Tabs defaultActiveKey="1" onChange={callback}>
+          <TabPane tab="All Games" key="1">
+            <TestPendingGames />
+          </TabPane>
 
-        <Table
-          rowSelection={rowSelection}
-          columns={columns}
-          dataSource={tableData}
-          size="small"
-        />
+          <TabPane tab="Pending Games" key="2"></TabPane>
+        </Tabs>
       </Content>
     );
   }
@@ -211,4 +188,4 @@ const mapStatetoProps = (state) => {
     userGameRedux: state.gameReducer.userGame,
   };
 };
-export default connect(mapStatetoProps, null)(TestPending);
+export default connect(mapStatetoProps, null)(AllGames);

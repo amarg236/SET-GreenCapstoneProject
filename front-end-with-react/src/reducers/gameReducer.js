@@ -1,13 +1,15 @@
-// // const game = {
-// //   list: "",
-// //   dummy: ""
-// // };
-// const gameReducer = (state = [], action) => {
-//   switch (action.type) {
-//     case "GET_GAME":
-//       return state;
-//     default:
-//       return state;
-//   }
-// };
-// export default gameReducer;
+const game = {
+  userGame: localStorage.getItem("games"),
+};
+const gameReducer = (state = game, action) => {
+  switch (action.type) {
+    case "ADD_USER_GAME":
+      return {
+        ...state,
+        userGame: action.userGame,
+      };
+    default:
+      return state;
+  }
+};
+export default gameReducer;

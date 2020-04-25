@@ -62,6 +62,22 @@ class UserSidebar extends Component {
           </span>
           <span>Game Calendar</span>
         </Menu.Item>
+        <Menu.Item onClick={handleClick} key="createGame">
+          <span>
+            <a href="/createGame">
+              <FileAddOutlined />
+            </a>
+          </span>
+          <span>Create Game</span>
+        </Menu.Item>
+        <Menu.Item onClick={handleClick} key="viewAllGames">
+          <span>
+            <a href="/viewGames">
+              <EyeOutlined />
+            </a>
+          </span>
+          <span>View All Game</span>
+        </Menu.Item>
         <SubMenu
           key="sub1"
           title={
@@ -71,22 +87,6 @@ class UserSidebar extends Component {
             </span>
           }
         >
-          <Menu.Item onClick={handleClick} key="createGame">
-            <span>
-              <a href="/createGame">
-                <FileAddOutlined />
-              </a>
-            </span>
-            <span>Create Game</span>
-          </Menu.Item>
-          <Menu.Item onClick={handleClick} key="viewGames">
-            <span>
-              <a href="/viewGames">
-                <EyeOutlined />
-              </a>
-            </span>
-            <span>Pending Game</span>
-          </Menu.Item>
           <Menu.Item onClick={handleClick} key="requestedGames">
             <span>
               <a href="/requestedGames">
