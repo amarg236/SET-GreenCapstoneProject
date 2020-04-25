@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import history from "../../../Utility/history";
+import { logoutAction } from "../../../actions/loginAction";
 import { Menu, Layout } from "antd";
 
 //component
@@ -30,6 +31,9 @@ const handleClick = (e) => {
 
 class AssignorSidebar extends Component {
   render() {
+    const logOut = () => {
+      this.props.logout();
+    };
     return (
       <Menu
         mode="inline"
@@ -148,7 +152,7 @@ class AssignorSidebar extends Component {
           <span>Export CSV</span>
         </Menu.Item>
 
-        <Menu.Item key="setting">
+        <Menu.Item onClick={logOut} key="logout">
           <span>
             <SettingOutlined />
           </span>
@@ -165,5 +169,10 @@ const mapStatetoProps = (state) => {
     toggelState: state.userReducer.sidebarCollapased,
   };
 };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(logoutAction()),
+  };
+};
 
-export default connect(mapStatetoProps)(AssignorSidebar);
+export default connect(mapStatetoProps, mapDispatchToProps)(AssignorSidebar);

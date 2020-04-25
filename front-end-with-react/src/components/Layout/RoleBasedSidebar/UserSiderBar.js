@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import { Menu, Layout } from "antd";
 import history from "../../../Utility/history";
+import { logoutAction } from "../../../actions/loginAction";
 
 //components
 
@@ -32,7 +33,9 @@ class UserSidebar extends Component {
     const handleClick = (e) => {
       history.push("/".concat(e.key));
     };
-
+    const logOut = () => {
+      this.props.logout();
+    };
     return (
       <Menu
         mode="inline"
@@ -119,17 +122,15 @@ class UserSidebar extends Component {
         </SubMenu>
 
         <Menu.Item onClick={handleClick} key="approvedGames" key="exportCSV">
-          <span>
-            <DownloadOutlined />
-          </span>
+          <DownloadOutlined />
+
           <span>Export CSV</span>
         </Menu.Item>
 
-        <Menu.Item key="setting">
-          <span>
-            <SettingOutlined />
-          </span>
-          <span>Settings</span>
+        <Menu.Item onClick={logOut} key="logout">
+          <LogoutOutlined />
+
+          <span>Log Out</span>
         </Menu.Item>
       </Menu>
     );
@@ -143,4 +144,10 @@ const mapStatetoProps = (state) => {
   };
 };
 
-export default connect(mapStatetoProps)(UserSidebar);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(logoutAction()),
+  };
+};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(UserSidebar);
