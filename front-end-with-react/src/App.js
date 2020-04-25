@@ -76,11 +76,7 @@ class App extends React.Component {
                 component={ChangePassword}
               />
               <ProtectedRoute exact path="/addSchool" component={AddSchool} />
-              <ProtectedRoute
-                exact
-                path="/createGame"
-                component={TestCreateGane}
-              />
+              <ProtectedRoute exact path="/createGame" component={CreateGame} />
               <ProtectedRoute
                 exact
                 path="/acceptedGame"

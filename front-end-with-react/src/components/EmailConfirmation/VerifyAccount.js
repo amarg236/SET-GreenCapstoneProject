@@ -77,7 +77,7 @@ class VerifyAccount extends Component {
           minHeight: 580,
         }}
       >
-        {this.state.loading ? <h6>Loading ...</h6> : null}
+        {this.state.loading ? <h6>Loading ...Please wait...</h6> : null}
       </Content>
     );
   }

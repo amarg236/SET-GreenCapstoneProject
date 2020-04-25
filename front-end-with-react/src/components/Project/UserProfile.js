@@ -65,7 +65,6 @@ class UserProfile extends Component {
                 <Card.Text>
                   <b>District:</b> {this.props.schoolDistrict.districtName}
                   <span> </span>
-                  {this.state.lastName}
                 </Card.Text>
               </span>
             ) : null}
