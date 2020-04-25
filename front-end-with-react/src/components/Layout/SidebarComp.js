@@ -9,7 +9,8 @@ import AdminSidebar from "./RoleBasedSidebar/AdminSidebar";
 import { toggleAction } from "../../actions/toggleAction";
 import { isMobile } from "react-device-detect";
 import device from "../../Utility/media";
-import { HomeOutlined, LogoutOutlined } from "@ant-design/icons";
+import history from "../../Utility/history";
+import { HomeOutlined, LogoutOutlined, LoginOutlined } from "@ant-design/icons";
 const { Sider } = Layout;
 
 class SidebarComp extends Component {
@@ -73,26 +74,29 @@ class SidebarComp extends Component {
             defaultOpenKeys={["sub1"]}
             style={{ height: "100%", borderRight: 0 }}
           >
-            <Menu.Item key="home">
+            <Menu.Item onClick={this.homeRedirect} key="home">
               <HomeOutlined />
 
               <span>HOME</span>
             </Menu.Item>
 
             {
-              // <Menu.Item
-              //   key="logout"
-              //   style={{ position: "absolute", bottom: "8%" }}
-              // >
-              //   <HomeOutlined />
-              //   <span>SIGN OUT</span>
-              // </Menu.Item>
+              <Menu.Item onClick={this.handleClick} key="login">
+                <LoginOutlined />
+                <span>LOG IN</span>
+              </Menu.Item>
             }
           </Menu>
         );
     }
   }
+  handleClick = (e) => {
+    history.push("/".concat(e.key));
+  };
 
+  homeRedirect = (e) => {
+    history.push("/");
+  };
   render() {
     return (
       /*

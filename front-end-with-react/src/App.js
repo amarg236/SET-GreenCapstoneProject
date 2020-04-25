@@ -3,7 +3,7 @@ import "./App.css";
 import "./stylesheets/mediaQue.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Router, Switch, Route } from "react-router-dom";
-import SignIn from "./components/Project/SignIn";
+import login from "./components/Project/TestLogin";
 import Home from "./components/Layout/Home";
 import CreateGame from "./components/Project/CreateGame";
 import FooterComp from "./components/Layout/FooterComp";
@@ -124,6 +124,7 @@ class App extends React.Component {
               />
               <ProtectedRoute exact path="/exportCSV" component={ExportCSV} />
               <ProtectedRoute exact path="/calander" component={Cal} />
+              <Route exact path="/login" component={login} />
               <Route path="*" component={Error404} />
             </Switch>
           </Layout>
