@@ -14,7 +14,9 @@ import {
   DatePicker,
   TimePicker,
   Select,
-  Card,
+  Row,
+  Col,
+  Alert,
 } from "antd";
 const { Content } = Layout;
 const { RangePicker } = TimePicker;
@@ -291,10 +293,10 @@ class CreateGame extends Component {
     console.log("typee", this.props.ifcollapsed);
     const layout = {
       labelCol: {
-        span: 4,
+        span: 10,
       },
       wrapperCol: {
-        span: 12,
+        span: 10,
       },
     };
     const validateMessages = {
@@ -318,161 +320,176 @@ class CreateGame extends Component {
           minHeight: 580,
         }}
       >
-        <div
-          style={{
-            backgroundColor: "#dddd",
-            padding: "20px",
-            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
-          }}
-        >
-          <p>Home School: {this.props.mySchool.name}</p>
-          <p>Home District: {this.props.schoolDistrict.districtName}</p>
-        </div>
-        <div
-          style={{
-            backgroundColor: "#ffff",
-            padding: "20px",
-            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
-          }}
-        >
-          <Form
-            {...layout}
-            name="nest-messages"
-            onSubmit={this.gameSubmit}
-            validateMessages={validateMessages}
-          >
-            {
-              <Form.Item label="Select Home Team" name="homeTeam">
-                <Select
-                  size="large"
-                  defaultValue="Select Options"
-                  style={{ width: 400 }}
-                  onChange={this.handleHomeTeam}
-                >
-                  {this.state.homeTeamObj.map((homeTeamDetails) => (
-                    <Select.Option
-                      key={homeTeamDetails.id}
-                      // value={index}
-                      value={JSON.stringify(homeTeamDetails)}
-                    >
-                      {homeTeamDetails.tmName}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            }
-
-            <Form.Item
-              name="gameDate"
-              label="Choose Date"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
+        <Row style={{ backgroundColor: "#ffff" }}>
+          <Col span={16}>
+            <div
+              style={{
+                backgroundColor: "#ffff",
+                padding: "20px",
+                boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
+              }}
             >
-              <DatePicker
-                style={{ width: 400 }}
-                value={this.state.gameDate}
-                onChange={this.onChangeGameDate}
-                // defaultValue={moment("2020-03-08", this.dateFormat)}
-                format={this.dateFormat}
-              />
-            </Form.Item>
-            <Form.Item
-              name="gametime"
-              label="Choose Time"
-              rules={[
+              <Form
+                {...layout}
+                name="nest-messages"
+                onSubmit={this.gameSubmit}
+                validateMessages={validateMessages}
+              >
                 {
-                  required: true,
-                },
-              ]}
-            >
-              <RangePicker
-                style={{ width: 400 }}
-                minuteStep={5}
-                format="HH:mm"
-                value={this.state.gameTime}
-                onChange={this.onChangeGameTime}
-              />
-            </Form.Item>
-
-            <Form.Item name="location" label="Location" rules={[{}]}>
-              <Input
-                style={{ width: 400 }}
-                onChange={this.onChangeGameLocation}
-                value={this.state.gameLocation}
-                placeholder="Location"
-              />
-            </Form.Item>
-            {
-              <Form.Item label="Select District" name="districtName">
-                <Select
-                  size="large"
-                  defaultValue="Select Options"
-                  style={{ width: 400 }}
-                  value={this.state.againstTeamDistrict}
-                  onChange={this.handleDistrict}
-                >
-                  {this.state.awaySchoolObj.map((item, index) => (
-                    <Select.Option
-                      key={index}
-                      // value={index}
-                      value={JSON.stringify(item)}
+                  <Form.Item label="Select Home Team" name="homeTeam">
+                    <Select
+                      size="large"
+                      defaultValue="Select Options"
+                      style={{ width: 280 }}
+                      onChange={this.handleHomeTeam}
                     >
-                      {item.districtName}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            }
-            <Form.Item label="Select School" name="schoolName">
-              <Select
-                size="large"
-                defaultValue="Select Options"
-                style={{ width: 400 }}
-                value={this.state.againstSchool}
-                onChange={this.handleSchool}
-              >
-                {this.state.awaySchoolList.map((schoolMap, index) => (
-                  <Select.Option key={index} value={JSON.stringify(schoolMap)}>
-                    {schoolMap.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
+                      {this.state.homeTeamObj.map((homeTeamDetails) => (
+                        <Select.Option
+                          key={homeTeamDetails.id}
+                          // value={index}
+                          value={JSON.stringify(homeTeamDetails)}
+                        >
+                          {homeTeamDetails.tmName}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                }
 
-            <Form.Item label="Select Team" name="awayTeam">
-              <Select
-                size="large"
-                defaultValue="Select Options"
-                style={{ width: 400 }}
-                value={this.state.againstTeam}
-                onChange={this.handleAwayTeam}
-              >
-                {this.state.awaySchoolTeamList.map((teamMap) => (
-                  <Select.Option
-                    key={teamMap.id}
-                    // value={index}
-                    value={JSON.stringify(teamMap)}
+                <Form.Item
+                  name="gameDate"
+                  label="Choose Date"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <DatePicker
+                    style={{ width: 280 }}
+                    value={this.state.gameDate}
+                    onChange={this.onChangeGameDate}
+                    // defaultValue={moment("2020-03-08", this.dateFormat)}
+                    format={this.dateFormat}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="gametime"
+                  label="Choose Time"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <RangePicker
+                    style={{ width: 280 }}
+                    minuteStep={5}
+                    format="HH:mm"
+                    value={this.state.gameTime}
+                    onChange={this.onChangeGameTime}
+                  />
+                </Form.Item>
+
+                <Form.Item name="location" label="Location" rules={[{}]}>
+                  <Input
+                    style={{ width: 280 }}
+                    onChange={this.onChangeGameLocation}
+                    value={this.state.gameLocation}
+                    placeholder="Location"
+                  />
+                </Form.Item>
+                {
+                  <Form.Item label="Select District" name="districtName">
+                    <Select
+                      size="large"
+                      defaultValue="Select Options"
+                      style={{ width: 280 }}
+                      value={this.state.againstTeamDistrict}
+                      onChange={this.handleDistrict}
+                    >
+                      {this.state.awaySchoolObj.map((item, index) => (
+                        <Select.Option
+                          key={index}
+                          // value={index}
+                          value={JSON.stringify(item)}
+                        >
+                          {item.districtName}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                }
+                <Form.Item label="Select School" name="schoolName">
+                  <Select
+                    size="large"
+                    defaultValue="Select Options"
+                    style={{ width: 280 }}
+                    value={this.state.againstSchool}
+                    onChange={this.handleSchool}
                   >
-                    {teamMap.tmName}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
+                    {this.state.awaySchoolList.map((schoolMap, index) => (
+                      <Select.Option
+                        key={index}
+                        value={JSON.stringify(schoolMap)}
+                      >
+                        {schoolMap.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
 
-            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                onClick={this.gameSubmit}
-              >
-                Request Game
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
+                <Form.Item label="Select Team" name="awayTeam">
+                  <Select
+                    size="large"
+                    defaultValue="Select Options"
+                    style={{ width: 280 }}
+                    value={this.state.againstTeam}
+                    onChange={this.handleAwayTeam}
+                  >
+                    {this.state.awaySchoolTeamList.map((teamMap) => (
+                      <Select.Option
+                        key={teamMap.id}
+                        // value={index}
+                        value={JSON.stringify(teamMap)}
+                      >
+                        {teamMap.tmName}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+
+                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 12 }}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    onClick={this.gameSubmit}
+                  >
+                    Request Game
+                  </Button>
+                </Form.Item>
+              </Form>
+            </div>
+          </Col>
+          <Col span={8} md={8} xs={0}>
+            <div
+              style={{
+                textAlign: "center",
+                padding: "30px",
+              }}
+            >
+              <h6>Home School Profile</h6>
+              <hr />
+              <p>
+                <b>School : </b>
+                {this.props.mySchool.name}
+              </p>
+              <p>
+                <b> District : </b> {this.props.schoolDistrict.districtName}
+              </p>
+            </div>
+          </Col>
+        </Row>
       </Content>
     );
   }
