@@ -56,10 +56,10 @@ class AdminShowGames extends Component {
   approveGame = (display) => {
     console.log(display);
     const aemptyObj = {
-      id: display.id,
+      id: display.key,
     };
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/accept", aemptyObj, {
+      .post(Authtoken.getBaseUrl() + "/api/admin/game/verify", aemptyObj, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -73,9 +73,9 @@ class AdminShowGames extends Component {
 
   // Deny Game function
   denyGame = (display) => {
-    console.log(display.id);
+    console.log(display.key);
     const emptyObj = {
-      id: display.id,
+      id: display.key,
       // hometeamId: display.hometeamId,
       // hometeam: display.hometeam,
     };

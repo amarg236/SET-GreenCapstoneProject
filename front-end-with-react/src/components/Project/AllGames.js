@@ -57,6 +57,7 @@ class AllGames extends Component {
           </TabPane>
 
           <TabPane tab="Pending Games" key="2"></TabPane>
+          <TabPane tab="Requested Games" key="3"></TabPane>
         </Tabs>
       </Content>
     );

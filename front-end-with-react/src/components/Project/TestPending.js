@@ -111,7 +111,7 @@ class TestPending extends Component {
         console.log(res);
         window.alert("The game has been denied!");
         // This needs fix later on
-        // window.location.reload();
+        window.location.reload();
         // history.push("./viewGames");
       });
   };
