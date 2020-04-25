@@ -80,6 +80,7 @@ class TestLogin extends React.Component {
         <div
           style={{
             backgroundColor: "#ffff",
+            minHeight: "600px",
             padding: "20px",
             boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
             textAlign: "center",
@@ -90,8 +91,11 @@ class TestLogin extends React.Component {
             validateMessages={validateMessages}
             name="basic"
             initialValues={{ remember: true }}
-            style={{}}
+            style={{ marginTop: "100px" }}
           >
+            <h3>LOGIN</h3>
+            <br />
+            <br />
             <Form.Item
               label="Email"
               name="username"
