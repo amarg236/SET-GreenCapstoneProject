@@ -3,6 +3,7 @@ import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 
 import { Form, Input, Button, Layout, Select, Modal, Spin } from "antd";
+import debounce from 'lodash/debounce';
 const { Content } = Layout;
 const { Option } = Select;
 
@@ -10,17 +11,21 @@ class CalFilter extends Component {
     constructor(props) {
         super(props);
         this.lastFetchId = 0;
+        this.fetchUser = debounce(this.fetchUser, 800);
     }
 
     state = {
         value: [],
         data: [],
-        initLoading: true,
         fetching: false,
     };
 
-    componentDidMount() {
+    fetchUser = value => {
         const schoolBody = {};
+        console.log('fetching user', value);
+        this.lastFetchId += 1;
+        const fetchId = this.lastFetchId;
+        this.setState({ data: [], fetching: true });
         axios
             .post(
                 Authtoken.getBaseUrl() + "/api/location/school/get/all",
@@ -33,43 +38,44 @@ class CalFilter extends Component {
                 }
             )
             .then((res) => {
-                console.log(res.data);
-                this.setState({
-                    initLoading: false,
-                    data: res.data.result,
-                });
+                if (fetchId !== this.lastFetchId) {
+                    // for fetch callback order
+                    return;
+                }
+                const data = res.data.result.map(user => ({
+                    text: `${user.name}`,
+                    value: user.name,
+                }));
+                this.setState({ data, fetching: false });
             });
+
     }
 
-    fetchUser = value => {
-        console.log('fetching user', value);
-        this.lastFetchId += 1;
-        const fetchId = this.lastFetchId;
-        this.setState({ data: [], fetching: true });
-
-    };
-
     handleChange = (value) => {
-        this.setState({ school: value, value, data: [], fetching: false, });
+        this.setState({
+            value,
+            data: [],
+            fetching: false,
+        });
     };
+
 
     render() {
         const { fetching, data, value } = this.state;
         return (
             <Select
                 mode="multiple"
+                labelInValue
+                value={value}
                 placeholder="Filter"
+                notFoundContent={fetching ? <Spin size="small" /> : null}
                 filterOption={false}
                 style={{ width: "250px", minWidth: "auto" }}
                 onChange={this.handleChange}
+                onSearch={this.fetchUser}
             >
-                {this.state.data.map((item) => (
-                    <Select.Option
-                        key={item.id}
-                        value={item.id}
-                    >
-                        {item.name}
-                    </Select.Option>
+                {data.map(d => (
+                    <Option key={d.value}>{d.text}</Option>
                 ))}
             </Select>
         );

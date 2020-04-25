@@ -99,6 +99,7 @@ class Cal extends React.Component {
         className="site-layout-background"
       >
         <CalFilter/>
+        
         <ScheduleComponent
           currentView={this.state.currentView}
           eventSettings={{
