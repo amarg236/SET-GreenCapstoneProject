@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 			//and that's it.
 			MailHandler m = new MailHandler(new JavaMailSenderImpl());
 			ud.setPassword(m.genLink());
-			
+			String opw = ud.getPassword();
 			ud.setPassword(bCryptPasswordEncoder.encode(ud.getPassword()));
 			userRepo.save(ud);
 			//XXX DEBUG
@@ -65,7 +65,10 @@ public class UserServiceImpl implements UserService {
 				s = m.debugMessage(m._inviteUser(ud));
 			}
 			else {
+				String npw = ud.getPassword();
+				ud.setPassword(opw);
 				m.inviteUser(ud);
+				ud.setPassword(npw);
 			}
 			//END DEBUG
 			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), s, ud);

@@ -1,5 +1,6 @@
 package com.setgreen.services.implementation;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -246,9 +247,7 @@ public class GameHandler {
 		return getGameById(new DataObject<Long>(id));
 	}
 	
-	public ResponseBody<List<Game>> unverifiedGames(School s) {
-		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found Games", gr.findByApprovedFalseAndRejectedFalse());
-	}
+	
 	public ResponseBody<Game> validateRejection(Game g, boolean hometeamViewing) {
 		if(hometeamViewing) {
 			if(!g.isAwayNotification()) {
@@ -291,6 +290,45 @@ public class GameHandler {
 	}
 	public ResponseBody<List<Game>> allGameNoV() {
 		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByApprovedFalse());
+	}
+	public ResponseBody<List<Game>> getGames(School s, boolean findAll) {
+		try{
+			List<Game> g = new ArrayList<Game>();
+			Iterable<Teams> t = tr.findBySchool_Id(s.getId());
+			for(Teams _t : t) {
+				g.addAll(gr.findByTeamIdAll(_t.getId()));
+			}
+			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
+		}
+		catch(Exception e) {
+			return new ResponseBody<List<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games "+e, null);
+		}
+	}
+	public ResponseBody<List<Game>> getHomeGamesNoAdminV(School s) {
+		try{
+			List<Game> g = new ArrayList<Game>();
+			Iterable<Teams> t = tr.findBySchool_Id(s.getId());
+			for(Teams _t : t) {
+				g.addAll(gr.findTeamIdAndApproved(_t.getId(), false));
+			}
+			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
+		}
+		catch(Exception e) {
+			return new ResponseBody<List<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games "+e, null);
+		}
+	}
+	public ResponseBody<List<Game>> unverifiedGames(School s) {
+		try{
+			List<Game> g = new ArrayList<Game>();
+			Iterable<Teams> t = tr.findBySchool_Id(s.getId());
+			for(Teams _t : t) {
+				g.addAll(gr.findByTeamIdAndVerified(_t.getId(), false));
+			}
+			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
+		}
+		catch(Exception e) {
+			return new ResponseBody<List<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games "+e, null);
+		}
 	}
 	
 }

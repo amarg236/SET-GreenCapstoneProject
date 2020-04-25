@@ -54,7 +54,7 @@ public class ControllerAssistant {
 	 */
 	protected UserReference getRoleByTeam(Authentication auth, Game g) {
 		try {
-			Set<Role> r = us.fetchByEmail(g.getURequester()).getResult().getRoles();
+			Set<Role> r = us.fetchByEmail(auth.getName()).getResult().getRoles();
 			RoleName rtrn = RoleName.UNFOUND;
 			for(Role x : r) {
 				if(x.getRole().hasDistrict() && x.getRole().userLevel() > rtrn.userLevel()) {

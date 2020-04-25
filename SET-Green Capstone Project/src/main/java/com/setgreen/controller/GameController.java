@@ -35,7 +35,7 @@ public class GameController {
 	
 	@PostMapping("delete")
 	public ResponseBody<Long> delete(@RequestBody DataObject<Long> id, Authentication auth) {
-		return hlp.getRoleByTeam(auth, gh.getGameById(id)).deleteGame(id);
+		return hlp.getRoleByTeam(auth, gh.getGameById(id.getData())).deleteGame(id);
 	}
 	@PostMapping("modify")
 	public ResponseBody<Game> modify(@RequestBody Game g, Authentication auth) {
@@ -44,12 +44,12 @@ public class GameController {
 	
 	@PostMapping("reject")
 	public ResponseBody<Game> reject(@RequestBody Game g, Authentication auth){
-		return hlp.getRoleByTeam(auth, g).rejectGame(auth, g);
+		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).rejectGame(auth, g);
 	}
 	
 	@PostMapping("reject/clear")
 	public ResponseBody<Game> clearReject(@RequestBody Game g, Authentication auth){
-		return hlp.getRoleByTeam(auth, g).validateRejection(auth, g);
+		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).validateRejection(auth, g);
 	}
 	
 	@PostMapping("accept")
@@ -164,10 +164,18 @@ public class GameController {
 	}
 	
 	// ==================== get/BySchool/* ==================== //
-	// Requires nothing	                                   //
-	// =================================================== //
-//	@PostMapping("get/BySchool/unverified")
-//	public ResponseBody<List<Game>> getAll(@RequestBody School s){
-//		return gh.unverifiedGames(s);
-//	}
+	// Requires school ID	                                    //
+	// ========================================================//
+	@PostMapping("get/BySchool/all")
+	public ResponseBody<List<Game>> getSchoolIdAll(@RequestBody School s){
+		return gh.getGames(s, true);
+	}
+	@PostMapping("get/BySchool/notAccepted")
+	public ResponseBody<List<Game>> getSchoolIdUserUnverified(@RequestBody School s){
+		return gh.unverifiedGames(s);
+	}
+	@PostMapping("get/BySchool/notApproved")
+	public ResponseBody<List<Game>> getSchoolIdAdminUnverified(@RequestBody School s){
+		return gh.getHomeGamesNoAdminV(s);
+	}
 }

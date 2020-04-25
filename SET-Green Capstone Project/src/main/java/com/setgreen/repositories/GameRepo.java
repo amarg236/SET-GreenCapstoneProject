@@ -1,5 +1,6 @@
 package com.setgreen.repositories;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -80,4 +81,11 @@ public interface GameRepo extends CrudRepository<Game, Long>{
 	public List<Game> findByAwayteamIdAndApprovedFalse(long id);
 
 	public List<Game> findByApprovedFalse();
+	
+	@Query("SELECT g FROM Game g WHERE (g.hometeamId = (:i) OR g.awayteamId = (:i))")
+	public List<Game> findByTeamIdAll(@Param("i") long id);
+	@Query("SELECT g FROM Game g WHERE (g.hometeamId = (:i) OR g.awayteamId = (:i)) AND approved=(:b)")
+	public Collection<? extends Game> findTeamIdAndApproved(@Param("i") long id, @Param("b") boolean b);
+	@Query("SELECT g FROM Game g WHERE (g.hometeamId = (:i) OR g.awayteamId = (:i)) AND awayAccepted=(:b)")
+	public Collection<? extends Game> findByTeamIdAndVerified(@Param("i") long id, @Param("b") boolean b);
 }

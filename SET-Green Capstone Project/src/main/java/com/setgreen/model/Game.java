@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -47,6 +49,23 @@ public class Game implements Serializable{
 	boolean rejected;
 	boolean homeNotification;
 	boolean awayNotification;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date create_At;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date update_At;
+
+	
+	@PrePersist
+    protected void onCreate(){
+        this.create_At = new Date();
+    }
+
+
+    @PreUpdate
+    protected void onUpdate(){
+        this.update_At = new Date();
+    }
 }
 
 
