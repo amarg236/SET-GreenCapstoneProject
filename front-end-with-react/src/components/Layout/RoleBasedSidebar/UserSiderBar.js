@@ -39,7 +39,7 @@ class UserSidebar extends Component {
         theme="dark"
         className="sidebarProperty"
         defaultSelectedKeys={["1"]}
-        defaultOpenKeys={["sub1"]}
+        // defaultOpenKeys={["sub1"]}
         style={{ height: "100%", borderRight: 0, paddingRight: "0" }}
       >
         <Menu.Item onClick={handleClick} key="dashboard">
