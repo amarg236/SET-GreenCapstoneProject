@@ -69,8 +69,8 @@ class SidebarComp extends Component {
             mode="inline"
             theme="dark"
             defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
-            style={{ height: "100%", borderRight: 0 }}
+            // defaultOpenKeys={["sub1"]}
+            // style={{ height: "100%", borderRight: 0 }}
           >
             <Menu.Item key="home">
               <span>
