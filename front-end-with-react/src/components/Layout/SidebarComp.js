@@ -1,4 +1,5 @@
 import "../../App.css";
+import logo from "../../assets/website-logo.png";
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import { Menu, Layout } from "antd";
@@ -68,16 +69,25 @@ class SidebarComp extends Component {
           <Menu
             mode="inline"
             theme="dark"
-            defaultSelectedKeys={["1"]}
-            // defaultOpenKeys={["sub1"]}
-            // style={{ height: "100%", borderRight: 0 }}
+            defaultSelectedKeys={["home"]}
+            defaultOpenKeys={["sub1"]}
+            style={{ height: "100%", borderRight: 0 }}
           >
             <Menu.Item key="home">
-              <span>
-                <HomeOutlined />
-              </span>
+              <HomeOutlined />
+
               <span>HOME</span>
             </Menu.Item>
+
+            {
+              // <Menu.Item
+              //   key="logout"
+              //   style={{ position: "absolute", bottom: "8%" }}
+              // >
+              //   <HomeOutlined />
+              //   <span>SIGN OUT</span>
+              // </Menu.Item>
+            }
           </Menu>
         );
     }
@@ -96,7 +106,9 @@ class SidebarComp extends Component {
         collapsedWidth={this.state.collapsedWidth}
       >
         <div className="logo">
-          <a href="./">SET GREEN</a>{" "}
+          <a href="./">
+            <img src={logo} style={{ width: "60px", height: "60px" }} />
+          </a>{" "}
         </div>
         {this.renderSwitch(this.props.role)}
       </Sider>
