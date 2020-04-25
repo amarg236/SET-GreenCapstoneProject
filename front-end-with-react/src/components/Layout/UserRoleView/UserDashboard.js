@@ -6,6 +6,8 @@ import { gameAction } from "../../../actions/gameAction";
 import { Layout } from "antd";
 const { Content } = Layout;
 
+// codes written for redux is not being used. will come back later to erase and fix
+// @FIXME
 class UserDashboard extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +27,7 @@ class UserDashboard extends Component {
 
     try {
       const res = await axios.post(
-        Authtoken.getBaseUrl() + "/api/team/get/bySchool",
+        Authtoken.getBaseUrl() + "/api/game/get/BySchool/all",
         currentSchool,
         {
           headers: {
@@ -40,51 +42,14 @@ class UserDashboard extends Component {
       console.log("length here");
       console.log(res.data.result.length);
 
-      const gamesFromAxios = await axios.all(
-        res.data.result.map(({ id }) => {
-          const emptyBody = {
-            id,
-          };
-          return axios
-            .post(
-              Authtoken.getBaseUrl() +
-                "/api/game/get/ByTeamId/away/notAccepted",
-              emptyBody,
-              {
-                headers: {
-                  Authorization:
-                    "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-                },
-              }
-            )
-            .then((res) => res.data.result);
-        })
-      );
+      localStorage.setItem("games", JSON.stringify(res.data.result));
 
-      console.log("gameFromAxios>>>");
-      console.log(gamesFromAxios.flat());
-
-      this.setState({
-        game: this.state.game.concat(gamesFromAxios.flat()),
-        loading: false,
-      });
+      this.props.gameAction(JSON.stringify(res.data.result));
     } catch (e) {
       console.error(`Problem fetching data ${e}`);
     }
-    console.log("USER>>GAME>>");
-
-    // console.log("USER>>TOKEN>>");
-    // console.log(this.props.school);
-    // // this.runFunction();
-    const toBeSent = this.state.game;
-    console.log(toBeSent);
-    //adding to local storage
-    localStorage.setItem("games", JSON.stringify(toBeSent));
-    this.props.gameAction(toBeSent);
   }
-  // runFunction = () => {
-  //   this.props.gameAction(this.props.token, this.props.school);
-  // };
+
   render() {
     // return <Cal />;
     //we are gonna put sliders and other contents in front page

@@ -23,6 +23,15 @@ function callback(key) {
   console.log(key);
 }
 
+function processData(supply) {
+  return supply.map((row) => ({
+    key: row.id,
+    homeTeam: row.hometeam,
+    awayTeam: row.awayteam,
+    location: row.location,
+    time: moment(row.time).format("MM/DD HH:mm"),
+  }));
+}
 class TestPending extends Component {
   constructor(props) {
     super(props);
@@ -35,10 +44,33 @@ class TestPending extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      game: this.props.userGameRedux,
-    });
+    const currentSchool = {
+      id: this.props.mySchool.id,
+    };
+
+    axios
+      .post(
+        Authtoken.getBaseUrl() + "/api/game/get/BySchool/all",
+        currentSchool,
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
+        }
+      )
+      .then((res) => {
+        console.log("current school teams");
+        console.log(res.data.result);
+        console.log("length here");
+        console.log(res.data.result.length);
+
+        this.setState({
+          game: processData(res.data.result),
+        });
+      });
   }
+
   // rowSelection objects indicates the need for row selection
 
   // Approve Games
@@ -86,17 +118,8 @@ class TestPending extends Component {
 
   render() {
     const { game } = this.state;
-    console.log("render>>");
-    console.log(game);
 
-    const processedData = game.map((row) => ({
-      key: row.id,
-      homeTeam: row.hometeam,
-      awayTeam: row.awayteam,
-      location: row.location,
-      time: moment(row.time).format("MM/DD HH:mm"),
-    }));
-    const tableData = processedData;
+    const tableData = game;
 
     const getFilteredData = (rejected) => columns.filter({});
 
@@ -173,22 +196,14 @@ class TestPending extends Component {
             type="primary"
             onClick={this.setAgeSort}
           >
-            All Games
+            Filter By Date
           </Button>
           <Button
             style={{ marginRight: "8px" }}
             type="secondary"
             onClick={this.clearFilters}
           >
-            Pending Games
-          </Button>
-          <Button
-            type="dashed"
-            style={{ marginRight: "8px" }}
-            danger
-            onClick={this.clearAll}
-          >
-            Approved Games
+            Filter By Team
           </Button>
         </div>
 
