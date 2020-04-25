@@ -152,11 +152,18 @@ class AssignorSidebar extends Component {
           <span>Export CSV</span>
         </Menu.Item>
 
+        <Menu.Item onClick={handleClick} key="userProfile">
+          <span>
+            <SettingOutlined />
+          </span>
+          <span>User Profile</span>
+        </Menu.Item>
+
         <Menu.Item onClick={logOut} key="logout">
           <span>
             <SettingOutlined />
           </span>
-          <span>Settings</span>
+          <span>Log Out</span>
         </Menu.Item>
       </Menu>
     );

@@ -47,7 +47,9 @@ class App extends React.Component {
         <Layout style={{ height: "100vh" }}>
           <SidebarComp />
           <Layout className="site-layout">
-            <HeaderRoot />
+            {
+              // <HeaderRoot />
+            }
 
             <Switch>
               <Route exact path="/" component={Home} />

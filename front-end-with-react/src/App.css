@@ -21,6 +21,14 @@
   color: white;
   text-align: center;
   margin: 16px;
+  font-weight: bolder;
+}
+.logo-bottom {
+  /* background-color: aliceblue; */
+  height: 35px;
+  width: 180px;
+  color: white;
+  text-align: center;
 
   font-weight: bolder;
 }

@@ -151,7 +151,12 @@ class AdminSidebar extends Component {
           </span>
           <span>Export CSV</span>
         </Menu.Item>
-
+        <Menu.Item onClick={handleClick} key="userProfile">
+          <span>
+            <SettingOutlined />
+          </span>
+          <span>User Profile</span>
+        </Menu.Item>
         <Menu.Item onClick={logOut} key="logout">
           <span>
             <SettingOutlined />

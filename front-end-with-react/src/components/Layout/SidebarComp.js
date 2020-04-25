@@ -2,7 +2,7 @@ import "../../App.css";
 import logo from "../../assets/website-logo.png";
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { Menu, Layout } from "antd";
+import { Menu, Layout, Typography, Tag } from "antd";
 import UserSidebar from "./RoleBasedSidebar/UserSiderBar";
 import AssignorSidebar from "./RoleBasedSidebar/AssignorSidebar";
 import AdminSidebar from "./RoleBasedSidebar/AdminSidebar";
@@ -11,8 +11,8 @@ import { isMobile } from "react-device-detect";
 import device from "../../Utility/media";
 import history from "../../Utility/history";
 import { HomeOutlined, LogoutOutlined, LoginOutlined } from "@ant-design/icons";
-const { Sider } = Layout;
-
+const { Sider, Content } = Layout;
+const { Text } = Typography;
 class SidebarComp extends Component {
   state = {
     collapsed: false,
@@ -114,6 +114,7 @@ class SidebarComp extends Component {
             <img src={logo} style={{ width: "60px", height: "60px" }} />
           </a>{" "}
         </div>
+
         {this.renderSwitch(this.props.role)}
       </Sider>
     );
@@ -122,6 +123,7 @@ class SidebarComp extends Component {
 
 const mapStatetoProps = (state) => {
   return {
+    username: state.userReducer.username,
     role: state.userReducer.role,
     toggelState: state.userReducer.sidebarCollapased,
   };

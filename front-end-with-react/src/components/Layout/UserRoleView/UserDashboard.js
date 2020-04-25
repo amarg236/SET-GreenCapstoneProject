@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
-import "../../../stylesheets/home.css";
 import Cal from "../../Project/Cal";
+import { Layout } from "antd";
+const { Content } = Layout;
 
 class UserDashboard extends Component {
   constructor(props) {
@@ -15,15 +16,23 @@ class UserDashboard extends Component {
     // return <Cal />;
     //we are gonna put sliders and other contents in front page
     return (
-      <div>
-        <div className="jumbotron">
-          <h1 className="display-4">Hello, USER!</h1>
-          <p className="lead">This is a UserDashboard</p>
+      <Content
+        className="site-layout-background"
+        style={{
+          padding: 24,
+          margin: 0,
+          minHeight: 580,
+        }}
+      >
+        <div>
+          <div className="jumbotron">
+            <h1 className="display-4">Hello, USER!</h1>
+            <p className="lead">This is a UserDashboard</p>
+          </div>
         </div>
-      </div>
+      </Content>
     );
   }
 }
 
 export default UserDashboard;
-
