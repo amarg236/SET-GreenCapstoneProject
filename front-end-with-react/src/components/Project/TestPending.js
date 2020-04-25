@@ -95,9 +95,9 @@ class TestPending extends Component {
 
   // Approve Games
   approveGame = (display) => {
-    console.log(display);
+    console.log(display.key);
     const aemptyObj = {
-      id: display.id,
+      id: display.key,
     };
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/accept", aemptyObj, {
@@ -114,9 +114,9 @@ class TestPending extends Component {
 
   // Deny Game function
   denyGame = (display) => {
-    console.log(display.id);
+    console.log(display.key);
     const emptyObj = {
-      id: display.id,
+      id: display.key,
       // hometeamId: display.hometeamId,
       // hometeam: display.hometeam,
     };
