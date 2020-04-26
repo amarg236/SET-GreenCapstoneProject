@@ -46,7 +46,10 @@ class UserDashboard extends Component {
       // console.log(myTeam);
       // console.log(myTeam.has(14));
       // console.log(Array.from(myTeam.keys()));
-      localStorage.setItem("games", Array.from(myTeam.keys()));
+      const saveTeamIdArray = {
+        myTeamId: Array.from(myTeam.keys()),
+      };
+      localStorage.setItem("games", JSON.stringify(saveTeamIdArray));
 
       this.props.teamAction(Array.from(myTeam.keys()));
     } catch (e) {
