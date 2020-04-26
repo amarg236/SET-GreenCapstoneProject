@@ -222,7 +222,12 @@ public class UserServiceImpl implements UserService {
 			User u = userRepo.findByTmpPwd(p.getAccessKey().hashCode());
 			if(u.getTmpPwd() != 0) {
 				userRepo.updateTmpPwd(u.getId(), 0);
-				userRepo.updatePassword(u.getEmail(), p.getNewPassword());
+				User _u = new User();
+				_u.setEmail(u.getEmail());
+				_u.setPassword(u.getPassword());
+				if(updatePassAndVerify(u, _u).getHttpStatusCode() != HttpStatus.ACCEPTED.value()) {
+					throw new Exception("Update and verification of password failed");
+				}
 			}
 			else {
 				throw new Exception("NonRequestedPasswordResetException");

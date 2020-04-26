@@ -6,6 +6,7 @@ import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.boot.CommandLineRunner;
 
@@ -26,7 +27,8 @@ public class MasterInitializer implements CommandLineRunner{
 	ControllerAssistant hlp;
 	@Autowired
     private UserRepo ur;
-	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println(userInit());
@@ -42,16 +44,18 @@ public class MasterInitializer implements CommandLineRunner{
 			Properties p = new Properties();
 			p.load(new FileReader("sysstart.config"));
 			User u = new User();
-			u.setPassword(p.getProperty("password"));
+			u.setPassword(bCryptPasswordEncoder.encode(p.getProperty("password")));
 			u.setEmail(p.getProperty("username"));
 			u.setFirstname(p.getProperty("firstname", "first"));
 			u.setLastname(p.getProperty("lastname", "default"));
+			u.setVerified(true);
 			if(u.getEmail().equals("") || u.getPassword().equals("")) {
 				throw new Exception("invalid config");
 			}
 			HashSet<Role> sor = new HashSet<Role>();
 			Role r = new Role();
 			r.setRole(RoleName.ADMIN);
+			sor.add(r);
 			u.setRoles(sor);
 			ur.save(u);
 			return new ResponseBody<Boolean>(HttpStatus.ACCEPTED.value(), "", true);
