@@ -1,5 +1,6 @@
 package com.setgreen.services.usergroups;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,30 @@ public class UserScheduler extends UserUnfound {
 		g.setURequester(auth.getName());
 		g.setHomeNotification(false);
 		g.setAwayNotification(true);
-		return gh.saveGame(g);
+		HashSet<Game> sog = new HashSet<Game>(); //set of games. Prevents dupes by being a set
+		Teams s = new Teams(); //temp team object for methods
+		s.setId(g.getHometeamId()); //hometeam as team
+		sog.addAll(gh.getGames(s, true).getResult()); //all hometeam games for hometeam of proposed game
+		s.setId(g.getAwayteamId()); //awayteam as team
+		sog.addAll(gh.getGames(s, true).getResult()); //all awayteam games for awayteam of proposed game
+		int conflictCount = 0; //count of all conflicts
+		String conflicts = ""; //string of conflicting games
+		for(Game gme : sog) { //for each game
+			//if the games starting time is <= your proposed time and the end time is >=, it's a conflict
+			//by virtue of OTHER GAME START is before MY GAME START and OTHER GAME END is after MY GAME START
+			//meaning that g starts after gme and gme ends after g
+			if(gme.getTime().getTime() <= g.getTime().getTime() && gme.getTime().getTime()+gme.getDuration() >= g.getTime().getTime()) { 																
+				conflictCount++; //increment conflicts
+				conflicts = conflicts + "\n" + gme.getHometeam() + " vs. " + gme.getAwayteam() + " at " + gme.getLocation(); //nextline hometeam vs awayteam at location
+			}
+		}
+		conflicts = conflictCount + " conflicts found:" + conflicts; //"X conflicts found:\n hometeam vs. awayteam at location\n..."
+		if(conflictCount > 0) { //if more that 0 conflicts
+			return new ResponseBody<Game>(HttpStatus.CONFLICT.value(), conflicts, g); //tell error
+		}
+		else {
+			return gh.saveGame(g); //save game as expected
+		}
 	}
 
 	@Override

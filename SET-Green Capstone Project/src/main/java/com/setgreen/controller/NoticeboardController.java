@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,11 +25,11 @@ public class NoticeboardController {
 	private NoticeboardHandler nh;
 	
 	@PostMapping("add")//Requires all data
-	public ResponseBody<Notice> addNotice(Notice n, Authentication auth){
+	public ResponseBody<Notice> addNotice(@RequestBody Notice n, Authentication auth){
 		return hlp.getRoleByBest(auth).addNotice(auth, n);
 	}
 	@PostMapping("delete")//Only requires ID
-	public ResponseBody<Notice> deleteNotice(Notice n, Authentication auth){
+	public ResponseBody<Notice> deleteNotice(@RequestBody Notice n, Authentication auth){
 		return hlp.getRoleByBest(auth).deleteNotice(auth, n);
 	}
 	@PostMapping("get")//Requires nothing
