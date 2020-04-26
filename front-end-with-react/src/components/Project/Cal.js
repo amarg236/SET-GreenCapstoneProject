@@ -77,7 +77,7 @@ class Cal extends React.Component {
     } else if (props.PartialApproved || props.FullyApproved);
     {
       return (
-        <div style={{ backgroundColor: "orange" }} className="template-wrap">
+        <div style={{ backgroundColor: "orange", height:'100%' }} className="template-wrap">
           {" "}
           {props.Subject}{" "}
         </div>

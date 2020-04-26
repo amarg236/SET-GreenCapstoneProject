@@ -62,6 +62,7 @@ class CalFilter extends Component {
 
     render() {
         const { fetching, data, value } = this.state;
+        
         return (
             <Select
                 mode="multiple"
@@ -69,7 +70,7 @@ class CalFilter extends Component {
                 value={value}
                 placeholder="Filter"
                 notFoundContent={fetching ? <Spin size="small" /> : null}
-                filterOption={false}
+                filterOption={true}
                 style={{ width: "250px", minWidth: "auto" }}
                 onChange={this.handleChange}
                 onSearch={this.fetchUser}
@@ -80,6 +81,7 @@ class CalFilter extends Component {
             </Select>
         );
     }
+    
 }
 
 export default CalFilter;
