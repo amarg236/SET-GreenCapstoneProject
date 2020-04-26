@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Authtoken from "../../../Utility/AuthToken";
 import axios from "axios";
-import { gameAction } from "../../../actions/gameAction";
+import { gameAction, teamAction } from "../../../actions/gameAction";
 import { Layout } from "antd";
 const { Content } = Layout;
 
@@ -27,7 +27,7 @@ class UserDashboard extends Component {
 
     try {
       const res = await axios.post(
-        Authtoken.getBaseUrl() + "/api/game/get/BySchool/all",
+        Authtoken.getBaseUrl() + "/api/team/get/bySchool",
         currentSchool,
         {
           headers: {
@@ -37,14 +37,18 @@ class UserDashboard extends Component {
         }
       );
 
-      console.log("current school teams");
-      console.log(res.data.result);
-      console.log("length here");
-      console.log(res.data.result.length);
+      // console.log("current school teams");
+      // console.log(res.data.result);
+      let myTeam = new Map();
+      res.data.result.map((row) => myTeam.set(row.id));
+      // console.log("TEAM SIZE>>");
+      // console.log(myTeam.size);
+      // console.log(myTeam);
+      // console.log(myTeam.has(14));
+      // console.log(Array.from(myTeam.keys()));
+      localStorage.setItem("games", Array.from(myTeam.keys()));
 
-      localStorage.setItem("games", JSON.stringify(res.data.result));
-
-      this.props.gameAction(JSON.stringify(res.data.result));
+      this.props.teamAction(Array.from(myTeam.keys()));
     } catch (e) {
       console.error(`Problem fetching data ${e}`);
     }
@@ -74,7 +78,7 @@ class UserDashboard extends Component {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    gameAction: (games) => dispatch(gameAction(games)),
+    teamAction: (myTeam) => dispatch(teamAction(myTeam)),
   };
 };
 

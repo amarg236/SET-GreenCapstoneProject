@@ -36,7 +36,8 @@ function processData(supply) {
     awayTeam: row.awayteam,
     location: row.location,
     time: moment(row.time).format("MM/DD HH:mm"),
-    status: row.rejected,
+    rejected: row.rejected,
+    awayAccepted: row.awayAccepted,
   }));
 }
 class RequestedGame extends Component {
@@ -51,6 +52,9 @@ class RequestedGame extends Component {
   }
 
   componentDidMount() {
+    let myTeamId = new Map();
+    this.props.myTeamId.map((row, index) => myTeamId.set(row));
+
     const currentSchool = {
       id: this.props.mySchool.id,
     };
@@ -72,9 +76,11 @@ class RequestedGame extends Component {
         console.log("length here");
         console.log(res.data.result.length);
         let myData = res.data.result.filter(function (myGames) {
-          return myGames.rejected == true;
+          return myTeamId.has(myGames.hometeamId);
         });
+
         console.log("CONDITION>>");
+        console.log(myTeamId);
         console.log(myData);
         this.setState({
           game: processData(myData),
@@ -159,49 +165,6 @@ class RequestedGame extends Component {
     this.setState({ searchText: "" });
   };
 
-  // Approve Games
-  approveGame = (display) => {
-    console.log(display.key);
-    const aemptyObj = {
-      id: display.key,
-    };
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/accept", aemptyObj, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        window.alert("The game has been approved!");
-      });
-  };
-
-  // Deny Game function
-  denyGame = (display) => {
-    console.log(display.key);
-    const emptyObj = {
-      id: display.key,
-      // hometeamId: display.hometeamId,
-      // hometeam: display.hometeam,
-    };
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/reject", emptyObj, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        window.alert("The game has been denied!");
-        // This needs fix later on
-        window.location.reload();
-        // history.push("./viewGames");
-      });
-  };
-
   render() {
     const { game } = this.state;
 
@@ -214,12 +177,12 @@ class RequestedGame extends Component {
         title: "HomeTeam",
         dataIndex: "homeTeam",
         key: "homeTeam",
-        ...this.getColumnSearchProps("homeTeam"),
       },
       {
         title: "AwayTeam",
         dataIndex: "awayTeam",
         key: "awayTeam",
+        ...this.getColumnSearchProps("awayTeam"),
       },
       {
         title: "Location",
@@ -234,10 +197,11 @@ class RequestedGame extends Component {
       {
         title: "Status",
         dataIndex: "",
-        key: "x",
+        key: "status",
         render: (record) => (
           <span>
-            {record.status == true ? <Tag color="volcano">Rejected</Tag> : null}
+            {record.rejected ? <Tag color="volcano">Rejected</Tag> : null}
+            {record.awayAccepted ? <Tag color="green">Accepted</Tag> : null}
           </span>
         ),
       },
@@ -296,6 +260,7 @@ const mapStatetoProps = (state) => {
     mySchool: state.userReducer.mySchool,
     schoolDistrict: state.userReducer.schoolDistrict,
     userGameRedux: state.gameReducer.userGame,
+    myTeamId: state.gameReducer.myTeam,
   };
 };
 export default connect(mapStatetoProps, null)(RequestedGame);

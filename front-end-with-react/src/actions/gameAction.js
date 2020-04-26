@@ -10,3 +10,13 @@ export const gameAction = (game) => {
     console.log(game);
   };
 };
+
+export const teamAction = (myTeam) => {
+  return (dispatch) => {
+    dispatch({
+      type: "ADD_HOMME_TEAM",
+      userGame: myTeam,
+    });
+    console.log(myTeam);
+  };
+};

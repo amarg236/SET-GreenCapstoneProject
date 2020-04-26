@@ -9,6 +9,7 @@ const initialState = {
   mySchool: JSON.parse(localStorage.getItem("homeSchool"))?.currenthomeSchool,
   schoolDistrict: JSON.parse(localStorage.getItem("homeSchool"))
     ?.currenthomeDistrict,
+
   // mySchool: [],
   // schoolDistrict: []
 };

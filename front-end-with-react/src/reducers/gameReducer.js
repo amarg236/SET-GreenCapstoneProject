@@ -1,5 +1,5 @@
 const game = {
-  userGame: localStorage.getItem("games"),
+  myTeam: [],
 };
 const gameReducer = (state = game, action) => {
   switch (action.type) {
@@ -7,6 +7,10 @@ const gameReducer = (state = game, action) => {
       return {
         ...state,
         userGame: action.userGame,
+      };
+    case "ADD_HOMME_TEAM":
+      return {
+        myTeam: action.userGame,
       };
     default:
       return state;
