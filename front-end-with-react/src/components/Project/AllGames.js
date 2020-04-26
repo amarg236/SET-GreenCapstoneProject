@@ -6,6 +6,7 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import moment from "moment";
 import TestPendingGames from "./TestPending";
+import UnfilteredGames from "./UnfilteredGames";
 
 import {
   Tabs,
@@ -53,10 +54,12 @@ class AllGames extends Component {
       >
         <Tabs defaultActiveKey="1" onChange={callback}>
           <TabPane tab="All Games" key="1">
-            <TestPendingGames />
+            <UnfilteredGames />
           </TabPane>
 
-          <TabPane tab="Pending Games" key="2"></TabPane>
+          <TabPane tab="Pending Games" key="2">
+            <TestPendingGames />
+          </TabPane>
           <TabPane tab="Requested Games" key="3"></TabPane>
         </Tabs>
       </Content>
