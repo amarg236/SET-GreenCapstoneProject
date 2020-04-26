@@ -41,6 +41,7 @@ import TestPending from "./components/Project/TestPending";
 import AdminViewGame from "./components/Project/AdminShowGames";
 import AllGames from "./components/Project/AllGames";
 import AddNotice from "./components/ManageNotice/AddNotice";
+import ViewNotice from "./components/ManageNotice/ViewNotice";
 class App extends React.Component {
   render() {
     return (
@@ -125,6 +126,7 @@ class App extends React.Component {
                 path="/adminViewGame"
                 component={AdminViewGame}
               />
+              <ProtectedRoute exact path="/viewNotice" component={ViewNotice} />
               <ProtectedRoute exact path="/addNotice" component={AddNotice} />
               <ProtectedRoute exact path="/viewAllGames" component={AllGames} />
               <ProtectedRoute exact path="/exportCSV" component={ExportCSV} />
