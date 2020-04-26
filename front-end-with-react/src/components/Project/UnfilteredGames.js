@@ -54,6 +54,9 @@ class UnfilteredGames extends Component {
   }
 
   componentDidMount() {
+    // let myTeamId = new Map();
+    // this.props.myTeamId.map((row, index) => myTeamId.set(row));
+
     const currentSchool = {
       id: this.props.mySchool.id,
     };
@@ -70,10 +73,13 @@ class UnfilteredGames extends Component {
         }
       )
       .then((res) => {
-        console.log("current school teams");
-        console.log(res.data.result);
-        console.log("length here");
-        console.log(res.data.result.length);
+        // console.log("current school teams");
+        // console.log(res.data.result);
+        // console.log("length here");
+        // console.log(res.data.result.length);
+        // let myData = res.data.result.filter(function (myGames) {
+        //   return myTeamId.has(myGames.awayteamId);
+        // });
 
         this.setState({
           game: processData(res.data.result),
@@ -277,7 +283,7 @@ const mapStatetoProps = (state) => {
     token: state.userReducer.token,
     mySchool: state.userReducer.mySchool,
     schoolDistrict: state.userReducer.schoolDistrict,
-    userGameRedux: state.gameReducer.userGame,
+    myTeamId: state.gameReducer.myTeam,
   };
 };
 export default connect(mapStatetoProps, null)(UnfilteredGames);

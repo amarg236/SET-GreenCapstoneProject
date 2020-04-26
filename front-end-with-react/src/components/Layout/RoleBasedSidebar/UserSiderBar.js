@@ -24,6 +24,8 @@ import {
   ClockCircleOutlined,
   DeleteRowOutlined,
   CheckOutlined,
+  UserOutlined,
+  SolutionOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -130,7 +132,7 @@ class UserSidebar extends Component {
         </Menu.Item>
         <Menu.Item onClick={handleClick} key="userProfile">
           <span>
-            <SettingOutlined />
+            <SolutionOutlined />
           </span>
           <span>User Profile</span>
         </Menu.Item>

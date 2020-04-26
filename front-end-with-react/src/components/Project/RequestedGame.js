@@ -71,17 +71,17 @@ class RequestedGame extends Component {
         }
       )
       .then((res) => {
-        console.log("current school teams");
-        console.log(res.data.result);
-        console.log("length here");
-        console.log(res.data.result.length);
+        // console.log("current school teams");
+        // console.log(res.data.result);
+        // console.log("length here");
+        // console.log(res.data.result.length);
         let myData = res.data.result.filter(function (myGames) {
           return myTeamId.has(myGames.hometeamId);
         });
 
-        console.log("CONDITION>>");
-        console.log(myTeamId);
-        console.log(myData);
+        // console.log("CONDITION>>");
+        // console.log(myTeamId);
+        // console.log(myData);
         this.setState({
           game: processData(myData),
         });

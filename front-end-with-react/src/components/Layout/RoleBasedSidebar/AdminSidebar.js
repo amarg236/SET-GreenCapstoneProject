@@ -21,6 +21,7 @@ import {
   AppstoreOutlined,
   ApartmentOutlined,
   UserAddOutlined,
+  SolutionOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -153,7 +154,7 @@ class AdminSidebar extends Component {
         </Menu.Item>
         <Menu.Item onClick={handleClick} key="userProfile">
           <span>
-            <SettingOutlined />
+            <SolutionOutlined />
           </span>
           <span>User Profile</span>
         </Menu.Item>
