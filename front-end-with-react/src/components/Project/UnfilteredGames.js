@@ -13,11 +13,21 @@ import {
   Col,
   Button,
   Table,
+  Input,
   Statistic,
   Descriptions,
+  DatePicker,
 } from "antd";
+
+// import Highlighter from "react-highlight-words";
+import { SearchOutlined } from "@ant-design/icons";
+
 const { Content } = Layout;
 const { TabPane } = Tabs;
+let justForData = [
+  { text: "Alexandria ", value: "Alexandria " },
+  { text: "Bera", value: "Linda" },
+];
 
 function callback(key) {
   console.log(key);
@@ -71,6 +81,82 @@ class UnfilteredGames extends Component {
       });
   }
 
+  getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            this.handleSearch(selectedKeys, confirm, dataIndex)
+          }
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          icon={<SearchOutlined />}
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button
+          onClick={() => this.handleReset(clearFilters)}
+          size="small"
+          style={{ width: 90 }}
+        >
+          Reset
+        </Button>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    // render: (text) =>
+    //   this.state.searchedColumn === dataIndex ? (
+    //     <Highlighter
+    //       highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+    //       searchWords={[this.state.searchText]}
+    //       autoEscape
+    //       textToHighlight={text.toString()}
+    //     />
+    //   ) : (
+    //     text
+    //   ),
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = (clearFilters) => {
+    clearFilters();
+    this.setState({ searchText: "" });
+  };
+
   // rowSelection objects indicates the need for row selection
 
   // Approve Games
@@ -122,7 +208,7 @@ class UnfilteredGames extends Component {
     const tableData = game;
 
     const getFilteredData = (rejected) => columns.filter({});
-
+    console.log(tableData);
     const columns = [
       {
         title: "HomeTeam",
@@ -133,6 +219,20 @@ class UnfilteredGames extends Component {
         title: "AwayTeam",
         dataIndex: "awayTeam",
         key: "awayTeam",
+        ...this.getColumnSearchProps("awayTeam"),
+        // filters: [
+        //   {
+        //     text: "Alexandria ",
+        //     value: "Alexandria ",
+        //   },
+
+        // ],
+        // onFilter: (value, record) => record.awayTeam.includes(value),
+        // render: (record) => (
+        //   <span>
+        //     <a>{console.log(justForData.pl)}</a>
+        //   </span>
+        // ),
       },
       {
         title: "Location",
@@ -161,15 +261,9 @@ class UnfilteredGames extends Component {
             type="primary"
             onClick={this.setAgeSort}
           >
-            Filter By Date
+            Filter By Month
           </Button>
-          <Button
-            style={{ marginRight: "8px" }}
-            type="secondary"
-            onClick={this.clearFilters}
-          >
-            Filter By Team
-          </Button>
+          <DatePicker picker="month" bordered={true} />
         </div>
 
         <Table columns={columns} dataSource={tableData} size="small" />

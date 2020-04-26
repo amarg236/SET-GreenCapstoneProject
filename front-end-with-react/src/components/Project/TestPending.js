@@ -15,7 +15,12 @@ import {
   Table,
   Statistic,
   Descriptions,
+  Input,
+  DatePicker,
 } from "antd";
+
+import { SearchOutlined } from "@ant-design/icons";
+
 const { Content } = Layout;
 const { TabPane } = Tabs;
 
@@ -24,6 +29,8 @@ function callback(key) {
 }
 
 function processData(supply) {
+  console.log("processData>>");
+  console.log(supply);
   return supply.map((row) => ({
     key: row.id,
     homeTeam: row.hometeam,
@@ -32,6 +39,7 @@ function processData(supply) {
     time: moment(row.time).format("MM/DD HH:mm"),
   }));
 }
+
 class TestPending extends Component {
   constructor(props) {
     super(props);
@@ -50,7 +58,7 @@ class TestPending extends Component {
 
     axios
       .post(
-        Authtoken.getBaseUrl() + "/api/game/get/BySchool/all",
+        Authtoken.getBaseUrl() + "/api/game/get/BySchool/notAccepted",
         currentSchool,
         {
           headers: {
@@ -72,6 +80,81 @@ class TestPending extends Component {
   }
 
   // rowSelection objects indicates the need for row selection
+  getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            this.handleSearch(selectedKeys, confirm, dataIndex)
+          }
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          icon={<SearchOutlined />}
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button
+          onClick={() => this.handleReset(clearFilters)}
+          size="small"
+          style={{ width: 90 }}
+        >
+          Reset
+        </Button>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    // render: (text) =>
+    //   this.state.searchedColumn === dataIndex ? (
+    //     <Highlighter
+    //       highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+    //       searchWords={[this.state.searchText]}
+    //       autoEscape
+    //       textToHighlight={text.toString()}
+    //     />
+    //   ) : (
+    //     text
+    //   ),
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = (clearFilters) => {
+    clearFilters();
+    this.setState({ searchText: "" });
+  };
 
   // Approve Games
   approveGame = (display) => {
@@ -128,6 +211,7 @@ class TestPending extends Component {
         title: "HomeTeam",
         dataIndex: "homeTeam",
         key: "homeTeam",
+        ...this.getColumnSearchProps("homeTeam"),
       },
       {
         title: "AwayTeam",
@@ -196,15 +280,9 @@ class TestPending extends Component {
             type="primary"
             onClick={this.setAgeSort}
           >
-            Filter By Date
+            Filter By Month
           </Button>
-          <Button
-            style={{ marginRight: "8px" }}
-            type="secondary"
-            onClick={this.clearFilters}
-          >
-            Filter By Team
-          </Button>
+          <DatePicker picker="month" bordered={true} />
         </div>
 
         <Table

@@ -78,48 +78,50 @@ class UserSidebar extends Component {
           </span>
           <span>View All Game</span>
         </Menu.Item>
-        <SubMenu
-          key="sub1"
-          title={
-            <span>
-              <AppstoreOutlined />
-              <span>Manage Game</span>
-            </span>
-          }
-        >
-          <Menu.Item onClick={handleClick} key="requestedGames">
-            <span>
-              <a href="/requestedGames">
-                <ClockCircleOutlined />
-              </a>
-            </span>
-            <span>Requested Games</span>
-          </Menu.Item>
-          <Menu.Item onClick={handleClick} key="acceptedGame">
-            <span>
-              <a href="/viewGames">
-                <CheckOutlined />
-              </a>
-            </span>
-            <span>Waiting Assignor</span>
-          </Menu.Item>
-          <Menu.Item onClick={handleClick} key="rejectedGames">
-            <span>
-              <a href="/rejectedGames">
-                <DeleteRowOutlined />
-              </a>
-            </span>
-            <span>Rejected Game</span>
-          </Menu.Item>
-          <Menu.Item onClick={handleClick} key="approvedGames">
-            <span>
-              <a href="/approved">
-                <CheckOutlined />
-              </a>
-            </span>
-            <span>Approved Game</span>
-          </Menu.Item>
-        </SubMenu>
+        {
+          // <SubMenu
+          //           key="sub1"
+          //           title={
+          //             <span>
+          //               <AppstoreOutlined />
+          //               <span>Manage Game</span>
+          //             </span>
+          //           }
+          //         >
+          //           <Menu.Item onClick={handleClick} key="requestedGames">
+          //             <span>
+          //               <a href="/requestedGames">
+          //                 <ClockCircleOutlined />
+          //               </a>
+          //             </span>
+          //             <span>Requested Games</span>
+          //           </Menu.Item>
+          //           <Menu.Item onClick={handleClick} key="acceptedGame">
+          //             <span>
+          //               <a href="/viewGames">
+          //                 <CheckOutlined />
+          //               </a>
+          //             </span>
+          //             <span>Waiting Assignor</span>
+          //           </Menu.Item>
+          //           <Menu.Item onClick={handleClick} key="rejectedGames">
+          //             <span>
+          //               <a href="/rejectedGames">
+          //                 <DeleteRowOutlined />
+          //               </a>
+          //             </span>
+          //             <span>Rejected Game</span>
+          //           </Menu.Item>
+          //           <Menu.Item onClick={handleClick} key="approvedGames">
+          //             <span>
+          //               <a href="/approved">
+          //                 <CheckOutlined />
+          //               </a>
+          //             </span>
+          //             <span>Approved Game</span>
+          //           </Menu.Item>
+          //         </SubMenu>
+        }
 
         <Menu.Item onClick={handleClick} key="approvedGames" key="exportCSV">
           <DownloadOutlined />

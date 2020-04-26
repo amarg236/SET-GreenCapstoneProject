@@ -7,7 +7,9 @@ import { connect } from "react-redux";
 import moment from "moment";
 import TestPendingGames from "./TestPending";
 import UnfilteredGames from "./UnfilteredGames";
+import RequestedGames from "./RequestedGame";
 
+import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import {
   Tabs,
   Row,
@@ -53,14 +55,40 @@ class AllGames extends Component {
         }}
       >
         <Tabs defaultActiveKey="1" onChange={callback}>
-          <TabPane tab="All Games" key="1">
+          <TabPane
+            tab={
+              <h6>
+                All Games <ArrowUpOutlined />
+                <ArrowDownOutlined />
+              </h6>
+            }
+            key="1"
+          >
             <UnfilteredGames />
           </TabPane>
 
-          <TabPane tab="Pending Games" key="2">
+          <TabPane
+            tab={
+              <h6>
+                Pending Games
+                <ArrowDownOutlined />
+              </h6>
+            }
+            key="2"
+          >
             <TestPendingGames />
           </TabPane>
-          <TabPane tab="Requested Games" key="3"></TabPane>
+          <TabPane
+            tab={
+              <h6>
+                Requested Games
+                <ArrowUpOutlined />
+              </h6>
+            }
+            key="3"
+          >
+            <RequestedGames />
+          </TabPane>
         </Tabs>
       </Content>
     );

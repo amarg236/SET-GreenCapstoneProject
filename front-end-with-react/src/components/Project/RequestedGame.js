@@ -4,40 +4,41 @@ import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
+import moment from "moment";
 
 import {
+  Tabs,
   Row,
+  Layout,
   Col,
   Button,
-  PageHeader,
-  Tabs,
+  Table,
   Statistic,
   Descriptions,
+  Input,
+  DatePicker,
+  Tag,
 } from "antd";
 
+import { SearchOutlined } from "@ant-design/icons";
+
+const { Content } = Layout;
 const { TabPane } = Tabs;
 
-const renderContent = (display, column = 2) => (
-  <Descriptions size="small" column={column}>
-    <Descriptions.Item label="Home Team">{display.location}</Descriptions.Item>
-    <Descriptions.Item label="Away Team">
-      <a>{display.awayteam}</a>
-    </Descriptions.Item>
-    <Descriptions.Item label="Game Duration">
-      {display.duration} minutes
-    </Descriptions.Item>
-  </Descriptions>
-);
+function callback(key) {
+  console.log(key);
+}
 
-const Content = ({ children, extra }) => {
-  return (
-    <div className="content">
-      <div className="main">{children}</div>
-      <div className="extra">{extra}</div>
-    </div>
-  );
-};
-
+function processData(supply) {
+  return supply.map((row) => ({
+    key: row.id,
+    homeTeam: row.hometeam,
+    awayTeam: row.awayteam,
+    location: row.location,
+    time: moment(row.time).format("MM/DD HH:mm"),
+    status: row.rejected,
+  }));
+}
 class RequestedGame extends Component {
   constructor(props) {
     super(props);
@@ -45,67 +46,124 @@ class RequestedGame extends Component {
       loading: true,
       game: [],
       school: [],
+      isRejected: null,
     };
-
-    this.approveGame = this.approveGame.bind(this);
-    this.denyGame = this.denyGame.bind(this);
   }
 
   componentDidMount() {
-    //getting current users team and school
-
     const currentSchool = {
       id: this.props.mySchool.id,
     };
+
     axios
-      .post(Authtoken.getBaseUrl() + "/api/team/get/bySchool", currentSchool, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
+      .post(
+        Authtoken.getBaseUrl() + "/api/game/get/BySchool/notApproved",
+        currentSchool,
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
+        }
+      )
       .then((res) => {
         console.log("current school teams");
         console.log(res.data.result);
         console.log("length here");
         console.log(res.data.result.length);
-        for (let index = 0; index < res.data.result.length; index++) {
-          console.log("printing uder the loop");
-          console.log(res.data.result[index].id);
-          const emptyBody = {
-            id: res.data.result[index].id,
-          };
-          axios
-            .post(
-              Authtoken.getBaseUrl() +
-                "/api/game/get/ByTeamId/home/notAccepted",
-              emptyBody,
-              {
-                headers: {
-                  Authorization:
-                    "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-                },
-              }
-            )
-            .then((res) => {
-              console.log("i am resut of nested loop");
-              console.log(res.data.result);
-
-              res.data.result.map((gamefromaxio) => {
-                this.setState({
-                  game: [...this.state.game, gamefromaxio],
-                  loading: false,
-                });
-              });
-            });
-        }
-        // this.setState({ awaySchoolTeamList: res.data.result });
+        let myData = res.data.result.filter(function (myGames) {
+          return myGames.rejected == true;
+        });
+        console.log("CONDITION>>");
+        console.log(myData);
+        this.setState({
+          game: processData(myData),
+        });
       });
   }
 
-  approveGame(display) {
+  // rowSelection objects indicates the need for row selection
+  getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            this.handleSearch(selectedKeys, confirm, dataIndex)
+          }
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          icon={<SearchOutlined />}
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button
+          onClick={() => this.handleReset(clearFilters)}
+          size="small"
+          style={{ width: 90 }}
+        >
+          Reset
+        </Button>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    // render: (text) =>
+    //   this.state.searchedColumn === dataIndex ? (
+    //     <Highlighter
+    //       highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+    //       searchWords={[this.state.searchText]}
+    //       autoEscape
+    //       textToHighlight={text.toString()}
+    //     />
+    //   ) : (
+    //     text
+    //   ),
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = (clearFilters) => {
+    clearFilters();
+    this.setState({ searchText: "" });
+  };
+
+  // Approve Games
+  approveGame = (display) => {
+    console.log(display.key);
     const aemptyObj = {
-      id: display.id,
+      id: display.key,
     };
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/accept", aemptyObj, {
@@ -118,93 +176,116 @@ class RequestedGame extends Component {
         console.log(res);
         window.alert("The game has been approved!");
       });
-  }
+  };
 
-  denyGame(id) {
+  // Deny Game function
+  denyGame = (display) => {
+    console.log(display.key);
     const emptyObj = {
-      data: id,
+      id: display.key,
+      // hometeamId: display.hometeamId,
+      // hometeam: display.hometeam,
     };
-
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/delete", emptyObj, {
+      .post(Authtoken.getBaseUrl() + "/api/game/reject", emptyObj, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
         },
       })
       .then((res) => {
+        console.log(res);
         window.alert("The game has been denied!");
         // This needs fix later on
-        // window.location.reload();
+        window.location.reload();
         // history.push("./viewGames");
       });
-  }
+  };
 
   render() {
-    console.log(this.state.game);
+    const { game } = this.state;
+
+    const tableData = game;
+
+    const getFilteredData = (rejected) => columns.filter({});
+
+    const columns = [
+      {
+        title: "HomeTeam",
+        dataIndex: "homeTeam",
+        key: "homeTeam",
+        ...this.getColumnSearchProps("homeTeam"),
+      },
+      {
+        title: "AwayTeam",
+        dataIndex: "awayTeam",
+        key: "awayTeam",
+      },
+      {
+        title: "Location",
+        dataIndex: "location",
+        key: "location",
+      },
+      {
+        title: "Time",
+        dataIndex: "time",
+        key: "time",
+      },
+      {
+        title: "Status",
+        dataIndex: "",
+        key: "x",
+        render: (record) => (
+          <span>
+            {record.status == true ? <Tag color="volcano">Rejected</Tag> : null}
+          </span>
+        ),
+      },
+    ];
+
+    const rowSelection = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        console.log(
+          `selectedRowKeys: ${selectedRowKeys}`,
+          "selectedRows: ",
+          selectedRows
+        );
+      },
+      onSelect: (record, selected, selectedRows) => {
+        console.log(record, selected, selectedRows);
+      },
+      onSelectAll: (selected, selectedRows, changeRows) => {
+        console.log(selected, selectedRows, changeRows);
+      },
+    };
 
     return (
-      <div
+      <Content
+        className="site-layout-background"
         style={{
-          backgroundColor: "#ffff",
-          marginTop: "10px",
-          padding: "20px",
-          boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
+          padding: 24,
+          margin: 0,
+          minHeight: 580,
         }}
       >
-        <PageHeader>
-          <h4 style={{ textAlign: "center" }}>Requested Games</h4>
-          <p style={{ textAlign: "center" }}>
-            Games you have request but haven't been accepted by away team
-          </p>
-        </PageHeader>
+        <div style={{ marginBottom: "16px" }}>
+          <Button
+            style={{ marginRight: "8px" }}
+            type="primary"
+            onClick={this.setAgeSort}
+          >
+            Filter By Month
+          </Button>
+          <DatePicker picker="month" bordered={true} />
+        </div>
 
-        {this.state.game &&
-          this.state.game.map((display) => {
-            const {
-              id,
-              hometeam,
-              homedistrict,
-              awayteam,
-              awaydistrict,
-              time,
-              duration,
-              location,
-              approved,
-              awayAccepted,
-              rejected,
-            } = display;
-            if (!approved && !rejected) {
-              return (
-                <PageHeader
-                  key={id}
-                  className="site-page-header-responsive"
-                  // onBack={() => window.history.back()}
-                  title={hometeam.concat(" vs ").concat(awayteam)}
-                  subTitle={time}
-                  extra={[
-                    <Button key="2" onClick={() => this.denyGame(id)}>
-                      Deny
-                    </Button>,
-                    <Button
-                      key="1"
-                      type="primary"
-                      onClick={() => this.approveGame(display)}
-                    >
-                      Accept
-                    </Button>,
-                  ]}
-                >
-                  <Content>{renderContent(display)}</Content>
-                </PageHeader>
-              );
-            }
-          })}
-
-        {
-          // Approved Games
-        }
-      </div>
+        <Table
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={tableData}
+          size="small"
+        />
+      </Content>
     );
   }
 }
@@ -214,6 +295,7 @@ const mapStatetoProps = (state) => {
     token: state.userReducer.token,
     mySchool: state.userReducer.mySchool,
     schoolDistrict: state.userReducer.schoolDistrict,
+    userGameRedux: state.gameReducer.userGame,
   };
 };
 export default connect(mapStatetoProps, null)(RequestedGame);
