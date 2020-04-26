@@ -31,29 +31,29 @@ public class GameHandler {
 	private GameRepo gr;
 	@Autowired
 	private TeamsRepo tr;
-	/**Attempts to save a game, and send an email to the involved coaches.
+	/**Attempts to save a game
 	 * @param g Game to save
 	 * @return ResponseBody result of attempting to save game
 	 */
 	public ResponseBody<Game> saveGame(Game g){
 		try{
-			String str = "";
-			try {
-				Mail m = new Mail();
-				MailHandler snd = new MailHandler(new JavaMailSenderImpl());
-				Iterable<Role> i = tr.findByTmName(g.getAwayteam()).getSchool().getRoles();
-				for(Role x : i) {
-					m.setSendTo(x.getUser().getEmail());
-					m.setSubjectLine("Game against "+g.getAwayteam()+".");
-					m.setEmailContent(g.getAwayteam()+" has suggested a game to play.");
-					//snd.sendMailMessage(m);//TODO Switch from debug to deploy
-					str+=snd.debugMessage(m)+"\n";
-				}
-			}
-			catch(NullPointerException e) {
-				str = "No coaches of that email found.";
-			}
-			System.out.println(g);
+//			String str = "";
+//			try {
+//				Mail m = new Mail();
+//				MailHandler snd = new MailHandler(new JavaMailSenderImpl());
+//				Iterable<Role> i = tr.findByTmName(g.getAwayteam()).getSchool().getRoles();
+//				for(Role x : i) {
+//					m.setSendTo(x.getUser().getEmail());
+//					m.setSubjectLine("Game against "+g.getAwayteam()+".");
+//					m.setEmailContent(g.getAwayteam()+" has suggested a game to play.");
+//					//snd.sendMailMessage(m);//TODO Switch from debug to deploy
+//					str+=snd.debugMessage(m)+"\n";
+//				}
+//			}
+//			catch(NullPointerException e) {
+//				str = "No coaches of that email found.";
+//			}
+//			System.out.println(g);
 			gr.save(g);
 			
 			return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), "Game Saved", g);

@@ -268,4 +268,13 @@ public class UserServiceImpl implements UserService {
     		Debugger.cout("forgotPassword error: " + e + "\n");
     	}
 	}
+	@Override
+	public ResponseBody<User> getById(Long id) {
+		try {
+			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "found user", userRepo.findById(id).get());
+		}
+		catch(Exception e){
+			return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "Did not find user: " + e.getMessage(), new User());
+		}
+	}
 }

@@ -1,11 +1,13 @@
 package com.setgreen.services.usergroups;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.setgreen.model.District;
 import com.setgreen.model.Game;
 import com.setgreen.model.ResponseBody;
+import com.setgreen.model.Role;
 import com.setgreen.model.RoleName;
 import com.setgreen.model.School;
 import com.setgreen.model.SignUpForm;
@@ -25,12 +27,26 @@ public class UserAssignor extends UserScheduler /*implements UserReference*/  {
 	
 	@Override
 	public ResponseBody<User> inviteUser(SignUpForm suf) {
-		return stubbed(new User(suf));
+		if(suf.getRole().getRole().userLevel() > getName().userLevel()) {
+			return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "User outranks you", new User(suf));
+		}
+		return uh.saveUser(suf);
 	}
 	
 	@Override
 	public ResponseBody<User> removeUser(User u) {
-		return stubbed(u);
+		ResponseBody<User> tmp = uh.getById(u.getId());
+		if(tmp.getHttpStatusCode() == HttpStatus.ACCEPTED.value()) {
+			for(Role r : tmp.getResult().getRoles()) {
+				if(r.getRole().userLevel() > getName().userLevel()) {
+					return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "User outranks you", u);
+				}
+			}
+			return uh.deleteUser(u);
+		}
+		else {
+			return tmp;
+		}
 	}
 	
 	@Override

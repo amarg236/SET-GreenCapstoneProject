@@ -32,4 +32,6 @@ public interface UserService {
 
 	ResponseBody<User> getByTmpPwd(String pwd);
 
+	ResponseBody<User> getById(Long id);
+
 }
