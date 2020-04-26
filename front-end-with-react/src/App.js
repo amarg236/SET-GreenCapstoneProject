@@ -3,7 +3,7 @@ import "./App.css";
 import "./stylesheets/mediaQue.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Router, Switch, Route } from "react-router-dom";
-import SignIn from "./components/Project/SignIn";
+import login from "./components/Project/TestLogin";
 import Home from "./components/Layout/Home";
 import CreateGame from "./components/Project/CreateGame";
 import FooterComp from "./components/Layout/FooterComp";
@@ -37,15 +37,19 @@ import RejectedGames from "./components/Project/RejectedGames";
 import TestCreateGane from "./components/Project/TestCreateGame";
 import Error404 from "./components/Layout/Error";
 import ExportCSV from "./components/Project/ExportToCSV";
-
+import TestPending from "./components/Project/TestPending";
+import AdminViewGame from "./components/Project/AdminShowGames";
+import AllGames from "./components/Project/AllGames";
 class App extends React.Component {
   render() {
     return (
       <Router history={history}>
-        <Layout style={{ height: "100vh", overflow: "hidden" }}>
+        <Layout style={{ height: "100vh" }}>
           <SidebarComp />
           <Layout className="site-layout">
-            <HeaderRoot />
+            {
+              // <HeaderRoot />
+            }
 
             <Switch>
               <Route exact path="/" component={Home} />
@@ -74,17 +78,13 @@ class App extends React.Component {
                 component={ChangePassword}
               />
               <ProtectedRoute exact path="/addSchool" component={AddSchool} />
-              <ProtectedRoute
-                exact
-                path="/createGame"
-                component={TestCreateGane}
-              />
+              <ProtectedRoute exact path="/createGame" component={CreateGame} />
               <ProtectedRoute
                 exact
                 path="/acceptedGame"
                 component={AcceptedGame}
               />
-              <ProtectedRoute exact path="/viewGames" component={ViewGames} />
+              <ProtectedRoute exact path="/viewGames" component={TestPending} />
               <ProtectedRoute exact path="/addTeam" component={AddTeam} />
               <ProtectedRoute exact path="/manageUser" component={ManageUser} />
               <ProtectedRoute exact path="/allUsers" component={ShowAllUser} />
@@ -119,8 +119,15 @@ class App extends React.Component {
                 path="/userProfile"
                 component={UserProfile}
               />
+              <ProtectedRoute
+                exact
+                path="/adminViewGame"
+                component={AdminViewGame}
+              />
+              <ProtectedRoute exact path="/viewAllGames" component={AllGames} />
               <ProtectedRoute exact path="/exportCSV" component={ExportCSV} />
               <ProtectedRoute exact path="/calander" component={Cal} />
+              <Route exact path="/login" component={login} />
               <Route path="*" component={Error404} />
             </Switch>
           </Layout>

@@ -1,16 +1,18 @@
 import "../../App.css";
+import logo from "../../assets/website-logo.png";
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { Menu, Layout } from "antd";
+import { Menu, Layout, Typography, Tag } from "antd";
 import UserSidebar from "./RoleBasedSidebar/UserSiderBar";
 import AssignorSidebar from "./RoleBasedSidebar/AssignorSidebar";
 import AdminSidebar from "./RoleBasedSidebar/AdminSidebar";
 import { toggleAction } from "../../actions/toggleAction";
 import { isMobile } from "react-device-detect";
 import device from "../../Utility/media";
-import { HomeOutlined, LogoutOutlined } from "@ant-design/icons";
-const { Sider } = Layout;
-
+import history from "../../Utility/history";
+import { HomeOutlined, LogoutOutlined, LoginOutlined } from "@ant-design/icons";
+const { Sider, Content } = Layout;
+const { Text } = Typography;
 class SidebarComp extends Component {
   state = {
     collapsed: false,
@@ -68,21 +70,33 @@ class SidebarComp extends Component {
           <Menu
             mode="inline"
             theme="dark"
-            defaultSelectedKeys={["1"]}
+            defaultSelectedKeys={["home"]}
             defaultOpenKeys={["sub1"]}
             style={{ height: "100%", borderRight: 0 }}
           >
-            <Menu.Item key="home">
-              <span>
-                <HomeOutlined />
-              </span>
+            <Menu.Item onClick={this.homeRedirect} key="home">
+              <HomeOutlined />
+
               <span>HOME</span>
             </Menu.Item>
+
+            {
+              <Menu.Item onClick={this.handleClick} key="login">
+                <LoginOutlined />
+                <span>LOG IN</span>
+              </Menu.Item>
+            }
           </Menu>
         );
     }
   }
+  handleClick = (e) => {
+    history.push("/".concat(e.key));
+  };
 
+  homeRedirect = (e) => {
+    history.push("/");
+  };
   render() {
     return (
       /*
@@ -95,7 +109,12 @@ class SidebarComp extends Component {
         onCollapse={this.onCollapse}
         collapsedWidth={this.state.collapsedWidth}
       >
-        <div className="logo">SET GREEN</div>
+        <div className="logo">
+          <a href="./">
+            <img src={logo} style={{ width: "60px", height: "60px" }} />
+          </a>{" "}
+        </div>
+
         {this.renderSwitch(this.props.role)}
       </Sider>
     );
@@ -104,6 +123,7 @@ class SidebarComp extends Component {
 
 const mapStatetoProps = (state) => {
   return {
+    username: state.userReducer.username,
     role: state.userReducer.role,
     toggelState: state.userReducer.sidebarCollapased,
   };

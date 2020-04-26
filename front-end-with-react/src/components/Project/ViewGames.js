@@ -6,8 +6,10 @@ import PendingGame from "./PendingGames";
 import ShowUserPendingGames from "./ShowUserPendingGames";
 import AdminShowGames from "./AdminShowGames";
 import AcceptedGame from "./AcceptedGame";
+
 import { connect } from "react-redux";
 import { Layout } from "antd";
+
 const { Content } = Layout;
 
 class ViewGames extends Component {
@@ -89,8 +91,6 @@ class ViewGames extends Component {
 const mapStatetoProps = (state) => {
   return {
     role: state.userReducer.role,
-    mySchool: state.userReducer.mySchool,
-    schoolDistrict: state.userReducer.schoolDistrict,
   };
 };
 

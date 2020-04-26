@@ -19,7 +19,7 @@ class AddDistrict extends Component {
     initLoading: true,
     loading: false,
     data: [],
-    list: []
+    list: [],
   };
 
   componentDidMount() {
@@ -31,16 +31,16 @@ class AddDistrict extends Component {
         {
           headers: {
             Authorization:
-              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-          }
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
         }
       )
-      .then(res => {
+      .then((res) => {
         console.log(res.data);
         this.setState({
           initLoading: false,
           data: res.data.result,
-          list: res.data.result
+          list: res.data.result,
         });
 
         // this.setState({
@@ -50,7 +50,7 @@ class AddDistrict extends Component {
       });
   }
 
-  onChangeDistrict = e => {
+  onChangeDistrict = (e) => {
     this.setState({ district: e.target.value });
   };
 
@@ -59,15 +59,16 @@ class AddDistrict extends Component {
     console.log(e);
     console.log(this.state.myDistrict);
     const gameObject = {
-      districtName: this.state.district
+      districtName: this.state.district,
     };
     axios
       .post(Authtoken.getBaseUrl() + "/api/location/district/add", gameObject, {
         headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         // window.alert("The Game has been created successfully!!");
         window.location.reload();
@@ -77,7 +78,7 @@ class AddDistrict extends Component {
 
   onDelete(item) {
     const deleteObject = {
-      id: item.id
+      id: item.id,
     };
     axios
       .post(
@@ -86,11 +87,11 @@ class AddDistrict extends Component {
         {
           headers: {
             Authorization:
-              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-          }
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
         }
       )
-      .then(res => {
+      .then((res) => {
         console.log(res);
         window.alert("The district has been deleted successfully!!");
         window.location.reload();
@@ -102,21 +103,21 @@ class AddDistrict extends Component {
 
     const layout = {
       labelCol: {
-        span: 4
+        span: 4,
       },
       wrapperCol: {
-        span: 12
-      }
+        span: 12,
+      },
     };
     const validateMessages = {
       required: "This field is required!",
       types: {
         email: "Not a validate email!",
-        number: "Not a validate number!"
+        number: "Not a validate number!",
       },
       number: {
-        range: "Must be between ${min} and ${max}"
-      }
+        range: "Must be between ${min} and ${max}",
+      },
     };
 
     return (
@@ -125,14 +126,14 @@ class AddDistrict extends Component {
         style={{
           padding: 24,
           margin: 0,
-          minHeight: 580
+          minHeight: 580,
         }}
       >
         <div
           style={{
             backgroundColor: "#ffff",
             padding: "20px",
-            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)"
+            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
           }}
         >
           <Form
@@ -146,7 +147,7 @@ class AddDistrict extends Component {
               rules={[
                 {
                   // required: true
-                }
+                },
               ]}
             >
               <Input
@@ -161,7 +162,7 @@ class AddDistrict extends Component {
                     // icon={<PlusOutlined />}
                   >
                     +
-                  </Button>
+                  </Button>,
                 ]}
               />
             </Form.Item>
@@ -172,12 +173,12 @@ class AddDistrict extends Component {
             loading={initLoading}
             itemLayout="horizontal"
             dataSource={list}
-            renderItem={item => (
+            renderItem={(item) => (
               <List.Item
                 actions={[
                   <Button type="dashed" onClick={() => this.onDelete(item)}>
                     Remove
-                  </Button>
+                  </Button>,
                 ]}
               >
                 <Skeleton avatar title={false} loading={item.loading} active>

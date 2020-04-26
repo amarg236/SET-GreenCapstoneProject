@@ -36,9 +36,9 @@ class ChangePassword extends Component {
         console.log(res);
         this.success();
 
-        setTimeout(() => {
-          this.logout();
-        }, 3000);
+        // setTimeout(() => {
+        //   this.logout();
+        // }, 3000);
       });
   };
 
@@ -49,10 +49,11 @@ class ChangePassword extends Component {
   success = () => {
     // Modal.success({
     //   content: "Password has been changed successfully",
+    message.loading("Password has been changed successfully..");
     // });
-    const hide = message.loading("Password has been changed successfully..", 0);
+    // const hide = message.loading("Password has been changed successfully..", 0);
     // Dismiss manually and asynchronously
-    setTimeout(hide, 2500);
+    // setTimeout(hide, 2500);
   };
 
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });

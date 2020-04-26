@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import history from "../../../Utility/history";
+import { logoutAction } from "../../../actions/loginAction";
 import { Menu, Layout } from "antd";
 
 // components
@@ -20,6 +21,7 @@ import {
   AppstoreOutlined,
   ApartmentOutlined,
   UserAddOutlined,
+  SolutionOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -30,14 +32,17 @@ const handleClick = (e) => {
 
 class AdminSidebar extends Component {
   render() {
+    const logOut = () => {
+      this.props.logout();
+    };
     return (
       <Menu
         mode="inline"
         theme="dark"
         className="sidebarProperty"
-        defaultSelectedKeys={["1"]}
-        defaultOpenKeys={["sub1"]}
-        style={{ height: "100%", borderRight: 0, overflow: 'auto' }}
+        defaultSelectedKeys={["dashboard"]}
+        // defaultOpenKeys={["sub1"]}
+        style={{ height: "100%", borderRight: 0 }}
       >
         <Menu.Item onClick={handleClick} key="dashboard">
           <span>
@@ -69,7 +74,7 @@ class AdminSidebar extends Component {
             //   <span>Create Game</span>
             // </Menu.Item>
           }
-          <Menu.Item onClick={handleClick} key="viewGames">
+          <Menu.Item onClick={handleClick} key="adminViewGame">
             <span>
               <EyeOutlined />
             </span>
@@ -147,12 +152,17 @@ class AdminSidebar extends Component {
           </span>
           <span>Export CSV</span>
         </Menu.Item>
-
-        <Menu.Item key="setting">
+        <Menu.Item onClick={handleClick} key="userProfile">
+          <span>
+            <SolutionOutlined />
+          </span>
+          <span>User Profile</span>
+        </Menu.Item>
+        <Menu.Item onClick={logOut} key="logout">
           <span>
             <SettingOutlined />
           </span>
-          <span>Settings</span>
+          <span>Log Out</span>
         </Menu.Item>
       </Menu>
     );
@@ -166,4 +176,10 @@ const mapStatetoProps = (state) => {
   };
 };
 
-export default connect(mapStatetoProps)(AdminSidebar);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(logoutAction()),
+  };
+};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(AdminSidebar);
