@@ -17,6 +17,7 @@ import {
   Descriptions,
   Input,
   DatePicker,
+  Tag,
 } from "antd";
 
 import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
@@ -37,6 +38,8 @@ function processData(supply) {
     awayTeam: row.awayteam,
     location: row.location,
     time: moment(row.time).format("MM/DD HH:mm"),
+    rejected: row.rejected,
+    awayAccepted: row.awayAccepted,
   }));
 }
 
@@ -240,16 +243,22 @@ class TestPending extends Component {
         key: "x",
         render: (record) => (
           <span>
-            <Button
-              onClick={() => this.approveGame(record)}
-              type="link"
-              style={{ marginRight: 16 }}
-            >
-              Approve
-            </Button>
-            <Button onClick={() => this.denyGame(record)} type="link">
-              Deny
-            </Button>
+            {record.rejected ? <Tag color="red">Rejected</Tag> : null}
+            {record.awayAccepted ? <Tag color="green">Accepted</Tag> : null}
+            {!record.awayAccepted && !record.rejected ? (
+              <span>
+                <Button
+                  onClick={() => this.approveGame(record)}
+                  type="link"
+                  style={{ marginRight: 16 }}
+                >
+                  Approve
+                </Button>
+                <Button onClick={() => this.denyGame(record)} type="link">
+                  Deny
+                </Button>
+              </span>
+            ) : null}
           </span>
         ),
       },
