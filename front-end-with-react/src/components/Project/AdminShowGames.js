@@ -6,7 +6,8 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import moment from "moment";
 
-import { Row, Layout, Col, Button, Table } from "antd";
+import { Row, Layout, Col, Button, Table, Input, DatePicker } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 const { Content } = Layout;
 
 function callback(key) {
@@ -40,9 +41,16 @@ class AdminShowGames extends Component {
           },
         }
       );
+      console.log("res>>");
+      console.log(res.data.result);
+      const myData = res.data.result.filter(function (adminViewGames) {
+        return adminViewGames.rejected || adminViewGames.awayAccepted;
+      });
 
+      console.log("myData>>");
+      console.log(myData);
       this.setState({
-        game: res.data.result,
+        game: myData,
         loading: false,
       });
     } catch (e) {
@@ -51,6 +59,82 @@ class AdminShowGames extends Component {
     // this.setState({ awaySchoolTeamList: res.data.result });
   }
   // rowSelection objects indicates the need for row selection
+
+  getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            this.handleSearch(selectedKeys, confirm, dataIndex)
+          }
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          icon={<SearchOutlined />}
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button
+          onClick={() => this.handleReset(clearFilters)}
+          size="small"
+          style={{ width: 90 }}
+        >
+          Reset
+        </Button>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    // render: (text) =>
+    //   this.state.searchedColumn === dataIndex ? (
+    //     <Highlighter
+    //       highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+    //       searchWords={[this.state.searchText]}
+    //       autoEscape
+    //       textToHighlight={text.toString()}
+    //     />
+    //   ) : (
+    //     text
+    //   ),
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = (clearFilters) => {
+    clearFilters();
+    this.setState({ searchText: "" });
+  };
 
   // Approve Games
   approveGame = (display) => {
@@ -116,11 +200,13 @@ class AdminShowGames extends Component {
         title: "HomeTeam",
         dataIndex: "homeTeam",
         key: "homeTeam",
+        ...this.getColumnSearchProps("homeTeam"),
       },
       {
         title: "AwayTeam",
         dataIndex: "awayTeam",
         key: "awayTeam",
+        ...this.getColumnSearchProps("awayTeam"),
       },
       {
         title: "Location",
@@ -185,23 +271,9 @@ class AdminShowGames extends Component {
             type="primary"
             onClick={this.setAgeSort}
           >
-            All Games
+            Filter By Month
           </Button>
-          <Button
-            style={{ marginRight: "8px" }}
-            type="secondary"
-            onClick={this.clearFilters}
-          >
-            Pending Games
-          </Button>
-          <Button
-            type="dashed"
-            style={{ marginRight: "8px" }}
-            danger
-            onClick={this.clearAll}
-          >
-            Approved Games
-          </Button>
+          <DatePicker picker="month" bordered={true} />
         </div>
         <Table
           hideOnSinglePage
