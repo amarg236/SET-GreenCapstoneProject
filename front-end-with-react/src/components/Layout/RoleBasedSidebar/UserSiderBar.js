@@ -1,7 +1,8 @@
+import "../../../App.css";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import React, { Component } from "react";
-import { Menu, Layout } from "antd";
+import { Menu, Layout, Badge } from "antd";
 import history from "../../../Utility/history";
 import { logoutAction } from "../../../actions/loginAction";
 
@@ -26,6 +27,9 @@ import {
   CheckOutlined,
   UserOutlined,
   SolutionOutlined,
+  MailTwoTone,
+  BellTwoTone,
+  NotificationOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -54,6 +58,16 @@ class UserSidebar extends Component {
             </a>
           </span>
           <span>Dashboard</span>
+        </Menu.Item>
+        <Menu.Item onClick={handleClick} key="Notification">
+          <span>
+            <a href="/notification">
+              <NotificationOutlined />
+            </a>
+          </span>
+          <Badge count={1} dot>
+            <span>Notification </span>
+          </Badge>
         </Menu.Item>
 
         <Menu.Item onClick={handleClick} key="calander">
