@@ -148,8 +148,29 @@ public class GameHandler {
 			return new ResponseBody<List<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games", null);
 		}
 	}
-	
-	public ResponseBody<List<Game>> getGames(Teams s, boolean findAll) {
+	/**
+	 * Gets all games with home or awayteam id
+	 * @param gm
+	 * @return
+	 */
+	public ResponseBody<List<Game>> getGamesByAllTeamIds(Game gm){
+		try{
+			try {
+				if(gm.getAwayteamId() < 0) {throw new Exception("AwayteamOutOfBounds");} //See if we have an awayteamid
+			}
+			catch(Exception e) {
+				gm.setAwayteamId(gm.getHometeamId()); //if we don't use hometeam id instead, if that's missing we crash
+			}
+			List<Game> g;
+			System.out.println(gm);
+			g = gr.getByTeamIds(gm.getHometeamId(), gm.getAwayteamId());
+			return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", g);
+		}
+		catch(Exception e) {
+			return new ResponseBody<List<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games "+e, null);
+		}
+	}
+	public ResponseBody<List<Game>> getGamesByTeamname(Teams s, boolean findAll) {
 		try{
 			List<Game> g;
 			if(findAll) {

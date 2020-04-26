@@ -103,12 +103,12 @@ public class GameController {
 	// ======================================================== //
 	@PostMapping("get/ByTeam")
 	public ResponseBody<List<Game>> getSchool(@RequestBody Teams s) {
-		return gh.getGames(s, false);
+		return gh.getGamesByTeamname(s, false);
 	}
 	
 	@PostMapping("get/ByTeam/all")
 	public ResponseBody<List<Game>> getSchoolAll(@RequestBody Teams s) {
-		return gh.getGames(s, true);
+		return gh.getGamesByTeamname(s, true);
 	}
 	
 	// ==================== get/ByTeamId/* ==================== //
