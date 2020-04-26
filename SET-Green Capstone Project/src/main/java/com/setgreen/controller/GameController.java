@@ -57,9 +57,10 @@ public class GameController {
 		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).approveGame(auth, g.getId());
 	}
 	
-	@PostMapping("accept/bulk")
+	@PostMapping("accept/bulk") //{"data":[1,2,3,4,5,6,7,132,5574,99]}
 	public ResponseBody<Long>[] acceptBulk(@RequestBody DataObject<Long[]> dta, Authentication auth){
-		ResponseBody<Long>[] rb; //new ResponseBody<DataObject<Integer>>[dta.getData().length];
+		ResponseBody<Long>[] rb;
+		
 		rb = new ResponseBody[dta.getData().length];
 		for(int i = 0; i < rb.length; i++) {
 			Game g = new Game();
@@ -166,15 +167,15 @@ public class GameController {
 	// ==================== get/BySchool/* ==================== //
 	// Requires school ID	                                    //
 	// ========================================================//
-	@PostMapping("get/BySchool/all")
+	@PostMapping("get/BySchool/all") //all games for all teams for a school
 	public ResponseBody<List<Game>> getSchoolIdAll(@RequestBody School s){
 		return gh.getGames(s, true);
 	}
-	@PostMapping("get/BySchool/notAccepted")
+	@PostMapping("get/BySchool/notAccepted") //all games where awayAccepted=false for all teams for a school
 	public ResponseBody<List<Game>> getSchoolIdUserUnverified(@RequestBody School s){
 		return gh.unverifiedGames(s);
 	}
-	@PostMapping("get/BySchool/notApproved")
+	@PostMapping("get/BySchool/notApproved") //all games where approved=false for all teams for a school
 	public ResponseBody<List<Game>> getSchoolIdAdminUnverified(@RequestBody School s){
 		return gh.getHomeGamesNoAdminV(s);
 	}

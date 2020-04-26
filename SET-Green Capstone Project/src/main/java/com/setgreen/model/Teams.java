@@ -42,8 +42,8 @@ public class Teams implements Serializable{
 	
 	@NotEmpty(message = "Must have a team classification")
 	@Column(length = 50)
-	private String tmClass; //FIXME Type of team (varsity, jr, boys, girls ext) Format of DIVISION-CLASS-SEX (?) 
-							//Or just make database stuff for it.
+	private String tmClass; 
+
 	@Column(length=20)
 	private String teamGender;
 	@Id

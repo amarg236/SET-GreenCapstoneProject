@@ -12,6 +12,7 @@ import com.setgreen.model.School;
 import com.setgreen.model.SignUpForm;
 import com.setgreen.model.Teams;
 import com.setgreen.model.User;
+import com.setgreen.model.noticeboard.Notice;
 import com.setgreen.model.scheduling.BadDay;
 import com.setgreen.model.scheduling.EventDay;
 import com.setgreen.model.scheduling.IdealDay;
@@ -141,5 +142,13 @@ public class UserUnfound extends UserReference {
 	@Override
 	public ResponseBody<Game> validateRejection(Authentication auth, Game g) {
 		return forbiddenAccess(g);
+	}
+	@Override
+	public ResponseBody<Notice> addNotice(Authentication auth, Notice n) {
+		return forbiddenAccess(n);
+	}
+	@Override
+	public ResponseBody<Notice> deleteNotice(Authentication auth, Notice n) {
+		return forbiddenAccess(n);
 	}
 }

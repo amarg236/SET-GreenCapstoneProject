@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
-@Entity //FIXME URGENT remove the entity tag, and extend it out with the needed roles. JUST REWORK THE GOSH DARN SYSTEM AGAIN BUCKO.
+@Entity
 public class Role {
 
     @javax.persistence.Id

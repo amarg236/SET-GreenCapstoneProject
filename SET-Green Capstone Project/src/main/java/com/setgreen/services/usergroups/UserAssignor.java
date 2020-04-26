@@ -11,6 +11,7 @@ import com.setgreen.model.School;
 import com.setgreen.model.SignUpForm;
 import com.setgreen.model.Teams;
 import com.setgreen.model.User;
+import com.setgreen.model.noticeboard.Notice;
 import com.setgreen.model.scheduling.BadDay;
 import com.setgreen.model.scheduling.EventDay;
 import com.setgreen.model.scheduling.IdealDay;
@@ -110,5 +111,16 @@ public class UserAssignor extends UserScheduler /*implements UserReference*/  {
 	@Override
 	public ResponseBody<IdealDay> removeIdealDay(IdealDay d) {
 		return super.removeIdealDay(d);
+	}
+	
+	@Override
+	public ResponseBody<Notice> addNotice(Authentication auth, Notice n) {
+		n.setAuthor(auth.getName());
+		return nh.saveNotice(n);
+	}
+	@Override
+	public ResponseBody<Notice> deleteNotice(Authentication auth, Notice n) {
+		n.setAuthor(auth.getName());
+		return nh.deleteNotice(n);
 	}
 }

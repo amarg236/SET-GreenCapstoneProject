@@ -55,7 +55,9 @@ public class Game implements Serializable{
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date update_At;
 
-	
+	//Constructor required for the persist and update annotations to work.
+    public Game(){};
+    
 	@PrePersist
     protected void onCreate(){
         this.create_At = new Date();

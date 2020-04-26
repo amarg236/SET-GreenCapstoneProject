@@ -61,8 +61,10 @@ public class MasterInitializer implements CommandLineRunner{
 		}
 	}
 	
-	public ResponseBody<Boolean> coldStart(){
+	public ResponseBody<Boolean> teamsInit(){
 		try {
+			Properties p = new Properties();
+			//p.load(new FileReader("teams."));
 			return new ResponseBody<Boolean>(HttpStatus.ACCEPTED.value(), "", true);
 		}
 		catch(Exception e) {

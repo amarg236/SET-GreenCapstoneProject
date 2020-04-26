@@ -13,6 +13,7 @@ import com.setgreen.model.School;
 import com.setgreen.model.SignUpForm;
 import com.setgreen.model.Teams;
 import com.setgreen.model.User;
+import com.setgreen.model.noticeboard.Notice;
 import com.setgreen.model.scheduling.BadDay;
 import com.setgreen.model.scheduling.EventDay;
 import com.setgreen.model.scheduling.IdealDay;
@@ -21,6 +22,7 @@ import com.setgreen.services.DayHandler;
 import com.setgreen.services.UserService;
 import com.setgreen.services.implementation.DistrictHandler;
 import com.setgreen.services.implementation.GameHandler;
+import com.setgreen.services.implementation.NoticeboardHandler;
 import com.setgreen.services.implementation.RoleServiceImpl;
 import com.setgreen.services.implementation.SchoolHandler;
 import com.setgreen.services.implementation.TeamsServiceImpl;
@@ -53,6 +55,8 @@ public abstract class UserReference {
 	public TeamsServiceImpl th;
 	@Autowired
 	public AdminControlService ah;
+	@Autowired
+	public NoticeboardHandler nh;
 	/**
 	 * @return rolename associated with this class, should be unique among all implementations of this class.
 	 */
@@ -195,4 +199,20 @@ public abstract class UserReference {
 	 * @return game you validated rejection for
 	 */
 	public abstract ResponseBody<Game> validateRejection(Authentication auth, Game g);
+	
+	/**
+	 * used for admin, adds a notice to the homepage
+	 * @param auth 
+	 * @param n
+	 * @return statuse of request w/ notice you sent
+	 */
+	public abstract ResponseBody<Notice> addNotice(Authentication auth, Notice n);
+	
+	/**
+	 * used for admin, removes notice from homepage
+	 * @param auth 
+	 * @param n only requires id
+	 * @return status of request w/ the notice as it was before deletion
+	 */
+	public abstract ResponseBody<Notice> deleteNotice(Authentication auth, Notice n);
 }

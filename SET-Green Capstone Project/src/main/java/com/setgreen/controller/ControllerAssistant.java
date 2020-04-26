@@ -16,6 +16,7 @@ import com.setgreen.services.TeamsService;
 import com.setgreen.services.UserService;
 import com.setgreen.services.usergroups.RoleManager;
 import com.setgreen.services.usergroups.UserReference;
+import com.setgreen.util.Debugger;
 @Component
 public class ControllerAssistant {
 	//Note on auth: getName() will give the email they send us, principal the UserPrincipal, authorities the roles they have as an array
@@ -33,17 +34,6 @@ public class ControllerAssistant {
 		return rn.build(findRoleByBest(auth));
 
 	}
-	/** gets the role for a given location
-	 * @param auth
-	 * @param d
-	 * @return
-	 */
-	//protected UserReference getRoleByLocation(Authentication auth, District d) {
-	//	return rn.build(findRoleByLocation(auth, d));
-	//}
-//	protected UserReference getRoleByTeam(Authentication auth, String team) {
-//		return rn.build(findRoleByTeam(auth, team));
-//	}
 	protected UserReference getRoleByTeam(Authentication auth, Teams t) {
 		return rn.build(findRoleByTeam(auth, t));
 	}
@@ -53,22 +43,32 @@ public class ControllerAssistant {
 	 * @return role of user in the team
 	 */
 	protected UserReference getRoleByTeam(Authentication auth, Game g) {
+		System.out.print(">> did we start\n");
 		try {
 			Set<Role> r = us.fetchByEmail(auth.getName()).getResult().getRoles();
+			System.out.print(">> roles: " + r.toString() + "\n");
 			RoleName rtrn = RoleName.UNFOUND;
 			for(Role x : r) {
 				if(x.getRole().hasDistrict() && x.getRole().userLevel() > rtrn.userLevel()) {
-					Iterable<Teams> tms = x.getSchool().getTeams();
-					for(Teams t : tms) {
-						if(t.getSchool().equals(x.getSchool()) && x.getRole().userLevel() > rtrn.userLevel()) {
-							rtrn = x.getRole();
-						}
+					System.out.print(">>hasdistrict\n");					
+//					for(Teams t : tms) {
+//						System.out.print(t.toString()+"\n");
+					Teams t = new Teams();
+					Teams t2 = new Teams();
+					t.setId(g.getHometeamId());
+					t.setId(g.getAwayteamId());//TODO Cleanup debug
+					if((x.getSchool().getId() == ts.getTeamsById(t).getResult().getSchool().getId() || x.getSchool().getId() == ts.getTeamsById(t2).getResult().getSchool().getId()) && x.getRole().userLevel() > rtrn.userLevel()) {
+						System.out.print(">>condition success\n");
+						rtrn = x.getRole();
 					}
+//					}
 				}
 				else if(x.getRole().userLevel() > rtrn.userLevel()) {
+					System.out.print(">>elseif\n");
 					rtrn = x.getRole();
 				}
 			}
+			System.out.print(">>returning " + rtrn.toString() +"\n");
 			return rn.build(rtrn);
 		}
 		catch(Exception e) {
@@ -79,9 +79,9 @@ public class ControllerAssistant {
 	 * @param auth
 	 * @return
 	 */
-	private RoleName findRoleByBest(Authentication auth) {//FIXME SECURITY HOLE "BEST ROLE" doesn't always apply to current context, remove this method eventually
+	private RoleName findRoleByBest(Authentication auth) {
 		RoleName rtrn = RoleName.UNFOUND;
-		for(Object o : auth.getAuthorities().toArray()) {//us.fetchByEmail(auth.getName()).getResult().getRoles()) {
+		for(Object o : auth.getAuthorities().toArray()) {
 			try {
 				String x = o.toString();
 				if(rtrn.userLevel() < RoleName.valueOf(x).userLevel()) {
@@ -121,26 +121,5 @@ public class ControllerAssistant {
 //	private RoleName findRoleByTeam(Authentication auth, String awayteam) {
 //		return findRoleByTeam(auth, ts.getTeamsByName(awayteam).getResult());	
 //	}
-	/** gets the best role in the given district
-	 * @param auth
-	 * @param d
-	 * @return
-	 */
-	private RoleName findRoleByLocation(Authentication auth, District d) {
-		//FIXME this fucks up transactional bullshit
-		//		RoleName rtrn = RoleName.UNFOUND;
-		//		for(Role x : us.fetchByEmail(auth.getName()).getResult().getRoles()) {
-		//			if(x.getRole().hasDistrict()) {
-		//				if(d.equals(x.getSchool().getDistrict()) && rtrn.userLevel() < x.getRole().userLevel()) {
-		//					rtrn = x.getRole();
-		//				}
-		//			}
-		//			else if(rtrn.userLevel() < x.getRole().userLevel()) {
-		//				rtrn = x.getRole();
-		//			}
-		//		}
-		//		return rtrn;
-		return findRoleByBest(auth);
-	}
 
 }

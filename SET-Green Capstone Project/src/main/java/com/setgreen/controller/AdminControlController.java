@@ -58,11 +58,11 @@ public class AdminControlController{
     public ResponseBody<User> updateUserVerify(@RequestBody User u, Authentication auth){
     	return hlp.getRoleByBest(auth).verifyUser(u);
     }
-    @PostMapping("day/ban") //XXX TEST
+    @PostMapping("day/ban")
     public ResponseBody<EventDay> banDay(@RequestBody EventDay d, Authentication auth) {
     	return hlp.getRoleByBest(auth).addEventDay(d);
     }
-    @PostMapping("day/allow") //XXX TEST
+    @PostMapping("day/allow")
     public ResponseBody<EventDay> unbanDay(@RequestBody EventDay d, Authentication auth) {
     	return hlp.getRoleByBest(auth).removeEventDay(d);
     }

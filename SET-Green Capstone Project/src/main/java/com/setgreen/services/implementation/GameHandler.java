@@ -73,7 +73,6 @@ public class GameHandler {
 		}
 	}
 	
-	//FIXME better implementation w/ a custom method, or at least do a "find game" check.
 	@Transactional
 	public ResponseBody<Game> modifyGame(Game g) {
 		try {

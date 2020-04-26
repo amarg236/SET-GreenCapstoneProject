@@ -8,6 +8,7 @@ import com.setgreen.model.ResponseBody;
 import com.setgreen.model.RoleName;
 import com.setgreen.model.SignUpForm;
 import com.setgreen.model.User;
+import com.setgreen.model.noticeboard.Notice;
 
 /**
  * @author Brendon LeBaron
