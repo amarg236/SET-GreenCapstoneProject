@@ -18,9 +18,15 @@ import {
   Input,
   DatePicker,
   Tag,
+  Popconfirm,
+  Form,
 } from "antd";
 
-import { SearchOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  FilterOutlined,
+  CloseSquareTwoTone,
+} from "@ant-design/icons";
 
 const { Content } = Layout;
 const { TabPane } = Tabs;
@@ -130,7 +136,7 @@ class RequestedGame extends Component {
       </div>
     ),
     filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      <FilterOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
@@ -163,6 +169,29 @@ class RequestedGame extends Component {
   handleReset = (clearFilters) => {
     clearFilters();
     this.setState({ searchText: "" });
+  };
+
+  handleDelete = (key) => {
+    // const dataSource = [...this.state.dataSource];
+    // this.setState({
+    //   dataSource: dataSource.filter((item) => item.key !== key),
+    // });
+
+    console.log(key);
+    const aemptyObj = {
+      data: key,
+    };
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/game/delete", aemptyObj, {
+        headers: {
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        window.alert("The game has been deleted!");
+      });
   };
 
   render() {
@@ -202,6 +231,16 @@ class RequestedGame extends Component {
           <span>
             {record.rejected ? <Tag color="volcano">Rejected</Tag> : null}
             {record.awayAccepted ? <Tag color="green">Accepted</Tag> : null}
+            {!record.awayAccepted && !record.rejected ? (
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => this.handleDelete(record.key)}
+              >
+                <a>
+                  <CloseSquareTwoTone twoToneColor="#FF0000" />
+                </a>
+              </Popconfirm>
+            ) : null}
           </span>
         ),
       },
