@@ -18,6 +18,7 @@ import {
   Input,
   DatePicker,
   Tag,
+  Modal,
 } from "antd";
 
 import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
@@ -40,6 +41,7 @@ function processData(supply) {
     time: moment(row.time).format("MM/DD HH:mm"),
     rejected: row.rejected,
     awayAccepted: row.awayAccepted,
+    selectedKeys: [],
   }));
 }
 
@@ -51,10 +53,22 @@ class TestPending extends Component {
       game: [],
       school: [],
       isRejected: null,
+      bulkAccept: false,
+      refresh: false,
     };
   }
 
   componentDidMount() {
+    this.fetchApi();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.refresh != this.state.refresh) {
+      this.fetchApi();
+    }
+  }
+
+  fetchApi = () => {
     let myTeamId = new Map();
     this.props.myTeamId.map((row, index) => myTeamId.set(row));
 
@@ -86,7 +100,27 @@ class TestPending extends Component {
           game: processData(myData),
         });
       });
-  }
+  };
+
+  successMsg = (s_message) => {
+    Modal.success({
+      content: (
+        <div>
+          <p>{s_message}</p>
+        </div>
+      ),
+    });
+  };
+
+  errorMsg = (e_message) => {
+    Modal.error({
+      content: (
+        <div>
+          <p>{e_message}</p>
+        </div>
+      ),
+    });
+  };
 
   // rowSelection objects indicates the need for row selection
   getColumnSearchProps = (dataIndex) => ({
@@ -152,6 +186,10 @@ class TestPending extends Component {
     //   ),
   });
 
+  sendToState = (array) => {
+    console.log(`passing value to state${array}`);
+  };
+
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -164,6 +202,64 @@ class TestPending extends Component {
     clearFilters();
     this.setState({ searchText: "" });
   };
+
+  bulkAccept = (keys) => {
+    console.log("i am prining array of keys??");
+    // console.log(keys);
+    console.log(this.state.selectedKeys);
+
+    const aemptyObj = {
+      data: this.state.selectedKeys,
+    };
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/game/accept/bulk", aemptyObj, {
+        headers: {
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          console.log(res);
+          this.successMsg("Great! All game has been approved. ");
+          this.setState((prevState) => ({
+            refresh: !prevState.refresh,
+          }));
+        } else {
+          this.errorMsg("Sorry couldn't accept games.");
+        }
+      });
+  };
+
+  // bulkReject = (keys) => {
+  //   console.log("i am prining array of keys??");
+  //   // console.log(keys);
+  //   console.log(this.state.selectedKeys);
+
+  //   const aemptyObj = {
+  //     data: this.state.selectedKeys,
+  //   };
+  //   axios
+  //     .post(Authtoken.getBaseUrl() + "/api/game/accept/bulk", aemptyObj, {
+  //       headers: {
+  //         Authorization:
+  //           "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //       if (res.status == 200) {
+  //         console.log(res);
+  //         this.successMsg("Great! All game has been approved. ");
+  //         this.setState((prevState) => ({
+  //           refresh: !prevState.refresh,
+  //         }));
+  //       } else {
+  //         this.errorMsg("Sorry couldn't accept games.");
+  //       }
+  //     });
+  // };
 
   // Approve Games
   approveGame = (display) => {
@@ -179,8 +275,15 @@ class TestPending extends Component {
         },
       })
       .then((res) => {
-        console.log(res);
-        window.alert("The game has been approved!");
+        if (res.data.httpStatusCode == 202) {
+          console.log(res);
+          this.successMsg("Great! The game has been approved. ");
+          this.setState((prevState) => ({
+            refresh: !prevState.refresh,
+          }));
+        } else {
+          this.errorMsg(res.data.message);
+        }
       });
   };
 
@@ -200,11 +303,17 @@ class TestPending extends Component {
         },
       })
       .then((res) => {
-        console.log(res);
-        window.alert("The game has been denied!");
-        // This needs fix later on
-        window.location.reload();
-        // history.push("./viewGames");
+        if (res.data.httpStatusCode == 202) {
+          console.log(res);
+
+          this.successMsg("The game has been denied!");
+
+          this.setState((prevState) => ({
+            refresh: !prevState.refresh,
+          }));
+        } else {
+          this.errorMsg(res.data.message);
+        }
       });
   };
 
@@ -271,12 +380,32 @@ class TestPending extends Component {
           "selectedRows: ",
           selectedRows
         );
+
+        if (selectedRowKeys.length > 0) {
+          // console.log(selectedRowKeys);
+          // console.log("Setting value to true");
+          this.setState({ bulkAccept: true });
+        } else if (selectedRowKeys.length == 0) {
+          // console.log("Setting Value to false");
+          this.setState({ bulkAccept: false });
+        }
+        console.log("all keys>>");
+        console.log(selectedRowKeys);
+        this.setState({ selectedKeys: selectedRowKeys });
       },
-      onSelect: (record, selected, selectedRows) => {
-        console.log(record, selected, selectedRows);
+      onSelect: (record, selected, selectedRows, selectedRowKeys) => {
+        // console.log(record, selected, selectedRows);
+        // console.log("all keys>>");
+        // console.log(selectedRowKeys);
+        // this.setState({ selectedKeys: selectedRows });
       },
       onSelectAll: (selected, selectedRows, changeRows) => {
-        console.log(selected, selectedRows, changeRows);
+        // console.log(selected, selectedRows, changeRows);
+      },
+      forSubmit: (selectedRowKeys) => {
+        // console.log("on submit");
+        // console.log(selectedRowKeys);
+        // this.sendToState(selectedRowKeys);
       },
     };
 
@@ -298,6 +427,19 @@ class TestPending extends Component {
             Filter By Month
           </Button>
           <DatePicker picker="month" bordered={true} />
+          {this.state.bulkAccept ? (
+            <Button
+              style={{
+                marginRight: "8px",
+                marginLeft: "8px",
+                className: `"${this.state.bulkAccept}"`,
+              }}
+              type="primary"
+              onClick={this.bulkAccept}
+            >
+              Action in Bulk
+            </Button>
+          ) : null}
         </div>
 
         <Table
