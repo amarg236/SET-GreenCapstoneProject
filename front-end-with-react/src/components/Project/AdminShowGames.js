@@ -15,6 +15,7 @@ import {
   Input,
   DatePicker,
   Modal,
+  Tag,
 } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 const { Content } = Layout;
@@ -84,8 +85,8 @@ class AdminShowGames extends Component {
           console.log(res.data.result);
           const myData = res.data.result.filter(function (adminViewGames) {
             return (
-              (adminViewGames.rejected || adminViewGames.awayAccepted) &&
-              !adminViewGames.approved
+              (adminViewGames.rejected && !adminViewGames.approved) ||
+              (adminViewGames.awayAccepted && !adminViewGames.approved)
             );
           });
           console.log("myData>>");
@@ -194,7 +195,9 @@ class AdminShowGames extends Component {
         if (res.data.httpStatusCode == 202) {
           console.log(res);
           this.successMsg("Great! The game has been approved. ");
-          this.setState({ refresh: true });
+          this.setState((prevState) => ({
+            refresh: !prevState.refresh,
+          }));
         } else {
           this.errorMsg(res.data.message);
         }
@@ -215,10 +218,13 @@ class AdminShowGames extends Component {
         },
       })
       .then((res) => {
+        console.log(res);
         if (res.data.httpStatusCode == 202) {
           console.log(res);
           this.successMsg("The game has been denied!");
-          this.setState({ refresh: true });
+          this.setState((prevState) => ({
+            refresh: !prevState.refresh,
+          }));
         } else {
           this.errorMsg(res.data.message);
         }
@@ -236,6 +242,9 @@ class AdminShowGames extends Component {
       awayTeam: row.awayteam,
       location: row.location,
       time: moment(row.time).format("MM/DD HH:mm"),
+      rejected: row.rejected,
+      awayAccepted: row.awayAccepted,
+      alreadyDecided: row.uapprover,
     }));
     const tableData = processedData;
 
@@ -270,16 +279,22 @@ class AdminShowGames extends Component {
         key: "x",
         render: (record) => (
           <span>
-            <Button
-              onClick={() => this.approveGame(record)}
-              type="link"
-              style={{ marginRight: 16 }}
-            >
-              Approve
-            </Button>
-            <Button onClick={() => this.denyGame(record)} type="link">
-              Deny
-            </Button>
+            {record.alreadyDecided ? (
+              <Tag color="red">Rejected</Tag>
+            ) : (
+              <span>
+                <Button
+                  onClick={() => this.approveGame(record)}
+                  type="link"
+                  style={{ marginRight: 16 }}
+                >
+                  Approve
+                </Button>
+                <Button onClick={() => this.denyGame(record)} type="link">
+                  Deny
+                </Button>
+              </span>
+            )}
           </span>
         ),
       },
