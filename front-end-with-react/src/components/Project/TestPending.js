@@ -51,6 +51,7 @@ class TestPending extends Component {
       game: [],
       school: [],
       isRejected: null,
+      bulkAccept: false,
     };
   }
 
@@ -165,6 +166,10 @@ class TestPending extends Component {
     this.setState({ searchText: "" });
   };
 
+  bulkAccept = (keys) => {
+    console.log(keys);
+  };
+
   // Approve Games
   approveGame = (display) => {
     console.log(display.key);
@@ -271,9 +276,20 @@ class TestPending extends Component {
           "selectedRows: ",
           selectedRows
         );
+
+        if (selectedRowKeys.length > 0) {
+          console.log(selectedRowKeys);
+          console.log("Setting value to true");
+          this.setState({ bulkAccept: true });
+        } else if (selectedRowKeys.length == 0) {
+          console.log("Setting Value to false");
+          this.setState({ bulkAccept: false });
+        }
       },
       onSelect: (record, selected, selectedRows) => {
         console.log(record, selected, selectedRows);
+        console.log("all keys>>");
+        console.log(selectedRows);
       },
       onSelectAll: (selected, selectedRows, changeRows) => {
         console.log(selected, selectedRows, changeRows);
@@ -298,6 +314,19 @@ class TestPending extends Component {
             Filter By Month
           </Button>
           <DatePicker picker="month" bordered={true} />
+          {this.state.bulkAccept ? (
+            <Button
+              style={{
+                marginRight: "8px",
+                marginLeft: "8px",
+                className: `"${this.state.bulkAccept}"`,
+              }}
+              type="primary"
+              onClick={this.bulkAccept}
+            >
+              Action in Bulk
+            </Button>
+          ) : null}
         </div>
 
         <Table
