@@ -8,9 +8,8 @@ import moment from "moment";
 import "../../stylesheets/exportCSV.css";
 
 //Filter imports
-import { Select, Form, Input, DatePicker, TimePicker } from "antd";
-import { Row, Col, Divide } from "antd";
-import FormItem from "antd/lib/form/FormItem";
+import { Select, Form } from "antd";
+import { Row } from "antd";
 
 const { Option } = Select;
 const { Content } = Layout;
@@ -38,7 +37,6 @@ class ExportToCSV extends Component {
       everyTeams: [],
       month: null,
       day: null,
-      // size: "large",
     };
     this.changeFilterOne = this.changeFilterOne.bind(this);
   }
@@ -48,7 +46,6 @@ class ExportToCSV extends Component {
       team: event,
     });
 
-    console.log("a", this.state.team);
     const chosenTeam = event;
     const tmp = this.state.jData;
     const newTmp = [];
@@ -89,6 +86,7 @@ class ExportToCSV extends Component {
         },
       })
       .then((res) => {
+        console.log("noway", res);
         this.setState({ jData: allSchedule(res.data) });
 
         // Getting all teams in one state.
@@ -153,20 +151,19 @@ class ExportToCSV extends Component {
                 }}
               >
                 <Form.Item>
-                  <h2 id="header-one">Your Team's Schedule</h2>
+                  <h2 id="header-one">Schedule Sort By Team</h2>
                 </Form.Item>
                 <Form.Item label="Listed Teams">
                   <Select
                     showSearch
-                    value={this.state.team}
                     onChange={this.changeFilterOne}
                     style={{ width: "85%" }}
-                    placeholder="Home Team"
+                    placeholder="Choose a Team"
                   >
                     {this.state.everyTeams.map((data) => (
                       <Option key={data}>{data}</Option>
                     ))}
-                    ); }}
+                    );
                   </Select>
                 </Form.Item>
 
@@ -181,14 +178,15 @@ class ExportToCSV extends Component {
                       headers={this.headers}
                       data={this.state.exportTeam}
                     >
-                      <span> Export</span>
+                      <span className="button-all"> Export</span>
                     </CSVLink>
                   </Button>
                 </Form.Item>
               </div>
             </Row>
+          </Form>
 
-            {/* FOR ANOTHER FILTER By DATE Option
+          {/* FOR ANOTHER FILTER By DATE Option
             <Row>
               <div
                 style={{
@@ -219,7 +217,7 @@ class ExportToCSV extends Component {
               </div>
             </Row> */}
 
-            {/*  FOR ANOTHER FILTER 
+          {/*  FOR ANOTHER FILTER 
             <Row>
               <div
                 style={{
@@ -250,6 +248,7 @@ class ExportToCSV extends Component {
               </div>
             </Row> */}
 
+          <Form {...formLayout}>
             <Row>
               <div
                 style={{
@@ -273,7 +272,7 @@ class ExportToCSV extends Component {
                     icon={<DownloadOutlined />}
                   >
                     <CSVLink headers={this.headers} data={this.state.jData}>
-                      <span> Export All Schedule</span>
+                      <span className="button-all"> Export All Schedule</span>
                     </CSVLink>
                   </Button>
                 </Form.Item>
