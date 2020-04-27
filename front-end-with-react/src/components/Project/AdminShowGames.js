@@ -6,7 +6,16 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import moment from "moment";
 
-import { Row, Layout, Col, Button, Table, Input, DatePicker } from "antd";
+import {
+  Row,
+  Layout,
+  Col,
+  Button,
+  Table,
+  Input,
+  DatePicker,
+  Modal,
+} from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 const { Content } = Layout;
 
@@ -22,43 +31,75 @@ class AdminShowGames extends Component {
       game: [],
       school: [],
       isRejected: null,
+      refresh: false,
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     //getting current users team and school
-
-    const emptyObj = {};
-
-    try {
-      const res = await axios.post(
-        Authtoken.getBaseUrl() + "/api/game/get/all",
-        emptyObj,
-        {
-          headers: {
-            Authorization:
-              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-          },
-        }
-      );
-      console.log("res>>");
-      console.log(res.data.result);
-      const myData = res.data.result.filter(function (adminViewGames) {
-        return adminViewGames.rejected || adminViewGames.awayAccepted;
-      });
-
-      console.log("myData>>");
-      console.log(myData);
-      this.setState({
-        game: myData,
-        loading: false,
-      });
-    } catch (e) {
-      console.error(`Problem fetching data ${e}`);
-    }
+    this.fetchApi();
     // this.setState({ awaySchoolTeamList: res.data.result });
   }
-  // rowSelection objects indicates the need for row selection
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.refresh != this.state.refresh) {
+      this.fetchApi();
+    }
+  }
+
+  successMsg = (s_message) => {
+    Modal.success({
+      content: (
+        <div>
+          <p>{s_message}</p>
+        </div>
+      ),
+    });
+  };
+
+  errorMsg = (e_message) => {
+    Modal.error({
+      content: (
+        <div>
+          <p>{e_message}</p>
+        </div>
+      ),
+    });
+  };
+
+  fetchApi = () => {
+    const emptyObj = {};
+
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyObj, {
+        headers: {
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.data.httpStatusCode == 202) {
+          console.log("res>>");
+          console.log(res.data.result);
+          const myData = res.data.result.filter(function (adminViewGames) {
+            return (
+              (adminViewGames.rejected || adminViewGames.awayAccepted) &&
+              !adminViewGames.approved
+            );
+          });
+          console.log("myData>>");
+          console.log(myData);
+          this.setState({
+            game: myData,
+            loading: false,
+          });
+        }
+      })
+      .catch((error) => {
+        this.errorMsg(`Problem fetching data ${error}`);
+      });
+  };
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -150,8 +191,13 @@ class AdminShowGames extends Component {
         },
       })
       .then((res) => {
-        console.log(res);
-        window.alert("The game has been approved!");
+        if (res.data.httpStatusCode == 202) {
+          console.log(res);
+          this.successMsg("Great! The game has been approved. ");
+          this.setState({ refresh: true });
+        } else {
+          this.errorMsg(res.data.message);
+        }
       });
   };
 
@@ -160,8 +206,6 @@ class AdminShowGames extends Component {
     console.log(display.key);
     const emptyObj = {
       id: display.key,
-      // hometeamId: display.hometeamId,
-      // hometeam: display.hometeam,
     };
     axios
       .post(Authtoken.getBaseUrl() + "/api/game/reject", emptyObj, {
@@ -171,11 +215,13 @@ class AdminShowGames extends Component {
         },
       })
       .then((res) => {
-        console.log(res);
-        window.alert("The game has been denied!");
-        // This needs fix later on
-        // window.location.reload();
-        // history.push("./viewGames");
+        if (res.data.httpStatusCode == 202) {
+          console.log(res);
+          this.successMsg("The game has been denied!");
+          this.setState({ refresh: true });
+        } else {
+          this.errorMsg(res.data.message);
+        }
       });
   };
 
