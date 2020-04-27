@@ -153,6 +153,10 @@ class TestPending extends Component {
     //   ),
   });
 
+  sendToState = (array) => {
+    console.log(`passing value to state${array}`);
+  };
+
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -293,6 +297,11 @@ class TestPending extends Component {
       },
       onSelectAll: (selected, selectedRows, changeRows) => {
         console.log(selected, selectedRows, changeRows);
+      },
+      forSubmit: (selectedRowKeys) => {
+        console.log("on submit");
+        console.log(selectedRowKeys);
+        this.sendToState(selectedRowKeys);
       },
     };
 
