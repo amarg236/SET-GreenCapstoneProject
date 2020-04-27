@@ -6,6 +6,7 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import { isMobile } from "react-device-detect";
 import { Schedule } from "@syncfusion/ej2-react-schedule";
+import debounce from 'lodash/debounce';
 
 import {
   Inject,
@@ -18,9 +19,9 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 
 import { extend } from "@syncfusion/ej2-base";
-import { Layout } from "antd";
-import CalFilter from "./CalFilter";
+import { Layout, Spin, Select } from "antd";
 const { Content } = Layout;
+const { Option } = Select;
 
 function processData(rawEvents) {
   return rawEvents.result.map((event) => ({
@@ -33,6 +34,7 @@ function processData(rawEvents) {
     Location: event.location,
     PartialApproved: event.awayAccepted,
     FullyApproved: event.approved,
+    AwayTeam: event.awayteam,
   }));
 }
 
@@ -42,7 +44,11 @@ class Cal extends React.Component {
     this.state = {
       jData: [],
       currentView: "Month",
+      value: [],
+      data: [],
+      fetching: false,
     };
+    this.fetchUser = debounce(this.fetchUser, 800);
   }
 
   componentDidMount() {
@@ -64,9 +70,24 @@ class Cal extends React.Component {
         console.log("this is response");
         console.log(res);
         this.setState({ jData: extend([], processData(res.data), null, true) });
-        // for formatting csv
-        // this.setState({ fData: extend([], formatData(res.data), null, true) });
-        // console.log("jDATA", this.state.jData);
+      });
+  }
+
+  filter(props) {
+    const emptyBody = {};
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyBody, {
+        headers: {
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        console.log("this is response");
+        console.log(res);
+        if (props.AwayTeam == "Airline High School-VG") {
+          this.setState({ jData: extend([], processData(res.data), null, true) });
+        }
       });
   }
 
@@ -77,7 +98,7 @@ class Cal extends React.Component {
     } else if (props.PartialApproved || props.FullyApproved);
     {
       return (
-        <div style={{ backgroundColor: "orange", height:'100%' }} className="template-wrap">
+        <div style={{ backgroundColor: "orange", maxHeight: '100px' }} className="template-wrap">
           {" "}
           {props.Subject}{" "}
         </div>
@@ -85,10 +106,45 @@ class Cal extends React.Component {
     }
   }
 
+  fetchUser = value => {
+    const schoolBody = {};
+    console.log('fetching user', value);
+    this.setState({ data: [], fetching: true });
+    axios
+      .post(
+        Authtoken.getBaseUrl() + "/api/location/school/get/all",
+        schoolBody,
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
+        }
+      )
+      .then((res) => {
+        const data = res.data.result.map(user => ({
+          text: `${user.name}`,
+          value: user.name,
+        }));
+        this.setState({ data, fetching: false });
+      });
+
+  }
+
+  handleChange = (value) => {
+    this.setState({
+      value,
+      data: [],
+      fetching: false,
+    });
+    this.filter(this);
+  };
   // Links that could be helpful
   // https://github.com/syncfusion/ej2-react-samples/blob/master/src/schedule/local-data.jsx
 
   render() {
+    const { fetching, data, value } = this.state;
+
     return (
       <Content
         style={{
@@ -98,8 +154,23 @@ class Cal extends React.Component {
         }}
         className="site-layout-background"
       >
-        <CalFilter/>
-        
+        <Select
+          mode="multiple"
+          labelInValue
+          value={value}
+          placeholder="Filter"
+          allowClear={true}
+          notFoundContent={fetching ? <Spin size="small" /> : null}
+          filterOption={true}
+          style={{ width: "250px", minWidth: "auto" }}
+          onChange={this.handleChange}
+          onSearch={this.fetchUser}
+        >
+          {data.map(d => (
+            <Option key={d.value}>{d.text}</Option>
+          ))}
+        </Select>
+
         <ScheduleComponent
           currentView={this.state.currentView}
           eventSettings={{
