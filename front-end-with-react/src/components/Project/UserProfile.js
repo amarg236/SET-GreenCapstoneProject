@@ -44,28 +44,38 @@ class UserProfile extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ padding: "20px" }}>
         <Card>
           <Card.Body>
-            <Card.Title>User Profile</Card.Title>
-            <Card.Text>
-              <b>Username:</b> {this.props.username}
+            <Card.Title
+              style={{
+                fontFamily: "Copperplate, Copperplate Gothic Light, fantasy",
+                fontWeight: 600,
+                textAlign: "center",
+                color: "rgba(79, 146, 255)",
+                marginBottom: 20,
+              }}
+            >
+              User Profile
+            </Card.Title>
+            <Card.Text style={{ textAlign: "center", color: "green" }}>
+              <b>Username: </b> {this.props.username}
             </Card.Text>
-            <Card.Text>
-              <b>User Role:</b> {this.props.role}
+            <Card.Text style={{ textAlign: "center", color: "green" }}>
+              <b>User Role: </b> {this.props.role}
             </Card.Text>
-            <Card.Text>
-              <b>Name:</b> {this.state.firstName}
+            <Card.Text style={{ textAlign: "center", color: "green" }}>
+              <b>Name: </b> {this.state.firstName}
               <span> </span>
               {this.state.lastName}
             </Card.Text>
             {this.props.mySchool ? (
               <span>
-                <Card.Text>
+                <Card.Text style={{ textAlign: "center", color: "green" }}>
                   <b>School:</b> {this.props.mySchool.name}
                   <span> </span>
                 </Card.Text>
-                <Card.Text>
+                <Card.Text style={{ textAlign: "center", color: "green" }}>
                   <b>District:</b> {this.props.schoolDistrict.districtName}
                   <span> </span>
                   {this.state.lastName}
