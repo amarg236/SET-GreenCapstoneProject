@@ -232,34 +232,33 @@ class TestPending extends Component {
       });
   };
 
-  // bulkReject = (keys) => {
-  //   console.log("i am prining array of keys??");
-  //   // console.log(keys);
-  //   console.log(this.state.selectedKeys);
+  bulkReject = (keys) => {
+    console.log("i am prining array of keys??");
+    // console.log(keys);
+    console.log(this.state.selectedKeys);
 
-  //   const aemptyObj = {
-  //     data: this.state.selectedKeys,
-  //   };
-  //   axios
-  //     .post(Authtoken.getBaseUrl() + "/api/game/accept/bulk", aemptyObj, {
-  //       headers: {
-  //         Authorization:
-  //           "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //       if (res.status == 200) {
-  //         console.log(res);
-  //         this.successMsg("Great! All game has been approved. ");
-  //         this.setState((prevState) => ({
-  //           refresh: !prevState.refresh,
-  //         }));
-  //       } else {
-  //         this.errorMsg("Sorry couldn't accept games.");
-  //       }
-  //     });
-  // };
+    const aemptyObj = {
+      data: this.state.selectedKeys,
+    };
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/game/deny/bulk", aemptyObj, {
+        headers: {
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          this.successMsg("Selected games has been denied. ");
+          this.setState((prevState) => ({
+            refresh: !prevState.refresh,
+          }));
+        } else {
+          this.errorMsg("Sorry couldn't complete the process.");
+        }
+      });
+  };
 
   // Approve Games
   approveGame = (display) => {
@@ -428,17 +427,30 @@ class TestPending extends Component {
           </Button>
           <DatePicker picker="month" bordered={true} />
           {this.state.bulkAccept ? (
-            <Button
-              style={{
-                marginRight: "8px",
-                marginLeft: "8px",
-                className: `"${this.state.bulkAccept}"`,
-              }}
-              type="primary"
-              onClick={this.bulkAccept}
-            >
-              Action in Bulk
-            </Button>
+            <span>
+              <Button
+                style={{
+                  marginRight: "8px",
+                  marginLeft: "8px",
+                  className: `"${this.state.bulkAccept}"`,
+                }}
+                type="primary"
+                onClick={this.bulkAccept}
+              >
+                Accept in Bulk
+              </Button>
+              <Button
+                style={{
+                  marginRight: "8px",
+                  marginLeft: "8px",
+                  className: `"${this.state.bulkReject}"`,
+                }}
+                type="danger"
+                onClick={this.bulkReject}
+              >
+                Deny in Bulk
+              </Button>
+            </span>
           ) : null}
         </div>
 
