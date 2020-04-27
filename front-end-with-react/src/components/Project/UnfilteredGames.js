@@ -6,15 +6,43 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import moment from "moment";
 
-import { Row, Layout, Col, Button, Table, Input, DatePicker } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import {
+  Tabs,
+  Row,
+  Layout,
+  Col,
+  Button,
+  Table,
+  Input,
+  Statistic,
+  Descriptions,
+  DatePicker,
+} from "antd";
+
+// import Highlighter from "react-highlight-words";
+import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
+
 const { Content } = Layout;
+const { TabPane } = Tabs;
+let justForData = [
+  { text: "Alexandria ", value: "Alexandria " },
+  { text: "Bera", value: "Linda" },
+];
 
 function callback(key) {
   console.log(key);
 }
 
-class AdminShowGames extends Component {
+function processData(supply) {
+  return supply.map((row) => ({
+    key: row.id,
+    homeTeam: row.hometeam,
+    awayTeam: row.awayteam,
+    location: row.location,
+    time: moment(row.time).format("MM/DD HH:mm"),
+  }));
+}
+class UnfilteredGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,40 +53,39 @@ class AdminShowGames extends Component {
     };
   }
 
-  async componentDidMount() {
-    //getting current users team and school
+  componentDidMount() {
+    // let myTeamId = new Map();
+    // this.props.myTeamId.map((row, index) => myTeamId.set(row));
 
-    const emptyObj = {};
+    const currentSchool = {
+      id: this.props.mySchool.id,
+    };
 
-    try {
-      const res = await axios.post(
-        Authtoken.getBaseUrl() + "/api/game/get/all",
-        emptyObj,
+    axios
+      .post(
+        Authtoken.getBaseUrl() + "/api/game/get/BySchool/all",
+        currentSchool,
         {
           headers: {
             Authorization:
               "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
           },
         }
-      );
-      console.log("res>>");
-      console.log(res.data.result);
-      const myData = res.data.result.filter(function (adminViewGames) {
-        return adminViewGames.rejected || adminViewGames.awayAccepted;
-      });
+      )
+      .then((res) => {
+        // console.log("current school teams");
+        // console.log(res.data.result);
+        // console.log("length here");
+        // console.log(res.data.result.length);
+        // let myData = res.data.result.filter(function (myGames) {
+        //   return myTeamId.has(myGames.awayteamId);
+        // });
 
-      console.log("myData>>");
-      console.log(myData);
-      this.setState({
-        game: myData,
-        loading: false,
+        this.setState({
+          game: processData(res.data.result),
+        });
       });
-    } catch (e) {
-      console.error(`Problem fetching data ${e}`);
-    }
-    // this.setState({ awaySchoolTeamList: res.data.result });
   }
-  // rowSelection objects indicates the need for row selection
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -101,7 +128,7 @@ class AdminShowGames extends Component {
       </div>
     ),
     filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      <FilterOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
@@ -136,14 +163,16 @@ class AdminShowGames extends Component {
     this.setState({ searchText: "" });
   };
 
+  // rowSelection objects indicates the need for row selection
+
   // Approve Games
   approveGame = (display) => {
-    console.log(display);
+    console.log(display.key);
     const aemptyObj = {
       id: display.key,
     };
     axios
-      .post(Authtoken.getBaseUrl() + "/api/admin/game/verify", aemptyObj, {
+      .post(Authtoken.getBaseUrl() + "/api/game/accept", aemptyObj, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -174,39 +203,42 @@ class AdminShowGames extends Component {
         console.log(res);
         window.alert("The game has been denied!");
         // This needs fix later on
-        // window.location.reload();
+        window.location.reload();
         // history.push("./viewGames");
       });
   };
 
   render() {
     const { game } = this.state;
-    console.log("render>>");
-    console.log(game);
 
-    const processedData = game.map((row) => ({
-      key: row.id,
-      homeTeam: row.hometeam,
-      awayTeam: row.awayteam,
-      location: row.location,
-      time: moment(row.time).format("MM/DD HH:mm"),
-    }));
-    const tableData = processedData;
+    const tableData = game;
 
     const getFilteredData = (rejected) => columns.filter({});
-
+    console.log(tableData);
     const columns = [
       {
         title: "HomeTeam",
         dataIndex: "homeTeam",
         key: "homeTeam",
-        ...this.getColumnSearchProps("homeTeam"),
       },
       {
         title: "AwayTeam",
         dataIndex: "awayTeam",
         key: "awayTeam",
         ...this.getColumnSearchProps("awayTeam"),
+        // filters: [
+        //   {
+        //     text: "Alexandria ",
+        //     value: "Alexandria ",
+        //   },
+
+        // ],
+        // onFilter: (value, record) => record.awayTeam.includes(value),
+        // render: (record) => (
+        //   <span>
+        //     <a>{console.log(justForData.pl)}</a>
+        //   </span>
+        // ),
       },
       {
         title: "Location",
@@ -218,44 +250,8 @@ class AdminShowGames extends Component {
         dataIndex: "time",
         key: "time",
       },
-      {
-        title: "Action",
-        dataIndex: "",
-        key: "x",
-        render: (record) => (
-          <span>
-            <Button
-              onClick={() => this.approveGame(record)}
-              type="link"
-              style={{ marginRight: 16 }}
-            >
-              Approve
-            </Button>
-            <Button onClick={() => this.denyGame(record)} type="link">
-              Deny
-            </Button>
-          </span>
-        ),
-      },
     ];
 
-    const rowSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        console.log(
-          `selectedRowKeys: ${selectedRowKeys}`,
-          "selectedRows: ",
-          selectedRows
-        );
-      },
-      onSelect: (record, selected, selectedRows) => {
-        console.log(record, selected, selectedRows);
-      },
-      onSelectAll: (selected, selectedRows, changeRows) => {
-        console.log(selected, selectedRows, changeRows);
-      },
-    };
-
-    console.log(tableData);
     return (
       <Content
         className="site-layout-background"
@@ -275,13 +271,8 @@ class AdminShowGames extends Component {
           </Button>
           <DatePicker picker="month" bordered={true} />
         </div>
-        <Table
-          hideOnSinglePage
-          rowSelection={rowSelection}
-          columns={columns}
-          dataSource={tableData}
-          size="small"
-        />
+
+        <Table columns={columns} dataSource={tableData} size="small" />
       </Content>
     );
   }
@@ -290,6 +281,9 @@ class AdminShowGames extends Component {
 const mapStatetoProps = (state) => {
   return {
     token: state.userReducer.token,
+    mySchool: state.userReducer.mySchool,
+    schoolDistrict: state.userReducer.schoolDistrict,
+    myTeamId: state.gameReducer.myTeam,
   };
 };
-export default connect(mapStatetoProps, null)(AdminShowGames);
+export default connect(mapStatetoProps, null)(UnfilteredGames);

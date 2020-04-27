@@ -9,6 +9,7 @@ const initialState = {
   mySchool: JSON.parse(localStorage.getItem("homeSchool"))?.currenthomeSchool,
   schoolDistrict: JSON.parse(localStorage.getItem("homeSchool"))
     ?.currenthomeDistrict,
+
   // mySchool: [],
   // schoolDistrict: []
 };
@@ -20,6 +21,7 @@ const userReducer = (state = initialState, action) => {
         username: action.username,
         message: action.message,
         role: action.role,
+        token: action.token,
       };
     case "LOGIN_ERROR":
       return {

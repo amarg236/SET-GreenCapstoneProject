@@ -127,14 +127,14 @@ class ExportToCSV extends Component {
       wrapperCol: { span: 14, offset: 4 },
     };
 
-    console.log("final", this.state.exportTeam);
+    console.log("final", this.state.jData);
 
     if (this.state.jData !== []) {
       return (
         <Content
           style={{
             padding: "20px",
-            margin: 0,
+            marginTop: "20px",
             minHeight: 580,
           }}
           className="site-layout-background"

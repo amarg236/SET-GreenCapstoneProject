@@ -47,6 +47,7 @@ class AddTeam extends Component {
     internalName: "",
     teamLevel: "",
     schoolTeam: "",
+    teamGender: "",
   };
 
   componentDidMount() {
@@ -95,6 +96,16 @@ class AddTeam extends Component {
   selectTeam = (team) => {
     console.log(`selected ${team}`);
     this.setState({ schoolTeam: team });
+    switch (team) {
+      case "VG":
+        this.setState({ teamGender: "Girl" });
+      case "VB":
+        this.setState({ teamGender: "Boy" });
+      case "JVB":
+        this.setState({ teamGender: "Boy" });
+      case "JVG":
+        this.setState({ teamGender: "Girl" });
+    }
   };
 
   teamSubmit(e) {
@@ -105,6 +116,7 @@ class AddTeam extends Component {
       internalName: this.state.internalName,
       tmName: this.state.schoolName.concat("-", this.state.schoolTeam),
       tmClass: this.state.teamLevel,
+      teamGender: this.state.teamGender,
       school: {
         id: this.state.schoolId,
       },
@@ -315,24 +327,6 @@ class AddTeam extends Component {
                 placeholder="Arbitrary Name"
               />
             </Form.Item>
-            {
-              //             <Form.Item
-              //               label="Team Name"
-              //               name="teamName"
-              //               rules={[
-              //                 {
-              //                   required: true,
-              //                 },
-              //               ]}
-              //             >
-              //               <Input
-              //                 size="large"
-              //                 value={this.state.teamName}
-              //                 onChange={this.onChangeTeamName}
-              //                 placeholder="Enter Team Name"
-              //               />
-              //             </Form.Item>
-            }
 
             <Form.Item {...tailLayout.labelCol}>
               <Button type="primary" block onClick={this.teamSubmit}>
@@ -341,6 +335,7 @@ class AddTeam extends Component {
             </Form.Item>
           </Form>
         </div>
+        <ViewTeam />
       </Content>
     );
   }

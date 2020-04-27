@@ -176,14 +176,14 @@ class TestCreateGame extends Component {
     const gameObject = {
       time: moment(gameStart).format("YYYY-MM-DD HH:mm"),
 
-      awayteam: this.state.againstSchool.concat(" ", this.state.againstTeam),
+      awayteam: this.state.againstTeam,
       awayteamId: this.state.awayteamId,
       awaydistrict: {
         districtName: this.state.againstTeamDistrict,
         id: this.state.againstTeamDistrictId,
       },
       duration: gameDuration,
-      hometeam: this.props.mySchool.name.concat(" ", this.state.homeTeam),
+      hometeam: this.state.homeTeam,
       hometeamId: this.state.homeTeamId,
       homedistrict: {
         districtName: this.props.schoolDistrict.districtName,
@@ -347,7 +347,7 @@ class TestCreateGame extends Component {
                 <Select
                   size="large"
                   defaultValue="Select Options"
-                  style={{ width: 120 }}
+                  style={{ width: 400 }}
                   onChange={this.handleHomeTeam}
                 >
                   {this.state.homeTeamObj.map((homeTeamDetails) => (
@@ -373,6 +373,7 @@ class TestCreateGame extends Component {
               ]}
             >
               <DatePicker
+                style={{ width: 400 }}
                 value={this.state.gameDate}
                 onChange={this.onChangeGameDate}
                 // defaultValue={moment("2020-03-08", this.dateFormat)}
@@ -389,6 +390,7 @@ class TestCreateGame extends Component {
               ]}
             >
               <RangePicker
+                style={{ width: 400 }}
                 minuteStep={5}
                 format="HH:mm"
                 value={this.state.gameTime}
@@ -398,6 +400,7 @@ class TestCreateGame extends Component {
 
             <Form.Item name="location" label="Location" rules={[{}]}>
               <Input
+                style={{ width: 400 }}
                 onChange={this.onChangeGameLocation}
                 value={this.state.gameLocation}
                 placeholder="Location"
@@ -408,7 +411,7 @@ class TestCreateGame extends Component {
                 <Select
                   size="large"
                   defaultValue="Select Options"
-                  style={{ width: 120 }}
+                  style={{ width: 400 }}
                   value={this.state.againstTeamDistrict}
                   onChange={this.handleDistrict}
                 >
@@ -428,7 +431,7 @@ class TestCreateGame extends Component {
               <Select
                 size="large"
                 defaultValue="Select Options"
-                style={{ width: 120 }}
+                style={{ width: 400 }}
                 value={this.state.againstSchool}
                 onChange={this.handleSchool}
               >
@@ -444,7 +447,7 @@ class TestCreateGame extends Component {
               <Select
                 size="large"
                 defaultValue="Select Options"
-                style={{ width: 120 }}
+                style={{ width: 400 }}
                 value={this.state.againstTeam}
                 onChange={this.handleAwayTeam}
               >
