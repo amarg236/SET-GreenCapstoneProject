@@ -293,7 +293,7 @@ class CreateGame extends Component {
       },
     });
 
-    console.log("I have been executed");
+    // console.log("I have been executed");
     //fetching school depending upon the value of district
     const schoolBody = {
       districtName: dummy.districtName,
@@ -311,18 +311,18 @@ class CreateGame extends Component {
         }
       )
       .then((res) => {
-        console.log("i am school by district");
-        console.log(res.data.result);
+        // console.log("i am school by district");
+        // console.log(res.data.result);
         this.setState({ awaySchoolList: res.data.result });
       });
     //fetching away school team depending upon the value of school
   };
 
   render() {
-    console.log("school here");
-    console.log(this.state.awaySchoolList);
-    console.log("school here");
-    console.log("typee", this.props.ifcollapsed);
+    // console.log("school here");
+    // console.log(this.state.awaySchoolList);
+    // console.log("school here");
+    // console.log("typee", this.props.ifcollapsed);
     const layout = {
       labelCol: {
         span: 10,
@@ -341,8 +341,8 @@ class CreateGame extends Component {
         range: "Must be between ${min} and ${max}",
       },
     };
-    console.log("thi sis new schoo list");
-    console.log(this.state.awaySchoolList);
+    // console.log("thi sis new schoo list");
+    // console.log(this.state.awaySchoolList);
 
     return (
       <Content

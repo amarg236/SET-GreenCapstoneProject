@@ -1,10 +1,10 @@
 import "../../App.css";
+import moment from "moment";
 import React, { Component } from "react";
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
-import moment from "moment";
 
 import {
   Tabs,
@@ -42,6 +42,7 @@ function processData(supply) {
     time: moment(row.time).format("MM/DD HH:mm"),
   }));
 }
+
 class UnfilteredGames extends Component {
   constructor(props) {
     super(props);
@@ -50,6 +51,10 @@ class UnfilteredGames extends Component {
       game: [],
       school: [],
       isRejected: null,
+      monthSelected: moment(),
+      filter: false,
+      dateFiltered: [],
+      // MonthFilter: moment.format("MM/DD HH:mm"),
     };
   }
 
@@ -74,7 +79,7 @@ class UnfilteredGames extends Component {
       )
       .then((res) => {
         // console.log("current school teams");
-        // console.log(res.data.result);
+        console.log(res.data.result);
         // console.log("length here");
         // console.log(res.data.result.length);
         // let myData = res.data.result.filter(function (myGames) {
@@ -163,6 +168,34 @@ class UnfilteredGames extends Component {
     this.setState({ searchText: "" });
   };
 
+  onMonthSelected = (date, dateString) => {
+    console.log("month has been selected");
+    let mySelectedMonth = moment(date, "M")?.format("M");
+    // this.setState({ monthSelected: dateString });
+    // console.log(moment(date, "M")?.format("M"));
+    // console.log(mySelectedMonth);
+    this.setState({ monthSelected: date, filter: true });
+    const toBePassed = this.state.game.filter(function (filtered) {
+      console.log(filtered.time);
+      let passedDate = moment(filtered.time, "MM/DD HH:mm").format("M");
+      console.log(passedDate);
+      console.log(mySelectedMonth);
+      if (passedDate == mySelectedMonth) {
+        console.log("both are same month");
+      }
+      return passedDate == mySelectedMonth;
+      // console.log(passedDate.format("M"));
+      // // if (this.state.monthSelected) {
+      // //   let myDate = this.state.monthSelected?.format("M");
+      // // }
+      // return filtered;
+    });
+    console.log(this.state.game);
+    console.log("Month picked<<");
+    console.log(toBePassed);
+    this.setState({ game: toBePassed });
+  };
+
   // rowSelection objects indicates the need for row selection
 
   // Approve Games
@@ -210,8 +243,27 @@ class UnfilteredGames extends Component {
 
   render() {
     const { game } = this.state;
+    // this.setState({MonthFilter:})
+    let date = moment("02/06 02:35", "MM/DD HH:mm");
+
+    // moment.format("MM/DD HH:mm");
+    console.log(">game");
+    console.log(game);
+    console.log(date.format("M"));
+
+    console.log(this.state.monthSelected?.format("M"));
 
     const tableData = game;
+    //   console.log(compareDate.time);
+    //   let passedDate = moment(compareDate.time, "MM/DD HH:mm");
+    //   console.log(passedDate.format("M"));
+    //   // if (this.state.monthSelected) {
+    //   //   let myDate = this.state.monthSelected?.format("M");
+    //   // }
+
+    //   // console.log(myDate);
+    //   return compareDate;
+    // });
 
     const getFilteredData = (rejected) => columns.filter({});
     console.log(tableData);
@@ -269,7 +321,13 @@ class UnfilteredGames extends Component {
           >
             Filter By Month
           </Button>
-          <DatePicker picker="month" bordered={true} />
+          <DatePicker
+            value={this.state.monthSelected}
+            format="MM"
+            picker="month"
+            bordered={true}
+            onChange={this.onMonthSelected}
+          />
         </div>
 
         <Table columns={columns} dataSource={tableData} size="small" />
