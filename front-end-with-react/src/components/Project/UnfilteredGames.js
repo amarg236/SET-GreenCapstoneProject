@@ -54,6 +54,7 @@ class UnfilteredGames extends Component {
       monthSelected: moment(),
       filter: false,
       dateFiltered: [],
+      refresh: false,
       // MonthFilter: moment.format("MM/DD HH:mm"),
     };
   }
@@ -62,6 +63,16 @@ class UnfilteredGames extends Component {
     // let myTeamId = new Map();
     // this.props.myTeamId.map((row, index) => myTeamId.set(row));
 
+    this.fetchApi();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.refresh != this.state.refresh) {
+      this.fetchApi();
+    }
+  }
+
+  fetchApi = () => {
     const currentSchool = {
       id: this.props.mySchool.id,
     };
@@ -90,7 +101,7 @@ class UnfilteredGames extends Component {
           game: processData(res.data.result),
         });
       });
-  }
+  };
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -169,6 +180,19 @@ class UnfilteredGames extends Component {
   };
 
   onMonthSelected = (date, dateString) => {
+    // if (this.state.monthSelected?.format("M") === undefined) {
+    //   console.log("just checked for undefined");
+    //   // this.fetchApi();
+    //   // this.setState((prevState) => ({
+    //   //   refresh: !prevState.refresh,
+    //   // }));
+    // }
+    console.log("String Selected>>");
+    console.log(dateString);
+    if (dateString == "") {
+      this.fetchApi();
+    }
+
     console.log("month has been selected");
     let mySelectedMonth = moment(date, "M")?.format("M");
     // this.setState({ monthSelected: dateString });
@@ -194,6 +218,9 @@ class UnfilteredGames extends Component {
     console.log("Month picked<<");
     console.log(toBePassed);
     this.setState({ game: toBePassed });
+    // this.setState((prevState) => ({
+    //   refresh: !prevState.refresh,
+    // }));
   };
 
   // rowSelection objects indicates the need for row selection
