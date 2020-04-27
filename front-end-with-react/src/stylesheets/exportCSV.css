@@ -1,0 +1,25 @@
+.bottom-header {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: darkslateblue;
+
+  font-family: Copperplate, Copperplate Gothic Light, fantasy;
+}
+
+#header-one {
+  font-family: Copperplate, Copperplate Gothic Light, fantasy;
+  font-weight: 600;
+  color: darkslateblue;
+}
+
+.all-bottom {
+  position: relative;
+
+  width: 15%;
+}
+
+span {
+  color: white;
+  text-decoration: none;
+}
