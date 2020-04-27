@@ -34,7 +34,7 @@ public class MailHandler {
 			HOSTNAME = p.getProperty("hostname");
 		}
 		catch(Exception e) {
-			System.out.println("RRRRRRIIIIIIIIIPPPP" + e);
+			System.out.println("Did not initialize mail server" + e);
 			HOSTNAME = "http://localhost:3000/";
 			USERNAME = "username";
 			PASSWORD = "password";
@@ -42,7 +42,6 @@ public class MailHandler {
 			PORT = 0;
 			SERVER = "server";
 		}
-		Debugger.cout(">>>>"+SERVER + " " + PORT + " " + USERNAME + "\n");
 		ms.setHost(SERVER);
 		ms.setPort(PORT);
 		ms.setUsername(USERNAME);

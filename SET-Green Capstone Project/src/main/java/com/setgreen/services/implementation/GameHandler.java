@@ -251,7 +251,7 @@ public class GameHandler {
 	}
 
 	public ResponseBody<Game> RequestReschedule(Game g) {
-		// TODO Auto-generated method stub
+		// TODO !RESCHEDULE!
 		return null;
 	}
 

@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.setgreen.model.District;
 import com.setgreen.model.Game;
 import com.setgreen.model.ResponseBody;
+import com.setgreen.model.RoleName;
 import com.setgreen.model.School;
 import com.setgreen.model.Teams;
 import com.setgreen.services.implementation.GameHandler;
+import com.setgreen.services.usergroups.UserReference;
 import com.setgreen.util.DataObject;
 
 @RestController
@@ -33,26 +35,26 @@ public class GameController {
 		return hlp.getRoleByTeam(auth, g).createGame(auth, g);
 	}
 	
-	@PostMapping("delete")
+	@PostMapping("delete")//{"id"=123}
 	public ResponseBody<Long> delete(@RequestBody DataObject<Long> id, Authentication auth) {
 		return hlp.getRoleByTeam(auth, gh.getGameById(id.getData())).deleteGame(id);
 	}
-	@PostMapping("modify")
+	@PostMapping("modify")//{"id"=123}
 	public ResponseBody<Game> modify(@RequestBody Game g, Authentication auth) {
 		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).rescheduleGame(auth, g);
 	}
 	
-	@PostMapping("reject")
+	@PostMapping("reject")//{"id"=123}
 	public ResponseBody<Game> reject(@RequestBody Game g, Authentication auth){
 		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).rejectGame(auth, g);
 	}
 	
-	@PostMapping("reject/clear")
+	@PostMapping("reject/clear")//{"id"=123}
 	public ResponseBody<Game> clearReject(@RequestBody Game g, Authentication auth){
 		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).validateRejection(auth, g);
 	}
 	
-	@PostMapping("accept")
+	@PostMapping("accept")//{"id"=123}
 	public ResponseBody<Long> accept(@RequestBody Game g, Authentication auth) {//NOTE this MUST use getGameById as we're actively changing the game's parameters.
 		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).approveGame(auth, g.getId());
 	}
@@ -60,16 +62,40 @@ public class GameController {
 	@PostMapping("accept/bulk") //{"data":[1,2,3,4,5,6,7,132,5574,99]}
 	public ResponseBody<Long>[] acceptBulk(@RequestBody DataObject<Long[]> dta, Authentication auth){
 		ResponseBody<Long>[] rb;
-		
+		UserReference _ur = hlp.getRoleByBest(auth);
 		rb = new ResponseBody[dta.getData().length];
 		for(int i = 0; i < rb.length; i++) {
 			Game g = new Game();
 			g.setId(dta.getData()[i]);
-			rb[i] = accept(g, auth);
+			//Minor save on processing if it's not a coach doing the bulk accept as we don't have to fetch role
+			if(_ur.getName().userLevel() >= RoleName.ASSIGNER.userLevel()) {
+				rb[i] = _ur.approveGame(auth, g.getId());
+			}
+			else {
+				rb[i] = accept(g, auth);
+			}
 		}
 		return rb;
 	}
 	
+	@PostMapping("deny/bulk") //{"data":[1,2,3,4,5,6,7,132,5574,99]}
+	public ResponseBody<Game>[] denyBulk(@RequestBody DataObject<Long[]> dta, Authentication auth){
+		ResponseBody<Game>[] rb;
+		UserReference _ur = hlp.getRoleByBest(auth);
+		rb = new ResponseBody[dta.getData().length];
+		for(int i = 0; i < rb.length; i++) {
+			Game g = new Game();
+			g.setId(dta.getData()[i]);
+			//Minor save on processing if it's not a coach doing the bulk accept as we don't have to fetch role
+			if(_ur.getName().userLevel() >= RoleName.ASSIGNER.userLevel()) {
+				rb[i] = _ur.rejectGame(auth, g);
+			}
+			else {
+				rb[i] = reject(g, auth);
+			}
+		}
+		return rb;
+	}
 	/** Gets all the verified games in a district
 	 * @param district String name of district for games
 	 * @return ResponseBody status of request
