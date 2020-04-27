@@ -80,7 +80,7 @@ public class TeamController {
 	 * @return ResponseBody with status of request and day sent
 	 *
 	 */
-	@PostMapping("day/bad/save") //TODO Decide if this method should allow IDs to be sent to override dates
+	@PostMapping("day/bad/save")
 	public ResponseBody<BadDay> saveBadDay(@RequestBody BadDay d, Authentication auth) {
 		return hlp.getRoleByTeam(auth, d.getTm()).addBadDay(d);
 	}

@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	@Override //XXX TESTME
+	@Override
 	public ResponseBody<User> updateProfile(User u) {
 		try{
 			if(u.getId().equals(userRepo.findByEmail(u.getEmail()).getId())) {

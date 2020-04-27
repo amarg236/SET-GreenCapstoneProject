@@ -1,4 +1,4 @@
-package com.setgreen.services.usergroups;
+package com.setgreen.services.usergroups.accesslevels;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -69,7 +69,13 @@ public class UserAssignor extends UserScheduler /*implements UserReference*/  {
 		return gh.deleteGame(g.getData());
 		
 	}
-	
+	@Override
+	public ResponseBody<Game> rescheduleGame(Authentication auth, Game g) {
+		Game ng = gh.getGameById(g.getId());
+		ng.setDuration(g.getDuration());
+		ng.setTime(g.getTime());
+		return gh.modifyGame(ng);
+	}
 	@Override
 	public ResponseBody<District> addDistrict(District d) {
 		return dh.saveDistrict(d);

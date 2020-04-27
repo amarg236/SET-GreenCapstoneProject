@@ -1,4 +1,4 @@
-package com.setgreen.services.usergroups;
+package com.setgreen.services.usergroups.accesslevels;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +14,9 @@ import com.setgreen.model.RoleName;
 import com.setgreen.model.Teams;
 import com.setgreen.model.User;
 import com.setgreen.model.scheduling.BadDay;
+import com.setgreen.model.scheduling.EventDay;
 import com.setgreen.model.scheduling.IdealDay;
+import com.setgreen.services.usergroups.GameConflictObj;
 import com.setgreen.util.DataObject;
 import com.setgreen.model.Role;
 @Service
@@ -26,8 +28,8 @@ public class UserScheduler extends UserUnfound {
 	public RoleName getName() {
 		return RoleName.USER;
 	}
-	@Override
-	public ResponseBody<Game> createGame(Authentication auth, Game g) {
+	
+	protected ResponseBody<Game> _createGame(Authentication auth, Game g) {
 		g.setApproved(false);
 		g.setAwayAccepted(false);
 		g.setRejected(false);
@@ -38,28 +40,35 @@ public class UserScheduler extends UserUnfound {
 		g.setAwayNotification(true);
 		HashSet<Game> sog = new HashSet<Game>(); //set of games. Prevents dupes by being a set
 		sog.addAll(gh.getGamesByAllTeamIds(g).getResult()); //all awayteam games for awayteam of proposed game
-		int conflictCount = 0; //count of all conflicts
-		String conflicts = ""; //string of conflicting games
-		System.out.println("create save");
+		GameConflictObj gco = new GameConflictObj();
 		for(Game gme : sog) { //for each game
-			System.out.println(">>Gameschedule: " + gme);
-			//if the games starting time is <= your proposed time and the end time is >=, it's a conflict
-			//idk why i did -g.getDuration but it should have worked maybe IDK.
 			if(gme.getTime().getTime() - g.getDuration() <= g.getTime().getTime() && gme.getTime().getTime()+gme.getDuration() >= g.getTime().getTime()) {
-				conflictCount++; //increment conflicts
-				conflicts = conflicts + "\n" + gme.getHometeam() + " vs. " + gme.getAwayteam() + " at " + gme.getLocation(); //nextline hometeam vs awayteam at location
+				gco.addTimeConflict(g);
 			}
 		}
-		conflicts = conflictCount + " conflicts found:" + conflicts; //"X conflicts found:\n hometeam vs. awayteam at location\n..."
-		if(conflictCount > 0) { //if more that 0 conflicts
-			return new ResponseBody<Game>(HttpStatus.CONFLICT.value(), conflicts, g); //tell error
+		
+		if(gco.didConflict()) { //if more that 0 conflicts
+			return new ResponseBody<Game>(HttpStatus.CONFLICT.value(), gco.display(), g); //tell error
 		}
 		else {
-			System.out.println(">> debug " + conflicts);
 			return gh.saveGame(g); //save game as expected
 		}
 	}
 
+	@Override
+	public ResponseBody<Game> createGame(Authentication auth, Game g){
+		Iterable<EventDay> days = dyh.findEventDays().getResult();
+		for(EventDay d : days) {
+			//if (gameTime >= startOfEvent AND gameTime <= endOfEvent)
+			//OR (gameEndTime >= startOfEven AND gameEndTime <= endOfEvent+LenghtOfGame
+			if( (g.getTime().getTime() >= d.getDte().getTime() && g.getTime().getTime() <= d.getEndDate().getTime())
+					|| (g.getTime().getTime()+g.getDuration() >= d.getDte().getTime() && g.getTime().getTime()+g.getDuration() <= d.getEndDate().getTime()+g.getDuration())) {
+				return new ResponseBody<Game>(HttpStatus.CONFLICT.value(), "Event Conflict on: " + d.getDte() + " to " + d.getEndDate() + " Reason: " + d.getReason(), g);
+			}
+		}
+		return _createGame(auth, g);
+	}
+	
 	@Override
 	public ResponseBody<Long> approveGame(Authentication auth, Long g) {
 		return gh.teamVerifyGame(auth, g);

@@ -43,32 +43,24 @@ public class ControllerAssistant {
 	 * @return role of user in the team
 	 */
 	protected UserReference getRoleByTeam(Authentication auth, Game g) {
-		System.out.print(">> did we start\n");
 		try {
 			Set<Role> r = us.fetchByEmail(auth.getName()).getResult().getRoles();
 			System.out.print(">> roles: " + r.toString() + "\n");
 			RoleName rtrn = RoleName.UNFOUND;
 			for(Role x : r) {
-				if(x.getRole().hasDistrict() && x.getRole().userLevel() > rtrn.userLevel()) {
-					System.out.print(">>hasdistrict\n");					
-//					for(Teams t : tms) {
-//						System.out.print(t.toString()+"\n");
+				if(x.getRole().hasDistrict() && x.getRole().userLevel() > rtrn.userLevel()) {				
 					Teams t = new Teams();
 					Teams t2 = new Teams();
 					t.setId(g.getHometeamId());
-					t.setId(g.getAwayteamId());//TODO Cleanup debug
+					t.setId(g.getAwayteamId());
 					if((x.getSchool().getId() == ts.getTeamsById(t).getResult().getSchool().getId() || x.getSchool().getId() == ts.getTeamsById(t2).getResult().getSchool().getId()) && x.getRole().userLevel() > rtrn.userLevel()) {
-						System.out.print(">>condition success\n");
 						rtrn = x.getRole();
 					}
-//					}
 				}
 				else if(x.getRole().userLevel() > rtrn.userLevel()) {
-					System.out.print(">>elseif\n");
 					rtrn = x.getRole();
 				}
 			}
-			System.out.print(">>returning " + rtrn.toString() +"\n");
 			return rn.build(rtrn);
 		}
 		catch(Exception e) {
@@ -99,7 +91,7 @@ public class ControllerAssistant {
 		RoleName rtrn = RoleName.UNFOUND;
 		Iterable<Role> rls = us.fetchByEmail(auth.getName()).getResult().getRoles();
 		for(Role x : rls) {
-			try {//XXX IMPROVE this could be more efficient, especially if the given team doesn't exist.
+			try {
 				if(x.getRole().hasDistrict()) {
 					if(t.getSchool().getDistrict().equals(x.getSchool().getDistrict()) && x.getRole().userLevel() > rtrn.userLevel()) {
 						rtrn = x.getRole();
@@ -116,10 +108,6 @@ public class ControllerAssistant {
 			}
 		}
 		return rtrn;
-		//return findRoleByBest(auth);//rtrn;
 	}
-//	private RoleName findRoleByTeam(Authentication auth, String awayteam) {
-//		return findRoleByTeam(auth, ts.getTeamsByName(awayteam).getResult());	
-//	}
 
 }

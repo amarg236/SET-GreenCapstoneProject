@@ -1,4 +1,4 @@
-package com.setgreen.services.usergroups;
+package com.setgreen.services.usergroups.accesslevels;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,6 +16,7 @@ import com.setgreen.model.noticeboard.Notice;
 import com.setgreen.model.scheduling.BadDay;
 import com.setgreen.model.scheduling.EventDay;
 import com.setgreen.model.scheduling.IdealDay;
+import com.setgreen.services.usergroups.UserReference;
 import com.setgreen.util.DataObject;
 @Service
 public class UserUnfound extends UserReference {

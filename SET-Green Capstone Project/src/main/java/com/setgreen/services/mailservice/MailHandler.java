@@ -82,7 +82,7 @@ public class MailHandler {
 		return genLink(30);
 	}
 	
-	public String genLink(int length) {//XXX MOVE TO UTILITY CLASS. If we have time to do that. Also it should be named "genString()" and have an override of "genString(int lengthOfString)" if I find the time
+	public String genLink(int length) {
 		String s = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		s = s+s.toLowerCase()+"0123456789";
 		Random r = new Random();

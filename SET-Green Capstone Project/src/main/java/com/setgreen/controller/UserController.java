@@ -114,7 +114,7 @@ public class UserController {
          UserDetails uds = null;
          if(rb.getHttpStatusCode() == HttpStatus.ACCEPTED.value()) {
         	 usr = rb.getResult();
-        	 uds = ud.loadUserByUsername(usr.getEmail()); //TODO WHY IS THIS HERE?
+        	 uds = ud.loadUserByUsername(usr.getEmail());
          }
     	try {
     		//To get around null checking we test to see if the user is not verified.

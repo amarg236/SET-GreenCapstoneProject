@@ -31,7 +31,7 @@ public class Game implements Serializable{
 	String hometeam;
 	@OneToOne
 	District homedistrict;
-	String awayteam;//TODO verify this, most likely using setter methods.
+	String awayteam;
 	@OneToOne
 	District awaydistrict;
 	@Id

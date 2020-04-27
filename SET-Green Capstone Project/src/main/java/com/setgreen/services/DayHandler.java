@@ -26,8 +26,6 @@ public interface DayHandler {
 	
 	ResponseBody<Iterable<EventDay>> findEventDays();
 	
-	//ResponseBody<Iterable<EventDay>> findEventDays(District d); //XXX we should add districts to event days
-	
 	ResponseBody<EventDay> saveEventDay(EventDay d);
 	
 	ResponseBody<EventDay> deleteEventDay(EventDay d);

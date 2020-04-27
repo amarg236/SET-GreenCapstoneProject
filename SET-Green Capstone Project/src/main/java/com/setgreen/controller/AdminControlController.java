@@ -54,7 +54,7 @@ public class AdminControlController{
      * BODY:
      * 	{"id":long, "verified":bool}
      */
-    @PostMapping("/user/update/verify") //XXX TEST
+    @PostMapping("/user/update/verify")
     public ResponseBody<User> updateUserVerify(@RequestBody User u, Authentication auth){
     	return hlp.getRoleByBest(auth).verifyUser(u);
     }
