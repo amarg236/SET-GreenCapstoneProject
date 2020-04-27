@@ -8,7 +8,7 @@ import { PlusOutlined } from "@ant-design/icons";
 const { Content } = Layout;
 const { Option } = Select;
 const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 }
+  wrapperCol: { offset: 8, span: 16 },
 };
 class AddSchool extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class AddSchool extends Component {
   state = {
     selectedD: {
       id: "",
-      districtName: ""
+      districtName: "",
     },
     district: "",
     schoolAddress: "",
@@ -29,7 +29,7 @@ class AddSchool extends Component {
     initLoading: true,
     loading: false,
     data: [],
-    list: []
+    list: [],
   };
 
   componentDidMount() {
@@ -41,23 +41,23 @@ class AddSchool extends Component {
         {
           headers: {
             Authorization:
-              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-          }
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
         }
       )
-      .then(res => {
+      .then((res) => {
         this.setState({
           initLoading: false,
           data: res.data.result,
-          list: res.data.result
+          list: res.data.result,
         });
       });
   }
 
-  onChangeSchoolName = e => {
+  onChangeSchoolName = (e) => {
     this.setState({ schoolName: e.target.value });
   };
-  onChangeSchoolAddress = e => {
+  onChangeSchoolAddress = (e) => {
     this.setState({ schoolAddress: e.target.value });
   };
 
@@ -68,16 +68,17 @@ class AddSchool extends Component {
       name: this.state.schoolName,
       district: {
         id: this.state.selectedD.id,
-        districtName: this.state.selectedD.districtName
-      }
+        districtName: this.state.selectedD.districtName,
+      },
     };
     axios
       .post(Authtoken.getBaseUrl() + "/api/location/school/add", schoolObj, {
         headers: {
-          Authorization: "Bearer " + Authtoken.getUserInfo().token.split(" ")[1]
-        }
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
       })
-      .then(res => {
+      .then((res) => {
         window.alert("The School has been added successfully!!");
         window.location.reload();
       });
@@ -85,11 +86,11 @@ class AddSchool extends Component {
 
   handleChange(value) {
     const dummy = JSON.parse(value);
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       selectedD: {
         id: dummy.id,
-        districtName: dummy.districtName
-      }
+        districtName: dummy.districtName,
+      },
     }));
   }
 
@@ -98,21 +99,21 @@ class AddSchool extends Component {
 
     const layout = {
       labelCol: {
-        span: 4
+        span: 4,
       },
       wrapperCol: {
-        span: 12
-      }
+        span: 12,
+      },
     };
     const validateMessages = {
       required: "This field is required!",
       types: {
         email: "Not a validate email!",
-        number: "Not a validate number!"
+        number: "Not a validate number!",
       },
       number: {
-        range: "Must be between ${min} and ${max}"
-      }
+        range: "Must be between ${min} and ${max}",
+      },
     };
 
     return (
@@ -121,14 +122,14 @@ class AddSchool extends Component {
         style={{
           padding: 24,
           margin: 0,
-          minHeight: 580
+          minHeight: 580,
         }}
       >
         <div
           style={{
             backgroundColor: "#ffff",
             padding: "20px",
-            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)"
+            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
           }}
         >
           <Form
@@ -142,8 +143,8 @@ class AddSchool extends Component {
               name="schoolName"
               rules={[
                 {
-                  required: true
-                }
+                  required: true,
+                },
               ]}
             >
               <Input
@@ -158,8 +159,8 @@ class AddSchool extends Component {
               name="schoolAddress"
               rules={[
                 {
-                  required: true
-                }
+                  required: true,
+                },
               ]}
             >
               <Input
@@ -176,7 +177,7 @@ class AddSchool extends Component {
                 style={{ width: 120 }}
                 onChange={this.handleChange}
               >
-                {this.state.list.map(item => (
+                {this.state.list.map((item) => (
                   <Select.Option
                     key={item.id}
                     // value={index}

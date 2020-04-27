@@ -21,6 +21,7 @@ import {
   AppstoreOutlined,
   ApartmentOutlined,
   UserAddOutlined,
+  InsertRowBelowOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
@@ -145,8 +146,24 @@ class AdminSidebar extends Component {
             <span>Invite Assignor</span>
           </Menu.Item>
         </SubMenu>
+        <SubMenu
+          key="manageNotice"
+          title={
+            <span>
+              <InsertRowBelowOutlined />
+              <span>Manage Notice</span>
+            </span>
+          }
+        >
+          <Menu.Item onClick={handleClick} key="addNotice">
+            <span>
+              <FileAddOutlined />
+            </span>
+            <span>Add Notice</span>
+          </Menu.Item>
+        </SubMenu>
 
-        <Menu.Item onClick={handleClick} key="approvedGames" key="exportCSV">
+        <Menu.Item onClick={handleClick} key="exportCSV">
           <span>
             <DownloadOutlined />
           </span>
