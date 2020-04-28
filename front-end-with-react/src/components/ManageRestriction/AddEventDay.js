@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import Authtoken from "../../Utility/AuthToken";
 import React, { Component } from "react";
-import ViewGoodGame from "./ViewGoodDay";
+
 import {
   Form,
   Typography,
@@ -14,15 +14,17 @@ import {
   Select,
   Layout,
   Modal,
+  TimePicker,
 } from "antd";
-import { FormInstance } from "antd/lib/form";
-
 import { FormOutlined } from "@ant-design/icons";
+import { FormInstance } from "antd/lib/form";
+const { RangePicker } = TimePicker;
+
 // import { PlusOutlined } from "@ant-design/icons";
 const { Content } = Layout;
 const { TextArea } = Input;
 const { Title } = Typography;
-class AddGoodDay extends Component {
+class AddEventDay extends Component {
   formRef = React.createRef();
   state = {
     homeTeam: "",
@@ -35,7 +37,8 @@ class AddGoodDay extends Component {
       id: "",
       districtName: "",
     },
-    gameDate: moment().format("YYYY-MM-DD"),
+    startDate: moment().format("YYYY-MM-DD"),
+    endDate: moment().format("YYYY-MM-DD"),
     gameStartTime: moment().format("HH:mm"),
     gameEndTime: moment().format("HH:mm"),
     // gameEndTime: moment()
@@ -48,24 +51,9 @@ class AddGoodDay extends Component {
     againstTeamDistrict: "",
     againstTeamDistrictId: "",
     gameTime: "",
+    reason: "",
     refresh: false,
   };
-
-  componentDidMount() {
-    // this.onReset();
-
-    this.fetchApi();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.refresh != this.state.refresh) {
-      this.fetchApi();
-    }
-  }
-
-  // onReset = () => {
-  //   Form.resetFields();
-  // };
 
   successMsg = (s_message) => {
     Modal.success({
@@ -87,61 +75,27 @@ class AddGoodDay extends Component {
     });
   };
 
-  fetchApi = () => {
-    let ben = this.props.mySchool.id;
-
-    function getTeam() {
-      const forTeam = {
-        id: ben,
-      };
-      return axios.post(
-        Authtoken.getBaseUrl() + "/api/team/get/bySchool",
-        forTeam,
-        {
-          headers: {
-            Authorization:
-              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-          },
-        }
-      );
-    }
-
-    axios.all([getTeam()]).then(
-      axios.spread((getHomeTeamResponse) => {
-        // Both requests are now complete
-
-        this.setState({ homeTeamObj: getHomeTeamResponse.data.result });
-      })
-    );
-  };
-
-  onTitleChange = (e) => {
-    e.persist();
-    this.setState({ title: e.target.value });
-    console.log(e);
-  };
-
-  onDescriptionChange = (e) => {
-    e.persist();
-    this.setState({ description: e.target.value });
-    console.log(e);
-  };
   onReset = () => this.formRef.current.resetFields();
 
-  handleHomeTeam = (value) => {
-    const passedValue = JSON.parse(value);
-    console.log(passedValue);
-    this.setState({ homeTeam: passedValue.tmName });
-    this.setState({ homeTeamId: passedValue.id });
+  onReasonChange = (e) => {
+    e.persist();
+    this.setState({ reason: e.target.value });
   };
 
   dateFormat = "YYYY-MM-DD";
 
-  onChangeGameDate = (date, dateString) => {
+  onChangeStartDate = (date, dateString) => {
     // console.log(date);
     console.log(dateString);
     console.log(date?.format("YYYY-MM-DD"));
-    this.setState({ gameDate: date?.format("YYYY-MM-DD") });
+    this.setState({ startDate: date?.format("YYYY-MM-DD") });
+  };
+
+  onChangeEndDate = (date, dateString) => {
+    // console.log(date);
+    console.log(dateString);
+    console.log(date?.format("YYYY-MM-DD"));
+    this.setState({ endtDate: date?.format("YYYY-MM-DD") });
   };
 
   render() {
@@ -154,18 +108,15 @@ class AddGoodDay extends Component {
     };
 
     const onFinish = () => {
-      //   e.preventDefault();
-      const tm = {
-        id: this.state.homeTeamId,
-      };
       console.log("Success:");
-      const dayObj = {
-        dte: moment(this.state.gameDate).format("YYYY-MM-DD HH:mm"),
-        tm,
+      const eventObj = {
+        dte: moment(this.state.startDate).format("YYYY-MM-DD HH:mm"),
+        endDate: moment(this.state.endDate).format("YYYY-MM-DD HH:mm"),
+        reason: this.state.reason,
       };
-      console.log(dayObj);
+      console.log(eventObj);
       axios
-        .post(Authtoken.getBaseUrl() + "/api/team/day/good/save", dayObj, {
+        .post(Authtoken.getBaseUrl() + "/api/admin/day/ban", eventObj, {
           headers: {
             Authorization:
               "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -175,7 +126,7 @@ class AddGoodDay extends Component {
           this.onReset();
           if (res.data.httpStatusCode == 202) {
             console.log(res);
-            this.successMsg("Good Days has been added to the system.");
+            this.successMsg("Event Days has been added to the system.");
 
             this.setState((prevState) => ({
               refresh: !prevState.refresh,
@@ -200,7 +151,7 @@ class AddGoodDay extends Component {
         }}
       >
         <Title>
-          Add Good Days&nbsp;
+          Add Event Days&nbsp;
           <FormOutlined />
         </Title>
         <div
@@ -218,27 +169,9 @@ class AddGoodDay extends Component {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
           >
-            <Form.Item label="Select Team" name="homeTeam">
-              <Select
-                size="large"
-                defaultValue="Select Options"
-                style={{ width: 280 }}
-                onChange={this.handleHomeTeam}
-              >
-                {this.state.homeTeamObj.map((homeTeamDetails) => (
-                  <Select.Option
-                    key={homeTeamDetails.id}
-                    // value={index}
-                    value={JSON.stringify(homeTeamDetails)}
-                  >
-                    {homeTeamDetails.tmName}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
             <Form.Item
-              name="gameDate"
-              label="Choose Date"
+              name="startDate"
+              label="Start Date"
               rules={[
                 {
                   required: true,
@@ -248,12 +181,44 @@ class AddGoodDay extends Component {
               <DatePicker
                 style={{ width: 280 }}
                 value={this.state.gameDate}
-                onChange={this.onChangeGameDate}
+                onChange={this.onChangeStartDate}
                 // defaultValue={moment("2020-03-08", this.dateFormat)}
                 format={this.dateFormat}
               />
             </Form.Item>
-
+            <Form.Item
+              name="endDate"
+              label="End Date"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <DatePicker
+                style={{ width: 280 }}
+                value={this.state.gameDate}
+                onChange={this.onChangeEndDate}
+                // defaultValue={moment("2020-03-08", this.dateFormat)}
+                format={this.dateFormat}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Reason"
+              name="reason"
+              rules={[
+                {
+                  required: true,
+                  message: "Enter the reason for blocking day",
+                },
+              ]}
+            >
+              <TextArea
+                onChange={this.onReasonChange}
+                value={this.state.reason}
+                rows={3}
+              />
+            </Form.Item>
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit">
                 Submit
@@ -261,7 +226,6 @@ class AddGoodDay extends Component {
             </Form.Item>
           </Form>
         </div>
-        <ViewGoodGame />
       </Content>
     );
   }
@@ -277,4 +241,4 @@ const mapStatetoProps = (state) => {
   };
 };
 
-export default connect(mapStatetoProps)(AddGoodDay);
+export default connect(mapStatetoProps)(AddEventDay);

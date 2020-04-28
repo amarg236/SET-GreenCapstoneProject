@@ -1,4 +1,6 @@
 import axios from "axios";
+import moment from "moment";
+
 import Authtoken from "../../Utility/AuthToken";
 import React, { Component } from "react";
 import {
@@ -15,9 +17,19 @@ import {
 const { Content } = Layout;
 const { TextArea } = Input;
 
-class ViewNOtice extends Component {
+function processData(supply) {
+  console.log("processData>>");
+  console.log(supply);
+  return supply.map((row) => ({
+    key: row.id,
+    team: row.tm.tmName,
+    date: moment(row.dte).format("YYYY-MM-DD"),
+  }));
+}
+
+class ViewBadDays extends Component {
   state = {
-    notice: [],
+    goodDay: [],
     refresh: false,
   };
 
@@ -54,7 +66,7 @@ class ViewNOtice extends Component {
   fetchApi = () => {
     const noticeObj = {};
     axios
-      .post(Authtoken.getBaseUrl() + "/api/notice/get", noticeObj, {
+      .post(Authtoken.getBaseUrl() + "/api/team/day/bad/get/all", noticeObj, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -63,18 +75,19 @@ class ViewNOtice extends Component {
       .then((res) => {
         console.log(res);
         this.setState({
-          notice: res.data.result,
+          goodDay: processData(res.data.result),
         });
       });
   };
 
-  deletenotice = (key) => {
-    console.log(key);
+  deletenotice = (record) => {
+    console.log(record.key);
     const deleteObj = {
-      id: key,
+      id: record.key,
     };
+    console.log(deleteObj);
     axios
-      .post(Authtoken.getBaseUrl() + "/api/notice/delete", deleteObj, {
+      .post(Authtoken.getBaseUrl() + "/api/team/day/bad/remove", deleteObj, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -83,12 +96,12 @@ class ViewNOtice extends Component {
       .then((res) => {
         if (res.status == 200) {
           console.log(res);
-          this.successMsg("The notice has been  has been deleted . ");
+          this.successMsg("The day has been removed from good day list . ");
           this.setState((prevState) => ({
             refresh: !prevState.refresh,
           }));
         } else {
-          this.errorMsg("Sorry notice could not be deleted.");
+          this.errorMsg("Sorry day  could not be deleted.");
         }
       });
   };
@@ -96,15 +109,15 @@ class ViewNOtice extends Component {
     // const { notice } = this.state.notice;
     const columns = [
       {
-        title: "Title",
-        dataIndex: "title",
-        key: "title",
+        title: "Date",
+        dataIndex: "date",
+        key: "date",
         render: (text) => <a>{text}</a>,
       },
       {
-        title: "Description",
-        dataIndex: "description",
-        key: "description",
+        title: "Team",
+        dataIndex: "team",
+        key: "team",
       },
 
       {
@@ -112,7 +125,7 @@ class ViewNOtice extends Component {
         key: "action",
         render: (text, record) => (
           <span>
-            <Button onClick={() => this.deletenotice(record.id)}>Delete</Button>
+            <Button onClick={() => this.deletenotice(record)}>Delete</Button>
           </span>
         ),
       },
@@ -121,8 +134,8 @@ class ViewNOtice extends Component {
       <span>
         <PageHeader
           style={{ border: "1px solid rgb(235, 237, 240)" }}
-          title="ANNOUNCEMENT SECTION"
-          subTitle="Following are the list of announcemnt that has been published."
+          title="View Bad Days"
+          subTitle="Following days are block for scheduling games for opponent team."
         />
         <div
           style={{
@@ -132,11 +145,11 @@ class ViewNOtice extends Component {
             marginBottom: "10px",
           }}
         >
-          <Table columns={columns} dataSource={this.state.notice} />
+          <Table columns={columns} dataSource={this.state.goodDay} />
         </div>
       </span>
     );
   }
 }
 
-export default ViewNOtice;
+export default ViewBadDays;

@@ -1,5 +1,6 @@
 import "../../App.css";
 import React, { Component } from "react";
+
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
@@ -21,7 +22,11 @@ import {
   Modal,
 } from "antd";
 
-import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  EditOutlined,
+  FilterOutlined,
+} from "@ant-design/icons";
 
 const { Content } = Layout;
 const { TabPane } = Tabs;
@@ -55,6 +60,7 @@ class TestPending extends Component {
       isRejected: null,
       bulkAccept: false,
       refresh: false,
+      needEdit: false,
     };
   }
 
@@ -203,6 +209,11 @@ class TestPending extends Component {
     this.setState({ searchText: "" });
   };
 
+  editGame = (record) => {
+    this.setState({ needEdit: true });
+    console.log(record);
+  };
+
   bulkAccept = (keys) => {
     console.log("i am prining array of keys??");
     // console.log(keys);
@@ -344,6 +355,7 @@ class TestPending extends Component {
         title: "Time",
         dataIndex: "time",
         key: "time",
+        // sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
       },
       {
         title: "Action",
@@ -358,12 +370,15 @@ class TestPending extends Component {
                 <Button
                   onClick={() => this.approveGame(record)}
                   type="link"
-                  style={{ marginRight: 16 }}
+                  style={{ paddingLeft: "5px", paddingRight: "5px" }}
                 >
                   Approve
                 </Button>
                 <Button onClick={() => this.denyGame(record)} type="link">
                   Deny
+                </Button>
+                <Button onClick={() => this.editGame(record)} type="link">
+                  Edit
                 </Button>
               </span>
             ) : null}
@@ -409,58 +424,85 @@ class TestPending extends Component {
     };
 
     return (
-      <Content
-        className="site-layout-background"
-        style={{
-          padding: 24,
-          margin: 0,
-          minHeight: 580,
-        }}
-      >
-        <div style={{ marginBottom: "16px" }}>
-          <Button
-            style={{ marginRight: "8px" }}
-            type="primary"
-            onClick={this.setAgeSort}
-          >
-            Filter By Month
-          </Button>
-          <DatePicker picker="month" bordered={true} />
-          {this.state.bulkAccept ? (
-            <span>
-              <Button
-                style={{
-                  marginRight: "8px",
-                  marginLeft: "8px",
-                  className: `"${this.state.bulkAccept}"`,
-                }}
-                type="primary"
-                onClick={this.bulkAccept}
-              >
-                Accept in Bulk
-              </Button>
-              <Button
-                style={{
-                  marginRight: "8px",
-                  marginLeft: "8px",
-                  className: `"${this.state.bulkReject}"`,
-                }}
-                type="danger"
-                onClick={this.bulkReject}
-              >
-                Deny in Bulk
-              </Button>
-            </span>
+      <span>
+        <Content
+          className="site-layout-background"
+          style={{
+            padding: 24,
+            margin: 0,
+            minHeight: 580,
+          }}
+        >
+          <div style={{ marginBottom: "16px" }}>
+            <Button
+              style={{ marginRight: "8px" }}
+              type="primary"
+              onClick={this.setAgeSort}
+            >
+              Filter By Month
+            </Button>
+            <DatePicker picker="month" bordered={true} />
+            {this.state.bulkAccept ? (
+              <span>
+                <Button
+                  style={{
+                    marginRight: "8px",
+                    marginLeft: "8px",
+                    className: `"${this.state.bulkAccept}"`,
+                  }}
+                  type="primary"
+                  onClick={this.bulkAccept}
+                >
+                  Accept in Bulk
+                </Button>
+                <Button
+                  style={{
+                    marginRight: "8px",
+                    marginLeft: "8px",
+                    className: `"${this.state.bulkReject}"`,
+                  }}
+                  type="danger"
+                  onClick={this.bulkReject}
+                >
+                  Deny in Bulk
+                </Button>
+              </span>
+            ) : null}
+          </div>
+          <Table
+            rowSelection={rowSelection}
+            columns={columns}
+            dataSource={tableData}
+            size="small"
+          />
+          {this.state.needEdit ? (
+            <div
+              style={{
+                backgroundColor: "#ffff",
+                padding: 24,
+                marginTop: "10px",
+              }}
+            >
+              <Descriptions title="Edit Game">
+                <Descriptions.Item label="Home Team">
+                  Zhou Maomao
+                </Descriptions.Item>
+                <Descriptions.Item label="Away Team">
+                  1810000000
+                </Descriptions.Item>
+                <Descriptions.Item label="Location">
+                  Hangzhou, Zhejiang
+                </Descriptions.Item>
+                <Descriptions.Item label="Remark">empty</Descriptions.Item>
+                <Descriptions.Item label="Address">
+                  No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+                </Descriptions.Item>
+              </Descriptions>
+            </div>
           ) : null}
-        </div>
-
-        <Table
-          rowSelection={rowSelection}
-          columns={columns}
-          dataSource={tableData}
-          size="small"
-        />
-      </Content>
+          ,
+        </Content>
+      </span>
     );
   }
 }

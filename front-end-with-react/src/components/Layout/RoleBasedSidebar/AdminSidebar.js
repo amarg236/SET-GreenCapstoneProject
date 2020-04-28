@@ -23,6 +23,7 @@ import {
   UserAddOutlined,
   InsertRowBelowOutlined,
   SolutionOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -162,6 +163,15 @@ class AdminSidebar extends Component {
             <span>Add Notice</span>
           </Menu.Item>
         </SubMenu>
+
+        <Menu.Item onClick={handleClick} key="addEventDay">
+          <span>
+            <a href="/addEventDay">
+              <CheckOutlined />
+            </a>
+          </span>
+          <span>Block Days</span>
+        </Menu.Item>
 
         <Menu.Item onClick={handleClick} key="exportCSV">
           <span>
