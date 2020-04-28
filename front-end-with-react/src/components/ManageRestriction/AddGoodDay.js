@@ -14,6 +14,7 @@ import {
   Layout,
   Modal,
 } from "antd";
+import { FormInstance } from "antd/lib/form";
 
 import { FormOutlined } from "@ant-design/icons";
 // import { PlusOutlined } from "@ant-design/icons";
@@ -21,6 +22,7 @@ const { Content } = Layout;
 const { TextArea } = Input;
 const { Title } = Typography;
 class AddGoodDay extends Component {
+  formRef = React.createRef();
   state = {
     homeTeam: "",
     homeTeamId: "",
@@ -45,17 +47,24 @@ class AddGoodDay extends Component {
     againstTeamDistrict: "",
     againstTeamDistrictId: "",
     gameTime: "",
+    refresh: false,
   };
 
   componentDidMount() {
+    // this.onReset();
+
     this.fetchApi();
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevState.refresh != this.state.refresh) {
-  //     this.fetchApi();
-  //   }
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.refresh != this.state.refresh) {
+      this.fetchApi();
+    }
+  }
+
+  // onReset = () => {
+  //   Form.resetFields();
+  // };
 
   successMsg = (s_message) => {
     Modal.success({
@@ -116,6 +125,7 @@ class AddGoodDay extends Component {
     this.setState({ description: e.target.value });
     console.log(e);
   };
+  onReset = () => this.formRef.current.resetFields();
 
   success = () => {
     Modal.success({
@@ -129,12 +139,14 @@ class AddGoodDay extends Component {
     this.setState({ homeTeamId: passedValue.id });
   };
 
-  onChangeGameDate(date, dateString) {
+  dateFormat = "YYYY-MM-DD";
+
+  onChangeGameDate = (date, dateString) => {
     // console.log(date);
     console.log(dateString);
-    // this.setState({ gameDate: dateString });
+    console.log(date?.format("YYYY-MM-DD"));
     this.setState({ gameDate: date?.format("YYYY-MM-DD") });
-  }
+  };
 
   render() {
     const layout = {
@@ -147,23 +159,34 @@ class AddGoodDay extends Component {
 
     const onFinish = () => {
       //   e.preventDefault();
-      console.log("Success:");
-      const noticeObj = {
-        title: this.state.title,
-        description: this.state.description,
+      const tm = {
+        id: this.state.homeTeamId,
       };
-      console.log(noticeObj);
+      console.log("Success:");
+      const dayObj = {
+        dte: moment(this.state.gameDate).format("YYYY-MM-DD HH:mm"),
+        tm,
+      };
+      console.log(dayObj);
       axios
-        .post(Authtoken.getBaseUrl() + "/api/notice/add", noticeObj, {
+        .post(Authtoken.getBaseUrl() + "/api/team/day/good/save", dayObj, {
           headers: {
             Authorization:
               "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
           },
         })
         .then((res) => {
-          this.success();
-          // window.alert("The notice has been added successfully!!");
-          window.location.reload();
+          this.onReset();
+          if (res.data.httpStatusCode == 202) {
+            console.log(res);
+            this.successMsg("Good Days has been added the system.");
+
+            this.setState((prevState) => ({
+              refresh: !prevState.refresh,
+            }));
+          } else {
+            this.errorMsg("Sorry date could not be saved tot the system.");
+          }
         });
     };
 
@@ -193,6 +216,7 @@ class AddGoodDay extends Component {
         >
           <Form
             {...layout}
+            ref={this.formRef}
             name="notice-form"
             initialValues={{ remember: true }}
             onFinish={onFinish}
