@@ -35,8 +35,13 @@ function processData(rawEvents) {
     PartialApproved: event.awayAccepted,
     FullyApproved: event.approved,
     AwayTeam: event.awayteam,
+    HomeTeam: event.hometeam,
   }));
 }
+
+// const filterItems = (arr, query) => {
+//   return arr.filter(el => el.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1)
+// }
 
 class Cal extends React.Component {
   constructor(props) {
@@ -71,6 +76,10 @@ class Cal extends React.Component {
       });
   }
 
+  filterItems = (arr, query) => {
+     console.log(arr.filter(el => el.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1));
+  }
+
   filter(props) {
     const emptyBody = {};
     axios
@@ -81,10 +90,12 @@ class Cal extends React.Component {
         },
       })
       .then((res) => {
-        if (props.AwayTeam == "Airline High School-VG") {
-          this.setState({ jData: extend([], processData(res.data), null, true) });
-        }
+        this.setState({ jData: extend([], processData(res.data), null, true) });
       });
+    console.log("test");
+    console.log(props);
+    console.log(this.state.jData);
+    this.filterItems(this.state.jData, 'Airline');
   }
 
   eventTemplate(props) {
@@ -126,10 +137,10 @@ class Cal extends React.Component {
   }
 
   handleChange = (value) => {
-    console.log(value)
+    this.filter(value);
     this.setState({
       value,
-      data: [], 
+      data: [],
       fetching: false,
     });
   };
