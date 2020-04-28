@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import Authtoken from "../../Utility/AuthToken";
 import React, { Component } from "react";
+import ViewGoodGame from "./ViewGoodDay";
 import {
   Form,
   Typography,
@@ -265,6 +266,7 @@ class AddGoodDay extends Component {
             </Form.Item>
           </Form>
         </div>
+        <ViewGoodGame />
       </Content>
     );
   }
