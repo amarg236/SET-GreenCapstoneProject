@@ -292,7 +292,7 @@ class UnfilteredGames extends Component {
     //   return compareDate;
     // });
 
-    const getFilteredData = (rejected) => columns.filter({});
+    // const getFilteredData = (rejected) => columns.filter({});
     console.log(tableData);
     const columns = [
       {
@@ -328,6 +328,7 @@ class UnfilteredGames extends Component {
         title: "Time",
         dataIndex: "time",
         key: "time",
+        sorter: (a, b) => moment(a.time).unix() - moment(b.time).unix(),
       },
     ];
 
