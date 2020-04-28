@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import Authtoken from "../../Utility/AuthToken";
 import React, { Component } from "react";
-import ViewGoodGame from "./ViewGoodDay";
+import ViewBadDay from "./ViewBadDays";
 import {
   Form,
   Typography,
@@ -22,7 +22,7 @@ import { FormOutlined } from "@ant-design/icons";
 const { Content } = Layout;
 const { TextArea } = Input;
 const { Title } = Typography;
-class AddGoodDay extends Component {
+class AddBadDay extends Component {
   formRef = React.createRef();
   state = {
     homeTeam: "",
@@ -128,6 +128,11 @@ class AddGoodDay extends Component {
   };
   onReset = () => this.formRef.current.resetFields();
 
+  success = () => {
+    Modal.success({
+      content: "Notice has been saved",
+    });
+  };
   handleHomeTeam = (value) => {
     const passedValue = JSON.parse(value);
     console.log(passedValue);
@@ -165,7 +170,7 @@ class AddGoodDay extends Component {
       };
       console.log(dayObj);
       axios
-        .post(Authtoken.getBaseUrl() + "/api/team/day/good/save", dayObj, {
+        .post(Authtoken.getBaseUrl() + "/api/team/day/bad/save", dayObj, {
           headers: {
             Authorization:
               "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -175,7 +180,7 @@ class AddGoodDay extends Component {
           this.onReset();
           if (res.data.httpStatusCode == 202) {
             console.log(res);
-            this.successMsg("Good Days has been added to the system.");
+            this.successMsg("Bad Days has been added to the system.");
 
             this.setState((prevState) => ({
               refresh: !prevState.refresh,
@@ -200,7 +205,7 @@ class AddGoodDay extends Component {
         }}
       >
         <Title>
-          Add Good Days&nbsp;
+          Add Bad Days&nbsp;
           <FormOutlined />
         </Title>
         <div
@@ -261,7 +266,7 @@ class AddGoodDay extends Component {
             </Form.Item>
           </Form>
         </div>
-        <ViewGoodGame />
+        <ViewBadDay />
       </Content>
     );
   }
@@ -277,4 +282,4 @@ const mapStatetoProps = (state) => {
   };
 };
 
-export default connect(mapStatetoProps)(AddGoodDay);
+export default connect(mapStatetoProps)(AddBadDay);

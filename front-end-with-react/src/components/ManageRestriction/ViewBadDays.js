@@ -1,5 +1,6 @@
 import axios from "axios";
 import moment from "moment";
+
 import Authtoken from "../../Utility/AuthToken";
 import React, { Component } from "react";
 import {
@@ -26,7 +27,7 @@ function processData(supply) {
   }));
 }
 
-class ViewGoodDay extends Component {
+class ViewBadDays extends Component {
   state = {
     goodDay: [],
     refresh: false,
@@ -65,7 +66,7 @@ class ViewGoodDay extends Component {
   fetchApi = () => {
     const noticeObj = {};
     axios
-      .post(Authtoken.getBaseUrl() + "/api/team/day/good/get/all", noticeObj, {
+      .post(Authtoken.getBaseUrl() + "/api/team/day/bad/get/all", noticeObj, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -86,7 +87,7 @@ class ViewGoodDay extends Component {
     };
     console.log(deleteObj);
     axios
-      .post(Authtoken.getBaseUrl() + "/api/team/day/good/remove", deleteObj, {
+      .post(Authtoken.getBaseUrl() + "/api/team/day/bad/remove", deleteObj, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -133,8 +134,8 @@ class ViewGoodDay extends Component {
       <span>
         <PageHeader
           style={{ border: "1px solid rgb(235, 237, 240)" }}
-          title="View Good Days"
-          subTitle="Respective team has no problem scheduling game on following days."
+          title="View Bad Days"
+          subTitle="Following days are block for scheduling games for opponent team."
         />
         <div
           style={{
@@ -151,4 +152,4 @@ class ViewGoodDay extends Component {
   }
 }
 
-export default ViewGoodDay;
+export default ViewBadDays;
