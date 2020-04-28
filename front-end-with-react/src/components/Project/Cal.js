@@ -6,6 +6,7 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import { isMobile } from "react-device-detect";
 import { Schedule } from "@syncfusion/ej2-react-schedule";
+import debounce from 'lodash/debounce';
 
 import {
   Inject,
@@ -18,8 +19,9 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 
 import { extend } from "@syncfusion/ej2-base";
-import { Layout } from "antd";
+import { Layout, Spin, Select } from "antd";
 const { Content } = Layout;
+const { Option } = Select;
 
 function processData(rawEvents) {
   return rawEvents.result.map((event) => ({
@@ -32,8 +34,14 @@ function processData(rawEvents) {
     Location: event.location,
     PartialApproved: event.awayAccepted,
     FullyApproved: event.approved,
+    AwayTeam: event.awayteam,
+    HomeTeam: event.hometeam,
   }));
 }
+
+// const filterItems = (arr, query) => {
+//   return arr.filter(el => el.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1)
+// }
 
 class Cal extends React.Component {
   constructor(props) {
@@ -41,7 +49,11 @@ class Cal extends React.Component {
     this.state = {
       jData: [],
       currentView: "Month",
+      value: [],
+      data: [],
+      fetching: false,
     };
+    this.fetchUser = debounce(this.fetchUser, 800);
   }
 
   componentDidMount() {
@@ -60,53 +72,39 @@ class Cal extends React.Component {
         },
       })
       .then((res) => {
-        console.log("this is response");
-        console.log(res);
         this.setState({ jData: extend([], processData(res.data), null, true) });
-        // for formatting csv
-        // this.setState({ fData: extend([], formatData(res.data), null, true) });
-        // console.log("jDATA", this.state.jData);
       });
   }
 
-  onActionBegin(args) {
-    if (args.requestType === "toolbarItemRendering") {
-      let exportItem = {
-        align: "Right",
-        showTextOn: "Both",
-        prefixIcon: "e-icon-schedule-excel-export",
-        text: "Excel Export",
-        cssClass: "e-excel-export",
-        click: this.onExportClick.bind(this),
-      };
-      args.items.push(exportItem);
-    }
+  filterItems = (arr, query) => {
+     console.log(arr.filter(el => el.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1));
   }
 
-  onExportClick() {
-    let exportValues = {
-      fields: [
-        "Date",
-        "Time",
-        "Level",
-        "Home-Team",
-        "Home-Level",
-        "Away-Team",
-        "Away-Level",
-      ],
-      exportType: "csv",
-    };
-    this.scheduleObj.exportToExcel(exportValues);
+  filter(props) {
+    const emptyBody = {};
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyBody, {
+        headers: {
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        this.setState({ jData: extend([], processData(res.data), null, true) });
+      });
+    console.log("test");
+    console.log(props);
+    console.log(this.state.jData);
+    this.filterItems(this.state.jData, 'Airline');
   }
 
   eventTemplate(props) {
-    console.log(props);
     if (props.PartialApproved && props.FullyApproved) {
       return <div className="template-wrap"> {props.Subject} </div>;
     } else if (props.PartialApproved || props.FullyApproved);
     {
       return (
-        <div style={{ backgroundColor: "orange" }} className="template-wrap">
+        <div style={{ backgroundColor: "orange", maxHeight: '100px' }} className="template-wrap">
           {" "}
           {props.Subject}{" "}
         </div>
@@ -114,10 +112,44 @@ class Cal extends React.Component {
     }
   }
 
+  fetchUser = value => {
+    const schoolBody = {};
+    this.setState({ data: [], fetching: true });
+    axios
+      .post(
+        Authtoken.getBaseUrl() + "/api/location/school/get/all",
+        schoolBody,
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
+        }
+      )
+      .then((res) => {
+        const data = res.data.result.map(user => ({
+          text: `${user.name}`,
+          value: user.name,
+        }));
+        this.setState({ data, fetching: false });
+      });
+
+  }
+
+  handleChange = (value) => {
+    this.filter(value);
+    this.setState({
+      value,
+      data: [],
+      fetching: false,
+    });
+  };
   // Links that could be helpful
   // https://github.com/syncfusion/ej2-react-samples/blob/master/src/schedule/local-data.jsx
 
   render() {
+    const { fetching, data, value } = this.state;
+
     return (
       <Content
         style={{
@@ -127,16 +159,30 @@ class Cal extends React.Component {
         }}
         className="site-layout-background"
       >
+        <Select
+          mode="multiple"
+          labelInValue
+          value={value}
+          placeholder="Filter"
+          allowClear={true}
+          notFoundContent={fetching ? <Spin size="small" /> : null}
+          filterOption={true}
+          style={{ width: "250px", minWidth: "auto" }}
+          onChange={this.handleChange}
+          onSearch={this.fetchUser}
+        >
+          {data.map(d => (
+            <Option key={d.value}>{d.text}</Option>
+          ))}
+        </Select>
+
         <ScheduleComponent
-          cssClass="excel-export"
           currentView={this.state.currentView}
           eventSettings={{
             dataSource: this.state.jData,
             template: this.eventTemplate.bind(this),
           }}
           id="schedule"
-          ref={(t) => (this.scheduleObj = t)}
-          actionBegin={this.onActionBegin.bind(this)}
           readonly={true}
           style={{
             maxHeight: "55%",
