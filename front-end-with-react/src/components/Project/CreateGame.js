@@ -17,6 +17,7 @@ import {
   Row,
   Col,
   Alert,
+  Modal,
 } from "antd";
 const { Content } = Layout;
 const { RangePicker } = TimePicker;
@@ -159,6 +160,27 @@ class CreateGame extends Component {
     }
   }
 
+  successMsg = () => {
+    Modal.success({
+      content: (
+        <div>
+          <p>Great ! Game has been saved.</p>
+        </div>
+      ),
+    });
+  };
+
+  errorMsg = (error) => {
+    Modal.error({
+      content: (
+        <div>
+          <p>Sorry ! Game couldn't be saved.</p>
+          <p>Reason: {error}</p>
+        </div>
+      ),
+    });
+  };
+
   gameSubmit(e) {
     e.preventDefault();
     const startDate = moment(this.state.gameDate)
@@ -202,7 +224,16 @@ class CreateGame extends Component {
         },
       })
       .then((res) => {
-        window.alert("The Game has been created successfully!!");
+        // console.log(res);
+        if (res.data.httpStatusCode == 409) {
+          this.errorMsg(res.data.message);
+          console.log("Time Conflict");
+          console.log(res.data.message);
+        } else if (res.data.httpStatusCode == 202) {
+          console.log("Game Saved");
+          this.successMsg();
+        }
+        // window.alert("The Game has been created successfully!!");
         // window.location.reload();
       });
   }
@@ -261,7 +292,8 @@ class CreateGame extends Component {
         districtName: dummy.districtName,
       },
     });
-    console.log("I have been executed");
+
+    // console.log("I have been executed");
     //fetching school depending upon the value of district
     const schoolBody = {
       districtName: dummy.districtName,
@@ -279,18 +311,18 @@ class CreateGame extends Component {
         }
       )
       .then((res) => {
-        console.log("i am school by district");
-        console.log(res.data.result);
+        // console.log("i am school by district");
+        // console.log(res.data.result);
         this.setState({ awaySchoolList: res.data.result });
       });
     //fetching away school team depending upon the value of school
   };
 
   render() {
-    console.log("school here");
-    console.log(this.state.awaySchoolList);
-    console.log("school here");
-    console.log("typee", this.props.ifcollapsed);
+    // console.log("school here");
+    // console.log(this.state.awaySchoolList);
+    // console.log("school here");
+    // console.log("typee", this.props.ifcollapsed);
     const layout = {
       labelCol: {
         span: 10,
@@ -309,8 +341,9 @@ class CreateGame extends Component {
         range: "Must be between ${min} and ${max}",
       },
     };
-    console.log("thi sis new schoo list");
-    console.log(this.state.awaySchoolList);
+    // console.log("thi sis new schoo list");
+    // console.log(this.state.awaySchoolList);
+
     return (
       <Content
         className="mediaCG"

@@ -20,6 +20,7 @@ import {
   Tag,
   Popconfirm,
   Form,
+  Modal,
 } from "antd";
 
 import {
@@ -172,11 +173,6 @@ class RequestedGame extends Component {
   };
 
   handleDelete = (key) => {
-    // const dataSource = [...this.state.dataSource];
-    // this.setState({
-    //   dataSource: dataSource.filter((item) => item.key !== key),
-    // });
-
     console.log(key);
     const aemptyObj = {
       data: key,
@@ -189,11 +185,33 @@ class RequestedGame extends Component {
         },
       })
       .then((res) => {
-        console.log(res);
-        window.alert("The game has been deleted!");
+        if (res.data.httpStatusCode == 202) {
+          this.successMsg("Great! Game has been deleted.");
+        } else {
+          this.errorMsg("Sorry! Game could not be deleted.");
+        }
       });
   };
 
+  successMsg = (s_message) => {
+    Modal.success({
+      content: (
+        <div>
+          <p>{s_message}</p>
+        </div>
+      ),
+    });
+  };
+
+  errorMsg = (e_message) => {
+    Modal.error({
+      content: (
+        <div>
+          <p>{e_message}</p>
+        </div>
+      ),
+    });
+  };
   render() {
     const { game } = this.state;
 

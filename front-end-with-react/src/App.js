@@ -40,8 +40,10 @@ import ExportCSV from "./components/Project/ExportToCSV";
 import TestPending from "./components/Project/TestPending";
 import AdminViewGame from "./components/Project/AdminShowGames";
 import AllGames from "./components/Project/AllGames";
+import AllGamesAdmin from "./components/Project/AllGamesAdmin";
 import AddNotice from "./components/ManageNotice/AddNotice";
 import ViewNotice from "./components/ManageNotice/ViewNotice";
+import AddGoodDay from "./components/ManageRestriction/AddGoodDay";
 class App extends React.Component {
   render() {
     return (
@@ -129,8 +131,14 @@ class App extends React.Component {
               <ProtectedRoute exact path="/viewNotice" component={ViewNotice} />
               <ProtectedRoute exact path="/addNotice" component={AddNotice} />
               <ProtectedRoute exact path="/viewAllGames" component={AllGames} />
+              <ProtectedRoute
+                exact
+                path="/adminGameView"
+                component={AllGamesAdmin}
+              />
               <ProtectedRoute exact path="/exportCSV" component={ExportCSV} />
               <ProtectedRoute exact path="/calander" component={Cal} />
+              <ProtectedRoute exact path="/AddGoodDay" component={AddGoodDay} />
               <Route exact path="/login" component={login} />
               <Route path="*" component={Error404} />
             </Switch>
