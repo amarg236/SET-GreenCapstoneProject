@@ -8,10 +8,11 @@ import moment from "moment";
 import "../../stylesheets/exportCSV.css";
 
 //Filter imports
-import { Select, Form } from "antd";
+import { Select, Form, DatePicker } from "antd";
 import { Row } from "antd";
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 const { Content } = Layout;
 
 // Export Formatted for all data on calender.
@@ -32,48 +33,190 @@ class ExportToCSV extends Component {
     super(props);
     this.state = {
       jData: [],
-      team: "",
-      exportTeam: "",
+      anoState: [],
+      exportTeam: [],
       everyTeams: [],
-      month: null,
-      day: null,
+
+      preDate: "",
+      postDate: "",
+
+      preDateY: "",
+      postDateY: "",
+
+      preDateM: "",
+      postDateM: "",
+
+      preDateD: "",
+      postDateD: "",
     };
     this.changeFilterOne = this.changeFilterOne.bind(this);
+    this.calenderChange = this.calenderChange.bind(this);
+    this.sortByTeam = this.sortByTeam.bind(this);
   }
 
   changeFilterOne(event) {
-    this.setState({
-      team: event,
-    });
-
     const chosenTeam = event;
     const tmp = this.state.jData;
+
     const newTmp = [];
 
     console.log("ss", chosenTeam);
     console.log("tmp", tmp[0]);
-    console.log("send", this.state.jData);
+    console.log("date", this.state.preDate);
 
     for (let i = 0; i < tmp.length; i++) {
-      // console.log(
-      //   "what",
-      //   tmp[i].HomeTeam === chosenTeam || tmp[i].A === chosenTeam
-      // );
-
       if (tmp[i].HomeTeam === chosenTeam || tmp[i].AwayTeam === chosenTeam) {
         const send = tmp[i];
         newTmp.push(send);
-        console.log("another", tmp[i]);
-        console.log("sending", send);
-        console.log("newTmp", newTmp);
-        // return this.setState({ exportTeam: allSchedule(send) });
       } else {
-        console.log("Not", tmp[i]);
+        console.log("changeFilterOne - else");
       }
     }
+
+    this.setState({
+      anoState: newTmp,
+    });
+
     console.log("I gotta see", newTmp);
-    this.setState({ exportTeam: newTmp });
   }
+
+  // for preDate
+  calenderChange(date) {
+    console.log("this is it ", date);
+    // if (date != null) {
+    if (date[1] != null && date[0] != null) {
+      const postD = date[1]?.format("MM/DD/YYYY");
+
+      const preD = date[0]?.format("MM/DD/YYYY");
+
+      //------------
+      console.log(":HERE:");
+
+      const startDate = moment(preD);
+      const endDate = moment(postD);
+      const currentDate = moment("05/03/2020");
+
+      console.log("start", startDate, "end", endDate, "current", currentDate);
+      if (startDate <= currentDate && currentDate <= endDate) {
+        console.log("is it", currentDate);
+        return currentDate;
+      }
+
+      //-------------
+
+      this.setState({
+        preDate: preD,
+
+        postDate: postD,
+      });
+    }
+  }
+
+  sortByTeam(event) {
+    console.log("im here");
+    const teamFinal = [];
+
+    const totalData = this.state.anoState;
+
+    const startDate = this.state.preDate;
+    const endDate = this.state.postDate;
+
+    console.log("check", startDate, "");
+
+    const start = startDate;
+    const end = endDate;
+
+    if (totalData != null) {
+      for (let i = 0; i < totalData.length; i++) {
+        console.log("TTTTTTTTTTESSSTT", totalData[i]);
+        const current = moment(totalData[i].GameDate);
+
+        console.log("s", start, "e", end, "c", current);
+        console.log(start <= current && current <= end);
+
+        if (start <= current && current <= end) {
+          console.log("answer", current);
+        }
+      }
+
+      // for (let i = 0; i < totalData.length; i++) {
+      //   const valueY = parseInt(
+      //     moment(totalData[i].GameDate, "YYYY-MM-DD").format("YYYY")
+      //   );
+
+      //   const valueM = parseInt(
+      //     moment(totalData[i].GameDate, "YYYY-MM-DD").format("MM")
+      //   );
+      //   const valueD = parseInt(
+      //     moment(totalData[i].GameDate, "YYYY-MM-DD").format("DD")
+      //   );
+
+      //   console.log("ohhhhhhhhh", valueM);
+
+      //   console.log("testing", prD <= valueD && valueD <= poD);
+
+      //   if (prY <= valueY && valueY <= poY) {
+      //     console.log("Year's good");
+      //     if (prM <= valueM && valueM <= poM) {
+      //       console.log("month's good");
+      //       if (prD <= valueD && valueD <= poD) {
+      //         console.log("day's good", totalData[i]);
+      //         const send = totalData[i];
+      //         teamFinal.push(send);
+      //       } else {
+      //         console.log("Days cancelled");
+      //       }
+      //     } else {
+      //       console.log("Months cancelled");
+      //     }
+      //   } else {
+      //     console.log("No games on these range of dates");
+      //   }
+      // }
+
+      // console.log("xmxm", teamFinal);
+
+      // this.setState({
+      //   exportTeam: teamFinal,
+      // });
+    }
+
+    event.preventDefault();
+  }
+
+  // checkDate() {
+
+  //     for (let i = 0; i < dataL.length; i++) {
+  //       const valueY = parseInt(
+  //         moment(dataL[i].GameDate, "YYYY-MM-DD").format("YYYY")
+  //       );
+
+  //       const valueM = parseInt(
+  //         moment(dataL[i].GameDate, "YYYY-MM-DD").format("MM")
+  //       );
+  //       const valueD = parseInt(
+  //         moment(dataL[i].GameDate, "YYYY-MM-DD").format("DD")
+  //       );
+
+  //       console.log("ohhhhhhhhh", valueM);
+
+  //       console.log("testing", preM <= valueM && valueM <= postM);
+  //       if (preY <= valueY) {
+  //         console.log("Year's good");
+  //         if (preM <= valueM && valueM <= postM) {
+  //           console.log("month's good");
+  //           if (preD <= valueD && valueD <= postD) {
+  //             const send = dataL[i];
+  //             newDate.push(send);
+  //           }
+  //         }
+  //       } else {
+  //         console.log("No games on these range of dates");
+  //       }
+  //     }
+  //     this.setState({ exportTeam: newDate });
+  //   }
+  // }
 
   componentDidMount() {
     const emptyBody = {};
@@ -127,7 +270,18 @@ class ExportToCSV extends Component {
       wrapperCol: { span: 14, offset: 4 },
     };
 
-    console.log("final", this.state.jData);
+    console.log(
+      "final",
+      this.state.preDateY,
+      this.state.preDateM,
+      this.state.preDateD,
+      this.state.postDateY,
+      this.state.postDateM,
+      this.state.postDateD,
+      this.state.anoState,
+      "needed",
+      this.state.exportTeam
+    );
 
     if (this.state.jData !== []) {
       return (
@@ -140,50 +294,54 @@ class ExportToCSV extends Component {
           className="site-layout-background"
         >
           <Form {...formLayout}>
-            <Row>
-              <div
-                style={{
-                  alignContent: "center",
-                  width: "100%",
-                  backgroundColor: "#ffffff",
-                  padding: "20px",
-                  boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
-                }}
-              >
-                <Form.Item>
-                  <h2 id="header-one">Schedule Sort By Team</h2>
-                </Form.Item>
-                <Form.Item label="Listed Teams">
-                  <Select
-                    showSearch
-                    onChange={this.changeFilterOne}
-                    style={{ width: "85%" }}
-                    placeholder="Choose a Team"
-                  >
-                    {this.state.everyTeams.map((data) => (
-                      <Option key={data}>{data}</Option>
-                    ))}
-                    );
-                  </Select>
-                </Form.Item>
-
-                <Form.Item {...buttonLayout}>
-                  <Button
-                    type="primary"
-                    shape="round"
-                    size="large"
-                    icon={<DownloadOutlined />}
-                  >
-                    <CSVLink
-                      headers={this.headers}
-                      data={this.state.exportTeam}
+            <form onSubmit={this.sortByTeam}>
+              <Row>
+                <div
+                  style={{
+                    alignContent: "center",
+                    width: "100%",
+                    backgroundColor: "#ffffff",
+                    padding: "20px",
+                    boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
+                  }}
+                >
+                  <Form.Item>
+                    <h2 id="header-one">Schedule Sort By Team</h2>
+                  </Form.Item>
+                  <Form.Item label="Listed Teams">
+                    <Select
+                      showSearch
+                      onChange={this.changeFilterOne}
+                      style={{ width: "85%" }}
+                      placeholder="Choose a Team"
                     >
-                      <span className="button-all"> Export</span>
-                    </CSVLink>
-                  </Button>
-                </Form.Item>
-              </div>
-            </Row>
+                      {this.state.everyTeams.map((data) => (
+                        <Option key={data}>{data}</Option>
+                      ))}
+                      );
+                    </Select>
+                  </Form.Item>
+
+                  <Form.Item label="Select Date">
+                    <RangePicker
+                      format="MM/DD/YYYY"
+                      onCalendarChange={this.calenderChange}
+                    />
+                  </Form.Item>
+
+                  <Form.Item {...buttonLayout}>
+                    <button
+                      type="submit"
+                      shape="round"
+                      size="large"
+                      // icon={<DownloadOutlined />}
+                    >
+                      Send to Process
+                    </button>
+                  </Form.Item>
+                </div>
+              </Row>
+            </form>
           </Form>
 
           {/* FOR ANOTHER FILTER By DATE Option
