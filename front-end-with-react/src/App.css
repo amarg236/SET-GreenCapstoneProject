@@ -59,3 +59,7 @@ pending page
   /* border: 1px solid rgb(235, 237, 240); */
   border-top: 1px solid #dddd;
 }
+
+.hideDate {
+  display: none;
+}

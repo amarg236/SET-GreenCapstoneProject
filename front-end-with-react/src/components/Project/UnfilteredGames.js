@@ -40,6 +40,7 @@ function processData(supply) {
     awayTeam: row.awayteam,
     location: row.location,
     time: moment(row.time).format("MM/DD HH:mm"),
+    createdDate: moment(row.create_At).format("MM/DD"),
   }));
 }
 
@@ -55,6 +56,7 @@ class UnfilteredGames extends Component {
       filter: false,
       dateFiltered: [],
       refresh: false,
+
       // MonthFilter: moment.format("MM/DD HH:mm"),
     };
   }
@@ -280,7 +282,9 @@ class UnfilteredGames extends Component {
 
     console.log(this.state.monthSelected?.format("M"));
 
-    const tableData = game;
+    const tableData = game.sort(
+      (a, b) => moment(a.time).unix() - moment(b.time).unix()
+    );
     //   console.log(compareDate.time);
     //   let passedDate = moment(compareDate.time, "MM/DD HH:mm");
     //   console.log(passedDate.format("M"));
@@ -294,7 +298,7 @@ class UnfilteredGames extends Component {
 
     // const getFilteredData = (rejected) => columns.filter({});
     console.log(tableData);
-    const columns = [
+    const getColumns = () => [
       {
         title: "HomeTeam",
         dataIndex: "homeTeam",
@@ -328,7 +332,15 @@ class UnfilteredGames extends Component {
         title: "Time",
         dataIndex: "time",
         key: "time",
-        sorter: (a, b) => moment(a.time).unix() - moment(b.time).unix(),
+        sorter: (a, b) => new Date(b.createdDate) - new Date(a.createdDate),
+        // className: this.state.showTime ? "customClass" : "",
+      },
+      {
+        title: "CreatedDate",
+        dataIndex: "createdDate",
+        key: "createdDate",
+        sorter: (a, b) => new Date(b.createdDate) - new Date(a.createdDate),
+        className: "hideDate",
       },
     ];
 
@@ -358,7 +370,7 @@ class UnfilteredGames extends Component {
           />
         </div>
 
-        <Table columns={columns} dataSource={tableData} size="small" />
+        <Table columns={getColumns()} dataSource={tableData} size="small" />
       </Content>
     );
   }
