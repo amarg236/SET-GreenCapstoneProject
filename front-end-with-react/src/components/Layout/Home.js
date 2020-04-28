@@ -1,44 +1,59 @@
+import axios from "axios";
+import Authtoken from "../../Utility/AuthToken";
 import React, { Component } from "react";
 import Cal from "../Project/Cal";
 import "../../App.css";
 import "../../stylesheets/layout.css";
-import { Layout, Carousel } from "antd";
-
+import { Layout, Carousel, Card } from "antd";
+const { Meta } = Card;
 const { Content } = Layout;
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // isLoggedIn: AuthToken.getAuthenticationStatus
+      notice: [],
     };
   }
 
+  componentDidMount() {
+    const noticeObj = {};
+
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/notice/get", noticeObj, {
+        headers: {},
+      })
+      .then((res) => {
+        if (res.data.httpStatusCode == 202) {
+          this.setState({ notice: res.data.result });
+          console.log(res);
+        }
+      });
+  }
+
   render() {
-    // return <Cal />;
-    //we are gonna put sliders and other contents in front page
     return (
       <Content
         className="site-layout-background"
         style={{
           padding: 24,
           margin: 0,
-          minHeight: 580
+          minHeight: 580,
         }}
       >
         <Carousel autoplay>
-          <div>
-            <h3>Welcome to the Home Page</h3>
-          </div>
-          <div>
-            <h3>These slides are just for demo</h3>
-          </div>
-          <div>
-            <h3>These slides are just for demo</h3>
-          </div>
-          <div>
-            <h3>These slides are just for demo</h3>
-          </div>
+          {this.state.notice.map((row, index) => (
+            <div>
+              <span>
+                <br />
+                <h3>{row.title}</h3>
+              </span>
+
+              <span>
+                <p> {row.description}</p>
+              </span>
+            </div>
+          ))}
         </Carousel>
       </Content>
     );

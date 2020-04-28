@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 
-import { Form, Input, Button, Layout, Select } from "antd";
+import { Form, Input, Button, Layout, Select, Modal } from "antd";
 const { Content } = Layout;
 
 class InviteAssignor extends Component {
@@ -64,24 +64,20 @@ class InviteAssignor extends Component {
 
   inviteUser = (values) => {
     // console.log(values);
-    const school = {
-      id: this.state.school,
-    };
+
     const role = {
       role: this.state.role,
-      school,
     };
 
     const objCreate = {
       firstname: this.state.firstname,
       lastname: this.state.lastname,
       email: this.state.email,
-      password: this.state.password,
-      role: "ASSIGNER",
+      role,
     };
 
     axios
-      .post(Authtoken.getBaseUrl() + "/api/test/makeUser", objCreate, {
+      .post(Authtoken.getBaseUrl() + "/api/auth/createuser", objCreate, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -91,25 +87,21 @@ class InviteAssignor extends Component {
         // window.alert("User has been invited successfully!!");
         // window.location.reload();
         console.log(res);
+        this.success();
         // console.log(res.data);
       });
   };
 
-  //   handleChange = value => {
-  //     console.log(value);
-  //     // const dummy = JSON.parse(value);
-  //     // console.log(dummy);
-  //     this.setState({ school: value });
-  //   };
-
   chooseRole = (pick) => {
     this.setState({ role: pick });
   };
+  success = () => {
+    Modal.success({
+      content: "User has been successfully invited",
+    });
+  };
 
   render() {
-    // value={index}
-    // value={JSON.stringify(item.district)}
-    // value={item.id}
     const layout = {
       labelCol: {
         span: 4,
@@ -198,22 +190,6 @@ class InviteAssignor extends Component {
               />
             </Form.Item>
 
-            <Form.Item
-              name="password"
-              label="Password"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-            >
-              <Input.Password
-                onChange={this.onChangePassword}
-                value={this.state.password}
-                placeholder="Enter Password"
-              />
-            </Form.Item>
-
             <Form.Item label="Role" size="large" name="role">
               <Select
                 defaultValue="Select Role"
@@ -221,29 +197,9 @@ class InviteAssignor extends Component {
                 value={this.state.role}
                 style={{ width: "450px", minWidth: "auto" }}
               >
-                <Select.Option value="USER">USER</Select.Option>
-
-                <Select.Option value="ASSIGNOR">ASSIGNOR</Select.Option>
+                <Select.Option value="ASSIGNER">ASSIGNOR</Select.Option>
               </Select>
             </Form.Item>
-            {
-              // <Select.Option
-              //   key={id}
-              //   // value={index}
-              //   // value={JSON.stringify(item)}
-              //   value={id}
-              // >
-              //   {districtName}
-              // </Select.Option>
-              // <Form.Item label="Select School" size="large" name="school">
-              //     <Select
-              //     defaultValue="Select Options"
-              //     style={{ width: "450px", minWidth: "auto" }}
-              //     onChange={this.handleChange}
-              //   >
-              // </Select>
-              // </Form.Item>
-            }
 
             <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
               <Button type="primary" htmlType="submit">

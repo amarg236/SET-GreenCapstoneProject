@@ -5,6 +5,8 @@ import axios from "axios";
 import { Card } from "react-bootstrap";
 import { connect } from "react-redux";
 import Authtoken from "../../Utility/AuthToken";
+import { Layout } from "antd";
+const { Content } = Layout;
 class UserProfile extends Component {
   constructor(props) {
     super(props);
@@ -41,44 +43,78 @@ class UserProfile extends Component {
 
   render() {
     return (
-      <div>
-        <Card>
-          <Card.Body>
-            <Card.Title>User Profile</Card.Title>
-            <Card.Text>
-              <b>Username:</b> {this.props.username}
-            </Card.Text>
-            <Card.Text>
-              <b>User Role:</b> {this.props.role}
-            </Card.Text>
-            <Card.Text>
-              <b>Name:</b> {this.state.firstName}
-              <span> </span>
-              {this.state.lastName}
-            </Card.Text>
-            <Card.Text>
-              <b>School:</b> {this.props.mySchool.name}
-              <span> </span>
-              {this.state.lastName}
-            </Card.Text>
-            <Card.Text>
-              <b>District:</b> {this.props.schoolDistrict.districtName}
-              <span> </span>
-              {this.state.lastName}
-            </Card.Text>
-          </Card.Body>
-        </Card>
-      </div>
+      <Content
+        className="site-layout-background"
+        style={{
+          padding: 24,
+          margin: 0,
+          minHeight: 580,
+        }}
+      >
+        <div>
+          <Card>
+            <Card.Body>
+              <Card.Title>User Profile</Card.Title>
+              <Card.Text>
+                <b>Username:</b> {this.props.username}
+              </Card.Text>
+              <Card.Text>
+                <b>User Role:</b> {this.props.role}
+              </Card.Text>
+              <Card.Text>
+                <b>Name:</b> {this.state.firstName}
+                <span> </span>
+                {this.state.lastName}
+              </Card.Text>
+              {this.props.mySchool ? (
+                <span>
+                  <Card.Text>
+                    <b>School:</b> {this.props.mySchool.name}
+                    <span> </span>
+                  </Card.Text>
+                  <Card.Text>
+                    <b>District:</b> {this.props.schoolDistrict.districtName}
+                    <span> </span>
+                  </Card.Text>
+                </span>
+              ) : null}
+            </Card.Body>
+          </Card>
+        </div>
+      </Content>
     );
   }
 }
 const mapStatetoProps = (state) => {
-  return {
-    username: state.userReducer.username,
-    role: state.userReducer.role,
-    token: state.userReducer.token,
-    mySchool: state.userReducer.mySchool,
-    schoolDistrict: state.userReducer.schoolDistrict,
-  };
+  switch (state.userReducer.role) {
+    case "ASSIGNER":
+      return {
+        username: state.userReducer.username,
+        role: state.userReducer.role,
+        token: state.userReducer.token,
+      };
+    case "ADMIN":
+      return {
+        username: state.userReducer.username,
+        role: state.userReducer.role,
+        token: state.userReducer.token,
+      };
+    case "USER":
+      return {
+        username: state.userReducer.username,
+        role: state.userReducer.role,
+        token: state.userReducer.token,
+        mySchool: state.userReducer.mySchool,
+        schoolDistrict: state.userReducer.schoolDistrict,
+      };
+    default:
+      return {
+        username: null,
+        role: null,
+        token: null,
+        mySchool: null,
+        schoolDistrict: null,
+      };
+  }
 };
 export default connect(mapStatetoProps)(UserProfile);

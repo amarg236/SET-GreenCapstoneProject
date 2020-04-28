@@ -1,15 +1,18 @@
 import "../../App.css";
+import logo from "../../assets/website-logo.png";
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { Menu, Layout } from "antd";
+import { Menu, Layout, Typography, Tag } from "antd";
 import UserSidebar from "./RoleBasedSidebar/UserSiderBar";
 import AssignorSidebar from "./RoleBasedSidebar/AssignorSidebar";
 import AdminSidebar from "./RoleBasedSidebar/AdminSidebar";
 import { toggleAction } from "../../actions/toggleAction";
+import { isMobile } from "react-device-detect";
 import device from "../../Utility/media";
-import { HomeOutlined, LogoutOutlined } from "@ant-design/icons";
-const { Sider } = Layout;
-
+import history from "../../Utility/history";
+import { HomeOutlined, LogoutOutlined, LoginOutlined } from "@ant-design/icons";
+const { Sider, Content } = Layout;
+const { Text } = Typography;
 class SidebarComp extends Component {
   state = {
     collapsed: false,
@@ -17,6 +20,10 @@ class SidebarComp extends Component {
   };
 
   componentDidMount() {
+    if (isMobile) {
+      console.log("This is mobile");
+      this.setState({ collapsed: true, collapsedWidth: 0 });
+    }
     this.checkWidth();
     window.addEventListener("resize", this.checkWidth());
   }
@@ -29,7 +36,6 @@ class SidebarComp extends Component {
     console.log(collapsed);
     this.setState({ collapsed });
   };
-  // whileMobileView = () => {};
 
   checkWidth = () => () => {
     if (window.matchMedia(device.mobileL).matches) {
@@ -64,25 +70,33 @@ class SidebarComp extends Component {
           <Menu
             mode="inline"
             theme="dark"
-            defaultSelectedKeys={["1"]}
+            defaultSelectedKeys={["home"]}
             defaultOpenKeys={["sub1"]}
             style={{ height: "100%", borderRight: 0 }}
           >
-            <Menu.Item key="home">
-              <span>
-                <HomeOutlined />
-              </span>
+            <Menu.Item onClick={this.homeRedirect} key="home">
+              <HomeOutlined />
+
               <span>HOME</span>
             </Menu.Item>
+
+            {
+              <Menu.Item onClick={this.handleClick} key="login">
+                <LoginOutlined />
+                <span>LOG IN</span>
+              </Menu.Item>
+            }
           </Menu>
         );
     }
   }
-  // toggle = () => {
-  //   this.props.toggle();
-  //   console.log(this.props.toggelState);
-  // };
+  handleClick = (e) => {
+    history.push("/".concat(e.key));
+  };
 
+  homeRedirect = (e) => {
+    history.push("/");
+  };
   render() {
     return (
       /*
@@ -93,27 +107,14 @@ class SidebarComp extends Component {
         collapsible
         collapsed={this.state.collapsed}
         onCollapse={this.onCollapse}
-        // zeroWidthTriggerStyle={}
-        // breakpoint="md"
-        // collapsible
-        // collapsed={this.state.collapsed}
         collapsedWidth={this.state.collapsedWidth}
-        // onBreakpoint={broken => {
-        //   // return `collapsedWidth="0"`;
-        //   // console.log(broken);
-        //   // if (broken == true) {
-        //   //   this.props.toggle();
-        //   // } else if (broken == false) {
-        //   //   this.props.toggle();
-        //   // console.log(broken);
-        //   // }
-        // }}
-        // onCollapse={(collapsed, type) => {
-        //   console.log(collapsed, type);
-        // }}
-        // collapsed={this.props.toggelState}
       >
-        <div className="logo">SET GREEN</div>
+        <div className="logo">
+          <a href="./">
+            <img src={logo} style={{ width: "60px", height: "60px" }} />
+          </a>{" "}
+        </div>
+
         {this.renderSwitch(this.props.role)}
       </Sider>
     );
@@ -122,6 +123,7 @@ class SidebarComp extends Component {
 
 const mapStatetoProps = (state) => {
   return {
+    username: state.userReducer.username,
     role: state.userReducer.role,
     toggelState: state.userReducer.sidebarCollapased,
   };

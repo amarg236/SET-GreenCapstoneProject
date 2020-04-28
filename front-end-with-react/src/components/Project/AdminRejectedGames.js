@@ -24,7 +24,7 @@ function callback(key) {
   console.log(key);
 }
 
-class AdminShowGames extends Component {
+class AdminRejectedGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,26 +48,6 @@ class AdminShowGames extends Component {
     }
   }
 
-  successMsg = (s_message) => {
-    Modal.success({
-      content: (
-        <div>
-          <p>{s_message}</p>
-        </div>
-      ),
-    });
-  };
-
-  errorMsg = (e_message) => {
-    Modal.error({
-      content: (
-        <div>
-          <p>{e_message}</p>
-        </div>
-      ),
-    });
-  };
-
   fetchApi = () => {
     const emptyObj = {};
 
@@ -85,8 +65,8 @@ class AdminShowGames extends Component {
           console.log(res.data.result);
           const myData = res.data.result.filter(function (adminViewGames) {
             return (
-              (adminViewGames.rejected && !adminViewGames.approved) ||
-              (adminViewGames.awayAccepted && !adminViewGames.approved)
+              !adminViewGames.approved ||
+              (adminViewGames.rejected && adminViewGames.awayAccepted)
             );
           });
           console.log("myData>>");
@@ -178,59 +158,6 @@ class AdminShowGames extends Component {
     this.setState({ searchText: "" });
   };
 
-  // Approve Games
-  approveGame = (display) => {
-    console.log(display);
-    const aemptyObj = {
-      id: display.key,
-    };
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/admin/game/verify", aemptyObj, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        if (res.data.httpStatusCode == 202) {
-          console.log(res);
-          this.successMsg("Great! The game has been approved. ");
-          this.setState((prevState) => ({
-            refresh: !prevState.refresh,
-          }));
-        } else {
-          this.errorMsg(res.data.message);
-        }
-      });
-  };
-
-  // Deny Game function
-  denyGame = (display) => {
-    console.log(display.key);
-    const emptyObj = {
-      id: display.key,
-    };
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/reject", emptyObj, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data.httpStatusCode == 202) {
-          console.log(res);
-          this.successMsg("The game has been denied!");
-          this.setState((prevState) => ({
-            refresh: !prevState.refresh,
-          }));
-        } else {
-          this.errorMsg(res.data.message);
-        }
-      });
-  };
-
   render() {
     const { game } = this.state;
     console.log("render>>");
@@ -274,27 +201,12 @@ class AdminShowGames extends Component {
         key: "time",
       },
       {
-        title: "Action",
+        title: "Status",
         dataIndex: "",
         key: "x",
         render: (record) => (
           <span>
-            {record.alreadyDecided ? (
-              <Tag color="red">Rejected</Tag>
-            ) : (
-              <span>
-                <Button
-                  onClick={() => this.approveGame(record)}
-                  type="link"
-                  style={{ marginRight: 16 }}
-                >
-                  Approve
-                </Button>
-                <Button onClick={() => this.denyGame(record)} type="link">
-                  Deny
-                </Button>
-              </span>
-            )}
+            <Tag color="red">Rejected</Tag>
           </span>
         ),
       },
@@ -338,7 +250,7 @@ class AdminShowGames extends Component {
         </div>
         <Table
           hideOnSinglePage
-          rowSelection={rowSelection}
+          //   rowSelection={rowSelection}
           columns={columns}
           dataSource={tableData}
           size="small"
@@ -353,4 +265,4 @@ const mapStatetoProps = (state) => {
     token: state.userReducer.token,
   };
 };
-export default connect(mapStatetoProps, null)(AdminShowGames);
+export default connect(mapStatetoProps, null)(AdminRejectedGames);

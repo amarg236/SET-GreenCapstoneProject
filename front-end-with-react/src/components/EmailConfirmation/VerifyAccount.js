@@ -3,9 +3,10 @@ import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import "../../App.css";
 import "../../stylesheets/layout.css";
-import { Layout } from "antd";
+import { Layout, Result, Button, Spin } from "antd";
 import queryString from "query-string";
 import history from "../../Utility/history";
+import { LoadingOutlined } from "@ant-design/icons";
 const { Content } = Layout;
 
 class VerifyAccount extends Component {
@@ -34,30 +35,54 @@ class VerifyAccount extends Component {
     console.log(this.state.username);
     console.log(this.state.password);
     if (this.state.username) {
+      //
+    }
+
+    const confirmAndProceed = () => {
+      console.log("clicke>>");
+      console.log(this.state.username);
+
       axios
         .get(
           Authtoken.getBaseUrl() +
             `/api/auth/login?u=${this.state.username}&p=${this.state.password}`
         )
         .then((res) => {
-          console.log(res);
-
           if (res.data.success) {
-            console.log(res.data);
-
+            console.log(res);
+            console.log("inside >>");
             const saveDatainFormat = {
               username: this.state.username,
               token: res.data.token,
               role: res.data.roles[0].authority,
             };
             localStorage.setItem("userInfo", JSON.stringify(saveDatainFormat));
-            history.push("/changePassword");
+
+            window.location = "../../changePassword";
+            // history.push("/changePassword");
           }
         })
+
+        //   console.log(res.data);
+        //   console.log("in>>");
+
+        //
+
+        // window.location =
+        //   "http://setgscheduling.s3-website.us-east-2.amazonaws.com/changePassword";
+        // setTimeout(() => {
+        //   history.push("./");
+        // }, 3000);
+        // setTimeout(() => {
+        //   history.push("/changePassword");
+        // }, 3000);
+
+        // history.push("/changePassword");
+        // )
         .catch((e) => {
           console.log(e);
         });
-    }
+    };
 
     return (
       <Content
@@ -68,7 +93,17 @@ class VerifyAccount extends Component {
           minHeight: 580,
         }}
       >
-        {this.state.loading ? <h6>Loading ...</h6> : null}
+        <Result
+          icon={<LoadingOutlined />}
+          title="Welome to the System"
+          subTitle="In order to complete registration, you have to chagne the password. Please click button below to change password."
+          extra={[
+            <Button type="primary" onClick={confirmAndProceed} key="console">
+              Change Password
+            </Button>,
+            <Button key="buy">No Thanks, Log me out !</Button>,
+          ]}
+        />
       </Content>
     );
   }

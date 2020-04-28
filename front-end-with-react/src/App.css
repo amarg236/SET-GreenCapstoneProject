@@ -17,10 +17,19 @@
 } */
 
 .logo {
-  height: 32px;
+  height: 65px;
   color: white;
   text-align: center;
   margin: 16px;
+  font-weight: bolder;
+}
+.logo-bottom {
+  /* background-color: aliceblue; */
+  height: 35px;
+  width: 180px;
+  color: white;
+  text-align: center;
+
   font-weight: bolder;
 }
 .site-layout {
@@ -36,12 +45,12 @@
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 }
 
-.nav_bar_toggle {
+/* .nav_bar_toggle {
   margin-left: 10px;
   font-size: 20px;
   cursor: pointer;
   transition: all 0.3s, padding 0s;
-}
+} */
 
 /*
 pending page
@@ -49,4 +58,8 @@ pending page
 .site-page-header-responsive {
   /* border: 1px solid rgb(235, 237, 240); */
   border-top: 1px solid #dddd;
+}
+
+.hideDate {
+  display: none;
 }
