@@ -333,5 +333,19 @@ public class GameHandler {
 			return new ResponseBody<List<Game>>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find games "+e, null);
 		}
 	}
-	
+	@Transactional
+	public ResponseBody<Game> validateModify(Game gm) {
+		try{
+			Game g = gr.findById(gm.getId()).get();
+			g.setHasBeenEdited(false);
+			g.setHomeNotification(false);
+			return new ResponseBody<Game> (HttpStatus.ACCEPTED.value(), "", g);
+		}
+		catch(Exception e) {
+			return new ResponseBody<Game>(HttpStatus.NOT_ACCEPTABLE.value(), "Could not find game "+e, gm);
+		}
+	}
+	public ResponseBody<List<Game>> getGamesIdModified(Teams t) {
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByHometeamIdAndHasBeenEditedTrue(t.getId()));
+	}
 }

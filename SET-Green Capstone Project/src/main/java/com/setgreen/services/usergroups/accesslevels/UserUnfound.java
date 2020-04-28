@@ -152,4 +152,8 @@ public class UserUnfound extends UserReference {
 	public ResponseBody<Notice> deleteNotice(Authentication auth, Notice n) {
 		return forbiddenAccess(n);
 	}
+	@Override
+	public ResponseBody<Game> validateModify(Authentication auth, Game g) {
+		return forbiddenAccess(g);
+	}
 }

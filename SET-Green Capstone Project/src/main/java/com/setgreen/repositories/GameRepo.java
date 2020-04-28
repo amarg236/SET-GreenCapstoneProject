@@ -90,4 +90,6 @@ public interface GameRepo extends CrudRepository<Game, Long>{
 	public Collection<? extends Game> findByTeamIdAndVerified(@Param("i") long id, @Param("b") boolean b);
 	@Query("SELECT g FROM Game g WHERE g.hometeamId = (:hId) OR g.awayteamId = (:hId) OR g.hometeamId = (:aId) OR g.awayteamId = (:aId)")
 	public List<Game> getByTeamIds(@Param("hId") Long homeId, @Param("aId") Long awayId);
+
+	public List<Game> findByHometeamIdAndHasBeenEditedTrue(long id);
 }

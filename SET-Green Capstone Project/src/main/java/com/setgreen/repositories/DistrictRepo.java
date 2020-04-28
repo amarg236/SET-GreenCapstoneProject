@@ -9,5 +9,5 @@ import com.setgreen.model.District;
 @Repository
 public interface DistrictRepo extends CrudRepository<District, Long>{
 	@Query("SELECT d.districtName FROM District d WHERE d.districtName=(:dname)")
-	public String findByName(@Param("dname") String dname);
+	public District findByName(@Param("dname") String dname);
 }

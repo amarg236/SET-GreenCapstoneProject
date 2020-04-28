@@ -110,6 +110,10 @@ public class UserScheduler extends UserUnfound {
 		Game ng = gh.getGameById(g.getId());
 		ng.setDuration(g.durationAsMinutes());
 		ng.setTime(g.getTime());
+		if(!g.getURequester().equals(auth.getName())) { //XXX there's a surprise feature here where coach A from school 1 makes a game, and coach B from school 1 reschedules it, causing it to show up as rescheduled but removing it is non-critical
+			ng.setHomeNotification(true);
+			ng.setHasBeenEdited(true);
+		}
 		if(!ng.isAwayAccepted()) {
 			return gh.modifyGame(ng);
 		}
@@ -161,6 +165,21 @@ public class UserScheduler extends UserUnfound {
 				}
 				else if(y.getTmName().equals(g.getAwayteam())) {
 					return gh.validateRejection(g, false);
+				}
+			}
+		}
+		return new ResponseBody<Game>(HttpStatus.BAD_REQUEST.value(), "Failed to handle notification", gm);
+	}
+	
+	@Override
+	public ResponseBody<Game> validateModify(Authentication auth, Game gm) {
+		Game g = gh.getGameById(gm.getId());
+		Iterable<Role> LoR = rh.findByEmail(auth.getName());
+		for(Role x : LoR) {
+			Set<Teams> tms = x.getSchool().getTeams();
+			for(Teams y : tms) {
+				if(y.getTmName().equals(g.getHometeam())) {
+					return gh.validateModify(g);
 				}
 			}
 		}

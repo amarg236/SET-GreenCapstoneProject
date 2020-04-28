@@ -215,4 +215,9 @@ public abstract class UserReference {
 	 * @return status of request w/ the notice as it was before deletion
 	 */
 	public abstract ResponseBody<Notice> deleteNotice(Authentication auth, Notice n);
+
+	/*
+	 * validate a game modification on the part of the hometeam
+	 */
+	public abstract ResponseBody<Game> validateModify(Authentication auth, Game g);
 }

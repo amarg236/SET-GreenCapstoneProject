@@ -44,6 +44,11 @@ public class GameController {
 		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).rescheduleGame(auth, g);
 	}
 	
+	@PostMapping("modify/clear")//{"id"=123}
+	public ResponseBody<Game> clearModify(@RequestBody Game g, Authentication auth){
+		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).validateModify(auth, g);
+	}
+	
 	@PostMapping("reject")//{"id"=123}
 	public ResponseBody<Game> reject(@RequestBody Game g, Authentication auth){
 		return hlp.getRoleByTeam(auth, gh.getGameById(g.getId())).rejectGame(auth, g);
@@ -160,6 +165,10 @@ public class GameController {
 	@PostMapping("get/ByTeamId/away") //Away games that are awayAccepted
 	public ResponseBody<List<Game>> getTeamIdAway(@RequestBody Teams t){
 		return gh.getAwayGames(t);
+	}
+	@PostMapping("get/ByTeamId/modified") //games that are modified by hometeam
+	public ResponseBody<List<Game>> getTeamIdModified(@RequestBody Teams t){
+		return gh.getGamesIdModified(t);
 	}
 	@PostMapping("get/ByTeamId/home/notAccepted") //Home games that are NOT awayAccepted
 	public ResponseBody<List<Game>> getTeamIdHomeUnverified(@RequestBody Teams t){

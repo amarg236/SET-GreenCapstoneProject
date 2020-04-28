@@ -38,7 +38,8 @@ public class UserServiceImpl implements UserService {
 		try {
 			User ud = new User(suf);
 			Set<Role> sor = ud.getRoles();
-			//XXX DO NOT EVER REMOVE THIS CODE UNDER PAIN OF DEATH. IT PLEASES THE DARK GODS OF CREATION, ALLOWING THE SICK DANCE OF DATA MANIPULATION TO CONTINUE. FORSAKING THIS CODE IS PUNISHABLE BY BEING TOLD YOU ARE, AND I QUOTE "in for a rough time."
+			//DO NOT EVER REMOVE THIS CODE UNDER PAIN OF DEATH. IT PLEASES THE DARK GODS OF CREATION, ALLOWING THE SICK DANCE OF DATA MANIPULATION TO CONTINUE. FORSAKING THIS CODE IS PUNISHABLE BY BEING TOLD YOU ARE, AND I QUOTE "in for a rough time."
+			//(On a serious note this ensures full references to school objects are made right, and all schools referenced are valid. Also when removed users just break.)
 			try { //THAT INCLUDES THIS LINE
 				for(Role r : sor) { //THIS LINE
 					sor.remove(r); //THIS LINE
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
 				ud.setRoles(sor); //THIS LINE
 			}//THIS LINE
 			catch(NullPointerException e) { //THIS LINE
-				
+				throw new Exception("Missing reference in sent roles, ensure all role names and schools exist");
 			} //THIS LINE
 			//and that's it.
 			MailHandler m = new MailHandler(new JavaMailSenderImpl());
@@ -221,7 +222,6 @@ public class UserServiceImpl implements UserService {
 		try {
 			User u = userRepo.findByTmpPwd(p.getAccessKey().hashCode());
 			if(u.getTmpPwd() != 0) {
-				//userRepo.updateTmpPwd(u.getId(), 0);
 				User _u = new User();
 				_u.setEmail(u.getEmail());
 				_u.setPassword(u.getPassword());

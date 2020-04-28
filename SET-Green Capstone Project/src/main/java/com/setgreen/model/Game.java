@@ -54,6 +54,7 @@ public class Game implements Serializable{
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date update_At;
+    boolean hasBeenEdited;
 
 	//Constructor required for the persist and update annotations to work.
     public Game(){};
