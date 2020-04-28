@@ -33,8 +33,6 @@ export const calExport = () => async (dispatch) => {
   //   console.log("export", Authtoken.getUserInfo().token);
   // });
 
-  console.log("response", response.data.result);
-
   dispatch({
     type: "GET_GAMES",
     payload: response.data.result,

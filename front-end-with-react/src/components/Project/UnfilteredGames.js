@@ -204,8 +204,8 @@ class UnfilteredGames extends Component {
     const toBePassed = this.state.game.filter(function (filtered) {
       console.log(filtered.time);
       let passedDate = moment(filtered.time, "MM/DD HH:mm").format("M");
-      console.log(passedDate);
-      console.log(mySelectedMonth);
+      console.log("aaaa", passedDate);
+      console.log("bbbb", mySelectedMonth);
       if (passedDate == mySelectedMonth) {
         console.log("both are same month");
       }
