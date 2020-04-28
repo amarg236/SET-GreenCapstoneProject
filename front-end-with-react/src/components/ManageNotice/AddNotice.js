@@ -1,11 +1,13 @@
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import React, { Component } from "react";
-import { Form, Input, Button, Checkbox, Layout, Modal } from "antd";
+import { Form, Typography, Input, Button, Checkbox, Layout, Modal } from "antd";
 import ViewNotice from "./ViewNotice";
+import { FormOutlined } from "@ant-design/icons";
 // import { PlusOutlined } from "@ant-design/icons";
 const { Content } = Layout;
 const { TextArea } = Input;
+const { Title } = Typography;
 class AddNotice extends Component {
   state = {
     title: "",
@@ -57,7 +59,7 @@ class AddNotice extends Component {
         .then((res) => {
           this.success();
           // window.alert("The notice has been added successfully!!");
-          // window.location.reload();
+          window.location.reload();
         });
     };
 
@@ -74,6 +76,10 @@ class AddNotice extends Component {
           minHeight: 580,
         }}
       >
+        <Title>
+          Publish Notice&nbsp;
+          <FormOutlined />
+        </Title>
         <div
           style={{
             backgroundColor: "#ffff",
