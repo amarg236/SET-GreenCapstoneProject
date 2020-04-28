@@ -67,8 +67,6 @@ class Cal extends React.Component {
         },
       })
       .then((res) => {
-        console.log("this is response");
-        console.log(res);
         this.setState({ jData: extend([], processData(res.data), null, true) });
       });
   }
@@ -83,8 +81,6 @@ class Cal extends React.Component {
         },
       })
       .then((res) => {
-        console.log("this is response");
-        console.log(res);
         if (props.AwayTeam == "Airline High School-VG") {
           this.setState({ jData: extend([], processData(res.data), null, true) });
         }
@@ -92,7 +88,6 @@ class Cal extends React.Component {
   }
 
   eventTemplate(props) {
-    console.log(props);
     if (props.PartialApproved && props.FullyApproved) {
       return <div className="template-wrap"> {props.Subject} </div>;
     } else if (props.PartialApproved || props.FullyApproved);
@@ -108,7 +103,6 @@ class Cal extends React.Component {
 
   fetchUser = value => {
     const schoolBody = {};
-    console.log('fetching user', value);
     this.setState({ data: [], fetching: true });
     axios
       .post(
@@ -132,12 +126,12 @@ class Cal extends React.Component {
   }
 
   handleChange = (value) => {
+    console.log(value)
     this.setState({
       value,
-      data: [],
+      data: [], 
       fetching: false,
     });
-    this.filter(this);
   };
   // Links that could be helpful
   // https://github.com/syncfusion/ej2-react-samples/blob/master/src/schedule/local-data.jsx
