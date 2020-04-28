@@ -22,7 +22,7 @@ public class DayHandlerImpl implements DayHandler{
 	IdealDayRepo idr;
 	@Autowired
 	EventDayRepo edr;
-	
+	@Override
 	public ResponseBody<BadDay> saveBadDay(BadDay d) {
 		try {
 			bdr.save(d);
@@ -32,7 +32,7 @@ public class DayHandlerImpl implements DayHandler{
 			return new ResponseBody<BadDay>(HttpStatus.EXPECTATION_FAILED.value(), "Could not save day: "+ e, d);
 		}
 	}
-	
+	@Override
 	public ResponseBody<BadDay> deleteBadDay(BadDay d) {
 		try {
 			BadDay bd = bdr.findById(d.getId()).get();
@@ -43,7 +43,7 @@ public class DayHandlerImpl implements DayHandler{
 			return new ResponseBody<BadDay>(HttpStatus.EXPECTATION_FAILED.value(), "Could not delete day", d);
 		}
 	}
-	
+	@Override
 	public ResponseBody<IdealDay> saveIdealDay(IdealDay d) {
 		try {
 			idr.save(d);
@@ -53,7 +53,7 @@ public class DayHandlerImpl implements DayHandler{
 			return new ResponseBody<IdealDay>(HttpStatus.EXPECTATION_FAILED.value(), "Could not save day"+e, d);
 		}
 	}
-	
+	@Override
 	public ResponseBody<IdealDay> deleteIdealDay(IdealDay d) {
 		try {
 			IdealDay id = idr.findById(d.getId()).get();
@@ -64,7 +64,7 @@ public class DayHandlerImpl implements DayHandler{
 			return new ResponseBody<IdealDay>(HttpStatus.EXPECTATION_FAILED.value(), "Could not delete day", d);
 		}
 	}
-	
+	@Override
 	public ResponseBody<EventDay> saveEventDay(EventDay d) {
 		try {
 			edr.save(d);
@@ -75,10 +75,11 @@ public class DayHandlerImpl implements DayHandler{
 		}
 	}
 	
+	@Override
 	public ResponseBody<EventDay> deleteEventDay(EventDay d) {
 		try {
 			EventDay ed = edr.findById(d.getId()).get();
-			edr.delete(d);
+			edr.deleteById(d.getId());
 			return new ResponseBody<EventDay>(HttpStatus.ACCEPTED.value(), "Deleted Day", ed);
 		}
 		catch(Exception e) {

@@ -1,5 +1,6 @@
 package com.setgreen.services.usergroups.accesslevels;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,7 +30,13 @@ public class UserScheduler extends UserUnfound {
 		return RoleName.USER;
 	}
 	
+	//method that does the main creategame logic as applied to everyone currently
+	//future roles may need different implementation, this allows them to overwrite it
+	//or do logic in the main createGame method.
 	protected ResponseBody<Game> _createGame(Authentication auth, Game g) {
+		if(g.getTime().getTime() < new Date().getTime()) {
+			return new ResponseBody<Game>(HttpStatus.CONFLICT.value(), "Can't schedule a game in the past.", g);
+		}
 		g.setApproved(false);
 		g.setAwayAccepted(false);
 		g.setRejected(false);
@@ -42,7 +49,7 @@ public class UserScheduler extends UserUnfound {
 		sog.addAll(gh.getGamesByAllTeamIds(g).getResult()); //all awayteam games for awayteam of proposed game
 		GameConflictObj gco = new GameConflictObj();
 		for(Game gme : sog) { //for each game
-			if(gme.getTime().getTime() - g.getDuration() <= g.getTime().getTime() && gme.getTime().getTime()+gme.getDuration() >= g.getTime().getTime()) {
+			if(gme.getTime().getTime() - g.durationAsMinutes() <= g.getTime().getTime() && gme.getTime().getTime()+gme.durationAsMinutes() >= g.getTime().getTime()) {
 				gco.addTimeConflict(g);
 			}
 		}
@@ -62,7 +69,7 @@ public class UserScheduler extends UserUnfound {
 			//if (gameTime >= startOfEvent AND gameTime <= endOfEvent)
 			//OR (gameEndTime >= startOfEven AND gameEndTime <= endOfEvent+LenghtOfGame
 			if( (g.getTime().getTime() >= d.getDte().getTime() && g.getTime().getTime() <= d.getEndDate().getTime())
-					|| (g.getTime().getTime()+g.getDuration() >= d.getDte().getTime() && g.getTime().getTime()+g.getDuration() <= d.getEndDate().getTime()+g.getDuration())) {
+					|| (g.getTime().getTime()+g.durationAsMinutes() >= d.getDte().getTime() && g.getTime().getTime()+g.durationAsMinutes() <= d.getEndDate().getTime()+g.durationAsMinutes())) {
 				return new ResponseBody<Game>(HttpStatus.CONFLICT.value(), "Event Conflict on: " + d.getDte() + " to " + d.getEndDate() + " Reason: " + d.getReason(), g);
 			}
 		}
@@ -101,7 +108,7 @@ public class UserScheduler extends UserUnfound {
 	@Override
 	public ResponseBody<Game> rescheduleGame(Authentication auth, Game g) {
 		Game ng = gh.getGameById(g.getId());
-		ng.setDuration(g.getDuration());
+		ng.setDuration(g.durationAsMinutes());
 		ng.setTime(g.getTime());
 		if(!ng.isAwayAccepted()) {
 			return gh.modifyGame(ng);

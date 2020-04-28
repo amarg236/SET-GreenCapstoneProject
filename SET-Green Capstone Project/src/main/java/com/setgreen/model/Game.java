@@ -49,10 +49,10 @@ public class Game implements Serializable{
 	boolean rejected;
 	boolean homeNotification;
 	boolean awayNotification;
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date create_At;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date update_At;
 
 	//Constructor required for the persist and update annotations to work.
@@ -67,6 +67,10 @@ public class Game implements Serializable{
     @PreUpdate
     protected void onUpdate(){
         this.update_At = new Date();
+    }
+    
+    public int durationAsMinutes() {//get around possible overflow
+    	return Math.abs(duration * 60000);
     }
 }
 

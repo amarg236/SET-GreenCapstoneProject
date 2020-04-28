@@ -221,10 +221,12 @@ public class UserServiceImpl implements UserService {
 		try {
 			User u = userRepo.findByTmpPwd(p.getAccessKey().hashCode());
 			if(u.getTmpPwd() != 0) {
-				userRepo.updateTmpPwd(u.getId(), 0);
+				//userRepo.updateTmpPwd(u.getId(), 0);
 				User _u = new User();
 				_u.setEmail(u.getEmail());
 				_u.setPassword(u.getPassword());
+				u.setPassword(p.getNewPassword());
+				u.setTmpPwd(0);
 				if(updatePassAndVerify(u, _u).getHttpStatusCode() != HttpStatus.ACCEPTED.value()) {
 					throw new Exception("Update and verification of password failed");
 				}
@@ -232,7 +234,6 @@ public class UserServiceImpl implements UserService {
 			else {
 				throw new Exception("NonRequestedPasswordResetException");
 			}
-			u.setPassword("-");
 			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "good", u);
 		}
 		catch(Exception e){
@@ -246,7 +247,7 @@ public class UserServiceImpl implements UserService {
 	public void forgotPassword(String email) {
 		try {
     		User u = userRepo.findByEmail(email);
-    		if(u.getVerified());//null test
+    		if(u.getVerified()) {};//null test
     		MailHandler mh = new MailHandler(new JavaMailSenderImpl());
     		String tempPw = mh.genLink(25);
 			try {

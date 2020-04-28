@@ -52,10 +52,10 @@ public class User  {
     @NotBlank(message = "Password cannot be empty")
     private String password;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date create_At;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date update_At;
 
     //Should be unique
@@ -87,4 +87,5 @@ public class User  {
     protected void onUpdate(){
         this.update_At = new Date();
     }
+
 }

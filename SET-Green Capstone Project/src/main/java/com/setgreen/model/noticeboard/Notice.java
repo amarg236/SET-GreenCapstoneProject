@@ -2,6 +2,7 @@ package com.setgreen.model.noticeboard;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,10 +21,11 @@ public class Notice {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
 	private String title;
+	@Column(length=65535)
 	private String description;
-	@JsonFormat(pattern = "yyyy-mm-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date create_At;
-	@JsonFormat(pattern = "yyyy-mm-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date update_At;
 	private String author;
 	private String imageurl;
