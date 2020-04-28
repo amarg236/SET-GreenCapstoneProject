@@ -45,6 +45,7 @@ import AddNotice from "./components/ManageNotice/AddNotice";
 import ViewNotice from "./components/ManageNotice/ViewNotice";
 import AddGoodDay from "./components/ManageRestriction/AddGoodDay";
 import AddBadDay from "./components/ManageRestriction/AddBadDay";
+import AddEventDay from "./components/ManageRestriction/AddEventDay";
 class App extends React.Component {
   render() {
     return (
@@ -136,6 +137,11 @@ class App extends React.Component {
                 exact
                 path="/adminGameView"
                 component={AllGamesAdmin}
+              />
+              <ProtectedRoute
+                exact
+                path="/addEventDay"
+                component={AddEventDay}
               />
               <ProtectedRoute exact path="/addBadDay" component={AddBadDay} />
               <ProtectedRoute exact path="/exportCSV" component={ExportCSV} />

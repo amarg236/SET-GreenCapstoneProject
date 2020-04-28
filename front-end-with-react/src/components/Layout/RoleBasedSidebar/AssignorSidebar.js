@@ -22,6 +22,7 @@ import {
   ApartmentOutlined,
   UserAddOutlined,
   SolutionOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -145,6 +146,14 @@ class AssignorSidebar extends Component {
             <span>Invite Assignor</span>
           </Menu.Item>
         </SubMenu>
+        <Menu.Item onClick={handleClick} key="addEventDay">
+          <span>
+            <a href="/addEventDay">
+              <CheckOutlined />
+            </a>
+          </span>
+          <span>Block Days</span>
+        </Menu.Item>
 
         <Menu.Item onClick={handleClick} key="approvedGames" key="exportCSV">
           <span>
