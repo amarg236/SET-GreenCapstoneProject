@@ -72,7 +72,7 @@ public class UserAssignor extends UserScheduler /*implements UserReference*/  {
 	@Override
 	public ResponseBody<Game> rescheduleGame(Authentication auth, Game g) {
 		Game ng = gh.getGameById(g.getId());
-		ng.setDuration(g.durationAsMinutes());
+		ng.setDuration(g.getDuration());
 		ng.setTime(g.getTime());
 		return gh.modifyGame(ng);
 	}

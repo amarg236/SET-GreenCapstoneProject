@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.setgreen.model.ResponseBody;
 import com.setgreen.model.noticeboard.Notice;
 import com.setgreen.services.implementation.NoticeboardHandler;
+import com.setgreen.util.DataObject;
 
 @RestController
 @CrossOrigin
@@ -33,7 +34,12 @@ public class NoticeboardController {
 		return hlp.getRoleByBest(auth).deleteNotice(auth, n);
 	}
 	@PostMapping("get")//Requires nothing
-	public ResponseBody<List<Notice>> getNotice(){
-		return nh.getNotices();
+	public ResponseBody<List<Notice>> getNotice(@RequestBody(required=false) DataObject<Integer> numberOfDays){
+		try {
+			return nh.getNotices(numberOfDays.getData());
+		}
+		catch(Exception e) {
+			return nh.getNotices(0);
+		}
 	}
 }

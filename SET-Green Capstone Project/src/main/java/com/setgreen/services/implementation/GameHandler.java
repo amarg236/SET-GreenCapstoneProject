@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.setgreen.model.District;
@@ -59,9 +60,8 @@ public class GameHandler {
 	@Transactional
 	public ResponseBody<Game> modifyGame(Game g) {
 		try {
-			gr.deleteById(g.getId());
-			Game ng = gr.save(g);
-			return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), "Game modified", ng);
+			g = gr.save(g);
+			return new ResponseBody<Game>(HttpStatus.ACCEPTED.value(), "Game modified", g);
 		}
 		catch(Exception e) {
 			return new ResponseBody<Game>(HttpStatus.NOT_ACCEPTABLE.value(), "Could Not modify Game", g);

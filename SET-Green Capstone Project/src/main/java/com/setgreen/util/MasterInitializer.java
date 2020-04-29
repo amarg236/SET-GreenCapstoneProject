@@ -96,11 +96,12 @@ public class MasterInitializer implements CommandLineRunner{
 				District dstrct;
 				try{
 					dstrct=dr.findByName(fileName.split(".csv")[0].trim());
-					if(dstrct.getId() == null) {
-						throw new Exception("not found");
-					}
+					long i = dstrct.getId();
+					i++; //nulltest
+						
 				}
 				catch(Exception e) {
+					System.out.println(e.getMessage());
 					dstrct = new District();
 					dstrct.setDistrictName(fileName.split(".csv")[0].trim());
 					dstrct = dr.save(dstrct);
@@ -110,21 +111,32 @@ public class MasterInitializer implements CommandLineRunner{
 					try {
 							String[] dta = scnr.nextLine().split(",");
 							
-							School schl = new School();
+							School schl;
+							schl = new School();
 							schl.setName(dta[0].trim());
 							schl.setDistrict(dstrct);
+							try{
+								School tschl = sr.findByName(schl.getName());
+								long i = tschl.getId();
+								i++;
+							}
+							catch(Exception e) {
+								schl = sr.save(schl);
+							}
 							Teams tms = new Teams();
 							tms.setTmName(dta[1].trim());
 							tms.setInternalName(dta[2].trim());
 							tms.setTmClass(dta[3].trim());
 							tms.setTeamGender(dta[4].trim());
+							tms.setSchool(schl);
 							tr.save(tms);
+							s++;
 					}
 					catch(Exception e) {
 						f++;
 					}
 				}
-				s++;
+				
 				scnr.close();
 			}
 			return new ResponseBody<Boolean>(HttpStatus.ACCEPTED.value(), "teamsInit Successes:" + s + " Failed: " + f, true);

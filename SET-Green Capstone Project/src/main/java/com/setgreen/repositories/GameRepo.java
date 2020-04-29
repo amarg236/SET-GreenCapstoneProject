@@ -1,6 +1,7 @@
 package com.setgreen.repositories;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.setgreen.model.Game;
+import com.setgreen.model.noticeboard.Notice;
 
 @Repository
 public interface GameRepo extends CrudRepository<Game, Long>{
@@ -92,4 +94,7 @@ public interface GameRepo extends CrudRepository<Game, Long>{
 	public List<Game> getByTeamIds(@Param("hId") Long homeId, @Param("aId") Long awayId);
 
 	public List<Game> findByHometeamIdAndHasBeenEditedTrue(long id);
+	
+	@Query("SELECT g from Game g WHERE g.time BETWEEN (:st) AND (:et) AND g.approved = TRUE AND g.rejected = FALSE")
+	public List<Game> findByDateAndApprovedTrueAndAwayAcceptedTrue(@Param("st") Date s, @Param("et") Date e);
 }

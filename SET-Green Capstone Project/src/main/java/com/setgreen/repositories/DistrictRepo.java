@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.setgreen.model.District;
 @Repository
 public interface DistrictRepo extends CrudRepository<District, Long>{
-	@Query("SELECT d.districtName FROM District d WHERE d.districtName=(:dname)")
+	@Query("SELECT d FROM District d WHERE d.districtName=(:dname)")
 	public District findByName(@Param("dname") String dname);
 }

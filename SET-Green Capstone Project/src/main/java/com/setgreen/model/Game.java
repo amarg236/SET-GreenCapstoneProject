@@ -70,7 +70,8 @@ public class Game implements Serializable{
         this.update_At = new Date();
     }
     
-    public int durationAsMinutes() {//get around possible overflow
+    //this is for precision, not because I didn't think to just get the time as minutes instead of turning the minutes into milliseconds.
+    public int durationAsMSecs() {//get around possible overflow
     	return Math.abs(duration * 60000);
     }
 }

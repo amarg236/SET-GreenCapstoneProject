@@ -49,7 +49,7 @@ public class UserScheduler extends UserUnfound {
 		sog.addAll(gh.getGamesByAllTeamIds(g).getResult()); //all awayteam games for awayteam of proposed game
 		GameConflictObj gco = new GameConflictObj();
 		for(Game gme : sog) { //for each game
-			if(gme.getTime().getTime() - g.durationAsMinutes() <= g.getTime().getTime() && gme.getTime().getTime()+gme.durationAsMinutes() >= g.getTime().getTime()) {
+			if(gme.getTime().getTime() - g.durationAsMSecs() <= g.getTime().getTime() && gme.getTime().getTime()+gme.durationAsMSecs() >= g.getTime().getTime()) {
 				gco.addTimeConflict(g);
 			}
 		}
@@ -69,7 +69,7 @@ public class UserScheduler extends UserUnfound {
 			//if (gameTime >= startOfEvent AND gameTime <= endOfEvent)
 			//OR (gameEndTime >= startOfEven AND gameEndTime <= endOfEvent+LenghtOfGame
 			if( (g.getTime().getTime() >= d.getDte().getTime() && g.getTime().getTime() <= d.getEndDate().getTime())
-					|| (g.getTime().getTime()+g.durationAsMinutes() >= d.getDte().getTime() && g.getTime().getTime()+g.durationAsMinutes() <= d.getEndDate().getTime()+g.durationAsMinutes())) {
+					|| (g.getTime().getTime()+g.durationAsMSecs() >= d.getDte().getTime() && g.getTime().getTime()+g.durationAsMSecs() <= d.getEndDate().getTime()+g.durationAsMSecs())) {
 				return new ResponseBody<Game>(HttpStatus.CONFLICT.value(), "Event Conflict on: " + d.getDte() + " to " + d.getEndDate() + " Reason: " + d.getReason(), g);
 			}
 		}
@@ -108,7 +108,7 @@ public class UserScheduler extends UserUnfound {
 	@Override
 	public ResponseBody<Game> rescheduleGame(Authentication auth, Game g) {
 		Game ng = gh.getGameById(g.getId());
-		ng.setDuration(g.durationAsMinutes());
+		ng.setDuration(g.getDuration());
 		ng.setTime(g.getTime());
 		if(!g.getURequester().equals(auth.getName())) { //XXX there's a surprise feature here where coach A from school 1 makes a game, and coach B from school 1 reschedules it, causing it to show up as rescheduled but removing it is non-critical
 			ng.setHomeNotification(true);
