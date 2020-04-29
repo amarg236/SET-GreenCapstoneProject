@@ -291,12 +291,7 @@ class Cal extends React.Component {
               Filter By Team
             </Button>
           }
-          <Switch
-            checkedChildren="Incoming"
-            unCheckedChildren="Outgoing"
-            defaultChecked
-            onChange={this.onToggleOutGoing}
-          />
+
           <Button
             style={{ marginLeft: "8px" }}
             type="secondary"
@@ -304,13 +299,19 @@ class Cal extends React.Component {
           >
             Reset
           </Button>
-
-          <span>
+          <Switch
+            style={{ marginLeft: "50px" }}
+            checkedChildren="Incoming"
+            unCheckedChildren="Outgoing"
+            defaultChecked
+            onChange={this.onToggleOutGoing}
+          />
+          <span style={{ float: "right" }}>
             <Button
               style={{ marginLeft: "8px" }}
               type="primary"
               style={{ background: "orange", borderColor: "white" }}
-              onClick={this.onClickPendingGames}
+              // onClick={this.onClickPendingGames}
             >
               Undecided
             </Button>
@@ -318,7 +319,7 @@ class Cal extends React.Component {
               style={{ marginLeft: "8px" }}
               type="primary"
               style={{ background: "#108ee9", borderColor: "white" }}
-              onClick={this.onClickPendingGames}
+              // onClick={this.onClickPendingGames}
             >
               Decided
             </Button>
@@ -326,7 +327,7 @@ class Cal extends React.Component {
               style={{ marginLeft: "8px" }}
               type="primary"
               style={{ background: "#87d068", borderColor: "white" }}
-              onClick={this.onClickApprovedGames}
+              // onClick={this.onClickApprovedGames}
             >
               Final
             </Button>

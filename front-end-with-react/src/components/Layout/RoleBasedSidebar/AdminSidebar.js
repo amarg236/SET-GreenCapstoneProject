@@ -60,7 +60,6 @@ class AdminSidebar extends Component {
           <span>Game Calendar</span>
         </Menu.Item>
         <SubMenu
-          key="sub1"
           title={
             <span>
               <AppstoreOutlined />
