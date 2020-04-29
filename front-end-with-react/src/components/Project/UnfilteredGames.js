@@ -93,6 +93,7 @@ class UnfilteredGames extends Component {
       .then((res) => {
         // console.log("current school teams");
         console.log(res.data.result);
+        console.log("Unfiltered>>");
         // console.log("length here");
         // console.log(res.data.result.length);
         // let myData = res.data.result.filter(function (myGames) {

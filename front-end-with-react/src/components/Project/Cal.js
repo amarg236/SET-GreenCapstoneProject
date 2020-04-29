@@ -6,7 +6,6 @@ import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import { isMobile } from "react-device-detect";
 import { Schedule } from "@syncfusion/ej2-react-schedule";
-import debounce from "lodash/debounce";
 
 import {
   Inject,
@@ -19,12 +18,12 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 
 import { extend } from "@syncfusion/ej2-base";
-import { Layout, Button, Spin, Select } from "antd";
+import { Layout, Button, Spin, Select, Switch } from "antd";
 const { Content } = Layout;
 const { Option } = Select;
 
 function processData(rawEvents) {
-  return rawEvents.result.map((event) => ({
+  return rawEvents.map((event) => ({
     Id: event.id,
     StartTime: moment(event.time, "YYYY-MM-DD HH:mm").toISOString(),
     EndTime: moment(event.time, "YYYY-MM-DD HH:mm")
@@ -37,12 +36,11 @@ function processData(rawEvents) {
     AwayTeam: event.awayteam,
     HomeTeam: event.hometeam,
     homeTeamId: event.hometeamId,
+    receiver: event.uacceptor,
+    sender: event.urequester,
+    rejected: event.rejected,
   }));
 }
-
-// const filterItems = (arr, query) => {
-//   return arr.filter(el => el.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1)
-// }
 
 class Cal extends React.Component {
   constructor(props) {
@@ -57,30 +55,61 @@ class Cal extends React.Component {
       homeTeamObject: [],
       alternative: false,
       alternativeData: [],
+      onlyIncoming: true,
+      refresh: false,
+      showButton: true,
     };
-    this.fetchUser = debounce(this.fetchUser, 800);
   }
 
   componentDidMount() {
+    this.fetchApi();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.refresh != this.state.refresh) {
+      this.fetchApi();
+    }
+    console.log("after CDU");
+    console.log(this.state.onlyIncoming);
+  }
+  fetchApi = () => {
+    let myTeamId = new Map();
+    this.props.myTeamId.map((row, index) => myTeamId.set(row));
+
     // Changing the view for mobile when opened with mobile
     // Changin to weekly view for mobile
     if (isMobile) {
       this.setState({ currentView: "Week" });
     }
 
-    const emptyBody = {};
+    const emptyBody = {
+      id: this.props.mySchool.id,
+    };
     axios
-      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyBody, {
+      .post(Authtoken.getBaseUrl() + "/api/game/get/BySchool/all", emptyBody, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
         },
       })
       .then((res) => {
-        console.log(res.data);
-        this.setState({ jData: extend([], processData(res.data), null, true) });
+        let myData = res.data.result.filter((myGames) =>
+          // console.log(myTeamId.has(myGames.awayteamId));
+          this.state.onlyIncoming
+            ? myTeamId.has(myGames.awayteamId)
+            : !myTeamId.has(myGames.awayteamId)
+        );
+        // console.log(myData);
+        let anotherLevel = myData.sort(
+          (a, b) => new Date(b.create_At) - new Date(a.create_At)
+        );
+        console.log("another level>>");
+        console.log(myData);
+        this.setState({
+          jData: extend([], processData(anotherLevel), null, true),
+        });
       });
-  }
+  };
 
   fetchHomeTeam = () => {
     let ben = this.props.mySchool.id;
@@ -125,80 +154,93 @@ class Cal extends React.Component {
     // this.setState({});
   };
 
-  filterItems = (arr, query) => {
-    console.log(
-      arr.filter(
-        (el) => el.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1
-      )
+  onClickPendingGames = () => {
+    this.setState({ alternative: true });
+    const pendingG = this.state.jData.filter(
+      (myFilter) =>
+        myFilter.sender == this.props.username && myFilter.receiver == null
     );
+    this.setState({ alternativeData: pendingG });
+    console.log(this.state.alternativeData);
+    console.log(this.state.jData);
+    // this.setState({});
   };
 
-  filter(props) {
-    const emptyBody = {};
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/get/all", emptyBody, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        this.setState({ jData: extend([], processData(res.data), null, true) });
-      });
-    console.log("test");
-    console.log(props);
+  onClickApprovedGames = () => {
+    this.setState({ alternative: true });
+    const pendingG = this.state.jData.filter(
+      (myFilter) => myFilter.PartialApproved && myFilter.FullyApproved
+    );
+    this.setState({ alternativeData: pendingG });
+    console.log(this.state.alternativeData);
     console.log(this.state.jData);
-    this.filterItems(this.state.jData, "Airline");
-  }
+    // this.setState({});
+  };
+  onToggleOutGoing = () => {
+    // this.setState({ onlyIncoming: false });
+    this.setState((prevState) => ({
+      refresh: !prevState.refresh,
+      onlyIncoming: !prevState.onlyIncoming,
+      showButton: !prevState.showButton,
+    }));
+    console.log("after toggle");
+    console.log(this.state.onlyIncoming);
+    console.log(this.state.jData);
+  };
 
   eventTemplate(props) {
-    if (props.PartialApproved && props.FullyApproved) {
-      return <div className="template-wrap"> {props.Subject} </div>;
-    } else if (props.PartialApproved || props.FullyApproved);
-    {
+    console.log("props>>");
+    console.log(props);
+    //Request made by me
+
+    // if pending
+    if (!props.PartialApproved && !props.rejected) {
+      return (
+        <div style={{ backgroundColor: "orange" }} className="template-wrap">
+          {props.Subject}
+        </div>
+      );
+    } else if (props.PartialApproved && props.FullyApproved) {
       return (
         <div
-          style={{ backgroundColor: "orange", maxHeight: "100px" }}
+          style={{ backgroundColor: "#87d068", maxHeight: "100px" }}
           className="template-wrap"
         >
-          {" "}
-          {props.Subject}{" "}
+          {props.Subject}
+        </div>
+      );
+    } else if (props.PartialApproved || props.rejected) {
+      return (
+        <div style={{ backgroundColor: "#108ee9" }} className="template-wrap">
+          {props.Subject}
         </div>
       );
     }
+
+    // if (props.sender == this.props.username && props.receiver == null) {
+    //   console.log("requsted game found");
+    //   return (
+    //     return (<div style={{ backgroundColor: "orange" }} className="template-wrap">
+    //       {props.Subject}
+    //     </div>);
+    //   );
+    // }
+    // if (props.PartialApproved && props.FullyApproved) {
+    //   return <div className="template-wrap"> {props.Subject} </div>;
+    // } else if (props.PartialApproved || props.FullyApproved);
+    // {
+    //   return (
+    //     <div
+    //       style={{ backgroundColor: "#87d068", maxHeight: "100px" }}
+    //       className="template-wrap"
+    //     >
+    //       {" "}
+    //       {props.Subject}{" "}
+    //     </div>
+    //   );
+    // }
   }
 
-  fetchUser = (value) => {
-    const schoolBody = {};
-    this.setState({ data: [], fetching: true });
-    axios
-      .post(
-        Authtoken.getBaseUrl() + "/api/location/school/get/all",
-        schoolBody,
-        {
-          headers: {
-            Authorization:
-              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-          },
-        }
-      )
-      .then((res) => {
-        const data = res.data.result.map((user) => ({
-          text: `${user.name}`,
-          value: user.name,
-        }));
-        this.setState({ data, fetching: false });
-      });
-  };
-
-  handleChange = (value) => {
-    this.filter(value);
-    this.setState({
-      value,
-      data: [],
-      fetching: false,
-    });
-  };
   // Links that could be helpful
   // https://github.com/syncfusion/ej2-react-samples/blob/master/src/schedule/local-data.jsx
 
@@ -240,13 +282,21 @@ class Cal extends React.Component {
               </Option>
             ))}
           </Select>
-          <Button
-            style={{ marginLeft: "8px" }}
-            type="primary"
-            onClick={this.onClickFilterByHomteTeam}
-          >
-            Filter By Team
-          </Button>
+          {
+            <Button
+              style={{ marginLeft: "8px" }}
+              type="primary"
+              onClick={this.onClickFilterByHomteTeam}
+            >
+              Filter By Team
+            </Button>
+          }
+          <Switch
+            checkedChildren="Incoming"
+            unCheckedChildren="Outgoing"
+            defaultChecked
+            onChange={this.onToggleOutGoing}
+          />
           <Button
             style={{ marginLeft: "8px" }}
             type="secondary"
@@ -254,6 +304,34 @@ class Cal extends React.Component {
           >
             Reset
           </Button>
+          {this.state.showButton ? (
+            <span>
+              <Button
+                style={{ marginLeft: "8px" }}
+                type="primary"
+                style={{ background: "orange", borderColor: "white" }}
+                onClick={this.onClickPendingGames}
+              >
+                Undecided
+              </Button>
+              <Button
+                style={{ marginLeft: "8px" }}
+                type="primary"
+                style={{ background: "#87d068", borderColor: "white" }}
+                onClick={this.onClickPendingGames}
+              >
+                Decided
+              </Button>
+              <Button
+                style={{ marginLeft: "8px" }}
+                type="primary"
+                style={{ background: "green", borderColor: "white" }}
+                onClick={this.onClickApprovedGames}
+              >
+                Final
+              </Button>
+            </span>
+          ) : null}
         </div>
         <ScheduleComponent
           currentView={this.state.currentView}
@@ -290,6 +368,8 @@ const mapStatetoProps = (state) => {
   return {
     token: state.userReducer.token,
     mySchool: state.userReducer.mySchool,
+    username: state.userReducer.username,
+    myTeamId: state.gameReducer.myTeam,
   };
 };
 

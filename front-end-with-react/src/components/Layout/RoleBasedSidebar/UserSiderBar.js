@@ -30,6 +30,7 @@ import {
   MailTwoTone,
   BellTwoTone,
   NotificationOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -47,8 +48,8 @@ class UserSidebar extends Component {
         mode="inline"
         theme="dark"
         className="sidebarProperty"
-        defaultSelectedKeys={["1"]}
-        // defaultOpenKeys={["sub1"]}
+        defaultSelectedKeys={["dashboard"]}
+        defaultOpenKeys={["dashboard"]}
         style={{ height: "100%", borderRight: 0, paddingRight: "0" }}
       >
         <Menu.Item onClick={handleClick} key="dashboard">
@@ -69,15 +70,33 @@ class UserSidebar extends Component {
             <span>Notification </span>
           </Badge>
         </Menu.Item>
+        <SubMenu
+          key="calendarP"
+          title={
+            <span>
+              <AppstoreOutlined />
+              <span>Calendar</span>
+            </span>
+          }
+        >
+          <Menu.Item onClick={handleClick} key="calendarP">
+            <span>
+              <a href="/calendarP">
+                <TeamOutlined />
+              </a>
+            </span>
+            <span>Personalized Calendar</span>
+          </Menu.Item>
+          <Menu.Item onClick={handleClick} key="calendarG">
+            <span>
+              <a href="/calendarG">
+                <CalendarOutlined />
+              </a>
+            </span>
+            <span>General Calendar</span>
+          </Menu.Item>
+        </SubMenu>
 
-        <Menu.Item onClick={handleClick} key="calander">
-          <span>
-            <a href="/calander">
-              <CalendarOutlined />
-            </a>
-          </span>
-          <span>Game Calendar</span>
-        </Menu.Item>
         <Menu.Item onClick={handleClick} key="createGame">
           <span>
             <a href="/createGame">
