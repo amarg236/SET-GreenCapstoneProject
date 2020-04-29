@@ -16,32 +16,7 @@ import {
 const { Content } = Layout;
 const { TextArea } = Input;
 
-function processData(supply) {
-  console.log("processData>>");
-  console.log(supply);
-  return supply.map((row) => ({
-    key: row.id,
-    team: row.tm.tmName,
-    date: moment(row.dte).format("YYYY-MM-DD"),
-  }));
-}
-
 class ViewGoodDay extends Component {
-  state = {
-    goodDay: [],
-    refresh: false,
-  };
-
-  componentDidMount() {
-    this.fetchApi();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.refresh != this.state.refresh) {
-      this.fetchApi();
-    }
-  }
-
   successMsg = (s_message) => {
     Modal.success({
       content: (
@@ -62,47 +37,16 @@ class ViewGoodDay extends Component {
     });
   };
 
-  fetchApi = () => {
-    const noticeObj = {};
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/team/day/good/get/all", noticeObj, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        this.setState({
-          goodDay: processData(res.data.result),
-        });
-      });
-  };
-
   deletenotice = (record) => {
     console.log(record.key);
-    const deleteObj = {
-      id: record.key,
-    };
-    console.log(deleteObj);
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/team/day/good/remove", deleteObj, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        if (res.status == 200) {
-          console.log(res);
-          this.successMsg("The day has been removed from good day list . ");
-          this.setState((prevState) => ({
-            refresh: !prevState.refresh,
-          }));
-        } else {
-          this.errorMsg("Sorry day  could not be deleted.");
-        }
-      });
+    this.props.deleteNotice(record).then((res) => {
+      if (res.status == 200) {
+        console.log(res);
+        this.successMsg("The day has been removed from good day list . ");
+      } else {
+        this.errorMsg("Sorry day  could not be deleted.");
+      }
+    });
   };
   render() {
     // const { notice } = this.state.notice;
@@ -144,7 +88,7 @@ class ViewGoodDay extends Component {
             marginBottom: "10px",
           }}
         >
-          <Table columns={columns} dataSource={this.state.goodDay} />
+          <Table columns={columns} dataSource={this.props.goodDay} />
         </div>
       </span>
     );

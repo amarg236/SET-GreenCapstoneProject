@@ -22,8 +22,9 @@ function processData(supply) {
   console.log(supply);
   return supply.map((row) => ({
     key: row.id,
-    team: row.tm.tmName,
-    date: moment(row.dte).format("YYYY-MM-DD"),
+    starDate: moment(row.dte).format("YYYY-MM-DD"),
+    endDate: moment(row.endDate).format("YYYY-MM-DD"),
+    reason: row.reason,
   }));
 }
 
@@ -31,6 +32,7 @@ class ViewEvent extends Component {
   state = {
     goodDay: [],
     refresh: false,
+    eventDay: [],
   };
 
   componentDidMount() {
@@ -66,7 +68,7 @@ class ViewEvent extends Component {
   fetchApi = () => {
     const noticeObj = {};
     axios
-      .post(Authtoken.getBaseUrl() + "/api/team/day/bad/get/all", noticeObj, {
+      .post(Authtoken.getBaseUrl() + "/api/team/day/event/get/all", noticeObj, {
         headers: {
           Authorization:
             "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
@@ -75,12 +77,12 @@ class ViewEvent extends Component {
       .then((res) => {
         console.log(res);
         this.setState({
-          goodDay: processData(res.data.result),
+          eventDay: processData(res.data.result),
         });
       });
   };
 
-  deletenotice = (record) => {
+  deletEvents = (record) => {
     console.log(record.key);
     const deleteObj = {
       id: record.key,
@@ -109,15 +111,19 @@ class ViewEvent extends Component {
     // const { notice } = this.state.notice;
     const columns = [
       {
-        title: "Date",
-        dataIndex: "date",
-        key: "date",
-        render: (text) => <a>{text}</a>,
+        title: "Start Date",
+        dataIndex: "starDate",
+        key: "starDate",
       },
       {
-        title: "Team",
-        dataIndex: "team",
-        key: "team",
+        title: "End Date",
+        dataIndex: "endDate",
+        key: "endDate",
+      },
+      {
+        title: "Descreption",
+        dataIndex: "reason",
+        key: "reason",
       },
 
       {
@@ -125,7 +131,7 @@ class ViewEvent extends Component {
         key: "action",
         render: (text, record) => (
           <span>
-            <Button onClick={() => this.deletenotice(record)}>Delete</Button>
+            <Button onClick={() => this.deletEvents(record)}>Delete</Button>
           </span>
         ),
       },
@@ -145,7 +151,7 @@ class ViewEvent extends Component {
             marginBottom: "10px",
           }}
         >
-          <Table columns={columns} dataSource={this.state.goodDay} />
+          <Table columns={columns} dataSource={this.state.eventDay} />
         </div>
       </span>
     );

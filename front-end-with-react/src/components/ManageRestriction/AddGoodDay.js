@@ -22,6 +22,16 @@ import { FormOutlined } from "@ant-design/icons";
 const { Content } = Layout;
 const { TextArea } = Input;
 const { Title } = Typography;
+
+function processData(supply) {
+  console.log("processData>>");
+  console.log(supply);
+  return supply.map((row) => ({
+    key: row.id,
+    team: row.tm.tmName,
+    date: moment(row.dte).format("YYYY-MM-DD"),
+  }));
+}
 class AddGoodDay extends Component {
   formRef = React.createRef();
   state = {
@@ -49,17 +59,20 @@ class AddGoodDay extends Component {
     againstTeamDistrictId: "",
     gameTime: "",
     refresh: false,
+    goodDay: [],
   };
 
   componentDidMount() {
     // this.onReset();
 
     this.fetchApi();
+    this.fetchGoodDayApi();
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.refresh != this.state.refresh) {
       this.fetchApi();
+      this.fetchGoodDayApi();
     }
   }
 
@@ -113,6 +126,44 @@ class AddGoodDay extends Component {
         this.setState({ homeTeamObj: getHomeTeamResponse.data.result });
       })
     );
+  };
+
+  fetchGoodDayApi = () => {
+    const noticeObj = {};
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/team/day/good/get/all", noticeObj, {
+        headers: {
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        this.setState({
+          goodDay: processData(res.data.result),
+        });
+      });
+  };
+
+  deleteNotice = (record) => {
+    const deleteObj = {
+      id: record.key,
+    };
+    return axios
+      .post(Authtoken.getBaseUrl() + "/api/team/day/good/remove", deleteObj, {
+        headers: {
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          this.setState((prevState) => ({
+            refresh: !prevState.refresh,
+          }));
+        }
+        return res;
+      });
   };
 
   onTitleChange = (e) => {
@@ -261,7 +312,10 @@ class AddGoodDay extends Component {
             </Form.Item>
           </Form>
         </div>
-        <ViewGoodGame />
+        <ViewGoodGame
+          goodDay={this.state.goodDay}
+          deleteNotice={this.deleteNotice}
+        />
       </Content>
     );
   }

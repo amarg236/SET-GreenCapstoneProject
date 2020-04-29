@@ -17,16 +17,49 @@ const { Content } = Layout;
 
 // Export Formatted for all data on calender.
 function processData(rawEvents) {
-  return rawEvents.map((event) => ({
-    GameDate: moment(event.time, "YYYY-MM-DD").format("YYYY/MM/DD"),
-    GameTime: moment(event.time, "YYYY-MM-DD HH:mm").format("h:mm A"),
-    // Level: findTeamLevel(event.hometeam),
-    Level: "Dummy",
-    HomeTeam: event.hometeam,
-    HomeLevel: "Dummy-Varsity",
-    AwayTeam: event.awayteam,
-    AwayLevel: "Dummy-JV",
-  }));
+  return axios.all(
+    rawEvents.map((event) => {
+      return axios
+        .all([
+          axios.post(
+            Authtoken.getBaseUrl() + "/api/team/get/byId",
+            {
+              id: event.hometeamId,
+            },
+            {
+              headers: {
+                Authorization:
+                  "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+              },
+            }
+          ),
+          axios.post(
+            Authtoken.getBaseUrl() + "/api/team/get/byId",
+            {
+              id: event.awayteamId,
+            },
+            {
+              headers: {
+                Authorization:
+                  "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+              },
+            }
+          ),
+        ])
+        .then(([teamData, awayTeam]) => {
+          return {
+            GameDate: moment(event.time, "YYYY-MM-DD").format("YYYY/MM/DD"),
+            GameTime: moment(event.time, "YYYY-MM-DD HH:mm").format("h:mm A"),
+            // Level: findTeamLevel(event.hometeam),
+            Level: "Dummy",
+            HomeTeam: event.hometeam,
+            HomeLevel: teamData.data.result.tmClass,
+            AwayTeam: event.awayteam,
+            AwayLevel: awayTeam.data.result.tmClass,
+          };
+        });
+    })
+  );
 }
 
 // function findTeamLevel(inputHere) {
@@ -177,9 +210,11 @@ class ExportToCSV extends Component {
           console.log("another level>>");
           console.log(anotherLevel);
 
-          this.setState({
-            exportObject: processData(anotherLevel),
-            readyForExport: true,
+          processData(anotherLevel).then((processedData) => {
+            this.setState({
+              exportObject: processedData,
+              readyForExport: true,
+            });
           });
         }
 
@@ -344,12 +379,14 @@ class ExportToCSV extends Component {
                     icon={<DownloadOutlined />}
                     onClick={() => this.setState({ readyForExport: false })}
                   >
-                    <CSVLink
-                      headers={this.headers}
-                      data={this.state.exportObject}
-                    >
-                      <span className="button-all"> Export All Schedule</span>
-                    </CSVLink>
+                    {
+                      <CSVLink
+                        headers={this.headers}
+                        data={this.state.exportObject}
+                      >
+                        <span className="button-all"> Export All Schedule</span>
+                      </CSVLink>
+                    }
                   </Button>
                 </Form.Item>
               </div>

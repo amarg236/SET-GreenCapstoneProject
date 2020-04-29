@@ -227,6 +227,7 @@ class AddEventDay extends Component {
             </Form.Item>
           </Form>
         </div>
+        <ViewEvent />
       </Content>
     );
   }
