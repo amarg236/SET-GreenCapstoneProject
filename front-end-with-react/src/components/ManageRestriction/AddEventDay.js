@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import Authtoken from "../../Utility/AuthToken";
 import React, { Component } from "react";
+import ViewEvent from "./ViewEvent";
 
 import {
   Form,
@@ -39,8 +40,8 @@ class AddEventDay extends Component {
     },
     startDate: moment().format("YYYY-MM-DD"),
     endDate: moment().format("YYYY-MM-DD"),
-    gameStartTime: moment().format("HH:mm"),
-    gameEndTime: moment().format("HH:mm"),
+    // gameStartTime: moment().format("HH:mm"),
+    // gameEndTime: moment().format("HH:mm"),
     // gameEndTime: moment()
     //   .add(30, "minute")
     //   .format("HH:mm"),
@@ -86,16 +87,16 @@ class AddEventDay extends Component {
 
   onChangeStartDate = (date, dateString) => {
     // console.log(date);
-    console.log(dateString);
+    // console.log(dateString);
     console.log(date?.format("YYYY-MM-DD"));
     this.setState({ startDate: date?.format("YYYY-MM-DD") });
   };
 
   onChangeEndDate = (date, dateString) => {
     // console.log(date);
-    console.log(dateString);
+    // console.log(dateString);
     console.log(date?.format("YYYY-MM-DD"));
-    this.setState({ endtDate: date?.format("YYYY-MM-DD") });
+    this.setState({ endDate: date?.format("YYYY-MM-DD") });
   };
 
   render() {
