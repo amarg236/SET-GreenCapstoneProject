@@ -203,7 +203,7 @@ class Cal extends React.Component {
     } else if (props.PartialApproved && props.FullyApproved) {
       return (
         <div
-          style={{ backgroundColor: "#87d068", maxHeight: "100px" }}
+          style={{ backgroundColor: "#108ee9", maxHeight: "100px" }}
           className="template-wrap"
         >
           {props.Subject}
@@ -211,7 +211,7 @@ class Cal extends React.Component {
       );
     } else if (props.PartialApproved || props.rejected) {
       return (
-        <div style={{ backgroundColor: "#108ee9" }} className="template-wrap">
+        <div style={{ backgroundColor: "#87d068" }} className="template-wrap">
           {props.Subject}
         </div>
       );
@@ -304,34 +304,33 @@ class Cal extends React.Component {
           >
             Reset
           </Button>
-          {this.state.showButton ? (
-            <span>
-              <Button
-                style={{ marginLeft: "8px" }}
-                type="primary"
-                style={{ background: "orange", borderColor: "white" }}
-                onClick={this.onClickPendingGames}
-              >
-                Undecided
-              </Button>
-              <Button
-                style={{ marginLeft: "8px" }}
-                type="primary"
-                style={{ background: "#87d068", borderColor: "white" }}
-                onClick={this.onClickPendingGames}
-              >
-                Decided
-              </Button>
-              <Button
-                style={{ marginLeft: "8px" }}
-                type="primary"
-                style={{ background: "green", borderColor: "white" }}
-                onClick={this.onClickApprovedGames}
-              >
-                Final
-              </Button>
-            </span>
-          ) : null}
+
+          <span>
+            <Button
+              style={{ marginLeft: "8px" }}
+              type="primary"
+              style={{ background: "orange", borderColor: "white" }}
+              onClick={this.onClickPendingGames}
+            >
+              Undecided
+            </Button>
+            <Button
+              style={{ marginLeft: "8px" }}
+              type="primary"
+              style={{ background: "#108ee9", borderColor: "white" }}
+              onClick={this.onClickPendingGames}
+            >
+              Decided
+            </Button>
+            <Button
+              style={{ marginLeft: "8px" }}
+              type="primary"
+              style={{ background: "#87d068", borderColor: "white" }}
+              onClick={this.onClickApprovedGames}
+            >
+              Final
+            </Button>
+          </span>
         </div>
         <ScheduleComponent
           currentView={this.state.currentView}

@@ -64,10 +64,7 @@ class AdminRejectedGames extends Component {
           console.log("res>>");
           console.log(res.data.result);
           const myData = res.data.result.filter(function (adminViewGames) {
-            return (
-              !adminViewGames.approved ||
-              (adminViewGames.rejected && adminViewGames.awayAccepted)
-            );
+            return adminViewGames.rejected && adminViewGames.awayAccepted;
           });
           console.log("myData>>");
           console.log(myData);
