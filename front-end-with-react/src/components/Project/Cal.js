@@ -18,7 +18,7 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 
 import { extend } from "@syncfusion/ej2-base";
-import { Layout, Button, Spin, Select, Switch } from "antd";
+import { Layout, Button, Spin, Select, Switch, Row, Col } from "antd";
 const { Content } = Layout;
 const { Option } = Select;
 
@@ -265,73 +265,96 @@ class Cal extends React.Component {
             marginBottom: "10px",
           }}
         >
-          <Select
-            // mode="multiple"
-            // labelInValue
+          <Row justify="center">
+            <Col style={{ textAlign: "center" }} md={8} lg={8} xs={24}>
+              <Select
+                // mode="multiple"
+                // labelInValue
 
-            placeholder="Select Home Team"
-            notFoundContent={fetching ? <Spin size="small" /> : null}
-            // filterOption={true}
-            style={{ width: "250px", minWidth: "auto" }}
-            onChange={this.onChangeFilterByTeam}
-            onFocus={this.fetchHomeTeam}
-          >
-            {this.state.homeTeamObject.map((d) => (
-              <Option value={d.id} key={d.id}>
-                {d.tmName}
-              </Option>
-            ))}
-          </Select>
-          {
-            <Button
-              style={{ marginLeft: "8px" }}
-              type="primary"
-              onClick={this.onClickFilterByHomteTeam}
-            >
-              Filter By Team
-            </Button>
-          }
+                placeholder="Select Home Team"
+                notFoundContent={fetching ? <Spin size="small" /> : null}
+                // filterOption={true}
+                style={{ padding: "10px", width: "250px", minWidth: "auto" }}
+                onChange={this.onChangeFilterByTeam}
+                onFocus={this.fetchHomeTeam}
+              >
+                {this.state.homeTeamObject.map((d) => (
+                  <Option value={d.id} key={d.id}>
+                    {d.tmName}
+                  </Option>
+                ))}
+              </Select>
+              <span style={{ padding: "10px" }}>
+                <Button
+                  style={{ marginLeft: "8px" }}
+                  type="primary"
+                  onClick={this.onClickFilterByHomteTeam}
+                >
+                  Filter By Team
+                </Button>
 
-          <Button
-            style={{ marginLeft: "8px" }}
-            type="secondary"
-            onClick={() => this.setState({ alternative: false })}
-          >
-            Reset
-          </Button>
-          <Switch
-            style={{ marginLeft: "50px" }}
-            checkedChildren="Incoming"
-            unCheckedChildren="Outgoing"
-            defaultChecked
-            onChange={this.onToggleOutGoing}
-          />
-          <span style={{ float: "right" }}>
-            <Button
-              style={{ marginLeft: "8px" }}
-              type="primary"
-              style={{ background: "orange", borderColor: "white" }}
-              // onClick={this.onClickPendingGames}
-            >
-              Undecided
-            </Button>
-            <Button
-              style={{ marginLeft: "8px" }}
-              type="primary"
-              style={{ background: "#108ee9", borderColor: "white" }}
-              // onClick={this.onClickPendingGames}
-            >
-              Decided
-            </Button>
-            <Button
-              style={{ marginLeft: "8px" }}
-              type="primary"
-              style={{ background: "#87d068", borderColor: "white" }}
-              // onClick={this.onClickApprovedGames}
-            >
-              Final
-            </Button>
-          </span>
+                <Button
+                  style={{ marginLeft: "8px" }}
+                  type="secondary"
+                  onClick={() => this.setState({ alternative: false })}
+                >
+                  Reset
+                </Button>
+              </span>
+            </Col>
+            <Col style={{ textAlign: "center" }} md={8} lg={8} xs={24}>
+              <Switch
+                style={{
+                  marginTop: "5px",
+                  marginBottom: "5px",
+                }}
+                checkedChildren="Incoming"
+                unCheckedChildren="Outgoing"
+                defaultChecked
+                onChange={this.onToggleOutGoing}
+              />
+            </Col>
+            <Col md={8} lg={8} xs={24}>
+              <span style={{ padding: "10px" }}>
+                <Button
+                  type="primary"
+                  style={{
+                    padding: "5px",
+                    width: "30%",
+                    background: "orange",
+                    borderColor: "white",
+                  }}
+                  // onClick={this.onClickPendingGames}
+                >
+                  Undecided
+                </Button>
+                <Button
+                  type="primary"
+                  style={{
+                    padding: "5px",
+                    width: "30%",
+                    background: "#108ee9",
+                    borderColor: "white",
+                  }}
+                  // onClick={this.onClickPendingGames}
+                >
+                  Decided
+                </Button>
+                <Button
+                  type="primary"
+                  style={{
+                    padding: "5px",
+                    width: "30%",
+                    background: "#87d068",
+                    borderColor: "white",
+                  }}
+                  // onClick={this.onClickApprovedGames}
+                >
+                  Final
+                </Button>
+              </span>
+            </Col>
+          </Row>
         </div>
         <ScheduleComponent
           currentView={this.state.currentView}
