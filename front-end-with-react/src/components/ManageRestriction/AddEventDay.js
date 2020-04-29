@@ -152,7 +152,7 @@ class AddEventDay extends Component {
         }}
       >
         <Title>
-          Add Event Days&nbsp;
+          Add Block Days&nbsp;
           <FormOutlined />
         </Title>
         <div
