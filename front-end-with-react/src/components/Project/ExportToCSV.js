@@ -20,13 +20,19 @@ function processData(rawEvents) {
   return rawEvents.map((event) => ({
     GameDate: moment(event.time, "YYYY-MM-DD").format("YYYY/MM/DD"),
     GameTime: moment(event.time, "YYYY-MM-DD HH:mm").format("h:mm A"),
-    Level: "Dummy_L",
+    // Level: findTeamLevel(event.hometeam),
+    Level: "Dummy",
     HomeTeam: event.hometeam,
     HomeLevel: "Dummy-Varsity",
     AwayTeam: event.awayteam,
     AwayLevel: "Dummy-JV",
   }));
 }
+
+// function findTeamLevel(inputHere) {
+//   return "Dummy Level";
+//   console.log(inputHere);
+// }
 
 class ExportToCSV extends Component {
   constructor(props) {
@@ -47,7 +53,7 @@ class ExportToCSV extends Component {
       selectedTeamId: "",
       teamSelected: [],
       exportObject: [],
-      alternateTeamId: 13,
+      ifSelectedTeam: false,
     };
   }
 
@@ -238,11 +244,30 @@ class ExportToCSV extends Component {
                   >
                     <Option key="all">Export all</Option>
                     <Option key="school">School</Option>
-                    <Option key="team">Team</Option>
+                    {
+                      // <Option key="team">Team</Option>
+                    }
                   </Select>
                 </Form.Item>
 
                 {this.state.isItSchool ? (
+                  <Form.Item label="Select School">
+                    <Select
+                      showSearch
+                      onChange={this.onSelectSchool}
+                      style={{ width: "85%" }}
+                      placeholder="Select one option"
+                    >
+                      {this.state.schoolData.map((sc) => (
+                        <Option key={sc.id} value={sc.id}>
+                          {sc.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                ) : null}
+
+                {this.state.ifSelectedTeam ? (
                   <Form.Item label="Select School">
                     <Select
                       showSearch
