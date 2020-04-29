@@ -52,7 +52,7 @@ class AssignorSidebar extends Component {
           <span>Dashboard</span>
         </Menu.Item>
 
-        <Menu.Item onClick={handleClick} key="calander">
+        <Menu.Item onClick={handleClick} key="adminCalendar">
           <span>
             <CalendarOutlined />
           </span>
