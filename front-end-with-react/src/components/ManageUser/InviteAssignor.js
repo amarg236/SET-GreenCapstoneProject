@@ -197,7 +197,7 @@ class InviteAssignor extends Component {
                 value={this.state.role}
                 style={{ width: "450px", minWidth: "auto" }}
               >
-                <Select.Option value="ASSIGNER">ASSIGNOR</Select.Option>
+                <Select.Option value="ASSIGNOR">ASSIGNOR</Select.Option>
               </Select>
             </Form.Item>
 

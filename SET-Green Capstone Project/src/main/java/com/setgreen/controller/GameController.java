@@ -73,7 +73,7 @@ public class GameController {
 			Game g = new Game();
 			g.setId(dta.getData()[i]);
 			//Minor save on processing if it's not a coach doing the bulk accept as we don't have to fetch role
-			if(_ur.getName().userLevel() >= RoleName.ASSIGNER.userLevel()) {
+			if(_ur.getName().userLevel() >= RoleName.ASSIGNOR.userLevel()) {
 				rb[i] = _ur.approveGame(auth, g.getId());
 			}
 			else {
@@ -92,7 +92,7 @@ public class GameController {
 			Game g = new Game();
 			g.setId(dta.getData()[i]);
 			//Minor save on processing if it's not a coach doing the bulk accept as we don't have to fetch role
-			if(_ur.getName().userLevel() >= RoleName.ASSIGNER.userLevel()) {
+			if(_ur.getName().userLevel() >= RoleName.ASSIGNOR.userLevel()) {
 				rb[i] = _ur.rejectGame(auth, g);
 			}
 			else {
@@ -212,6 +212,10 @@ public class GameController {
 	@PostMapping("get/BySchool/all") //all games for all teams for a school
 	public ResponseBody<List<Game>> getSchoolIdAll(@RequestBody School s){
 		return gh.getGames(s, true);
+	}
+	@PostMapping("get/BySchoolId/hasNotification") //{"hometeamId":long, "homeNodification":bool, "awayNotification": bool}
+	public ResponseBody<List<Game>> getTeamIdNotifications(@RequestBody School s){
+		return gh.getGamesSchoolIdNotification(s);
 	}
 	@PostMapping("get/BySchool/notAccepted") //all games where awayAccepted=false for all teams for a school
 	public ResponseBody<List<Game>> getSchoolIdUserUnverified(@RequestBody School s){

@@ -90,7 +90,7 @@ class UserProfile extends Component {
 }
 const mapStatetoProps = (state) => {
   switch (state.userReducer.role) {
-    case "ASSIGNER":
+    case "ASSIGNOR":
       return {
         username: state.userReducer.username,
         role: state.userReducer.role,

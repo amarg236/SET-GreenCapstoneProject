@@ -59,7 +59,7 @@ class SidebarComp extends Component {
       case "ADMIN":
         return <AdminSidebar />;
 
-      case "ASSIGNER":
+      case "ASSIGNOR":
         return <AssignorSidebar />;
 
       case "USER":

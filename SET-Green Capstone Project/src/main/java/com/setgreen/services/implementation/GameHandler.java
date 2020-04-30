@@ -363,7 +363,6 @@ public class GameHandler {
 		return getArbiterFormatted(g);
 	}
 	public ResponseBody<DataObject<String>> getArbiterFormatted(Game g) {
-		Date dte = g.getTime();
 		List<Game> gms = gr.findByAfterDateAndApprovedTrueAndAwayAcceptedTrue(g.getTime());
 		StringBuilder rtrn = new StringBuilder();
 		rtrn.append("Date,Time,Game,Custom-Game-ID,Sport,Level,Home-Team,Home-Level,Away-Team,Away-Level,Site,Sub-site,Bill-To,Officials");
@@ -426,5 +425,18 @@ public class GameHandler {
 					);
 		}
 		return new ResponseBody<DataObject<String>>(HttpStatus.ACCEPTED.value(), "games", new DataObject<String>(rtrn.toString()));
+	}
+	public ResponseBody<List<Game>> getGamesSchoolIdNotification(School s) {
+		Iterable<Teams> ts = tr.findBySchool_Id(s.getId());
+		HashSet<Game> gs = new HashSet<Game>();
+		for(Teams t : ts) {
+			Game g = new Game();
+			g.setHometeamId(t.getId());
+			g.setHomeNotification(true);
+			g.setAwayNotification(true);
+			gs.addAll(getGamesIdNotification(g).getResult());
+		}
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Games found", new ArrayList<Game>(gs));
+				
 	}
 }

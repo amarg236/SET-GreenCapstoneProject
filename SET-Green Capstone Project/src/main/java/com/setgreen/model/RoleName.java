@@ -16,7 +16,7 @@ public enum RoleName {
 			return false;
 		}
     },
-    ASSIGNER{ //Assigners 
+    ASSIGNOR{ //Assignors 
 		@Override
 		public int userLevel() {
 			return 8000;

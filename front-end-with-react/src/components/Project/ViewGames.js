@@ -54,7 +54,7 @@ class ViewGames extends Component {
           </Content>
         );
 
-      case "ASSIGNER":
+      case "ASSIGNOR":
         return (
           <Content
             className="AssignorMediaVG"

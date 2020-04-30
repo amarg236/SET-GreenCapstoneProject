@@ -68,7 +68,7 @@ public class MailHandler {
 		Mail m = new Mail();
 		m.setSendTo(toInvite.getEmail());
 		m.setSubjectLine("Invite to schedule games");
-		m.setEmailContent("You have been invited to join an email scheduling system.\nFollow this link to finish the sign up process: "+HOSTNAME+"api/auth/login?u="+URLEncoder.encode(toInvite.getEmail(), "UTF-8")+"&p="+toInvite.getPassword());
+		m.setEmailContent("You have been invited to join an email scheduling system.\nFollow this link to finish the sign up process: "+HOSTNAME+"verify/login?u="+URLEncoder.encode(toInvite.getEmail(), "UTF-8")+"&p="+toInvite.getPassword());
 		return m;
 	}
 	public void forgotPassword(String who, String tempPw) throws UnsupportedEncodingException{

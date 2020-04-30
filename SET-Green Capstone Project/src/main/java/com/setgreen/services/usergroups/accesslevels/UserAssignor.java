@@ -22,7 +22,7 @@ import com.setgreen.util.DataObject;
 public class UserAssignor extends UserScheduler /*implements UserReference*/  {
 	@Override
 	public RoleName getName() {
-		return RoleName.ASSIGNER;
+		return RoleName.ASSIGNOR;
 	}
 	
 	@Override
