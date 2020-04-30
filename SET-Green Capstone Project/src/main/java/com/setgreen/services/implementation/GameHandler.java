@@ -10,25 +10,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.setgreen.model.District;
 import com.setgreen.model.Game;
 import com.setgreen.model.ResponseBody;
-import com.setgreen.model.Role;
 import com.setgreen.model.School;
 import com.setgreen.model.Teams;
-import com.setgreen.model.mail.Mail;
 import com.setgreen.repositories.GameRepo;
-import com.setgreen.repositories.SchoolRepo;
 import com.setgreen.repositories.TeamsRepo;
-import com.setgreen.services.mailservice.MailHandler;
 import com.setgreen.util.DataObject;
-import com.setgreen.util.Debugger;
 
 @Service
 public class GameHandler {
@@ -352,8 +345,19 @@ public class GameHandler {
 	public ResponseBody<List<Game>> getGamesIdModified(Teams t) {
 		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByHometeamIdAndHasBeenEditedTrue(t.getId()));
 	}
+	@Transactional
 	public ResponseBody<List<Game>> getGamesIdNotification(Game g) {
-		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByTeamIdAndNotifications(g.getHometeamId(), g.isHomeNotification(), g.isAwayNotification()));
+		List<Game> gon_give_it_to_yah = gr.findByTeamIdAndNotifications(g.getHometeamId(), g.isHomeNotification(), g.isAwayNotification());
+		for(Game x : gon_give_it_to_yah) {
+			if(x.getHometeamId() == g.getHometeamId()) {
+				g.setHomeNotification(false);
+			}
+			else {
+				g.setAwayNotification(false);
+			}
+			gr.save(g);
+		}
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gon_give_it_to_yah);
 	}
 	public ResponseBody<DataObject<String>> getArbiterFormatted(){
 		Game g = new Game();
@@ -426,6 +430,9 @@ public class GameHandler {
 		}
 		return new ResponseBody<DataObject<String>>(HttpStatus.ACCEPTED.value(), "games", new DataObject<String>(rtrn.toString()));
 	}
+	/*
+	 * view and clear home
+	 */
 	public ResponseBody<List<Game>> getGamesSchoolIdNotification(School s) {
 		Iterable<Teams> ts = tr.findBySchool_Id(s.getId());
 		HashSet<Game> gs = new HashSet<Game>();
@@ -437,6 +444,5 @@ public class GameHandler {
 			gs.addAll(getGamesIdNotification(g).getResult());
 		}
 		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Games found", new ArrayList<Game>(gs));
-				
 	}
 }
