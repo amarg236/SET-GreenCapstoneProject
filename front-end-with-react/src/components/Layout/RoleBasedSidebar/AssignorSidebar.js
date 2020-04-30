@@ -23,6 +23,7 @@ import {
   UserAddOutlined,
   SolutionOutlined,
   CheckOutlined,
+  WarningOutlined,
 } from "@ant-design/icons";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -143,7 +144,7 @@ class AssignorSidebar extends Component {
         <Menu.Item onClick={handleClick} key="addEventDay">
           <span>
             <a href="/addEventDay">
-              <CheckOutlined />
+              <WarningOutlined />
             </a>
           </span>
           <span>Block Days</span>
