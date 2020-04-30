@@ -1,6 +1,10 @@
 package com.setgreen.services.implementation;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -347,5 +351,80 @@ public class GameHandler {
 	}
 	public ResponseBody<List<Game>> getGamesIdModified(Teams t) {
 		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByHometeamIdAndHasBeenEditedTrue(t.getId()));
+	}
+	public ResponseBody<List<Game>> getGamesIdNotification(Game g) {
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByTeamIdAndNotifications(g.getHometeamId(), g.isHomeNotification(), g.isAwayNotification()));
+	}
+	public ResponseBody<DataObject<String>> getArbiterFormatted(){
+		Game g = new Game();
+		Date d = new Date();
+		d.setTime(0);
+		g.setTime(d);
+		return getArbiterFormatted(g);
+	}
+	public ResponseBody<DataObject<String>> getArbiterFormatted(Game g) {
+		Date dte = g.getTime();
+		List<Game> gms = gr.findByAfterDateAndApprovedTrueAndAwayAcceptedTrue(g.getTime());
+		StringBuilder rtrn = new StringBuilder();
+		rtrn.append("Date,Time,Game,Custom-Game-ID,Sport,Level,Home-Team,Home-Level,Away-Team,Away-Level,Site,Sub-site,Bill-To,Officials");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM'/'dd'/'YY','hh:mm aa");
+		String sport = "Soccer";
+		HashMap<Long, Teams> sot = new HashMap<Long, Teams>();
+		for(Game _g : gms) {
+			Teams t, t2;
+			if(!sot.containsKey(_g.getHometeamId())) {
+				t = tr.findById(_g.getHometeamId()).get();
+				sot.put(_g.getHometeamId(), t);
+			}
+			else {
+				t = sot.get(_g.getHometeamId());
+			}
+			if(!sot.containsKey(_g.getAwayteamId())) {
+				t2 = tr.findById(_g.getAwayteamId()).get();
+				sot.put(_g.getAwayteamId(), t2);
+			}
+			else {
+				t2 = sot.get(_g.getAwayteamId());
+			}
+			String EL = ",";
+			rtrn.append(
+					sdf.format(	
+							_g.getTime()) + EL // DATE_AND_TIME 
+							+ EL			// GAME 
+							+ EL			//Custom game ID
+							+ sport + EL		//Sport
+							+ t.getTmClass() + EL//Level
+							+ t.getInternalName() + EL//Home-Team
+							+ t.getTmClass() + EL//Home-level
+							+ t2.getInternalName() + EL//Away-Team
+							+ t2.getTmClass() + EL//Away-level
+							+ EL//Site
+							+ EL//Sub-site
+							+ EL//Bill-To
+							+ EL//Officials
+							+ "\n"
+					);
+			sport = "";
+		}
+		if(sot.isEmpty()) {
+			String EL = ",";
+			rtrn.append(
+						  EL // DATE_AND_TIME 
+						+ EL			// GAME 
+						+ EL			//Custom game ID
+						+ EL		//Sport
+						+ EL//Level
+						+ EL//Home-Team
+						+ EL//Home-level
+						+ EL//Away-Team
+						+ EL//Away-level
+						+ EL//Site
+						+ EL//Sub-site
+						+ EL//Bill-To
+						+ EL//Officials
+						+ "\n"
+					);
+		}
+		return new ResponseBody<DataObject<String>>(HttpStatus.ACCEPTED.value(), "games", new DataObject<String>(rtrn.toString()));
 	}
 }

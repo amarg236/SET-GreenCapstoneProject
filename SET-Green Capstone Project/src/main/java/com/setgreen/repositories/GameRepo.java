@@ -69,7 +69,10 @@ public interface GameRepo extends CrudRepository<Game, Long>{
 	@Modifying
     @Query("UPDATE Game g set homeNotification = (:tf) WHERE g.id = (:id)")
 	public void updateHometeamNotification(@Param("id") long id, @Param("tf") boolean tf);
-
+	
+	@Query("SELECT g FROM Game g WHERE (g.hometeamId = (:hId) AND g.homeNotification = (:hn)) OR (g.awayteamId = (:hId) AND g.awayNotification = (:an))")
+	public List<Game> findByTeamIdAndNotifications(@Param("hId") long t_id, @Param("hn") boolean h_notif, @Param("an") boolean a_notif);
+	
 	public List<Game> findByHometeamIdAndAwayAcceptedTrue(long id);
 
 	public List<Game> findByAwayteamIdAndAwayAcceptedTrue(long id);
@@ -96,5 +99,8 @@ public interface GameRepo extends CrudRepository<Game, Long>{
 	public List<Game> findByHometeamIdAndHasBeenEditedTrue(long id);
 	
 	@Query("SELECT g from Game g WHERE g.time BETWEEN (:st) AND (:et) AND g.approved = TRUE AND g.rejected = FALSE")
-	public List<Game> findByDateAndApprovedTrueAndAwayAcceptedTrue(@Param("st") Date s, @Param("et") Date e);
+	public List<Game> findByBetweenDateAndApprovedTrueAndAwayAcceptedTrue(@Param("st") Date s, @Param("et") Date e);
+	
+	@Query("SELECT g from Game g WHERE g.time > (:st) AND g.approved = TRUE AND g.rejected = FALSE")
+	public List<Game> findByAfterDateAndApprovedTrueAndAwayAcceptedTrue(@Param("st") Date s);
 }

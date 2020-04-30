@@ -66,7 +66,7 @@ public class NoticeboardHandler {
 			Date e = sdf.parse(sdf.format(d));
 			Notice n = new Notice();
 			n.setAuthor("AUTO GENERATED");
-			List<Game> gl = gr.findByDateAndApprovedTrueAndAwayAcceptedTrue(s, e);
+			List<Game> gl = gr.findByBetweenDateAndApprovedTrueAndAwayAcceptedTrue(s, e);
 			sdf.applyPattern("hh:mm");
 			n.setTitle("Games in the next " + 24*numOfDays + " hours:" );
 			for(Game g : gl) {

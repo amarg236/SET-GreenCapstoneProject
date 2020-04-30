@@ -149,7 +149,10 @@ public class GameController {
 	public ResponseBody<List<Game>> getSchoolId(@RequestBody Teams s) {
 		return gh.getGamesId(s, false, false);
 	}
-	
+	@PostMapping("get/ByTeamId/hasNotification") //{"hometeamId":long, "homeNodification":bool, "awayNotification": bool}
+	public ResponseBody<List<Game>> getTeamIdNotifications(@RequestBody Game g){
+		return gh.getGamesIdNotification(g);
+	}
 	@PostMapping("get/ByTeamId")
 	public ResponseBody<List<Game>> getSchoolIdAll(@RequestBody Teams s) {
 		return gh.getGamesId(s, true, false);
@@ -197,6 +200,10 @@ public class GameController {
 	@PostMapping("get/all/notApproved")
 	public ResponseBody<List<Game>> getAllNotApproved(){
 		return gh.allGameNoV();
+	}
+	@PostMapping("get/all/arbiter")
+	public ResponseBody<DataObject<String>> getArbiterFormatted(){
+		return gh.getArbiterFormatted();
 	}
 	
 	// ==================== get/BySchool/* ==================== //
