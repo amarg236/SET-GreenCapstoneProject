@@ -1,7 +1,7 @@
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import React, { Component } from "react";
-import {Carousel} from "antd";
+import { Carousel } from "antd";
 
 class Noticeboard extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class Noticeboard extends Component {
   }
 
   componentDidMount() {
-    const noticeObj = {data:1};
+    const noticeObj = { data: 1 };
 
     axios
       .post(Authtoken.getBaseUrl() + "/api/notice/get", noticeObj, {
@@ -25,20 +25,28 @@ class Noticeboard extends Component {
         }
       });
   }
-render(){
-return(
-    <Carousel dotPosition="top" autoplay>
-      {this.state.notice.map((row, index) => (
-        <div style={{ backgroundColor: "#083045" }}>
-        <div style={{padding:"5%"}}>
-            <h3>{row.title}</h3>
-              <span style={{ fontWeight: "normal", color: "white", fontSize:"1em", padding:"0"}}>{row.description.trim()}</span>
-
-        </div>
-        </div>
-      ))}
-    </Carousel>
-);
-}
+  render() {
+    return (
+      <Carousel dotPosition="top" autoplay>
+        {this.state.notice.map((row, index) => (
+          <div style={{ backgroundColor: "#083045" }}>
+            <div style={{ padding: "5%" }}>
+              <h3>{row.title}</h3>
+              <span
+                style={{
+                  fontWeight: "normal",
+                  color: "white",
+                  fontSize: "1em",
+                  padding: "0",
+                }}
+              >
+                {row.description}
+              </span>
+            </div>
+          </div>
+        ))}
+      </Carousel>
+    );
+  }
 }
 export default Noticeboard;
