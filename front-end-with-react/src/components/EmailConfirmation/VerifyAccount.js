@@ -44,8 +44,7 @@ class VerifyAccount extends Component {
 
       axios
         .get(
-          Authtoken.getBaseUrl() +
-            `/api/auth/login?u=${this.state.username}&p=${this.state.password}`
+          `https://d3dqstghi7h8sb.cloudfront.net/api/auth/login?u=${this.state.username}&p=${this.state.password}`
         )
         .then((res) => {
           if (res.data.success) {

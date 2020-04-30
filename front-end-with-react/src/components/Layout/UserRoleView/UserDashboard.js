@@ -4,11 +4,23 @@ import Authtoken from "../../../Utility/AuthToken";
 import Noticeboard from "../../Project/Noticeboard.js";
 import axios from "axios";
 import { gameAction, teamAction } from "../../../actions/gameAction";
-import { Layout } from "antd";
+import { Layout, Button, notification } from "antd";
 const { Content } = Layout;
 
 // codes written for redux is not being used. will come back later to erase and fix
 // @FIXME
+
+const openNotification = () => {
+  notification.open({
+    message: "New Notification Alert!!",
+    description:
+      "Please check notification Tab at the right to view latest notification",
+    onClick: () => {
+      console.log("Notification Clicked!");
+    },
+  });
+};
+
 class UserDashboard extends Component {
   constructor(props) {
     super(props);
@@ -17,6 +29,8 @@ class UserDashboard extends Component {
       inComingNewGameNot: 0,
       currentSchool: JSON.parse(localStorage.getItem("homeSchool"))
         ?.currenthomeSchool,
+      notificationData: [],
+      isThereNotification: false,
       // isLoggedIn: AuthToken.getAuthenticationStatus
     };
   }
@@ -67,7 +81,7 @@ class UserDashboard extends Component {
     };
     axios
       .post(
-        Authtoken.getBaseUrl() + "/api/game/get/BySchool/all",
+        Authtoken.getBaseUrl() + "/api/game/get/BySchoolId/hasNotification",
         currentSchool,
         {
           headers: {
@@ -77,20 +91,17 @@ class UserDashboard extends Component {
         }
       )
       .then((res) => {
-        console.log("user>>");
-        console.log(res.data.result);
-        res.data.result.map((uCount) => {
-          console.log(uCount);
-          if (uCount.awayNotification) {
+        if (res.status == 200) {
+          if (res.data.result.length > 0) {
+            openNotification();
             this.setState({
-              inComingNewGameNot: this.inComingNewGameNot + 1,
+              isThereNotification: true,
+              notificationData: res.data.result,
             });
-            console.log("inside>>");
-            console.log(uCount.awayNotification);
           }
-        });
+        }
 
-        console.log(this.state.inComingNewGameNot);
+        // console.log(this.state.inComingNewGameNot);
       });
   };
 

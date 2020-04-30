@@ -75,6 +75,12 @@ class AdminSidebar extends Component {
             //   <span>Create Game</span>
             // </Menu.Item>
           }
+          <Menu.Item onClick={handleClick} key="adminCreateGame">
+            <span>
+              <FileAddOutlined />
+            </span>
+            <span>Create Game</span>
+          </Menu.Item>
           <Menu.Item onClick={handleClick} key="adminGameView">
             <span>
               <EyeOutlined />
