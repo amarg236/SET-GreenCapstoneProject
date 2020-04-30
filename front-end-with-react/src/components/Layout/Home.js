@@ -18,7 +18,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const noticeObj = {};
+    const noticeObj = {data:1};
 
     axios
       .post(Authtoken.getBaseUrl() + "/api/notice/get", noticeObj, {

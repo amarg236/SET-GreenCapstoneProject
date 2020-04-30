@@ -1,6 +1,7 @@
 import "../../../stylesheets/home.css";
 import React, { Component } from "react";
 import Cal from "../../Project/Cal";
+import Noticeboard from "../../Project/Noticeboard.js";
 import { Layout } from "antd";
 const { Content } = Layout;
 
@@ -29,6 +30,7 @@ class AssignorDashboard extends Component {
             <h1 className="display-4">Hello, ASSIGNOR!</h1>
             <p className="lead">This is a Assignor Dashboard</p>
           </div>
+          <Noticeboard />
         </div>
       </Content>
     );

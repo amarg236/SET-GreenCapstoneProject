@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Cal from "../../Project/Cal";
+import Noticeboard from "../../Project/Noticeboard";
 import { Layout } from "antd";
 const { Content } = Layout;
 class AdminDashboard extends Component {
@@ -11,6 +12,7 @@ class AdminDashboard extends Component {
   }
 
   render() {
+      console.log(this.props);
     // return <Cal />;
     //we are gonna put sliders and other contents in front page
     return (
@@ -27,6 +29,7 @@ class AdminDashboard extends Component {
             <h1 className="display-4">Hello, ADMIN!</h1>
             <p className="lead">This is a Admin Dashboard</p>
           </div>
+          <Noticeboard />
         </div>
       </Content>
     );

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Authtoken from "../../../Utility/AuthToken";
+import Noticeboard from "../../Project/Noticeboard.js";
 import axios from "axios";
 import { gameAction, teamAction } from "../../../actions/gameAction";
 import { Layout } from "antd";
@@ -110,6 +111,7 @@ class UserDashboard extends Component {
             <h1 className="display-4">Hello, USER!</h1>
             <p className="lead">This is a UserDashboard</p>
           </div>
+          <Noticeboard />
         </div>
       </Content>
     );

@@ -345,8 +345,19 @@ public class GameHandler {
 	public ResponseBody<List<Game>> getGamesIdModified(Teams t) {
 		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByHometeamIdAndHasBeenEditedTrue(t.getId()));
 	}
+	@Transactional
 	public ResponseBody<List<Game>> getGamesIdNotification(Game g) {
-		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findByTeamIdAndNotifications(g.getHometeamId(), g.isHomeNotification(), g.isAwayNotification()));
+		List<Game> gon_give_it_to_yah = gr.findByTeamIdAndNotifications(g.getHometeamId(), g.isHomeNotification(), g.isAwayNotification());
+		for(Game x : gon_give_it_to_yah) {
+			if(x.getHometeamId() == g.getHometeamId()) {
+				g.setHomeNotification(false);
+			}
+			else {
+				g.setAwayNotification(false);
+			}
+			gr.save(g);
+		}
+		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gon_give_it_to_yah);
 	}
 	public ResponseBody<DataObject<String>> getArbiterFormatted(){
 		Game g = new Game();
@@ -433,6 +444,5 @@ public class GameHandler {
 			gs.addAll(getGamesIdNotification(g).getResult());
 		}
 		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Games found", new ArrayList<Game>(gs));
-				
 	}
 }
