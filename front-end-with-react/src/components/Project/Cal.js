@@ -62,6 +62,9 @@ class Cal extends React.Component {
   }
 
   componentDidMount() {
+    if (isMobile) {
+      this.setState({ currentView: "Week" });
+    }
     this.fetchApi();
   }
 
@@ -78,9 +81,6 @@ class Cal extends React.Component {
 
     // Changing the view for mobile when opened with mobile
     // Changin to weekly view for mobile
-    if (isMobile) {
-      this.setState({ currentView: "Week" });
-    }
 
     const emptyBody = {
       id: this.props.mySchool.id,

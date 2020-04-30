@@ -170,6 +170,7 @@ class AddTeam extends Component {
       )
       .then((res) => {
         this.setState({ school: res.data.result });
+        window.location.reload();
       });
   }
 

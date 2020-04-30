@@ -227,14 +227,7 @@ class AdminRejectedGames extends Component {
 
     console.log(tableData);
     return (
-      <Content
-        className="site-layout-background"
-        style={{
-          padding: 24,
-          margin: 0,
-          minHeight: 580,
-        }}
-      >
+      <span>
         {
           // <div style={{ marginBottom: "16px" }}>
           //   <Button
@@ -255,7 +248,7 @@ class AdminRejectedGames extends Component {
           dataSource={tableData}
           size="small"
         />
-      </Content>
+      </span>
     );
   }
 }
