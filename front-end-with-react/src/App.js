@@ -69,7 +69,7 @@ class App extends React.Component {
                 //   url: "localhost:3000/api/auth/login",
                 //   query: { u: "u" }
                 // })}
-                path="/verify-account"
+                path="/verify/login"
                 component={VerifyAccount}
               />
               <ProtectedRoute
