@@ -48,6 +48,7 @@ import AddBadDay from "./components/ManageRestriction/AddBadDay";
 import AddEventDay from "./components/ManageRestriction/AddEventDay";
 import GeneralCalendar from "./components/Project/GeneralCalendar";
 import AdminCalendar from "./components/Project/AdminCalendar";
+import AdminCreateGame from "./components/Project/AdminGameCreate";
 
 class App extends React.Component {
   render() {
@@ -155,6 +156,11 @@ class App extends React.Component {
                 exact
                 path="/adminCalendar"
                 component={AdminCalendar}
+              />
+              <ProtectedRoute
+                exact
+                path="/adminCreateGame"
+                component={AdminCreateGame}
               />
 
               <ProtectedRoute exact path="/addBadDay" component={AddBadDay} />
