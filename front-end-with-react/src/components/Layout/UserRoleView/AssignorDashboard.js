@@ -1,9 +1,9 @@
 import "../../../stylesheets/home.css";
 import React, { Component } from "react";
-import Cal from "../../Project/Cal";
+
 import Noticeboard from "../../Project/Noticeboard.js";
 import { Layout } from "antd";
-import { Anchor } from 'antd';
+import { Anchor } from "antd";
 
 const { Link } = Anchor;
 const { Content } = Layout;
@@ -30,10 +30,10 @@ class AssignorDashboard extends Component {
       >
         <div>
           <div className="jumbotron">
-          <p className="lead">Today is {new Date().toDateString()}</p>
-          <Anchor>
-          <Link href='http://lhsaa.org/home' title="LHSAA website" />
-          </Anchor>
+            <p className="lead">Today is {new Date().toDateString()}</p>
+            <Anchor>
+              <Link href="http://lhsaa.org/home" title="LHSAA website" />
+            </Anchor>
           </div>
           <Noticeboard />
         </div>

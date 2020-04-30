@@ -108,7 +108,9 @@ class Cal extends React.Component {
         this.setState({
           jData: extend([], processData(anotherLevel), null, true),
         });
-      });
+      }).catch = (error) => {
+      console.log(`Error ${error}`);
+    };
   };
 
   fetchHomeTeam = () => {
