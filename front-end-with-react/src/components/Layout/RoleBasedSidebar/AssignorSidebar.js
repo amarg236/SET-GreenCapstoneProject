@@ -139,12 +139,6 @@ class AssignorSidebar extends Component {
             </span>
             <span>Invite User</span>
           </Menu.Item>
-          <Menu.Item onClick={handleClick} key="inviteAssignor">
-            <span>
-              <UserAddOutlined />
-            </span>
-            <span>Invite Assignor</span>
-          </Menu.Item>
         </SubMenu>
         <Menu.Item onClick={handleClick} key="addEventDay">
           <span>
