@@ -54,7 +54,7 @@ class Home extends Component {
         >
           <h2
             style={{
-              fontSize: "bold",
+              fontWeight: "bold",
               color: "#083045",
             }}
           >
@@ -70,7 +70,10 @@ class Home extends Component {
               </span>
 
               <span>
-                <p style={{ color: "white" }}> {row.description}</p>
+                <p style={{ fontWeight: "normal", color: "white" }}>
+                  {" "}
+                  {row.description}
+                </p>
               </span>
             </div>
           ))}
