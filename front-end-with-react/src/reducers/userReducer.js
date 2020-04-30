@@ -9,6 +9,7 @@ const initialState = {
   mySchool: JSON.parse(localStorage.getItem("homeSchool"))?.currenthomeSchool,
   schoolDistrict: JSON.parse(localStorage.getItem("homeSchool"))
     ?.currenthomeDistrict,
+  createGameObj: [],
 
   // mySchool: [],
   // schoolDistrict: []
@@ -22,6 +23,12 @@ const userReducer = (state = initialState, action) => {
         message: action.message,
         role: action.role,
         token: action.token,
+      };
+
+    case "PASS_GAME":
+      return {
+        ...state,
+        createGameObj: action.gObject,
       };
     case "LOGIN_ERROR":
       return {

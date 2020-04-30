@@ -159,3 +159,12 @@ export const logoutAction = () => {
     });
   };
 };
+
+export const createGameAction = (gameObj) => {
+  return (dispatch) => {
+    dispatch({
+      type: "PASS_GAME",
+      gObject: gameObj,
+    });
+  };
+};
