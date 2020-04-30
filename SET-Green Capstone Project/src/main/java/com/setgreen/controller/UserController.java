@@ -26,6 +26,7 @@ import com.setgreen.model.SignUpForm;
 import com.setgreen.model.User;
 import com.setgreen.payload.JWTLoginSuccessResponse;
 import com.setgreen.payload.LoginRequest;
+import com.setgreen.payload.PasswordChangeRequest;
 import com.setgreen.security.JwtTokenProvider;
 import com.setgreen.services.MapValidationErrorService;
 import com.setgreen.services.UserService;
@@ -69,15 +70,17 @@ public class UserController {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) return errorMap;
 
-         ResponseBody<User> rb = userService.loginAttempt(loginRequest); //TESTME userValid.findByEmail(loginRequest.getUsername());
-         System.out.print(rb);//TODO Debug remove
+         ResponseBody<User> rb = userService.loginAttempt(loginRequest);
          User user = null;
          if(rb.getHttpStatusCode() == HttpStatus.ACCEPTED.value()) {
         	 user = rb.getResult();
          }
         
          if(user == null) return new ResponseEntity<>("Username not found. Please enter correct username.",HttpStatus.BAD_REQUEST);
-            if (user.getVerified()) {//XXX ENCAPSULATE. This is shared here and the other login method, it should be its own method
+         if(user.getTmpPwd() != 0) {
+ 			userService.zeroTempPassword(user.getEmail());
+ 		}
+            if (user.getVerified()) {
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
                         		loginRequest.getUsername(),
@@ -100,12 +103,12 @@ public class UserController {
      * @param result For binding result
      * @return A message saying email is already verified or a JWT token
      */
-    @GetMapping("login") //TODO URGENT add some JS to take to a login page.
+    @GetMapping("login")
     public ResponseEntity<?> firstTimeLogin(@RequestParam(value="u") String u, @RequestParam(value="p") String p) {
     	LoginRequest loginRequest = new LoginRequest();//Hacks on hacks.
     	loginRequest.setPassword(p);
     	loginRequest.setUsername(u);
-    	 ResponseBody<User> rb = userService.loginAttempt(loginRequest); //TESTME userValid.findByEmail(loginRequest.getUsername());
+    	 ResponseBody<User> rb = userService.loginAttempt(loginRequest);
          Debugger.cout(rb.toString());
          User usr = null;
          UserDetails uds = null;
@@ -116,29 +119,41 @@ public class UserController {
     	try {
     		//To get around null checking we test to see if the user is not verified.
     		//If the user is not verified or their value is null we throw an error and the catch allows them to log in.
-    		//XXX MAKE verified FALSE BY DEFAULT. Then I wouldn't have to do this hackass solution.
     		if(!usr.getVerified()) {
     			throw new Exception("User Not Verified");
     		}
     	}
     	catch(Exception e) {
-    		Debugger.cout("\n>>"+usr.toString()+"\n>>"+loginRequest.getPassword()+"\n>>>>"+uds.toString());
     		Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                     		loginRequest.getUsername(),
                             loginRequest.getPassword()
                     )
             );
-    		Debugger.cout("/n>>>"+authentication.toString());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
-
+            
             return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, authentication.getAuthorities().toArray()));
     	}
     	return new ResponseEntity<>("Email already verified",HttpStatus.BAD_REQUEST);
     }
-    
+    @PostMapping("forgotPassword") //{"email":someText}
+    public void forgotMePassword(@RequestBody User u) {
+    	userService.forgotPassword(u.getEmail());
+    }
+    @PostMapping("resetPassword") //{"newPassword"="new account password", "accessKey"="pwd from url"}
+    public ResponseBody<User> resetPassword(@RequestBody PasswordChangeRequest p){
+    	return userService.resetForgotPassword(p);
+    }
+    @GetMapping("resetPassword") // .../resetPassword?pwd=[tempPassword]
+    public ResponseBody<User> resetPassword(@RequestParam("pwd") String pwd){
+	     ResponseBody<User> rb = userService.getByTmpPwd(pwd);
+	     User u = rb.getResult();
+	     u.setPassword("-");
+	     rb.setResult(u);
+	     return rb;
+    }
     /**
      * @param u User object with the new password already set
      * @return ResponseEntity
@@ -150,11 +165,16 @@ public class UserController {
     		u2.setEmail(auth.getName());
     	return userService.updatePassAndVerify(u, u2);
     }
-
+    
+    @PostMapping("edit")
+    public ResponseBody<User> editDetails(@RequestBody User u, Authentication auth){
+    	u.setEmail(auth.getName());
+    	return userService.updateProfile(u);
+    }
 
     /**
      * @param newUser New user object, must not be blank.
-     * @param result for error binding //TODO get Sonom to explain this one better
+     * @param result for error binding
      * @return ResponseEntity that represents the status of the registration attempt
      */
     @PostMapping("createuser")
@@ -166,6 +186,7 @@ public class UserController {
      * @param s Email to search for
      * @return Responsebody with a user by that email if it exists, null otherwise
      */
+    //FIXME Remove or secure
     @PostMapping("find/email")
     public ResponseBody<User> getByEmail(@RequestBody DataObject<String> s) {
     	return userService.fetchByEmail(s.getData());

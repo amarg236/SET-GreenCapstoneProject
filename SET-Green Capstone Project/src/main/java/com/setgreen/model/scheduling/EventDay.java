@@ -1,24 +1,24 @@
 package com.setgreen.model.scheduling;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 @Data
 @Entity
 public class EventDay {
-	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	Long id;
-	@JsonIgnore
-	@NotEmpty(message = "Must have date")
-	private String dte;
-	@JsonIgnore
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	private Date dte;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	private Date endDate;
 	private String reason;
 }

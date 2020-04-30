@@ -14,6 +14,7 @@ import com.setgreen.model.Role;
 import com.setgreen.model.SignUpForm;
 import com.setgreen.model.User;
 import com.setgreen.payload.LoginRequest;
+import com.setgreen.payload.PasswordChangeRequest;
 import com.setgreen.repositories.RoleRepo;
 import com.setgreen.repositories.SchoolRepo;
 import com.setgreen.repositories.UserRepo;
@@ -32,32 +33,51 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@Override//FIXME URGENT creating users needs school and that needs district, on top of roles. Not inserted right atm.
+	@Override
 	public ResponseBody<User> saveUser(SignUpForm suf){
 		try {
 			User ud = new User(suf);
 			Set<Role> sor = ud.getRoles();
-			for(Role r : sor) {
-				sor.remove(r);
-				r.setSchool(sr.findById(r.getSchool().getId()).get());
-				Debugger.cout(r.toString()+"\n");
-				sor.add(r);
-			}
-			ud.setRoles(sor);
+			//DO NOT EVER REMOVE THIS CODE UNDER PAIN OF DEATH. IT PLEASES THE DARK GODS OF CREATION, ALLOWING THE SICK DANCE OF DATA MANIPULATION TO CONTINUE. FORSAKING THIS CODE IS PUNISHABLE BY BEING TOLD YOU ARE, AND I QUOTE "in for a rough time."
+			//(On a serious note this ensures full references to school objects are made right, and all schools referenced are valid. Also when removed users just break.)
+			try { //THAT INCLUDES THIS LINE
+				for(Role r : sor) { //THIS LINE
+					sor.remove(r); //THIS LINE
+					if(r.getRole().hasDistrict()) { //THIS LINE
+						r.setSchool(sr.findById(r.getSchool().getId()).get()); //THIS LINE
+					}
+					Debugger.cout(r.toString()+"\n");//not this one
+					sor.add(r); //THIS LINE
+				} //THIS LINE
+				ud.setRoles(sor); //THIS LINE
+			}//THIS LINE
+			catch(NullPointerException e) { //THIS LINE
+				throw new Exception("Missing reference in sent roles, ensure all role names and schools exist");
+			} //THIS LINE
+			//and that's it.
 			MailHandler m = new MailHandler(new JavaMailSenderImpl());
 			ud.setPassword(m.genLink());
+			String opw = ud.getPassword();
+			ud.setPassword(bCryptPasswordEncoder.encode(ud.getPassword()));
+			userRepo.save(ud);
 			//XXX DEBUG
 			String s = "User Saved";
 			if(Debugger.MODE_ON) {
-				s = m.debugMessage(m.inviteUser(ud));
+				s = m.debugMessage(m._inviteUser(ud));
 			}
 			else {
-				m.sendMailMessage(m.inviteUser(ud));
+				String npw = ud.getPassword();
+				ud.setPassword(opw);
+				m.inviteUser(ud);
+				ud.setPassword(npw);
 			}
 			//END DEBUG
-			ud.setPassword(bCryptPasswordEncoder.encode(ud.getPassword()));
-			userRepo.save(ud);
 			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), s, ud);
+		}
+		catch(org.springframework.mail.MailSendException mse) {
+			User rmv = userRepo.findByEmail(suf.getEmail());
+			userRepo.deleteById(rmv.getId());
+			return new ResponseBody<User>(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Email address does not exist", new User());
 		}
 		catch(Exception e) {
 			return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "Error creating user: " + e.getLocalizedMessage(), new User());
@@ -84,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
 	public ResponseBody<User> fetchByEmail(String s) {
 		ResponseBody<User> rb = emailFetch(s);
-		rb.getResult().setPassword(null);
+		//rb.getResult().setPassword(null);
 		return rb;
 	}
 
@@ -135,11 +155,127 @@ public class UserServiceImpl implements UserService {
 		return rb;
 	}
 
+	public ResponseBody<User> deleteUser(User u){
+		try {
+			userRepo.deleteById(u.getId());
+			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "User Deleted", u);
+		}
+		catch(Exception e) {
+			return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "Could not delete user: "+e, u);
+		}
+	}
 
 	@Override
 	public ResponseBody<User> updateProfile(User u) {
-		// TODO Auto-generated method stub
-		return null;
+		try{
+			if(u.getId().equals(userRepo.findByEmail(u.getEmail()).getId())) {
+				userRepo.updateName(u.getFirstname(), u.getLastname(), u.getId());
+				return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "profile updated", userRepo.findById(u.getId()).get());
+			}
+			throw new Exception("FailToMatchUser");
+		}
+		catch(Exception e) {
+			return new ResponseBody<User>(HttpStatus.BAD_GATEWAY.value(), "Error updating profile: "+e, u);
+		}
 	}
 
+
+	@Override
+	@Transactional
+	public ResponseBody<User> verifyUser(User u, boolean toSet) {
+		try {
+			userRepo.updateVerify(u.getId(), toSet);
+			User anon = userRepo.findById(u.getId()).get();
+			anon.setPassword("-");
+			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "verification updated", anon);
+		}
+		catch(Exception e) {
+			return new ResponseBody<User>(HttpStatus.BAD_GATEWAY.value(), "Error updating profile: "+e, u);
+		}
+	}
+
+	@Transactional
+	@Override
+	public void zeroTempPassword(String email) {
+		userRepo.updateTmpPwd(userRepo.findByEmail(email).getId(),0);
+	}
+	
+	public ResponseBody<User> getByTmpPwd(String pw){
+		try {
+			User u = userRepo.findByTmpPwd(pw.hashCode());
+			if(u.getTmpPwd() !=0) {
+				return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "user", u);
+			}
+			else {
+				throw new Exception("NoTempPassword");
+			}
+		}
+		catch(Exception e) {
+			return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), new User());
+		}
+		
+	}
+	
+	@Transactional
+	@Override
+	public ResponseBody<User> resetForgotPassword(PasswordChangeRequest p){
+		try {
+			User u = userRepo.findByTmpPwd(p.getAccessKey().hashCode());
+			if(u.getTmpPwd() != 0) {
+				User _u = new User();
+				_u.setEmail(u.getEmail());
+				_u.setPassword(u.getPassword());
+				u.setPassword(p.getNewPassword());
+				u.setTmpPwd(0);
+				if(updatePassAndVerify(u, _u).getHttpStatusCode() != HttpStatus.ACCEPTED.value()) {
+					throw new Exception("Update and verification of password failed");
+				}
+			}
+			else {
+				throw new Exception("NonRequestedPasswordResetException");
+			}
+			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "good", u);
+		}
+		catch(Exception e){
+			Debugger.cout("resetForgotPassword triggered an error: " + e + "\n");
+			return new ResponseBody<User>(HttpStatus.BAD_GATEWAY.value(), "Error in zeroTempPassword: "+e, null);
+		}
+	}
+	
+	@Transactional
+	@Override
+	public void forgotPassword(String email) {
+		try {
+    		User u = userRepo.findByEmail(email);
+    		if(u.getVerified()) {};//null test
+    		MailHandler mh = new MailHandler(new JavaMailSenderImpl());
+    		String tempPw = mh.genLink(25);
+			try {
+				
+				User v = userRepo.findByTmpPwd(tempPw.hashCode()); //see if someone has our tmpPwd
+				while(v.getVerified() || !v.getVerified()) { //we crash if v doesn't exist.
+					Debugger.cout(">>FORGOT PASSWORD LOOP\n");
+					tempPw = mh.genLink(25);
+					v = userRepo.findByTmpPwd(tempPw.hashCode());
+				}
+			}
+			catch(Exception e){
+				mh.forgotPassword(email, tempPw);
+	    		userRepo.updateTmpPwd(u.getId(), tempPw.hashCode()); //when we crash (because user is not found) we email and update temp password
+			}
+    		
+    	}
+    	catch(Exception e) {
+    		Debugger.cout("forgotPassword error: " + e + "\n");
+    	}
+	}
+	@Override
+	public ResponseBody<User> getById(Long id) {
+		try {
+			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "found user", userRepo.findById(id).get());
+		}
+		catch(Exception e){
+			return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "Did not find user: " + e.getMessage(), new User());
+		}
+	}
 }

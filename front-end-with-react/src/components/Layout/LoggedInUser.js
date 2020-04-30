@@ -50,7 +50,7 @@ class LoggedInUser extends Component {
           </Content>
         );
 
-      case "ASSIGNER":
+      case "ASSIGNOR":
         return (
           <Content
             style={{

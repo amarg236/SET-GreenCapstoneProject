@@ -20,6 +20,6 @@ public class District implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//TODO TEST
+
     private String districtName;
 }

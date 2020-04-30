@@ -4,6 +4,7 @@ import com.setgreen.model.ResponseBody;
 import com.setgreen.model.SignUpForm;
 import com.setgreen.model.User;
 import com.setgreen.payload.LoginRequest;
+import com.setgreen.payload.PasswordChangeRequest;
 
 public interface UserService {
 
@@ -18,5 +19,19 @@ public interface UserService {
 	ResponseBody<User> saveUser(SignUpForm suf);
 
 	ResponseBody<User> updatePassword(User u, User u2);
+
+	ResponseBody<User> deleteUser(User u);
+
+	ResponseBody<User> verifyUser(User u, boolean toSet);
+
+	void forgotPassword(String email);
+	
+	void zeroTempPassword(String email);
+
+	ResponseBody<User> resetForgotPassword(PasswordChangeRequest p);
+
+	ResponseBody<User> getByTmpPwd(String pwd);
+
+	ResponseBody<User> getById(Long id);
 
 }

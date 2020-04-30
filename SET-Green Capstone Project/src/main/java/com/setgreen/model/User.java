@@ -52,16 +52,17 @@ public class User  {
     @NotBlank(message = "Password cannot be empty")
     private String password;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date create_At;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date update_At;
 
-
+    //Should be unique
+    private int tmpPwd;
+    
     @OneToMany(cascade=CascadeType.ALL)
-    private Set<Role> roles = new HashSet<>();//TODO figure out why UserPrinciple needs this.
-
+    private Set<Role> roles = new HashSet<>();
     private Boolean Verified;
 
     public User() {
@@ -87,55 +88,4 @@ public class User  {
         this.update_At = new Date();
     }
 
-/* FIXME CLEANUP
-	public RoleName getRoles(District d, Iterable<Role> iterable) {
-		for(Role x : iterable) {
-			//XXX we abuse short circuit logic here (in that if an admin is found we take it) to avoid potential "no district exists" errors for our admin.
-			if(x.getRole().userLevel() >= 12000 || x.getDistrictName().equals(d.getDistrictName())) {
-				System.out.println(x.toString());
-				return x.getRole();
-			}
-		}
-		return RoleName.UNFOUND;
-	}
-*/
-
-
-
-//    User details interface methods
-
-//    @Override
-//    @JsonIgnore
-//    public Collection<? extends GrantedAuthority> getAuthorities(User user) {
-//
-//
-//        List<GrantedAuthority> authorities = user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRole().name())).collect(Collectors.toList());
-//
-//        return new UserPrinciple(user.getId(), (user.getFirstName()+" "+user.getLastName()),user.getUserName(),user.getEmail(),user.getPassWord(),authorities);
-//    }
-//    }
-//
-//    @Override
-//    @JsonIgnore
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    @JsonIgnore
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    @JsonIgnore
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    @JsonIgnore
-//    public boolean isEnabled() {
-//        return true;
-//    }
 }

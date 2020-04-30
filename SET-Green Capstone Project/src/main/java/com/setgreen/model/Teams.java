@@ -42,8 +42,10 @@ public class Teams implements Serializable{
 	
 	@NotEmpty(message = "Must have a team classification")
 	@Column(length = 50)
-	private String tmClass; //Type of team (varsity, jr, ext)
-	
+	private String tmClass; 
+
+	@Column(length=20)
+	private String teamGender;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;

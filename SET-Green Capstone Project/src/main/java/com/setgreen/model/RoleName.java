@@ -1,6 +1,6 @@
 package com.setgreen.model;
 
-/** FIXME CLEANUP
+/** 
  * This is just a place to unify all the different roles in 1 place.
  * Originally it was supposed to be a factory for instances of the role class but that caused issues
  * so now it's just a way to make sure we unify the role names.
@@ -16,14 +16,14 @@ public enum RoleName {
 			return false;
 		}
     },
-    ASSIGNER{ //Assigners
+    ASSIGNOR{ //Assignors 
 		@Override
 		public int userLevel() {
 			return 8000;
 		}
 		@Override
 		public boolean hasDistrict() {
-			return true;
+			return false;
 		}
     },
     USER{ //Schedulers

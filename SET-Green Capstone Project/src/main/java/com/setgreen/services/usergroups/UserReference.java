@@ -13,6 +13,7 @@ import com.setgreen.model.School;
 import com.setgreen.model.SignUpForm;
 import com.setgreen.model.Teams;
 import com.setgreen.model.User;
+import com.setgreen.model.noticeboard.Notice;
 import com.setgreen.model.scheduling.BadDay;
 import com.setgreen.model.scheduling.EventDay;
 import com.setgreen.model.scheduling.IdealDay;
@@ -21,13 +22,14 @@ import com.setgreen.services.DayHandler;
 import com.setgreen.services.UserService;
 import com.setgreen.services.implementation.DistrictHandler;
 import com.setgreen.services.implementation.GameHandler;
+import com.setgreen.services.implementation.NoticeboardHandler;
 import com.setgreen.services.implementation.RoleServiceImpl;
 import com.setgreen.services.implementation.SchoolHandler;
 import com.setgreen.services.implementation.TeamsServiceImpl;
 import com.setgreen.util.DataObject;
 @Service
 public abstract class UserReference {
-	
+
 	public UserReference() {
 //		gh = new GameHandler();
 //		ur = new UserServiceImpl();
@@ -53,6 +55,8 @@ public abstract class UserReference {
 	public TeamsServiceImpl th;
 	@Autowired
 	public AdminControlService ah;
+	@Autowired
+	public NoticeboardHandler nh;
 	/**
 	 * @return rolename associated with this class, should be unique among all implementations of this class.
 	 */
@@ -79,13 +83,13 @@ public abstract class UserReference {
 	 * @return responsebody status of request
 	 */
 	public abstract ResponseBody<User> removeUser(User u);
-	/** assignor+, change a user's access level or information
+	/** user+, change your first and last name
 	 * @param u
 	 * @return
 	 */
 	public abstract ResponseBody<User> manageUser(User u);
 	/**TODO do I need this? Or just use password change
-	 * assigner+, Verifies a user
+	 * assignor+, Verifies a user
 	 * @param u User to verify
 	 * @return responsebody with verification status
 	 */
@@ -107,7 +111,7 @@ public abstract class UserReference {
 	 * @param g game to reject
 	 * @return responsebody status of request
 	 */
-	public abstract ResponseBody<Game> rejectGame(Game g);
+	public abstract ResponseBody<Game> rejectGame(Authentication auth, Game g);
 	/** assignor+, reschedule a game on request
 	 * userlevel, request to reschedule a game
 	 * @param g game to reschedule
@@ -152,10 +156,6 @@ public abstract class UserReference {
 	 * @return responsebody status
 	 */
 	public abstract ResponseBody<EventDay> removeEventDay(EventDay d);
-	//public void downloadSchedule(); //TODO is this a backend task?
-
-//	public ResponseBody<Game> manageSchedule(Game g); //TODO this is an action not a method
-//	public ResponseBody<Iterable<Game>> viewSchedule(); //TODO is this better in public hooks?
 	/** all, Update a user's profile info
 	 * @param u User to modify
 	 * @return responsebody with status
@@ -165,7 +165,7 @@ public abstract class UserReference {
 	 * @param u user to update
 	 * @return responsebody with user that is updated
 	 */
-	public abstract ResponseBody<User> updatePassword(User u, User u2);
+	public abstract ResponseBody<User> updtePassword(User u, User u2);
 	
 	/**
 	 * @param d day you want to add
@@ -190,4 +190,34 @@ public abstract class UserReference {
 	 * @return responsebody with status
 	 */
 	public abstract ResponseBody<IdealDay> removeIdealDay(IdealDay d);
+
+	/**
+	 * used for users when seeing a game has been rejected. Cleans up everything
+	 * For admin, just delete the game.
+	 * @param auth
+	 * @param g
+	 * @return game you validated rejection for
+	 */
+	public abstract ResponseBody<Game> validateRejection(Authentication auth, Game g);
+	
+	/**
+	 * used for admin, adds a notice to the homepage
+	 * @param auth 
+	 * @param n
+	 * @return statuse of request w/ notice you sent
+	 */
+	public abstract ResponseBody<Notice> addNotice(Authentication auth, Notice n);
+	
+	/**
+	 * used for admin, removes notice from homepage
+	 * @param auth 
+	 * @param n only requires id
+	 * @return status of request w/ the notice as it was before deletion
+	 */
+	public abstract ResponseBody<Notice> deleteNotice(Authentication auth, Notice n);
+
+	/*
+	 * validate a game modification on the part of the hometeam
+	 */
+	public abstract ResponseBody<Game> validateModify(Authentication auth, Game g);
 }

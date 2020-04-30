@@ -1,4 +1,4 @@
-package com.setgreen.services.usergroups;
+package com.setgreen.services.usergroups.accesslevels;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,9 +12,11 @@ import com.setgreen.model.School;
 import com.setgreen.model.SignUpForm;
 import com.setgreen.model.Teams;
 import com.setgreen.model.User;
+import com.setgreen.model.noticeboard.Notice;
 import com.setgreen.model.scheduling.BadDay;
 import com.setgreen.model.scheduling.EventDay;
 import com.setgreen.model.scheduling.IdealDay;
+import com.setgreen.services.usergroups.UserReference;
 import com.setgreen.util.DataObject;
 @Service
 public class UserUnfound extends UserReference {
@@ -56,7 +58,7 @@ public class UserUnfound extends UserReference {
 	}
 
 	@Override
-	public ResponseBody<Game> rejectGame(Game g) {
+	public ResponseBody<Game> rejectGame(Authentication auth, Game g) {
 		return forbiddenAccess(g);
 	}
 
@@ -106,7 +108,7 @@ public class UserUnfound extends UserReference {
 	}
 
 	@Override
-	public ResponseBody<User> updatePassword(User u, User u2) {
+	public ResponseBody<User> updtePassword(User u, User u2) {
 		return forbiddenAccess(u);
 	}
 
@@ -137,5 +139,21 @@ public class UserUnfound extends UserReference {
 	@Override
 	public ResponseBody<IdealDay> removeIdealDay(IdealDay d) {
 		return forbiddenAccess(d);
+	}
+	@Override
+	public ResponseBody<Game> validateRejection(Authentication auth, Game g) {
+		return forbiddenAccess(g);
+	}
+	@Override
+	public ResponseBody<Notice> addNotice(Authentication auth, Notice n) {
+		return forbiddenAccess(n);
+	}
+	@Override
+	public ResponseBody<Notice> deleteNotice(Authentication auth, Notice n) {
+		return forbiddenAccess(n);
+	}
+	@Override
+	public ResponseBody<Game> validateModify(Authentication auth, Game g) {
+		return forbiddenAccess(g);
 	}
 }

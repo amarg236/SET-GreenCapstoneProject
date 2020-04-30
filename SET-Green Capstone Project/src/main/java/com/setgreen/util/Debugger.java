@@ -1,8 +1,9 @@
 package com.setgreen.util;
 
 public class Debugger {
-	public static boolean MODE_ON = true;
+	public static boolean MODE_ON = false;
 	public static void cout(String s) {
-		System.out.print(s);
+		if(MODE_ON)
+			System.out.print(s);
 	}
 }
