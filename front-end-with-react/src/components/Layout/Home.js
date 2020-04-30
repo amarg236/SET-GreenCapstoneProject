@@ -4,9 +4,10 @@ import React, { Component } from "react";
 import Cal from "../Project/Cal";
 import "../../App.css";
 import "../../stylesheets/layout.css";
-import { Layout, Carousel, Card } from "antd";
+import { Layout, Carousel, Card, Typography } from "antd";
 const { Meta } = Card;
 const { Content } = Layout;
+const { Title } = Typography;
 
 class Home extends Component {
   constructor(props) {
@@ -41,16 +42,38 @@ class Home extends Component {
           minHeight: 580,
         }}
       >
-        <Carousel autoplay>
+        <div
+          style={{
+            backgroundColor: "#ffff",
+            padding: "20px",
+
+            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
+            marginBottom: "10px",
+            textAlign: "center",
+          }}
+        >
+          <h2
+            style={{
+              fontWeight: "bold",
+              color: "#083045",
+            }}
+          >
+            Announcement Board
+          </h2>
+        </div>
+        <Carousel dotPosition="top" autoplay>
           {this.state.notice.map((row, index) => (
-            <div>
+            <div style={{ backgroundColor: "#083045" }}>
               <span>
                 <br />
                 <h3>{row.title}</h3>
               </span>
 
               <span>
-                <p> {row.description}</p>
+                <p style={{ fontWeight: "normal", color: "white" }}>
+                  {" "}
+                  {row.description}
+                </p>
               </span>
             </div>
           ))}

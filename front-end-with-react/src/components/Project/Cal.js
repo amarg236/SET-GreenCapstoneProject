@@ -203,7 +203,7 @@ class Cal extends React.Component {
     } else if (props.PartialApproved && props.FullyApproved) {
       return (
         <div
-          style={{ backgroundColor: "#108ee9", maxHeight: "100px" }}
+          style={{ backgroundColor: "#87d068", maxHeight: "100px" }}
           className="template-wrap"
         >
           {props.Subject}
@@ -211,7 +211,7 @@ class Cal extends React.Component {
       );
     } else if (props.PartialApproved || props.rejected) {
       return (
-        <div style={{ backgroundColor: "#87d068" }} className="template-wrap">
+        <div style={{ backgroundColor: "#108ee9" }} className="template-wrap">
           {props.Subject}
         </div>
       );
@@ -307,6 +307,8 @@ class Cal extends React.Component {
                 style={{
                   marginTop: "5px",
                   marginBottom: "5px",
+                  width: "30%",
+                  height: "35px",
                 }}
                 checkedChildren="Incoming"
                 unCheckedChildren="Outgoing"
