@@ -25,67 +25,36 @@ const { RangePicker } = TimePicker;
 class AdminCreateGame extends Component {
   constructor(props) {
     super(props);
-
-    this.onChangeGameDate = this.onChangeGameDate.bind(this);
-    this.onChangeGameStartTime = this.onChangeGameStartTime.bind(this);
-    this.onChangeGameEndTime = this.onChangeGameEndTime.bind(this);
-    this.onChangeGameLocation = this.onChangeGameLocation.bind(this);
-    this.onChangeAgainstTeam = this.onChangeAgainstTeam.bind(this);
-    this.onChangeAgainstTeamDistrict = this.onChangeAgainstTeamDistrict.bind(
-      this
-    );
-    this.onChangeGameTime = this.onChangeGameTime.bind(this);
-    this.gameSubmit = this.gameSubmit.bind(this);
-    this.chooseClass = this.chooseClass.bind(this);
   }
 
   state = {
-    homeTeam: "",
-    homeTeamId: "",
-    homeTeamObj: [],
-    awaySchoolObj: [],
-    awaySchoolList: [],
-    awaySchoolTeamList: [],
-    selectedDistrict: {
-      id: "",
-      districtName: "",
-    },
-    gameDate: moment().format("YYYY-MM-DD"),
-    gameStartTime: moment().format("HH:mm"),
-    gameEndTime: moment().format("HH:mm"),
-    // gameEndTime: moment()
-    //   .add(30, "minute")
-    //   .format("HH:mm"),
-    gameLocation: "",
-    againstTeam: "",
-    awayteamId: "",
-    againstSchool: "",
-    againstTeamDistrict: "",
-    againstTeamDistrictId: "",
-    gameTime: "",
-
-    fetchedAllTeam: [],
+    teamADistrictName: "",
+    teamADistrictId: "",
+    teamADistrictObj: [],
+    fetchedSchoolObject: [],
   };
 
   componentDidMount() {
-    this.fetchAllTeam();
+    this.fetchTeamADistrict();
   }
-  fetchAllTeam = () => {
-    const emptyobj = {};
+
+  fetchTeamADistrict = () => {
     axios
-      .post(Authtoken.getBaseUrl() + "/api/team/get", emptyobj, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
+      .post(
+        Authtoken.getBaseUrl() + "/api/location/district/get",
+        {},
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
+        }
+      )
       .then((res) => {
-        console.log(res);
-        this.setState({
-          fetchedAllTeam: res.data.result,
-        });
+        this.setState({ teamADistrictObj: res.data.result });
       });
   };
+
   //added in antdesign
   dateFormat = "YYYY-MM-DD";
   monthFormat = "YYYY/MM";
@@ -98,43 +67,11 @@ class AdminCreateGame extends Component {
     // console.log(time.format("HH:mm"));
   }
 
-  // onChangeHomeTeam = value => {
-  //   // this.setState({ homeTeam: e.target.value });
-  //   console.log(value);
-  // };
-
   onChangeGameDate(date, dateString) {
     // console.log(date);
     console.log(dateString);
     // this.setState({ gameDate: dateString });
     this.setState({ gameDate: date?.format("YYYY-MM-DD") });
-  }
-
-  onChangeGameStartTime(e) {
-    this.setState({ gameStartTime: e.target.value });
-  }
-
-  onChangeGameEndTime(e) {
-    this.setState({ gameEndTime: e.target.value });
-  }
-  onChangeGameLocation(e) {
-    this.setState({ gameLocation: e.target.value });
-  }
-  onChangeAgainstTeam(e) {
-    this.setState({ againstTeam: e.target.value });
-  }
-
-  onChangeAgainstTeamDistrict(e) {
-    this.setState({ againstTeamDistrict: e.target.value });
-  }
-
-  chooseClass() {
-    const ch = this.props.ifcollapsed;
-    if (!ch) {
-      return "`CGForm`";
-    } else {
-      return "`xform`";
-    }
   }
 
   successMsg = () => {
@@ -193,89 +130,23 @@ class AdminCreateGame extends Component {
     };
 
     console.log(gameObject);
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/save", gameObject, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        // console.log(res);
-        if (res.data.httpStatusCode == 409) {
-          this.errorMsg(res.data.message);
-          console.log("Time Conflict");
-          console.log(res.data.message);
-        } else if (res.data.httpStatusCode == 202) {
-          console.log("Game Saved");
-          this.successMsg();
-        }
-        // window.alert("The Game has been created successfully!!");
-        // window.location.reload();
-      });
   }
-  handleHomeTeam = (value) => {
-    const passedValue = JSON.parse(value);
-    // console.log(passedValue);
-    this.setState({ homeTeam: passedValue.tmName });
-    this.setState({ homeTeamId: passedValue.id });
-  };
-  handleAwayTeam = (value) => {
-    const getFromValue = JSON.parse(value);
-    console.log(getFromValue);
-    this.setState({ againstTeam: getFromValue.tmName });
-    this.setState({ awayteamId: getFromValue.id });
-  };
-
-  handleSchool = (value) => {
-    const schoolV = JSON.parse(value);
-    console.log(schoolV);
-    console.log("I got printed here");
-    console.log(schoolV.name);
-    this.setState({ againstSchool: schoolV.name });
-
-    // this.setState({ schoolId: schoolValue.id });
-    const awayTeamBody = {
-      id: schoolV.id,
-    };
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/team/get/bySchool", awayTeamBody, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        // console.log("i am team  by school id");
-        console.log(res.data.result);
-        this.setState({ awaySchoolTeamList: res.data.result });
-      });
-  };
-  teamClass = (teamClass) => {
-    console.log(teamClass);
-    // this.setState({ teamClass: teamClass });
-  };
 
   handleDistrict = (value) => {
-    console.log("I have been executed");
     const dummy = JSON.parse(value);
     console.log("Dummy data result below");
     console.log(dummy);
-    this.setState({ againstTeamDistrict: dummy.districtName });
-    this.setState({ againstTeamDistrictId: dummy.id });
     this.setState({
-      selectedDistrict: {
-        id: dummy.id,
-        districtName: dummy.districtName,
-      },
+      teamADistrictName: dummy.districtName,
+      teamADistrictId: dummy.id,
     });
+  };
 
-    // console.log("I have been executed");
-    //fetching school depending upon the value of district
+  fetchSchoolList = () => {
     const schoolBody = {
-      districtName: dummy.districtName,
-      id: dummy.id,
+      id: this.state.teamADistrictId,
     };
+
     axios
       .post(
         Authtoken.getBaseUrl() + "/api/location/school/get/district",
@@ -288,18 +159,11 @@ class AdminCreateGame extends Component {
         }
       )
       .then((res) => {
-        // console.log("i am school by district");
-        // console.log(res.data.result);
-        this.setState({ awaySchoolList: res.data.result });
+        this.setState({ fetchedSchoolObject: res.data.result });
       });
-    //fetching away school team depending upon the value of school
   };
 
   render() {
-    // console.log("school here");
-    // console.log(this.state.awaySchoolList);
-    // console.log("school here");
-    // console.log("typee", this.props.ifcollapsed);
     const layout = {
       labelCol: {
         span: 10,
@@ -345,44 +209,6 @@ class AdminCreateGame extends Component {
                 onSubmit={this.gameSubmit}
                 validateMessages={validateMessages}
               >
-                <Form.Item label="Select District" name="teamADistrict">
-                  <Select
-                    size="large"
-                    defaultValue="Select Options"
-                    style={{ width: 280 }}
-                    onChange={this.handleHomeTeam}
-                  >
-                    {this.state.fetchedAllTeam.map((homeTeamDetails) => (
-                      <Select.Option
-                        key={homeTeamDetails.id}
-                        // value={index}
-                        value={JSON.stringify(homeTeamDetails)}
-                      >
-                        {homeTeamDetails.tmName}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-
-                <Form.Item label="Select Home Team" name="homeTeam">
-                  <Select
-                    size="large"
-                    defaultValue="Select Options"
-                    style={{ width: 280 }}
-                    onChange={this.handleHomeTeam}
-                  >
-                    {this.state.fetchedAllTeam.map((homeTeamDetails) => (
-                      <Select.Option
-                        key={homeTeamDetails.id}
-                        // value={index}
-                        value={JSON.stringify(homeTeamDetails)}
-                      >
-                        {homeTeamDetails.tmName}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-
                 <Form.Item
                   name="gameDate"
                   label="Choose Date"
@@ -417,6 +243,7 @@ class AdminCreateGame extends Component {
                     onChange={this.onChangeGameTime}
                   />
                 </Form.Item>
+
                 <Form.Item name="location" label="Location" rules={[{}]}>
                   <Input
                     style={{ width: 280 }}
@@ -425,62 +252,71 @@ class AdminCreateGame extends Component {
                     placeholder="Location"
                   />
                 </Form.Item>
-                <Form.Item label="Select District" name="districtName">
-                  <Select
-                    size="large"
-                    defaultValue="Select Options"
-                    style={{ width: 280 }}
-                    value={this.state.againstTeamDistrict}
-                    onChange={this.handleDistrict}
-                  >
-                    {this.state.awaySchoolObj.map((item, index) => (
-                      <Select.Option
-                        key={index}
-                        // value={index}
-                        value={JSON.stringify(item)}
-                      >
-                        {item.districtName}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
+                {
+                  <Form.Item label="Select District" name="districtName">
+                    <Select
+                      size="large"
+                      defaultValue="Select Options"
+                      style={{ width: 280 }}
+                      value={this.state.againstTeamDistrict}
+                      onChange={this.handleDistrict}
+                    >
+                      {this.state.teamADistrictObj.map((item, index) => (
+                        <Select.Option
+                          key={index}
+                          // value={index}
+                          value={JSON.stringify(item)}
+                        >
+                          {item.districtName}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                }
                 <Form.Item label="Select School" name="schoolName">
                   <Select
                     size="large"
                     defaultValue="Select Options"
                     style={{ width: 280 }}
                     value={this.state.againstSchool}
-                    onChange={this.handleSchool}
+                    onFocus={this.fetchSchoolList}
+                    // onChange={this.handleSchool}
                   >
-                    {this.state.awaySchoolList.map((schoolMap, index) => (
-                      <Select.Option
-                        key={index}
-                        value={JSON.stringify(schoolMap)}
-                      >
-                        {schoolMap.name}
-                      </Select.Option>
-                    ))}
+                    {this.state.fetchedSchoolObject.map((schoolMap, index) =>
+                      schoolMap.id != this.props.mySchool.id ? (
+                        <Select.Option
+                          key={index}
+                          value={JSON.stringify(schoolMap)}
+                        >
+                          {schoolMap.name}
+                        </Select.Option>
+                      ) : null
+                    )}
                   </Select>
                 </Form.Item>
+
                 <Form.Item label="Select Team" name="awayTeam">
                   <Select
                     size="large"
                     defaultValue="Select Options"
                     style={{ width: 280 }}
                     value={this.state.againstTeam}
-                    onChange={this.handleAwayTeam}
+                    // onChange={this.handleAwayTeam}
                   >
-                    {this.state.awaySchoolTeamList.map((teamMap) => (
-                      <Select.Option
-                        key={teamMap.id}
-                        // value={index}
-                        value={JSON.stringify(teamMap)}
-                      >
-                        {teamMap.tmName}
-                      </Select.Option>
-                    ))}
+                    {
+                      //   this.state.awaySchoolTeamList.map((teamMap) => (
+                      //   <Select.Option
+                      //     key={teamMap.id}
+                      //     // value={index}
+                      //     value={JSON.stringify(teamMap)}
+                      //   >
+                      //     {teamMap.tmName}
+                      //   </Select.Option>
+                      // ))
+                    }
                   </Select>
                 </Form.Item>
+
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 12 }}>
                   <Button
                     type="primary"
@@ -492,6 +328,14 @@ class AdminCreateGame extends Component {
                 </Form.Item>
               </Form>
             </div>
+          </Col>
+          <Col span={8} md={8} xs={0}>
+            <div
+              style={{
+                textAlign: "center",
+                padding: "30px",
+              }}
+            ></div>
           </Col>
         </Row>
       </Content>
