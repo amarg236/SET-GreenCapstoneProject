@@ -5,6 +5,9 @@ import Noticeboard from "../../Project/Noticeboard.js";
 import axios from "axios";
 import { gameAction, teamAction } from "../../../actions/gameAction";
 import { Layout, Button, notification } from "antd";
+import { Anchor } from 'antd';
+
+const { Link } = Anchor;
 const { Content } = Layout;
 
 // codes written for redux is not being used. will come back later to erase and fix
@@ -119,8 +122,10 @@ class UserDashboard extends Component {
       >
         <div>
           <div className="jumbotron">
-            <h1 className="display-4">Hello, USER!</h1>
-            <p className="lead">This is a UserDashboard</p>
+          <p className="lead">Today is {new Date().toDateString()}</p>
+          <Anchor>
+          <Link href='http://lhsaa.org/home' title="LHSAA website" />
+          </Anchor>
           </div>
           <Noticeboard />
         </div>

@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import Cal from "../../Project/Cal";
 import Noticeboard from "../../Project/Noticeboard";
 import { Layout } from "antd";
+import { Anchor } from 'antd';
+
+const { Link } = Anchor;
 const { Content } = Layout;
 class AdminDashboard extends Component {
   constructor(props) {
@@ -26,8 +29,11 @@ class AdminDashboard extends Component {
       >
         <div>
           <div className="jumbotron">
-            <h1 className="display-4">Hello, ADMIN!</h1>
-            <p className="lead">This is a Admin Dashboard</p>
+            <h1 className="display-4">Welcome</h1>
+            <p className="lead">Today is {new Date().toDateString()}</p>
+            <Anchor>
+                <Link href='http://lhsaa.org/home' title="LHSAA website" />
+            </Anchor>
           </div>
           <Noticeboard />
         </div>
@@ -35,5 +41,4 @@ class AdminDashboard extends Component {
     );
   }
 }
-
 export default AdminDashboard;

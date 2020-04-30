@@ -3,6 +3,9 @@ import React, { Component } from "react";
 import Cal from "../../Project/Cal";
 import Noticeboard from "../../Project/Noticeboard.js";
 import { Layout } from "antd";
+import { Anchor } from 'antd';
+
+const { Link } = Anchor;
 const { Content } = Layout;
 
 class AssignorDashboard extends Component {
@@ -27,8 +30,10 @@ class AssignorDashboard extends Component {
       >
         <div>
           <div className="jumbotron">
-            <h1 className="display-4">Hello, ASSIGNOR!</h1>
-            <p className="lead">This is a Assignor Dashboard</p>
+          <p className="lead">Today is {new Date().toDateString()}</p>
+          <Anchor>
+          <Link href='http://lhsaa.org/home' title="LHSAA website" />
+          </Anchor>
           </div>
           <Noticeboard />
         </div>
@@ -36,5 +41,4 @@ class AssignorDashboard extends Component {
     );
   }
 }
-
 export default AssignorDashboard;

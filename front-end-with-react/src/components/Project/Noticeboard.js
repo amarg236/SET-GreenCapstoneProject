@@ -30,15 +30,11 @@ return(
     <Carousel dotPosition="top" autoplay>
       {this.state.notice.map((row, index) => (
         <div style={{ backgroundColor: "#083045" }}>
-          <span>
-            <br />
+        <div style={{padding:"5%"}}>
             <h3>{row.title}</h3>
-          </span>
-          <span>
-            <p style={{ fontWeight: "normal", color: "white" }}>
-              {row.description}
-            </p>
-          </span>
+              <span style={{ fontWeight: "normal", color: "white", fontSize:"1em", padding:"0"}}>{row.description.trim()}</span>
+
+        </div>
         </div>
       ))}
     </Carousel>

@@ -2,6 +2,7 @@ import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import React, { Component } from "react";
 import Cal from "../Project/Cal";
+import Noticeboard from "../Project/Noticeboard.js";
 import "../../App.css";
 import "../../stylesheets/layout.css";
 import { Layout, Carousel, Card, Typography } from "antd";
@@ -61,23 +62,7 @@ class Home extends Component {
             Announcement Board
           </h2>
         </div>
-        <Carousel dotPosition="top" autoplay>
-          {this.state.notice.map((row, index) => (
-            <div style={{ backgroundColor: "#083045" }}>
-              <span>
-                <br />
-                <h3>{row.title}</h3>
-              </span>
-
-              <span>
-                <p style={{ fontWeight: "normal", color: "white" }}>
-                  {" "}
-                  {row.description}
-                </p>
-              </span>
-            </div>
-          ))}
-        </Carousel>
+        <Noticeboard />
       </Content>
     );
   }
