@@ -55,10 +55,22 @@ class RequestedGame extends Component {
       game: [],
       school: [],
       isRejected: null,
+      refresh: false,
     };
   }
 
   componentDidMount() {
+    this.fetchApi();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.refresh != this.state.refresh) {
+      this.fetchApi();
+      this.setState({ needEdit: false });
+    }
+  }
+
+  fetchApi = () => {
     let myTeamId = new Map();
     this.props.myTeamId.map((row, index) => myTeamId.set(row));
 
@@ -90,10 +102,12 @@ class RequestedGame extends Component {
         // console.log(myTeamId);
         // console.log(myData);
         this.setState({
-          game: processData(myData),
+          game: processData(
+            myData.sort((a, b) => new Date(b.create_At) - new Date(a.create_At))
+          ),
         });
       });
-  }
+  };
 
   // rowSelection objects indicates the need for row selection
   getColumnSearchProps = (dataIndex) => ({
@@ -187,6 +201,9 @@ class RequestedGame extends Component {
       .then((res) => {
         if (res.data.httpStatusCode == 202) {
           this.successMsg("Great! Game has been deleted.");
+          this.setState((prevState) => ({
+            refresh: !prevState.refresh,
+          }));
         } else {
           this.errorMsg("Sorry! Game could not be deleted.");
         }

@@ -64,10 +64,7 @@ class AdminRejectedGames extends Component {
           console.log("res>>");
           console.log(res.data.result);
           const myData = res.data.result.filter(function (adminViewGames) {
-            return (
-              !adminViewGames.approved ||
-              (adminViewGames.rejected && adminViewGames.awayAccepted)
-            );
+            return adminViewGames.rejected && adminViewGames.awayAccepted;
           });
           console.log("myData>>");
           console.log(myData);
@@ -238,16 +235,19 @@ class AdminRejectedGames extends Component {
           minHeight: 580,
         }}
       >
-        <div style={{ marginBottom: "16px" }}>
-          <Button
-            style={{ marginRight: "8px" }}
-            type="primary"
-            onClick={this.setAgeSort}
-          >
-            Filter By Month
-          </Button>
-          <DatePicker picker="month" bordered={true} />
-        </div>
+        {
+          // <div style={{ marginBottom: "16px" }}>
+          //   <Button
+          //     style={{ marginRight: "8px" }}
+          //     type="primary"
+          //     onClick={this.setAgeSort}
+          //   >
+          //     Filter By Month
+          //   </Button>
+          //   <DatePicker picker="month" bordered={true} />
+          // </div>
+        }
+
         <Table
           hideOnSinglePage
           //   rowSelection={rowSelection}

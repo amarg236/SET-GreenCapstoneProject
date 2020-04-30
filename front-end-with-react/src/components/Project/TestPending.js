@@ -20,6 +20,8 @@ import {
   DatePicker,
   Tag,
   Modal,
+  Form,
+  TimePicker,
 } from "antd";
 
 import {
@@ -27,7 +29,7 @@ import {
   EditOutlined,
   FilterOutlined,
 } from "@ant-design/icons";
-
+const { RangePicker } = TimePicker;
 const { Content } = Layout;
 const { TabPane } = Tabs;
 
@@ -47,6 +49,8 @@ function processData(supply) {
     rejected: row.rejected,
     awayAccepted: row.awayAccepted,
     selectedKeys: [],
+    urequester: row.urequester,
+    hasBeenEdited: row.hasBeenEdited,
   }));
 }
 
@@ -61,6 +65,15 @@ class TestPending extends Component {
       bulkAccept: false,
       refresh: false,
       needEdit: false,
+      editGameObject: [],
+      editHomeTeam: "",
+      editAwayTeam: "",
+      editGameLocation: "",
+      editGameId: "",
+      editGameRequester: "",
+      editGameDate: moment().format("YYYY-MM-DD"),
+      editGameStartTime: moment().format("HH:mm"),
+      editGameEndTime: moment().format("HH:mm"),
     };
   }
 
@@ -71,6 +84,7 @@ class TestPending extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.refresh != this.state.refresh) {
       this.fetchApi();
+      this.setState({ needEdit: false });
     }
   }
 
@@ -103,7 +117,9 @@ class TestPending extends Component {
         });
         // console.log(myData);
         this.setState({
-          game: processData(myData),
+          game: processData(
+            myData.sort((a, b) => new Date(b.create_At) - new Date(a.create_At))
+          ),
         });
       });
   };
@@ -209,9 +225,69 @@ class TestPending extends Component {
     this.setState({ searchText: "" });
   };
 
+  editOnChangeDate = (date, dateString) => {
+    // console.log(date);
+    console.log(dateString);
+    console.log("i am triggred");
+    // this.setState({ gameDate: dateString });
+    this.setState({ editGameDate: date?.format("YYYY-MM-DD") });
+  };
+
   editGame = (record) => {
-    this.setState({ needEdit: true });
+    this.setState({
+      needEdit: true,
+      editHomeTeam: record.homeTeam,
+      editAwayTeam: record.awayTeam,
+      editGameLocation: record.location,
+      editGameId: record.key,
+      editGameRequester: record.urequester,
+    });
+
     console.log(record);
+  };
+
+  rescheduleGame = () => {
+    console.log("Submit>>");
+    const startDate = moment(this.state.editGameDate)
+      .set("hours", 0)
+      .set("minutes", 0);
+    const startTime = moment(this.state.editGameStartTime, "HH:mm");
+    const endTime = moment(this.state.editGameEndTime, "HH:mm");
+
+    const gameStart = moment(startDate)
+      .add(startTime.hours(), "hour")
+      .add(startTime.minutes(), "minute");
+
+    const gameDuration = moment.duration(endTime.diff(startTime)).as("minutes");
+    // console.log(gameDuration);
+
+    const editGameObject = {
+      time: moment(gameStart).format("YYYY-MM-DD HH:mm"),
+      duration: gameDuration,
+      id: this.state.editGameId,
+      urequester: this.state.editGameRequester,
+    };
+
+    console.log(editGameObject);
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/game/modify", editGameObject, {
+        headers: {
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        if (res.data.httpStatusCode == 202) {
+          console.log(res);
+          this.successMsg("Great!! Game has been rescheduled successfully");
+
+          this.setState((prevState) => ({
+            refresh: !prevState.refresh,
+          }));
+        } else {
+          this.errorMsg("Sorry game couldn't be rescheduled.");
+        }
+      });
   };
 
   bulkAccept = (keys) => {
@@ -269,6 +345,16 @@ class TestPending extends Component {
           this.errorMsg("Sorry couldn't complete the process.");
         }
       });
+  };
+  dateFormat = "YYYY-MM-DD";
+  monthFormat = "YYYY/MM";
+
+  onChangeGameTime = (time, timeString) => {
+    console.log(time[0]?.format("HH:mm"));
+    console.log(time[1]?.format("HH:mm"));
+    this.setState({ editGameStartTime: time[0]?.format("HH:mm") });
+    this.setState({ editGameEndTime: time[1]?.format("HH:mm") });
+    // console.log(time.format("HH:mm"));
   };
 
   // Approve Games
@@ -328,6 +414,24 @@ class TestPending extends Component {
   };
 
   render() {
+    const layout = {
+      labelCol: {
+        span: 10,
+      },
+      wrapperCol: {
+        span: 10,
+      },
+    };
+    const validateMessages = {
+      required: "This field is required!",
+      types: {
+        email: "Not a valid email!",
+        number: "Not a valid number!",
+      },
+      number: {
+        range: "Must be between ${min} and ${max}",
+      },
+    };
     const { game } = this.state;
 
     const tableData = game;
@@ -366,21 +470,25 @@ class TestPending extends Component {
             {record.rejected ? <Tag color="red">Rejected</Tag> : null}
             {record.awayAccepted ? <Tag color="green">Accepted</Tag> : null}
             {!record.awayAccepted && !record.rejected ? (
-              <span>
-                <Button
-                  onClick={() => this.approveGame(record)}
-                  type="link"
-                  style={{ paddingLeft: "5px", paddingRight: "5px" }}
-                >
-                  Approve
-                </Button>
-                <Button onClick={() => this.denyGame(record)} type="link">
-                  Deny
-                </Button>
-                <Button onClick={() => this.editGame(record)} type="link">
-                  Edit
-                </Button>
-              </span>
+              record.hasBeenEdited ? (
+                <Tag color="cyan">Rescheduled</Tag>
+              ) : (
+                <span>
+                  <Button
+                    onClick={() => this.approveGame(record)}
+                    type="link"
+                    style={{ paddingLeft: "5px", paddingRight: "5px" }}
+                  >
+                    Approve
+                  </Button>
+                  <Button onClick={() => this.denyGame(record)} type="link">
+                    Deny
+                  </Button>
+                  <Button onClick={() => this.editGame(record)} type="link">
+                    Edit
+                  </Button>
+                </span>
+              )
             ) : null}
           </span>
         ),
@@ -483,21 +591,67 @@ class TestPending extends Component {
                 marginTop: "10px",
               }}
             >
-              <Descriptions title="Edit Game">
+              <Descriptions title="Edit The Date & Time for following Game">
                 <Descriptions.Item label="Home Team">
-                  Zhou Maomao
+                  {this.state.editHomeTeam}
                 </Descriptions.Item>
                 <Descriptions.Item label="Away Team">
-                  1810000000
+                  {this.state.editAwayTeam}
                 </Descriptions.Item>
                 <Descriptions.Item label="Location">
-                  Hangzhou, Zhejiang
-                </Descriptions.Item>
-                <Descriptions.Item label="Remark">empty</Descriptions.Item>
-                <Descriptions.Item label="Address">
-                  No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+                  {this.state.editGameLocation}
                 </Descriptions.Item>
               </Descriptions>
+              <Form
+                {...layout}
+                name="nest-messages"
+                onSubmit={this.gameSubmit}
+                validateMessages={validateMessages}
+              >
+                <Form.Item
+                  name="gameDate"
+                  label="Choose Date"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <DatePicker
+                    style={{ width: 280 }}
+                    value={this.state.editGameDate}
+                    onChange={this.editOnChangeDate}
+                    // defaultValue={moment("2020-03-08", this.dateFormat)}
+                    format={this.dateFormat}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="gametime"
+                  label="Choose Time"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <RangePicker
+                    style={{ width: 280 }}
+                    minuteStep={5}
+                    format="HH:mm"
+                    value={this.state.editGameTime}
+                    onChange={this.onChangeGameTime}
+                  />
+                </Form.Item>
+                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 12 }}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    onClick={this.rescheduleGame}
+                  >
+                    Request Game
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
           ) : null}
           ,

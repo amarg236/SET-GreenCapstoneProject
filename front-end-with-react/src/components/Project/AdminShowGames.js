@@ -326,16 +326,18 @@ class AdminShowGames extends Component {
           minHeight: 580,
         }}
       >
-        <div style={{ marginBottom: "16px" }}>
-          <Button
-            style={{ marginRight: "8px" }}
-            type="primary"
-            onClick={this.setAgeSort}
-          >
-            Filter By Month
-          </Button>
-          <DatePicker picker="month" bordered={true} />
-        </div>
+        {
+          //   <div style={{ marginBottom: "16px" }}>
+          //   <Button
+          //     style={{ marginRight: "8px" }}
+          //     type="primary"
+          //     onClick={this.setAgeSort}
+          //   >
+          //     Filter By Month
+          //   </Button>
+          //   <DatePicker picker="month" bordered={true} />
+          // </div>
+        }
         <Table
           hideOnSinglePage
           rowSelection={rowSelection}

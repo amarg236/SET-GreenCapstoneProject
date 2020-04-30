@@ -14,7 +14,6 @@ class CalCSV extends React.Component {
   }
 
   render() {
-    console.log("CALCSV State.user", this.props.user);
     if (this.props.user) {
       // const a = this.props.csvInfo;
       // console.log("on", a);

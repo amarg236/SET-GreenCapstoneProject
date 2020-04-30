@@ -5,14 +5,13 @@ import axios from "axios";
 import { Card } from "react-bootstrap";
 import { connect } from "react-redux";
 import Authtoken from "../../Utility/AuthToken";
-import { Layout } from "antd";
-const { Content } = Layout;
+
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: "...",
-      lastName: "...",
+      firstName: "",
+      lastName: "",
     };
   }
 
@@ -20,6 +19,7 @@ class UserProfile extends Component {
     const dataBody = {
       data: this.props.username,
     };
+
     axios
       .post(Authtoken.getBaseUrl() + "/api/auth/find/email", dataBody, {
         headers: {
@@ -28,12 +28,13 @@ class UserProfile extends Component {
         },
       })
       .then((res) => {
+        console.log("res data", res.data);
         if (res.data.httpStatusCode === 202) {
-          console.log(res.data);
           this.setState({
             firstName: res.data.result.firstname,
             lastName: res.data.result.lastname,
           });
+          console.log("asd", res);
         }
       })
       .catch((e) => {
@@ -43,45 +44,47 @@ class UserProfile extends Component {
 
   render() {
     return (
-      <Content
-        className="site-layout-background"
-        style={{
-          padding: 24,
-          margin: 0,
-          minHeight: 580,
-        }}
-      >
-        <div>
-          <Card>
-            <Card.Body>
-              <Card.Title>User Profile</Card.Title>
-              <Card.Text>
-                <b>Username:</b> {this.props.username}
-              </Card.Text>
-              <Card.Text>
-                <b>User Role:</b> {this.props.role}
-              </Card.Text>
-              <Card.Text>
-                <b>Name:</b> {this.state.firstName}
-                <span> </span>
-                {this.state.lastName}
-              </Card.Text>
-              {this.props.mySchool ? (
-                <span>
-                  <Card.Text>
-                    <b>School:</b> {this.props.mySchool.name}
-                    <span> </span>
-                  </Card.Text>
-                  <Card.Text>
-                    <b>District:</b> {this.props.schoolDistrict.districtName}
-                    <span> </span>
-                  </Card.Text>
-                </span>
-              ) : null}
-            </Card.Body>
-          </Card>
-        </div>
-      </Content>
+      <div style={{ padding: "20px" }}>
+        <Card>
+          <Card.Body>
+            <Card.Title
+              style={{
+                fontFamily: "Copperplate, Copperplate Gothic Light, fantasy",
+                fontWeight: 600,
+                textAlign: "center",
+                color: "rgba(79, 146, 255)",
+                marginBottom: 20,
+              }}
+            >
+              User Profile
+            </Card.Title>
+            <Card.Text style={{ textAlign: "center", color: "green" }}>
+              <b>Username: </b> {this.props.username}
+            </Card.Text>
+            <Card.Text style={{ textAlign: "center", color: "green" }}>
+              <b>User Role: </b> {this.props.role}
+            </Card.Text>
+            <Card.Text style={{ textAlign: "center", color: "green" }}>
+              <b>Name: </b> {this.state.firstName}
+              <span> </span>
+              {this.state.lastName}
+            </Card.Text>
+            {this.props.mySchool ? (
+              <span>
+                <Card.Text style={{ textAlign: "center", color: "green" }}>
+                  <b>School:</b> {this.props.mySchool.name}
+                  <span> </span>
+                </Card.Text>
+                <Card.Text style={{ textAlign: "center", color: "green" }}>
+                  <b>District:</b> {this.props.schoolDistrict.districtName}
+                  <span> </span>
+                  {this.state.lastName}
+                </Card.Text>
+              </span>
+            ) : null}
+          </Card.Body>
+        </Card>
+      </div>
     );
   }
 }

@@ -46,6 +46,9 @@ import ViewNotice from "./components/ManageNotice/ViewNotice";
 import AddGoodDay from "./components/ManageRestriction/AddGoodDay";
 import AddBadDay from "./components/ManageRestriction/AddBadDay";
 import AddEventDay from "./components/ManageRestriction/AddEventDay";
+import GeneralCalendar from "./components/Project/GeneralCalendar";
+import AdminCalendar from "./components/Project/AdminCalendar";
+
 class App extends React.Component {
   render() {
     return (
@@ -65,7 +68,7 @@ class App extends React.Component {
                 //   url: "localhost:3000/api/auth/login",
                 //   query: { u: "u" }
                 // })}
-                path="/api/auth/login"
+                path="/verify-account"
                 component={VerifyAccount}
               />
               <ProtectedRoute
@@ -143,9 +146,20 @@ class App extends React.Component {
                 path="/addEventDay"
                 component={AddEventDay}
               />
+              <ProtectedRoute
+                exact
+                path="/calendarG"
+                component={GeneralCalendar}
+              />
+              <ProtectedRoute
+                exact
+                path="/adminCalendar"
+                component={AdminCalendar}
+              />
+
               <ProtectedRoute exact path="/addBadDay" component={AddBadDay} />
               <ProtectedRoute exact path="/exportCSV" component={ExportCSV} />
-              <ProtectedRoute exact path="/calander" component={Cal} />
+              <ProtectedRoute exact path="/calendarP" component={Cal} />
               <ProtectedRoute exact path="/AddGoodDay" component={AddGoodDay} />
               <Route exact path="/login" component={login} />
               <Route path="*" component={Error404} />

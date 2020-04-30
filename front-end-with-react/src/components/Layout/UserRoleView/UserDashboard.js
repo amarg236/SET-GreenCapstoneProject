@@ -13,6 +13,7 @@ class UserDashboard extends Component {
     super(props);
     this.state = {
       game: [],
+      inComingNewGameNot: 0,
       currentSchool: JSON.parse(localStorage.getItem("homeSchool"))
         ?.currenthomeSchool,
       // isLoggedIn: AuthToken.getAuthenticationStatus
@@ -21,6 +22,7 @@ class UserDashboard extends Component {
 
   async componentDidMount() {
     // this.setState({ schoolId: this.props.mySchool.id });
+
     const currentSchool = {
       id: this.state.currentSchool.id,
     };
@@ -52,10 +54,44 @@ class UserDashboard extends Component {
       localStorage.setItem("games", JSON.stringify(saveTeamIdArray));
 
       this.props.teamAction(Array.from(myTeam.keys()));
+      this.fetchNotification();
     } catch (e) {
       console.error(`Problem fetching data ${e}`);
     }
   }
+
+  fetchNotification = () => {
+    const currentSchool = {
+      id: this.props.school.id,
+    };
+    axios
+      .post(
+        Authtoken.getBaseUrl() + "/api/game/get/BySchool/all",
+        currentSchool,
+        {
+          headers: {
+            Authorization:
+              "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+          },
+        }
+      )
+      .then((res) => {
+        console.log("user>>");
+        console.log(res.data.result);
+        res.data.result.map((uCount) => {
+          console.log(uCount);
+          if (uCount.awayNotification) {
+            this.setState({
+              inComingNewGameNot: this.inComingNewGameNot + 1,
+            });
+            console.log("inside>>");
+            console.log(uCount.awayNotification);
+          }
+        });
+
+        console.log(this.state.inComingNewGameNot);
+      });
+  };
 
   render() {
     // return <Cal />;

@@ -27,7 +27,10 @@ class LoginComp extends React.Component {
     }
   };
 
-  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+  onChange = (e) => {
+    e.persist();
+    this.setState({ [e.target.name]: e.target.value });
+  };
   wrongPassword = () => {
     message.error(
       "The credentials you have entered is worng. Please try again."
@@ -82,9 +85,12 @@ class LoginComp extends React.Component {
             onChange={(e) => this.setState({ username: e.target.value })}
             rules={[
               {
-                required: true,
                 type: "email",
-                message: "Please enter your email!",
+                message: "The input is not valid E-mail!",
+              },
+              {
+                required: true,
+                message: "Please input your E-mail!",
               },
             ]}
           >

@@ -93,6 +93,7 @@ class UnfilteredGames extends Component {
       .then((res) => {
         // console.log("current school teams");
         console.log(res.data.result);
+        console.log("Unfiltered>>");
         // console.log("length here");
         // console.log(res.data.result.length);
         // let myData = res.data.result.filter(function (myGames) {
@@ -204,8 +205,8 @@ class UnfilteredGames extends Component {
     const toBePassed = this.state.game.filter(function (filtered) {
       console.log(filtered.time);
       let passedDate = moment(filtered.time, "MM/DD HH:mm").format("M");
-      console.log(passedDate);
-      console.log(mySelectedMonth);
+      console.log("aaaa", passedDate);
+      console.log("bbbb", mySelectedMonth);
       if (passedDate == mySelectedMonth) {
         console.log("both are same month");
       }
@@ -345,33 +346,35 @@ class UnfilteredGames extends Component {
     ];
 
     return (
-      <Content
-        className="site-layout-background"
-        style={{
-          padding: 24,
-          margin: 0,
-          minHeight: 580,
-        }}
-      >
-        <div style={{ marginBottom: "16px" }}>
-          <Button
-            style={{ marginRight: "8px" }}
-            type="primary"
-            onClick={this.setAgeSort}
-          >
-            Filter By Month
-          </Button>
-          <DatePicker
-            value={this.state.monthSelected}
-            format="MM"
-            picker="month"
-            bordered={true}
-            onChange={this.onMonthSelected}
-          />
-        </div>
+      <span>
+        <Content
+          className="site-layout-background"
+          style={{
+            padding: 24,
+            margin: 0,
+            minHeight: 580,
+          }}
+        >
+          <div style={{ marginBottom: "16px" }}>
+            <Button
+              style={{ marginRight: "8px" }}
+              type="primary"
+              // onClick={this.setAgeSort}
+            >
+              Filter By Month
+            </Button>
+            <DatePicker
+              value={this.state.monthSelected}
+              format="MM"
+              picker="month"
+              bordered={true}
+              onChange={this.onMonthSelected}
+            />
+          </div>
 
-        <Table columns={getColumns()} dataSource={tableData} size="small" />
-      </Content>
+          <Table columns={getColumns()} dataSource={tableData} size="small" />
+        </Content>
+      </span>
     );
   }
 }

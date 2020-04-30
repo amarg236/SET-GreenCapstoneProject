@@ -53,14 +53,13 @@ class AdminSidebar extends Component {
           <span>Dashboard</span>
         </Menu.Item>
 
-        <Menu.Item onClick={handleClick} key="calander">
+        <Menu.Item onClick={handleClick} key="adminCalendar">
           <span>
             <CalendarOutlined />
           </span>
           <span>Game Calendar</span>
         </Menu.Item>
         <SubMenu
-          key="sub1"
           title={
             <span>
               <AppstoreOutlined />
