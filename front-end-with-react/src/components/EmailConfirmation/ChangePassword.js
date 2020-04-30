@@ -43,25 +43,31 @@ class ChangePassword extends Component {
   };
 
   destroyModal = () => {
-    Modal.destroy();
+    // Modal.destroy();
+    // this.logout();
+    console.log("I am ready");
   };
 
   success = () => {
-    // Modal.success({
-    //   content: "Password has been changed successfully",
-    message.loading("Password has been changed successfully..");
-    // });
-    // const hide = message.loading("Password has been changed successfully..", 0);
-    // Dismiss manually and asynchronously
-    // setTimeout(hide, 2500);
+    Modal.success({
+      content: "Password has been changed successfully",
+      // message.loading("Password has been changed successfully..");
+      // });
+      // const hide = message.loading("Password has been changed successfully..", 0);
+      // Dismiss manually and asynchronously
+      // setTimeout(hide, 2500);
+    });
+    setTimeout(() => {
+      this.props.logout();
+    }, 3000);
+    // Modal.onOk = () => console.log("hi");
+
+    // onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+
+    // logout = () => {
+    //   this.props.logout();
+    // };
   };
-
-  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
-
-  logout = () => {
-    this.props.logout();
-  };
-
   render() {
     const layout = {
       labelCol: { span: 6 },
