@@ -60,7 +60,7 @@ class UserSidebar extends Component {
           </span>
           <span>Dashboard</span>
         </Menu.Item>
-        <Menu.Item onClick={handleClick} key="Notification">
+        <Menu.Item onClick={handleClick} key="notification">
           <span>
             <a href="/notification">
               <NotificationOutlined />

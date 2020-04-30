@@ -50,6 +50,8 @@ import GeneralCalendar from "./components/Project/GeneralCalendar";
 import AdminCalendar from "./components/Project/AdminCalendar";
 import AdminCreateGame from "./components/Project/AdminGameCreate";
 
+import UserNotificatin from "./components/Project/UserNotification";
+
 class App extends React.Component {
   render() {
     return (
@@ -161,6 +163,11 @@ class App extends React.Component {
                 exact
                 path="/adminCreateGame"
                 component={AdminCreateGame}
+              />
+              <ProtectedRoute
+                exact
+                path="/notification"
+                component={UserNotificatin}
               />
 
               <ProtectedRoute exact path="/addBadDay" component={AddBadDay} />

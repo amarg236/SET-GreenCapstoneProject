@@ -58,7 +58,7 @@ class Home extends Component {
               color: "#083045",
             }}
           >
-            Announcement Board
+            Anouncement Board
           </h2>
         </div>
         <Carousel dotPosition="top" autoplay>
