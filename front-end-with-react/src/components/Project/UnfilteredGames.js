@@ -347,33 +347,24 @@ class UnfilteredGames extends Component {
 
     return (
       <span>
-        <Content
-          className="site-layout-background"
-          style={{
-            padding: 24,
-            margin: 0,
-            minHeight: 580,
-          }}
-        >
-          <div style={{ marginBottom: "16px" }}>
-            <Button
-              style={{ marginRight: "8px" }}
-              type="primary"
-              // onClick={this.setAgeSort}
-            >
-              Filter By Month
-            </Button>
-            <DatePicker
-              value={this.state.monthSelected}
-              format="MM"
-              picker="month"
-              bordered={true}
-              onChange={this.onMonthSelected}
-            />
-          </div>
+        <div style={{ marginBottom: "16px" }}>
+          <Button
+            style={{ marginRight: "8px" }}
+            type="primary"
+            // onClick={this.setAgeSort}
+          >
+            Filter By Month
+          </Button>
+          <DatePicker
+            value={this.state.monthSelected}
+            format="MM"
+            picker="month"
+            bordered={true}
+            onChange={this.onMonthSelected}
+          />
+        </div>
 
-          <Table columns={getColumns()} dataSource={tableData} size="small" />
-        </Content>
+        <Table columns={getColumns()} dataSource={tableData} size="small" />
       </span>
     );
   }

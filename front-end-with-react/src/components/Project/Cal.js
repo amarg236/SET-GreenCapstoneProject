@@ -65,6 +65,7 @@ class Cal extends React.Component {
     if (isMobile) {
       this.setState({ currentView: "Week" });
     }
+
     this.fetchApi();
   }
 
