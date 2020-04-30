@@ -42,6 +42,7 @@ class CreateGame extends Component {
   state = {
     homeTeam: "",
     homeTeamId: "",
+    homeSchoolId: "",
     homeTeamObj: [],
     awaySchoolObj: [],
     awaySchoolList: [],
@@ -461,14 +462,16 @@ class CreateGame extends Component {
                     value={this.state.againstSchool}
                     onChange={this.handleSchool}
                   >
-                    {this.state.awaySchoolList.map((schoolMap, index) => (
-                      <Select.Option
-                        key={index}
-                        value={JSON.stringify(schoolMap)}
-                      >
-                        {schoolMap.name}
-                      </Select.Option>
-                    ))}
+                    {this.state.awaySchoolList.map((schoolMap, index) =>
+                      schoolMap.id != this.props.mySchool.id ? (
+                        <Select.Option
+                          key={index}
+                          value={JSON.stringify(schoolMap)}
+                        >
+                          {schoolMap.name}
+                        </Select.Option>
+                      ) : null
+                    )}
                   </Select>
                 </Form.Item>
 
