@@ -177,29 +177,6 @@ class AdminCalendar extends React.Component {
         </div>
       );
     }
-
-    // if (props.sender == this.props.username && props.receiver == null) {
-    //   console.log("requsted game found");
-    //   return (
-    //     return (<div style={{ backgroundColor: "orange" }} className="template-wrap">
-    //       {props.Subject}
-    //     </div>);
-    //   );
-    // }
-    // if (props.PartialApproved && props.FullyApproved) {
-    //   return <div className="template-wrap"> {props.Subject} </div>;
-    // } else if (props.PartialApproved || props.FullyApproved);
-    // {
-    //   return (
-    //     <div
-    //       style={{ backgroundColor: "#87d068", maxHeight: "100px" }}
-    //       className="template-wrap"
-    //     >
-    //       {" "}
-    //       {props.Subject}{" "}
-    //     </div>
-    //   );
-    // }
   }
 
   // Links that could be helpful
@@ -252,7 +229,7 @@ class AdminCalendar extends React.Component {
                 // mode="multiple"
                 // labelInValue
 
-                placeholder="Select Home Team"
+                placeholder="Select School Team"
                 notFoundContent={fetching ? <Spin size="small" /> : null}
                 // filterOption={true}
                 style={{ padding: "10px", width: "250px", minWidth: "auto" }}

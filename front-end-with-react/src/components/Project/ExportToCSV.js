@@ -17,8 +17,10 @@ const { Content } = Layout;
 
 // Export Formatted for all data on calender.
 function processData(rawEvents) {
+  console.log("inside>>", rawEvents);
   return axios.all(
     rawEvents.map((event) => {
+      console.log("event>>", event.hometeamId);
       return axios
         .all([
           axios.post(
@@ -51,7 +53,7 @@ function processData(rawEvents) {
             GameDate: moment(event.time, "YYYY-MM-DD").format("YYYY/MM/DD"),
             GameTime: moment(event.time, "YYYY-MM-DD HH:mm").format("h:mm A"),
             // Level: findTeamLevel(event.hometeam),
-            Level: "Dummy",
+            Level: teamData.data.result.tmClass,
             HomeTeam: event.hometeam,
             HomeLevel: teamData.data.result.tmClass,
             AwayTeam: event.awayteam,
@@ -61,11 +63,6 @@ function processData(rawEvents) {
     })
   );
 }
-
-// function findTeamLevel(inputHere) {
-//   return "Dummy Level";
-//   console.log(inputHere);
-// }
 
 class ExportToCSV extends Component {
   constructor(props) {
@@ -87,6 +84,9 @@ class ExportToCSV extends Component {
       teamSelected: [],
       exportObject: [],
       ifSelectedTeam: false,
+      showTeamForm: false,
+      fetchedAllTeam: [],
+      showAlternativeButton: false,
     };
   }
 
@@ -109,10 +109,24 @@ class ExportToCSV extends Component {
         readyForExport: true,
         isItSchool: false,
         needTeam: false,
+        showTeamForm: false,
       });
+      this.finalProcess();
     } else if (value == "school") {
-      this.setState({ isItSchool: true });
+      this.setState({
+        isItSchool: true,
+        showTeamForm: false,
+        readyForExport: false,
+      });
       this.fetchSchool();
+    } else if (value == "team") {
+      this.setState({
+        showTeamForm: true,
+        readyForExport: false,
+        isItSchool: false,
+        needTeam: false,
+      });
+      console.log("Select Team");
     }
   };
 
@@ -175,6 +189,36 @@ class ExportToCSV extends Component {
     });
   };
 
+  onSelectAllTeam = (value) => {
+    const getFromValue = JSON.parse(value);
+
+    this.setState({
+      selectedTeamId: getFromValue.id,
+      teamSelected: getFromValue,
+      showAlternativeButton: true,
+    });
+  };
+  fetchAllTeam = () => {
+    function getTeam() {
+      const forTeam = {};
+      return axios.post(Authtoken.getBaseUrl() + "/api/team/get", forTeam, {
+        headers: {
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
+      });
+    }
+
+    axios.all([getTeam()]).then(
+      axios.spread((allTeam) => {
+        console.log(allTeam);
+        // Both requests are now complete
+        console.log(allTeam.data.result);
+        this.setState({ fetchedAllTeam: allTeam.data.result });
+      })
+    );
+  };
+
   finalProcess = () => {
     // const preObj = this.state.
     // allSchedule()
@@ -211,6 +255,7 @@ class ExportToCSV extends Component {
           console.log(anotherLevel);
 
           processData(anotherLevel).then((processedData) => {
+            console.log("I am here");
             this.setState({
               exportObject: processedData,
               readyForExport: true,
@@ -279,6 +324,7 @@ class ExportToCSV extends Component {
                   >
                     <Option key="all">Export all</Option>
                     <Option key="school">School</Option>
+                    <Option key="team">Team</Option>
                     {
                       // <Option key="team">Team</Option>
                     }
@@ -286,23 +332,6 @@ class ExportToCSV extends Component {
                 </Form.Item>
 
                 {this.state.isItSchool ? (
-                  <Form.Item label="Select School">
-                    <Select
-                      showSearch
-                      onChange={this.onSelectSchool}
-                      style={{ width: "85%" }}
-                      placeholder="Select one option"
-                    >
-                      {this.state.schoolData.map((sc) => (
-                        <Option key={sc.id} value={sc.id}>
-                          {sc.name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                ) : null}
-
-                {this.state.ifSelectedTeam ? (
                   <Form.Item label="Select School">
                     <Select
                       showSearch
@@ -328,9 +357,6 @@ class ExportToCSV extends Component {
                       placeholder="Select Team"
                       onFocus={this.fetchTeamForSchool}
                     >
-                      <Option key="999" value="999">
-                        No Thanks
-                      </Option>
                       {this.state.teamObjData.map((sc) => (
                         <Option key={sc.id} value={JSON.stringify(sc)}>
                           {sc.tmName}
@@ -339,7 +365,69 @@ class ExportToCSV extends Component {
                     </Select>
                   </Form.Item>
                 ) : null}
-
+                {this.state.showTeamForm ? null : (
+                  <Form.Item {...buttonLayout}>
+                    <Button
+                      shape="round"
+                      size="large"
+                      onClick={() => this.finalProcess()}
+                      icon={<DownloadOutlined />}
+                    >
+                      Process Data For Export
+                    </Button>
+                  </Form.Item>
+                )}
+              </div>
+            </Row>
+          </form>
+        </Form>
+        {this.state.showTeamForm ? (
+          <Form {...formLayout}>
+            <Row>
+              {" "}
+              <div
+                style={{
+                  alignContent: "center",
+                  marginTop: "15px",
+                  width: "100%",
+                  backgroundColor: "#ffffff",
+                  padding: "20px",
+                  boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
+                }}
+              >
+                <Form.Item label="Select Team">
+                  <Select
+                    showSearch
+                    onChange={this.onSelectAllTeam}
+                    style={{ width: "85%" }}
+                    placeholder="Select Team"
+                    onFocus={this.fetchAllTeam}
+                  >
+                    {this.state.fetchedAllTeam.map((sc) => (
+                      <Option key={sc.id} value={JSON.stringify(sc)}>
+                        {sc.tmName}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </div>
+            </Row>
+          </Form>
+        ) : null}
+        {this.state.showAlternativeButton ? (
+          <Form {...formLayout}>
+            <Row>
+              {" "}
+              <div
+                style={{
+                  alignContent: "center",
+                  marginTop: "15px",
+                  width: "100%",
+                  backgroundColor: "#ffffff",
+                  padding: "20px",
+                  boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
+                }}
+              >
                 <Form.Item {...buttonLayout}>
                   <Button
                     shape="round"
@@ -352,8 +440,8 @@ class ExportToCSV extends Component {
                 </Form.Item>
               </div>
             </Row>
-          </form>
-        </Form>
+          </Form>
+        ) : null}
         {this.state.readyForExport ? (
           <Form {...formLayout}>
             <Row>
@@ -377,7 +465,15 @@ class ExportToCSV extends Component {
                     shape="round"
                     size="large"
                     icon={<DownloadOutlined />}
-                    onClick={() => this.setState({ readyForExport: false })}
+                    onClick={() =>
+                      this.setState({
+                        readyForExport: false,
+                        showTeamForm: false,
+                        showAlternativeButton: false,
+                        isItSchool: false,
+                        needTeam: false,
+                      })
+                    }
                   >
                     {
                       <CSVLink
