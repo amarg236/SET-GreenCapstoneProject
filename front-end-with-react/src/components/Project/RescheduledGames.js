@@ -1,6 +1,6 @@
 import "../../App.css";
 import React, { Component } from "react";
-import RescheduledGames from "./RescheduledGames";
+
 import "./SignIn";
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
@@ -54,7 +54,7 @@ function processData(supply) {
   }));
 }
 
-class TestPending extends Component {
+class RescheduledGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -113,7 +113,7 @@ class TestPending extends Component {
         // console.log("length here");
         // console.log(res.data.result.length);
         let myData = res.data.result.filter(function (myGames) {
-          return myTeamId.has(myGames.awayteamId);
+          return myTeamId.has(myGames.awayteamId) && myGames.hasBeenEdited;
         });
         // console.log(myData);
         this.setState({
@@ -290,62 +290,6 @@ class TestPending extends Component {
       });
   };
 
-  bulkAccept = (keys) => {
-    console.log("i am prining array of keys??");
-    // console.log(keys);
-    console.log(this.state.selectedKeys);
-
-    const aemptyObj = {
-      data: this.state.selectedKeys,
-    };
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/accept/bulk", aemptyObj, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.status == 200) {
-          console.log(res);
-          this.successMsg("Great! All game has been approved. ");
-          this.setState((prevState) => ({
-            refresh: !prevState.refresh,
-          }));
-        } else {
-          this.errorMsg("Sorry couldn't accept games.");
-        }
-      });
-  };
-
-  bulkReject = (keys) => {
-    console.log("i am prining array of keys??");
-    // console.log(keys);
-    console.log(this.state.selectedKeys);
-
-    const aemptyObj = {
-      data: this.state.selectedKeys,
-    };
-    axios
-      .post(Authtoken.getBaseUrl() + "/api/game/deny/bulk", aemptyObj, {
-        headers: {
-          Authorization:
-            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.status == 200) {
-          this.successMsg("Selected games has been denied. ");
-          this.setState((prevState) => ({
-            refresh: !prevState.refresh,
-          }));
-        } else {
-          this.errorMsg("Sorry couldn't complete the process.");
-        }
-      });
-  };
   dateFormat = "YYYY-MM-DD";
   monthFormat = "YYYY/MM";
 
@@ -467,29 +411,18 @@ class TestPending extends Component {
         key: "x",
         render: (record) => (
           <span>
-            {record.rejected ? <Tag color="red">Rejected</Tag> : null}
-            {record.awayAccepted ? <Tag color="green">Accepted</Tag> : null}
-            {!record.awayAccepted && !record.rejected ? (
-              record.hasBeenEdited ? (
-                <Tag color="cyan">Rescheduled</Tag>
-              ) : (
-                <span>
-                  <Button
-                    onClick={() => this.approveGame(record)}
-                    type="link"
-                    style={{ paddingLeft: "5px", paddingRight: "5px" }}
-                  >
-                    Approve
-                  </Button>
-                  <Button onClick={() => this.denyGame(record)} type="link">
-                    Deny
-                  </Button>
-                  <Button onClick={() => this.editGame(record)} type="link">
-                    Edit
-                  </Button>
-                </span>
-              )
-            ) : null}
+            <span>
+              <Button
+                onClick={() => this.approveGame(record)}
+                type="link"
+                style={{ paddingLeft: "5px", paddingRight: "5px" }}
+              >
+                Approve
+              </Button>
+              <Button onClick={() => this.denyGame(record)} type="link">
+                Deny
+              </Button>
+            </span>
           </span>
         ),
       },
@@ -533,130 +466,69 @@ class TestPending extends Component {
 
     return (
       <span>
-        <Content
-          className="site-layout-background"
-          style={{
-            padding: 24,
-            margin: 0,
-            minHeight: 580,
-          }}
-        >
-          <div style={{ marginBottom: "16px" }}>
-            <Button
-              style={{ marginRight: "8px" }}
-              type="primary"
-              onClick={this.setAgeSort}
+        <h3>Rescheduled Game</h3>
+        <div style={{ marginBottom: "16px" }}></div>
+        <Table
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={tableData}
+          size="small"
+        />
+        {this.state.needEdit ? (
+          <div
+            style={{
+              backgroundColor: "#ffff",
+              padding: 24,
+              marginTop: "10px",
+            }}
+          >
+            <Descriptions title="Edit The Date & Time for following Game">
+              <Descriptions.Item label="Home Team">
+                {this.state.editHomeTeam}
+              </Descriptions.Item>
+              <Descriptions.Item label="Away Team">
+                {this.state.editAwayTeam}
+              </Descriptions.Item>
+              <Descriptions.Item label="Location">
+                {this.state.editGameLocation}
+              </Descriptions.Item>
+            </Descriptions>
+            <Form
+              {...layout}
+              name="nest-messages"
+              onSubmit={this.gameSubmit}
+              validateMessages={validateMessages}
             >
-              Filter By Month
-            </Button>
-            <DatePicker picker="month" bordered={true} />
-            {this.state.bulkAccept ? (
-              <span>
-                <Button
-                  style={{
-                    marginRight: "8px",
-                    marginLeft: "8px",
-                    className: `"${this.state.bulkAccept}"`,
-                  }}
-                  type="primary"
-                  onClick={this.bulkAccept}
-                >
-                  Accept in Bulk
-                </Button>
-                <Button
-                  style={{
-                    marginRight: "8px",
-                    marginLeft: "8px",
-                    className: `"${this.state.bulkReject}"`,
-                  }}
-                  type="danger"
-                  onClick={this.bulkReject}
-                >
-                  Deny in Bulk
-                </Button>
-              </span>
-            ) : null}
-          </div>
-          <Table
-            rowSelection={rowSelection}
-            columns={columns}
-            dataSource={tableData}
-            size="small"
-          />
-          {this.state.needEdit ? (
-            <div
-              style={{
-                backgroundColor: "#ffff",
-                padding: 24,
-                marginTop: "10px",
-              }}
-            >
-              <Descriptions title="Edit The Date & Time for following Game">
-                <Descriptions.Item label="Home Team">
-                  {this.state.editHomeTeam}
-                </Descriptions.Item>
-                <Descriptions.Item label="Away Team">
-                  {this.state.editAwayTeam}
-                </Descriptions.Item>
-                <Descriptions.Item label="Location">
-                  {this.state.editGameLocation}
-                </Descriptions.Item>
-              </Descriptions>
-              <Form
-                {...layout}
-                name="nest-messages"
-                onSubmit={this.gameSubmit}
-                validateMessages={validateMessages}
+              <Form.Item
+                name="gametime"
+                label="Choose Time"
+                rules={[
+                  {
+                    required: true,
+                  },
+                ]}
               >
-                <Form.Item
-                  name="gameDate"
-                  label="Choose Date"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
+                <RangePicker
+                  style={{ width: 280 }}
+                  minuteStep={5}
+                  format="HH:mm"
+                  value={this.state.editGameTime}
+                  onChange={this.onChangeGameTime}
+                />
+              </Form.Item>
+              <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 12 }}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  onClick={this.rescheduleGame}
                 >
-                  <DatePicker
-                    style={{ width: 280 }}
-                    value={this.state.editGameDate}
-                    onChange={this.editOnChangeDate}
-                    // defaultValue={moment("2020-03-08", this.dateFormat)}
-                    format={this.dateFormat}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="gametime"
-                  label="Choose Time"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <RangePicker
-                    style={{ width: 280 }}
-                    minuteStep={5}
-                    format="HH:mm"
-                    value={this.state.editGameTime}
-                    onChange={this.onChangeGameTime}
-                  />
-                </Form.Item>
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 12 }}>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    onClick={this.rescheduleGame}
-                  >
-                    Request Game
-                  </Button>
-                </Form.Item>
-              </Form>
-            </div>
-          ) : null}
-          ,
-          <RescheduledGames />
-        </Content>
+                  Request Game
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        ) : null}
+        ,
       </span>
     );
   }
@@ -671,4 +543,4 @@ const mapStatetoProps = (state) => {
     myTeamId: state.gameReducer.myTeam,
   };
 };
-export default connect(mapStatetoProps, null)(TestPending);
+export default connect(mapStatetoProps, null)(RescheduledGames);

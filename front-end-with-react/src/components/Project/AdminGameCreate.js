@@ -22,7 +22,7 @@ import {
 const { Content } = Layout;
 const { RangePicker } = TimePicker;
 
-class AdminGameCreate extends Component {
+class AdminCreateGame extends Component {
   constructor(props) {
     super(props);
 
@@ -63,51 +63,29 @@ class AdminGameCreate extends Component {
     againstTeamDistrict: "",
     againstTeamDistrictId: "",
     gameTime: "",
-    // timeFinal: ""
+
+    fetchedAllTeam: [],
   };
 
   componentDidMount() {
-    // console.log(this.props.schoolDistrict);
-    // console.log(this.props.schoolDistrict.id);
-    // // let ben = this.props.mySchool.id;
-    // console.log("I am ben");
-    // console.log(ben);
-    // function getTeam() {
-    //   const forTeam = {
-    //     id: ben,
-    //   };
-    //   return axios.post(
-    //     Authtoken.getBaseUrl() + "/api/team/get/bySchool",
-    //     forTeam,
-    //     {
-    //       headers: {
-    //         Authorization:
-    //           "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-    //       },
-    //     }
-    //   );
-    // }
-    // function awayDistrict() {
-    //   return axios.post(
-    //     Authtoken.getBaseUrl() + "/api/location/district/get",
-    //     {},
-    //     {
-    //       headers: {
-    //         Authorization:
-    //           "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
-    //       },
-    //     }
-    //   );
-    // }
-    // axios.all([getTeam(), awayDistrict()]).then(
-    //   axios.spread((getHomeTeamResponse, getDistrictResponse) => {
-    //     // Both requests are now complete
-    //     this.setState({ homeTeamObj: getHomeTeamResponse.data.result });
-    //     this.setState({ awaySchoolObj: getDistrictResponse.data.result });
-    //   })
-    // );
+    this.fetchAllTeam();
   }
-
+  fetchAllTeam = () => {
+    const emptyobj = {};
+    axios
+      .post(Authtoken.getBaseUrl() + "/api/team/get", emptyobj, {
+        headers: {
+          Authorization:
+            "Bearer " + Authtoken.getUserInfo().token.split(" ")[1],
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        this.setState({
+          fetchedAllTeam: res.data.result,
+        });
+      });
+  };
   //added in antdesign
   dateFormat = "YYYY-MM-DD";
   monthFormat = "YYYY/MM";
@@ -324,20 +302,12 @@ class AdminGameCreate extends Component {
     // console.log("typee", this.props.ifcollapsed);
     const layout = {
       labelCol: {
-        span: 6,
+        span: 10,
       },
       wrapperCol: {
-        span: 12,
+        span: 10,
       },
     };
-
-    const tailLayout = {
-      wrapperCol: {
-        offset: 8,
-        span: 16,
-      },
-    };
-
     const validateMessages = {
       required: "This field is required!",
       types: {
@@ -360,22 +330,8 @@ class AdminGameCreate extends Component {
           minHeight: 580,
         }}
       >
-        <Row justify="left">
-          <Col
-            md={{ offset: 2, span: 8 }}
-            lg={{ offset: 2, span: 8 }}
-            xs={{ offset: 0, span: 24 }}
-          >
-            <div
-              style={{
-                backgroundColor: "#ffff",
-                padding: "20px",
-                boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
-              }}
-            >
-              <h3 style={{ textAlign: "center" }}>Home Team</h3>
-            </div>
-
+        <Row style={{ backgroundColor: "#ffff" }}>
+          <Col span={16}>
             <div
               style={{
                 backgroundColor: "#ffff",
@@ -389,6 +345,44 @@ class AdminGameCreate extends Component {
                 onSubmit={this.gameSubmit}
                 validateMessages={validateMessages}
               >
+                <Form.Item label="Select District" name="teamADistrict">
+                  <Select
+                    size="large"
+                    defaultValue="Select Options"
+                    style={{ width: 280 }}
+                    onChange={this.handleHomeTeam}
+                  >
+                    {this.state.fetchedAllTeam.map((homeTeamDetails) => (
+                      <Select.Option
+                        key={homeTeamDetails.id}
+                        // value={index}
+                        value={JSON.stringify(homeTeamDetails)}
+                      >
+                        {homeTeamDetails.tmName}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+
+                <Form.Item label="Select Home Team" name="homeTeam">
+                  <Select
+                    size="large"
+                    defaultValue="Select Options"
+                    style={{ width: 280 }}
+                    onChange={this.handleHomeTeam}
+                  >
+                    {this.state.fetchedAllTeam.map((homeTeamDetails) => (
+                      <Select.Option
+                        key={homeTeamDetails.id}
+                        // value={index}
+                        value={JSON.stringify(homeTeamDetails)}
+                      >
+                        {homeTeamDetails.tmName}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+
                 <Form.Item
                   name="gameDate"
                   label="Choose Date"
@@ -423,7 +417,6 @@ class AdminGameCreate extends Component {
                     onChange={this.onChangeGameTime}
                   />
                 </Form.Item>
-
                 <Form.Item name="location" label="Location" rules={[{}]}>
                   <Input
                     style={{ width: 280 }}
@@ -432,27 +425,25 @@ class AdminGameCreate extends Component {
                     placeholder="Location"
                   />
                 </Form.Item>
-                {
-                  <Form.Item label="Select District" name="districtName">
-                    <Select
-                      size="large"
-                      defaultValue="Select Options"
-                      style={{ width: 280 }}
-                      value={this.state.againstTeamDistrict}
-                      onChange={this.handleDistrict}
-                    >
-                      {this.state.awaySchoolObj.map((item, index) => (
-                        <Select.Option
-                          key={index}
-                          // value={index}
-                          value={JSON.stringify(item)}
-                        >
-                          {item.districtName}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                }
+                <Form.Item label="Select District" name="districtName">
+                  <Select
+                    size="large"
+                    defaultValue="Select Options"
+                    style={{ width: 280 }}
+                    value={this.state.againstTeamDistrict}
+                    onChange={this.handleDistrict}
+                  >
+                    {this.state.awaySchoolObj.map((item, index) => (
+                      <Select.Option
+                        key={index}
+                        // value={index}
+                        value={JSON.stringify(item)}
+                      >
+                        {item.districtName}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
                 <Form.Item label="Select School" name="schoolName">
                   <Select
                     size="large"
@@ -471,7 +462,6 @@ class AdminGameCreate extends Component {
                     ))}
                   </Select>
                 </Form.Item>
-
                 <Form.Item label="Select Team" name="awayTeam">
                   <Select
                     size="large"
@@ -491,150 +481,7 @@ class AdminGameCreate extends Component {
                     ))}
                   </Select>
                 </Form.Item>
-
-                <Form.Item {...tailLayout}>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    onClick={this.gameSubmit}
-                  >
-                    Request Game
-                  </Button>
-                </Form.Item>
-              </Form>
-            </div>
-          </Col>
-          <Col
-            md={{ offset: 4, span: 8 }}
-            lg={{ offset: 4, span: 8 }}
-            xs={{ offset: 0, span: 24 }}
-          >
-            <div
-              style={{
-                backgroundColor: "#ffff",
-                padding: "20px",
-                boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
-              }}
-            >
-              <h3 style={{ textAlign: "center" }}>Away Team</h3>
-            </div>
-            <div
-              style={{
-                backgroundColor: "#ffff",
-                padding: "20px",
-                boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
-              }}
-            >
-              <Form
-                {...layout}
-                name="nest-messages"
-                onSubmit={this.gameSubmit}
-                validateMessages={validateMessages}
-              >
-                <Form.Item
-                  name="gameDate"
-                  label="Choose Date"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <DatePicker
-                    style={{ width: 280 }}
-                    value={this.state.gameDate}
-                    onChange={this.onChangeGameDate}
-                    // defaultValue={moment("2020-03-08", this.dateFormat)}
-                    format={this.dateFormat}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="gametime"
-                  label="Choose Time"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <RangePicker
-                    style={{ width: 280 }}
-                    minuteStep={5}
-                    format="HH:mm"
-                    value={this.state.gameTime}
-                    onChange={this.onChangeGameTime}
-                  />
-                </Form.Item>
-
-                <Form.Item name="location" label="Location" rules={[{}]}>
-                  <Input
-                    style={{ width: 280 }}
-                    onChange={this.onChangeGameLocation}
-                    value={this.state.gameLocation}
-                    placeholder="Location"
-                  />
-                </Form.Item>
-                {
-                  <Form.Item label="Select District" name="districtName">
-                    <Select
-                      size="large"
-                      defaultValue="Select Options"
-                      style={{ width: 280 }}
-                      value={this.state.againstTeamDistrict}
-                      onChange={this.handleDistrict}
-                    >
-                      {this.state.awaySchoolObj.map((item, index) => (
-                        <Select.Option
-                          key={index}
-                          // value={index}
-                          value={JSON.stringify(item)}
-                        >
-                          {item.districtName}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                }
-                <Form.Item label="Select School" name="schoolName">
-                  <Select
-                    size="large"
-                    defaultValue="Select Options"
-                    style={{ width: 280 }}
-                    value={this.state.againstSchool}
-                    onChange={this.handleSchool}
-                  >
-                    {this.state.awaySchoolList.map((schoolMap, index) => (
-                      <Select.Option
-                        key={index}
-                        value={JSON.stringify(schoolMap)}
-                      >
-                        {schoolMap.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-
-                <Form.Item label="Select Team" name="awayTeam">
-                  <Select
-                    size="large"
-                    defaultValue="Select Options"
-                    style={{ width: 280 }}
-                    value={this.state.againstTeam}
-                    onChange={this.handleAwayTeam}
-                  >
-                    {this.state.awaySchoolTeamList.map((teamMap) => (
-                      <Select.Option
-                        key={teamMap.id}
-                        // value={index}
-                        value={JSON.stringify(teamMap)}
-                      >
-                        {teamMap.tmName}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-
-                <Form.Item {...tailLayout}>
+                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 12 }}>
                   <Button
                     type="primary"
                     htmlType="submit"
@@ -658,4 +505,4 @@ const mapStatetoProps = (state) => {
     token: state.userReducer.token,
   };
 };
-export default connect(mapStatetoProps)(AdminGameCreate);
+export default connect(mapStatetoProps)(AdminCreateGame);
