@@ -15,7 +15,7 @@
     "browserify-fs": "^1.0.0",
     "customize-cra": "^0.9.1",
     "history": "^4.10.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "mdbreact": "^4.25.0",
