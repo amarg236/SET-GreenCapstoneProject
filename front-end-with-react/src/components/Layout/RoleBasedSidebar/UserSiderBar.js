@@ -141,7 +141,7 @@ class UserSidebar extends Component {
           </Menu.Item>
         </SubMenu>
 
-        <Menu.Item onClick={handleClick} key="approvedGames" key="exportCSV">
+        <Menu.Item onClick={handleClick} key="exportCSVGeneral">
           <DownloadOutlined />
 
           <span>Export CSV</span>

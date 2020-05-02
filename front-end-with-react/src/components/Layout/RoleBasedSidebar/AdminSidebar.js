@@ -177,13 +177,39 @@ class AdminSidebar extends Component {
           </span>
           <span>Block Days</span>
         </Menu.Item>
+        <SubMenu
+          key="manageNotice"
+          title={
+            <span>
+              <InsertRowBelowOutlined />
+              <span>Manage Notice</span>
+            </span>
+          }
+        ></SubMenu>
+        <SubMenu
+          key="exportCSV"
+          title={
+            <span>
+              <TeamOutlined />
+              <span>Export CSV</span>
+            </span>
+          }
+        >
+          <Menu.Item onClick={handleClick} key="exportCSVGeneral">
+            <span>
+              <DownloadOutlined />
+            </span>
+            <span>General Export</span>
+          </Menu.Item>
 
-        <Menu.Item onClick={handleClick} key="exportCSV">
-          <span>
-            <DownloadOutlined />
-          </span>
-          <span>Export CSV</span>
-        </Menu.Item>
+          <Menu.Item onClick={handleClick} key="exportCSV">
+            <span>
+              <DownloadOutlined />
+            </span>
+            <span>Fully Approved</span>
+          </Menu.Item>
+        </SubMenu>
+
         <Menu.Item onClick={handleClick} key="userProfile">
           <span>
             <SolutionOutlined />

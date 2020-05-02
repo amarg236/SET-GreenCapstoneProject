@@ -150,12 +150,29 @@ class AssignorSidebar extends Component {
           <span>Block Days</span>
         </Menu.Item>
 
-        <Menu.Item onClick={handleClick} key="approvedGames" key="exportCSV">
-          <span>
-            <DownloadOutlined />
-          </span>
-          <span>Export CSV</span>
-        </Menu.Item>
+        <SubMenu
+          key="manageUser"
+          title={
+            <span>
+              <TeamOutlined />
+              <span>Export CSV</span>
+            </span>
+          }
+        >
+          <Menu.Item onClick={handleClick} key="exportCSVGeneral">
+            <span>
+              <DownloadOutlined />
+            </span>
+            <span>General Export</span>
+          </Menu.Item>
+
+          <Menu.Item onClick={handleClick} key="exportCSV">
+            <span>
+              <DownloadOutlined />
+            </span>
+            <span>Fully Approved</span>
+          </Menu.Item>
+        </SubMenu>
 
         <Menu.Item onClick={handleClick} key="userProfile">
           <span>
