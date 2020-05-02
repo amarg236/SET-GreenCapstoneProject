@@ -151,7 +151,7 @@ class AssignorSidebar extends Component {
         </Menu.Item>
 
         <SubMenu
-          key="manageUser"
+          key="exportCSVFile"
           title={
             <span>
               <TeamOutlined />

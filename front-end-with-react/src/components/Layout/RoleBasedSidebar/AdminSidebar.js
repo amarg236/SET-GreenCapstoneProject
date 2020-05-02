@@ -177,15 +177,7 @@ class AdminSidebar extends Component {
           </span>
           <span>Block Days</span>
         </Menu.Item>
-        <SubMenu
-          key="manageNotice"
-          title={
-            <span>
-              <InsertRowBelowOutlined />
-              <span>Manage Notice</span>
-            </span>
-          }
-        ></SubMenu>
+
         <SubMenu
           key="exportCSV"
           title={
