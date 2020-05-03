@@ -1,7 +1,7 @@
 import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import React, { Component } from "react";
-import Cal from "../Project/Cal";
+
 import Noticeboard from "../Project/Noticeboard.js";
 import "../../App.css";
 import "../../stylesheets/layout.css";
@@ -19,7 +19,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const noticeObj = {data:1};
+    const noticeObj = { data: 1 };
 
     axios
       .post(Authtoken.getBaseUrl() + "/api/notice/get", noticeObj, {

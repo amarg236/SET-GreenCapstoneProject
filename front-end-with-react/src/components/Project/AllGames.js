@@ -54,7 +54,7 @@ class AllGames extends Component {
           minHeight: 580,
         }}
       >
-        <Tabs defaultActiveKey="1" onChange={callback}>
+        <Tabs defaultActiveKey="1" onChange={callback} size="large">
           <TabPane
             tab={
               <h6>

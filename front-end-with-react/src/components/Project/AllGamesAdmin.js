@@ -52,7 +52,7 @@ class AllGamesAdmin extends Component {
           minHeight: 580,
         }}
       >
-        <Tabs defaultActiveKey="1" onChange={callback}>
+        <Tabs size="large" defaultActiveKey="1" onChange={callback}>
           <TabPane
             tab={
               <h6>

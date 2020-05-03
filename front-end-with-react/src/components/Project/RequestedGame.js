@@ -298,14 +298,7 @@ class RequestedGame extends Component {
     };
 
     return (
-      <Content
-        className="site-layout-background"
-        style={{
-          padding: 24,
-          margin: 0,
-          minHeight: 580,
-        }}
-      >
+      <span>
         <div style={{ marginBottom: "16px" }}>
           <Button
             style={{ marginRight: "8px" }}
@@ -323,7 +316,7 @@ class RequestedGame extends Component {
           dataSource={tableData}
           size="small"
         />
-      </Content>
+      </span>
     );
   }
 }

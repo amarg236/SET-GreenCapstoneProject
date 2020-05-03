@@ -51,6 +51,7 @@ import AdminCalendar from "./components/Project/AdminCalendar";
 import AdminCreateGame from "./components/Project/AdminGameCreate";
 
 import UserNotificatin from "./components/Project/UserNotification";
+import GeneralExport from "./components/Project/ExportCSVUser";
 
 class App extends React.Component {
   render() {
@@ -169,7 +170,11 @@ class App extends React.Component {
                 path="/notification"
                 component={UserNotificatin}
               />
-
+              <ProtectedRoute
+                exact
+                path="/exportCSVGeneral"
+                component={GeneralExport}
+              />
               <ProtectedRoute exact path="/addBadDay" component={AddBadDay} />
               <ProtectedRoute exact path="/exportCSV" component={ExportCSV} />
               <ProtectedRoute exact path="/calendarP" component={Cal} />

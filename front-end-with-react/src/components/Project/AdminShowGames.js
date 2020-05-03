@@ -5,6 +5,7 @@ import axios from "axios";
 import Authtoken from "../../Utility/AuthToken";
 import { connect } from "react-redux";
 import moment from "moment";
+import { isMobile } from "react-device-detect";
 
 import {
   Row,
@@ -33,10 +34,14 @@ class AdminShowGames extends Component {
       school: [],
       isRejected: null,
       refresh: false,
+      colspanSize: false,
     };
   }
 
   componentDidMount() {
+    if (isMobile) {
+      this.setState({ colSpanSize: false });
+    }
     //getting current users team and school
     this.fetchApi();
     // this.setState({ awaySchoolTeamList: res.data.result });
@@ -318,14 +323,7 @@ class AdminShowGames extends Component {
 
     console.log(tableData);
     return (
-      <Content
-        className="site-layout-background"
-        style={{
-          padding: 24,
-          margin: 0,
-          minHeight: 580,
-        }}
-      >
+      <span>
         {
           //   <div style={{ marginBottom: "16px" }}>
           //   <Button
@@ -339,13 +337,13 @@ class AdminShowGames extends Component {
           // </div>
         }
         <Table
+          size="small"
           hideOnSinglePage
-          rowSelection={rowSelection}
           columns={columns}
           dataSource={tableData}
           size="small"
         />
-      </Content>
+      </span>
     );
   }
 }

@@ -533,130 +533,121 @@ class TestPending extends Component {
 
     return (
       <span>
-        <Content
-          className="site-layout-background"
-          style={{
-            padding: 24,
-            margin: 0,
-            minHeight: 580,
-          }}
-        >
-          <div style={{ marginBottom: "16px" }}>
-            <Button
-              style={{ marginRight: "8px" }}
-              type="primary"
-              onClick={this.setAgeSort}
-            >
-              Filter By Month
-            </Button>
-            <DatePicker picker="month" bordered={true} />
-            {this.state.bulkAccept ? (
-              <span>
-                <Button
-                  style={{
-                    marginRight: "8px",
-                    marginLeft: "8px",
-                    className: `"${this.state.bulkAccept}"`,
-                  }}
-                  type="primary"
-                  onClick={this.bulkAccept}
-                >
-                  Accept in Bulk
-                </Button>
-                <Button
-                  style={{
-                    marginRight: "8px",
-                    marginLeft: "8px",
-                    className: `"${this.state.bulkReject}"`,
-                  }}
-                  type="danger"
-                  onClick={this.bulkReject}
-                >
-                  Deny in Bulk
-                </Button>
-              </span>
-            ) : null}
-          </div>
-          <Table
-            rowSelection={rowSelection}
-            columns={columns}
-            dataSource={tableData}
-            size="small"
-          />
-          {this.state.needEdit ? (
-            <div
-              style={{
-                backgroundColor: "#ffff",
-                padding: 24,
-                marginTop: "10px",
-              }}
-            >
-              <Descriptions title="Edit The Date & Time for following Game">
-                <Descriptions.Item label="Home Team">
-                  {this.state.editHomeTeam}
-                </Descriptions.Item>
-                <Descriptions.Item label="Away Team">
-                  {this.state.editAwayTeam}
-                </Descriptions.Item>
-                <Descriptions.Item label="Location">
-                  {this.state.editGameLocation}
-                </Descriptions.Item>
-              </Descriptions>
-              <Form
-                {...layout}
-                name="nest-messages"
-                onSubmit={this.gameSubmit}
-                validateMessages={validateMessages}
+        <div style={{ marginBottom: "16px" }}>
+          <Button
+            style={{ marginRight: "8px" }}
+            type="primary"
+            onClick={this.setAgeSort}
+          >
+            Filter By Month
+          </Button>
+          <DatePicker picker="month" bordered={true} />
+          {this.state.bulkAccept ? (
+            <span>
+              <Button
+                style={{
+                  marginRight: "8px",
+                  marginLeft: "8px",
+                  className: `"${this.state.bulkAccept}"`,
+                }}
+                type="primary"
+                onClick={this.bulkAccept}
               >
-                <Form.Item
-                  name="gameDate"
-                  label="Choose Date"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <DatePicker
-                    style={{ width: 280 }}
-                    value={this.state.editGameDate}
-                    onChange={this.editOnChangeDate}
-                    // defaultValue={moment("2020-03-08", this.dateFormat)}
-                    format={this.dateFormat}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="gametime"
-                  label="Choose Time"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <RangePicker
-                    style={{ width: 280 }}
-                    minuteStep={5}
-                    format="HH:mm"
-                    value={this.state.editGameTime}
-                    onChange={this.onChangeGameTime}
-                  />
-                </Form.Item>
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 12 }}>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    onClick={this.rescheduleGame}
-                  >
-                    Request Game
-                  </Button>
-                </Form.Item>
-              </Form>
-            </div>
+                Accept in Bulk
+              </Button>
+              <Button
+                style={{
+                  marginRight: "8px",
+                  marginLeft: "8px",
+                  className: `"${this.state.bulkReject}"`,
+                }}
+                type="danger"
+                onClick={this.bulkReject}
+              >
+                Deny in Bulk
+              </Button>
+            </span>
           ) : null}
-          ,
-          <RescheduledGames />
-        </Content>
+        </div>
+        <Table
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={tableData}
+          size="small"
+        />
+        {this.state.needEdit ? (
+          <div
+            style={{
+              backgroundColor: "#ffff",
+              padding: 24,
+              marginTop: "10px",
+            }}
+          >
+            <Descriptions title="Edit The Date & Time for following Game">
+              <Descriptions.Item label="Home Team">
+                {this.state.editHomeTeam}
+              </Descriptions.Item>
+              <Descriptions.Item label="Away Team">
+                {this.state.editAwayTeam}
+              </Descriptions.Item>
+              <Descriptions.Item label="Location">
+                {this.state.editGameLocation}
+              </Descriptions.Item>
+            </Descriptions>
+            <Form
+              {...layout}
+              name="nest-messages"
+              onSubmit={this.gameSubmit}
+              validateMessages={validateMessages}
+            >
+              <Form.Item
+                name="gameDate"
+                label="Choose Date"
+                rules={[
+                  {
+                    required: true,
+                  },
+                ]}
+              >
+                <DatePicker
+                  style={{ width: 280 }}
+                  value={this.state.editGameDate}
+                  onChange={this.editOnChangeDate}
+                  // defaultValue={moment("2020-03-08", this.dateFormat)}
+                  format={this.dateFormat}
+                />
+              </Form.Item>
+              <Form.Item
+                name="gametime"
+                label="Choose Time"
+                rules={[
+                  {
+                    required: true,
+                  },
+                ]}
+              >
+                <RangePicker
+                  style={{ width: 280 }}
+                  minuteStep={5}
+                  format="HH:mm"
+                  value={this.state.editGameTime}
+                  onChange={this.onChangeGameTime}
+                />
+              </Form.Item>
+              <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 12 }}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  onClick={this.rescheduleGame}
+                >
+                  Request Game
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        ) : null}
+        ,
+        <RescheduledGames />
       </span>
     );
   }

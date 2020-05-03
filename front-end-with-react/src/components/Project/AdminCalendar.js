@@ -93,9 +93,14 @@ class AdminCalendar extends React.Component {
         //     ? myTeamId.has(myGames.awayteamId)
         //     : !myTeamId.has(myGames.awayteamId)
         // );
-
+        let myData = [];
+        myData = res.data.result.filter(
+          (myGames) =>
+            //  console.log(myTeamId.has(myGames.awayteamId));
+            myGames.approved
+        );
         this.setState({
-          jData: extend([], processData(res.data.result), null, true),
+          jData: extend([], processData(myData), null, true),
         });
       });
   };
@@ -164,7 +169,7 @@ class AdminCalendar extends React.Component {
     } else if (props.PartialApproved && props.FullyApproved) {
       return (
         <div
-          style={{ backgroundColor: "#108ee9", maxHeight: "100px" }}
+          style={{ backgroundColor: "#87d068", maxHeight: "100px" }}
           className="template-wrap"
         >
           {props.Subject}
@@ -263,30 +268,6 @@ class AdminCalendar extends React.Component {
 
             <Col style={{ textAlign: "right" }} md={12} lg={12} xs={24}>
               <span style={{ padding: "10px" }}>
-                <Button
-                  type="primary"
-                  style={{
-                    padding: "5px",
-                    width: "30%",
-                    background: "orange",
-                    borderColor: "white",
-                  }}
-                  // onClick={this.onClickPendingGames}
-                >
-                  Undecided
-                </Button>
-                <Button
-                  type="primary"
-                  style={{
-                    padding: "5px",
-                    width: "30%",
-                    background: "#108ee9",
-                    borderColor: "white",
-                  }}
-                  // onClick={this.onClickPendingGames}
-                >
-                  Decided
-                </Button>
                 <Button
                   type="primary"
                   style={{

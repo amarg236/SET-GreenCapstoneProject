@@ -8,7 +8,7 @@ import moment from "moment";
 import "../../stylesheets/exportCSV.css";
 
 //Filter imports
-import { Select, Form, DatePicker } from "antd";
+import { Select, Form, DatePicker, PageHeader } from "antd";
 import { Row } from "antd";
 
 const { Option } = Select;
@@ -239,11 +239,12 @@ class ExportToCSV extends Component {
           let myData = [];
 
           myData = res.data.result.filter((myGames) =>
-            // console.log(myTeamId.has(myGames.awayteamId));
+            //  console.log(myTeamId.has(myGames.awayteamId));
             this.state.selectedSchoolId
-              ? myGames.hometeamId == this.state.selectedTeamId ||
-                myGames.awayteamId == this.state.selectedTeamId
-              : myGames
+              ? (myGames.hometeamId == this.state.selectedTeamId ||
+                  myGames.awayteamId == this.state.selectedTeamId) &&
+                myGames.approved
+              : myGames.approved
           );
 
           console.log(myData);
@@ -300,6 +301,22 @@ class ExportToCSV extends Component {
         }}
         className="site-layout-background"
       >
+        <div
+          style={{
+            alignContent: "center",
+            width: "100%",
+            backgroundColor: "#ffffff",
+            marginBottom: "10px",
+            padding: "20px",
+            boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
+          }}
+        >
+          <h3>Fully Approved Games</h3>
+          <p>
+            Following form will help to filter fully approved games for CSV
+            export
+          </p>
+        </div>{" "}
         <Form {...formLayout}>
           <form onSubmit={this.sortByTeam}>
             <Row>
@@ -443,51 +460,56 @@ class ExportToCSV extends Component {
           </Form>
         ) : null}
         {this.state.readyForExport ? (
-          <Form {...formLayout}>
-            <Row>
-              <div
-                style={{
-                  alignContent: "center",
-                  marginTop: "15px",
-                  width: "100%",
-                  backgroundColor: "#ffffff",
-                  padding: "20px",
-                  boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
-                }}
-              >
-                <Form.Item>
-                  <h2 className="bottom-header">Export into CSV File</h2>
-                </Form.Item>
+          <span>
+            <Form {...formLayout}>
+              <Row>
+                <div
+                  style={{
+                    alignContent: "center",
+                    marginTop: "15px",
+                    width: "100%",
+                    backgroundColor: "#ffffff",
+                    padding: "20px",
+                    boxShadow: " 0 1px 4px rgba(0, 21, 41, 0.08)",
+                  }}
+                >
+                  <Form.Item>
+                    <h2 className="bottom-header">Export into CSV File</h2>
+                  </Form.Item>
 
-                <Form.Item {...buttonLayout}>
-                  <Button
-                    type="primary"
-                    shape="round"
-                    size="large"
-                    icon={<DownloadOutlined />}
-                    onClick={() =>
-                      this.setState({
-                        readyForExport: false,
-                        showTeamForm: false,
-                        showAlternativeButton: false,
-                        isItSchool: false,
-                        needTeam: false,
-                      })
-                    }
-                  >
-                    {
-                      <CSVLink
-                        headers={this.headers}
-                        data={this.state.exportObject}
-                      >
-                        <span className="button-all"> Export All Schedule</span>
-                      </CSVLink>
-                    }
-                  </Button>
-                </Form.Item>
-              </div>
-            </Row>
-          </Form>
+                  <Form.Item {...buttonLayout}>
+                    <Button
+                      type="primary"
+                      shape="round"
+                      size="large"
+                      icon={<DownloadOutlined />}
+                      onClick={() =>
+                        this.setState({
+                          readyForExport: false,
+                          showTeamForm: false,
+                          showAlternativeButton: false,
+                          isItSchool: false,
+                          needTeam: false,
+                        })
+                      }
+                    >
+                      {
+                        <CSVLink
+                          headers={this.headers}
+                          data={this.state.exportObject}
+                        >
+                          <span className="button-all">
+                            {" "}
+                            Export All Schedule
+                          </span>
+                        </CSVLink>
+                      }
+                    </Button>
+                  </Form.Item>
+                </div>
+              </Row>
+            </Form>
+          </span>
         ) : null}{" "}
       </Content>
     );
