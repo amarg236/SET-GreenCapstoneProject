@@ -49,9 +49,18 @@ public class UserScheduler extends UserUnfound {
 		sog.addAll(gh.getGamesByAllTeamIds(g).getResult()); //all awayteam games for awayteam of proposed game
 		GameConflictObj gco = new GameConflictObj();
 		for(Game gme : sog) { //for each game
-			if(gme.getTime().getTime() - g.durationAsMSecs() <= g.getTime().getTime() && gme.getTime().getTime()+gme.durationAsMSecs() >= g.getTime().getTime()) {
-				gco.addTimeConflict(g);
+			try {
+				if(gme.getTime().getTime() < 1 || gme.getDuration() < 1) {
+					throw new Exception("Duration or time to short");
+				}
+				if(gme.getTime().getTime() - g.durationAsMSecs() <= g.getTime().getTime() && gme.getTime().getTime()+gme.durationAsMSecs() >= g.getTime().getTime()) {
+					gco.addTimeConflict(g);
+				}
 			}
+			catch(Exception e) {
+				gh.deleteGame(gme.getId());
+			}
+			
 		}
 		
 		if(gco.didConflict()) { //if more that 0 conflicts

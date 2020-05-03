@@ -88,7 +88,7 @@ public abstract class UserReference {
 	 * @return
 	 */
 	public abstract ResponseBody<User> manageUser(User u);
-	/**TODO do I need this? Or just use password change
+	/**
 	 * assignor+, Verifies a user
 	 * @param u User to verify
 	 * @return responsebody with verification status

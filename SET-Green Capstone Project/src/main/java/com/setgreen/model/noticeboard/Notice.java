@@ -21,7 +21,7 @@ public class Notice {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
 	private String title;
-	@Column(length=65535)
+	@Column(length=512)
 	private String description;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date create_At;

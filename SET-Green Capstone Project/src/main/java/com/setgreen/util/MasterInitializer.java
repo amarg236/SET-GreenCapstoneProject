@@ -6,6 +6,7 @@ import java.util.Properties;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -87,7 +88,14 @@ public class MasterInitializer implements CommandLineRunner{
 		}
 	}
 	
-	//csvs must be schoolname, teamname, arbitername, teamclass, teamgender
+	//csvs must be 	
+	/*
+	 * 0	schoolname
+	 * 1	teamname, 
+	 * 2	arbitername, 
+	 * 3	teamclass,
+	 * 4	teamgender
+	 */
 	public ResponseBody<Boolean> teamsInit(Properties p){
 		try {
 			HashSet<String> files = new HashSet<String>(Arrays.asList(p.getProperty("teams").split(",")));
@@ -96,8 +104,9 @@ public class MasterInitializer implements CommandLineRunner{
 				District dstrct;
 				try{
 					dstrct=dr.findByName(fileName.split(".csv")[0].trim());
-					long i = dstrct.getId();
-					i++; //nulltest
+					if(dstrct.getId() == null) {
+						throw new Exception("null");
+					}
 						
 				}
 				catch(Exception e) {
@@ -106,22 +115,39 @@ public class MasterInitializer implements CommandLineRunner{
 					dstrct.setDistrictName(fileName.split(".csv")[0].trim());
 					dstrct = dr.save(dstrct);
 				}
+				
 				Scanner scnr = new Scanner(new File(p.getProperty("tpath", "")+fileName.trim()));
+				HashSet<String> sot = new HashSet<String>();
+				HashSet<String> sos = new HashSet<String>();
+				if(scnr.hasNextLine()) {
+					Iterable<Teams> tms = tr.findAll();
+					for(Teams t : tms) {
+						sot.add(t.getInternalName());
+						//System.out.println(">> "+t.getInternalName());
+					}
+					Iterable<School> scls = sr.findAll();
+					for(School sl: scls) {
+						sos.add(sl.getName()+sl.getDistrict().getDistrictName());
+						//System.out.println("<< "+sl.getName()+sl.getDistrict().getDistrictName());
+					}
+				}
+				
 				while(scnr.hasNextLine()) {
 					try {
+							//schoolname, teamname, arbitername, teamclass, teamgender
 							String[] dta = scnr.nextLine().split(",");
-							
+							System.out.println(">> "+dta[2].trim());
+							if(sot.contains(dta[2].trim())) {
+								
+								throw new Exception("team already present");
+							}
 							School schl;
 							schl = new School();
 							schl.setName(dta[0].trim());
 							schl.setDistrict(dstrct);
-							try{
-								School tschl = sr.findByName(schl.getName());
-								long i = tschl.getId();
-								i++;
-							}
-							catch(Exception e) {
-								schl = sr.save(schl);
+							if(!sos.contains(schl.getName() + dstrct.getDistrictName())) {
+								//System.out.println(">> "+schl.getName()+dstrct.getDistrictName());
+								//schl = sr.save(schl);
 							}
 							Teams tms = new Teams();
 							tms.setTmName(dta[1].trim());
@@ -129,10 +155,11 @@ public class MasterInitializer implements CommandLineRunner{
 							tms.setTmClass(dta[3].trim());
 							tms.setTeamGender(dta[4].trim());
 							tms.setSchool(schl);
-							tr.save(tms);
+							//tr.save(tms);
 							s++;
 					}
 					catch(Exception e) {
+						System.out.println(e);
 						f++;
 					}
 				}
@@ -142,7 +169,7 @@ public class MasterInitializer implements CommandLineRunner{
 			return new ResponseBody<Boolean>(HttpStatus.ACCEPTED.value(), "teamsInit Successes:" + s + " Failed: " + f, true);
 		}
 		catch(Exception e) {
-			return new ResponseBody<Boolean>(HttpStatus.FORBIDDEN.value(), e.getMessage(), false);
+			return new ResponseBody<Boolean>(HttpStatus.FORBIDDEN.value(), e.toString(), false);
 		}
 	}
 

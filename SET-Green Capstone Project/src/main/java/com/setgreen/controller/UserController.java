@@ -2,6 +2,8 @@ package com.setgreen.controller;
 
 import static com.setgreen.security.SecurityConstants.TOKEN_PREFIX;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.setgreen.model.ResponseBody;
+import com.setgreen.model.RoleName;
 import com.setgreen.model.SignUpForm;
 import com.setgreen.model.User;
 import com.setgreen.payload.JWTLoginSuccessResponse;
@@ -186,9 +189,22 @@ public class UserController {
      * @param s Email to search for
      * @return Responsebody with a user by that email if it exists, null otherwise
      */
-    //FIXME Remove or secure
     @PostMapping("find/email")
     public ResponseBody<User> getByEmail(@RequestBody DataObject<String> s) {
-    	return userService.fetchByEmail(s.getData());
+    	ResponseBody<User> rb = userService.fetchByEmail(s.getData());
+    	User u = rb.getResult();
+    	u.setPassword("-");
+    	rb.setResult(u);
+    	return rb;
+    }
+    
+    /**
+     * @return all uses with no password hash
+     */
+    @PostMapping("showUsers")
+    public ResponseBody<List<User>> getAllUser(Authentication auth){
+    	if(hlp.getRoleByBest(auth).getName().userLevel() >= RoleName.ADMIN.userLevel())
+    		return userService.allUsers();
+    	return null;
     }
 }

@@ -68,7 +68,7 @@ public class GameHandler {
 	public ResponseBody<Long> teamVerifyGame(Authentication auth, Long g) {
 		try{
 			gr.updateAwayteamNotification(g, false);
-			//gr.updateHometeamNotification(g, true); FIXME implement clear for notifications
+			//gr.updateHometeamNotification(g, true);
 			gr.updateUAcceptor(g, auth.getName());
 			gr.updateAccept(g, true);
 			return new ResponseBody<Long>(HttpStatus.ACCEPTED.value(), "Game Accepted", g);
@@ -228,11 +228,6 @@ public class GameHandler {
 	}
 	public ResponseBody<List<Game>> allVerifiedGames(){
 		return new ResponseBody<List<Game>>(HttpStatus.ACCEPTED.value(), "Found games", gr.findAllVerifiedAndRejectedFalse());
-	}
-
-	public ResponseBody<Game> RequestReschedule(Game g) {
-		// TODO !RESCHEDULE!
-		return null;
 	}
 
 	public Game getGameById(DataObject<Long> id) {

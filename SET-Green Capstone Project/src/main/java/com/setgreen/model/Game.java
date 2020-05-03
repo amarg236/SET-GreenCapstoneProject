@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -38,8 +39,10 @@ public class Game implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 	String location;
+	@NotNull
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	Date time;
+	@NotNull
 	int duration;
 	String uRequester;
 	String uAcceptor;

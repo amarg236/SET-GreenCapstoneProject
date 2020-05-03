@@ -70,7 +70,7 @@ public class NoticeboardHandler {
 			sdf.applyPattern("hh:mm");
 			n.setTitle("Games in the next " + 24*numOfDays + " hours:" );
 			for(Game g : gl) {
-				n.setDescription("\n"+g.getHometeam() + " vs. " + g.getAwayteam() + " at " + sdf.format(g.getTime()));
+				n.setDescription(g.getHometeam() + " vs. " + g.getAwayteam() + " at " + sdf.format(g.getTime()));
 			}
 			return new ResponseBody<Notice>(HttpStatus.ACCEPTED.value(), "notices", n);
 		}

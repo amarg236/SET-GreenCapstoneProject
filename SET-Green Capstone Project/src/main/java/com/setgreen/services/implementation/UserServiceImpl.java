@@ -18,6 +18,7 @@ import com.setgreen.payload.PasswordChangeRequest;
 import com.setgreen.repositories.RoleRepo;
 import com.setgreen.repositories.SchoolRepo;
 import com.setgreen.repositories.UserRepo;
+import java.util.List;
 import com.setgreen.services.UserService;
 import com.setgreen.services.mailservice.MailHandler;
 import com.setgreen.util.Debugger;
@@ -56,11 +57,17 @@ public class UserServiceImpl implements UserService {
 			} //THIS LINE
 			//and that's it.
 			MailHandler m = new MailHandler(new JavaMailSenderImpl());
-			ud.setPassword(m.genLink());
+			if(Debugger.MODE_ON) { //XXX DEBUGGER MODE CHANGE make password abc and auto-verify
+				ud.setVerified(true);
+				ud.setPassword("abc");
+			}
+			else {
+				ud.setPassword(m.genLink());
+			}
 			String opw = ud.getPassword();
 			ud.setPassword(bCryptPasswordEncoder.encode(ud.getPassword()));
 			userRepo.save(ud);
-			//XXX DEBUG
+			//XXX DEBUGGER MODE CHANGE do not send email
 			String s = "User Saved";
 			if(Debugger.MODE_ON) {
 				s = m.debugMessage(m._inviteUser(ud));
@@ -80,7 +87,7 @@ public class UserServiceImpl implements UserService {
 			return new ResponseBody<User>(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Email address does not exist", new User());
 		}
 		catch(Exception e) {
-			return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "Error creating user: " + e.getLocalizedMessage(), new User());
+			return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "Error creating user: " + e, new User());
 		}
 	}
 
@@ -184,10 +191,9 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public ResponseBody<User> verifyUser(User u, boolean toSet) {
 		try {
-			userRepo.updateVerify(u.getId(), toSet);
-			User anon = userRepo.findById(u.getId()).get();
-			anon.setPassword("-");
-			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "verification updated", anon);
+			u = userRepo.findById(u.getId()).get();
+			u.setVerified(true);
+			return new ResponseBody<User>(HttpStatus.ACCEPTED.value(), "verification updated", u);
 		}
 		catch(Exception e) {
 			return new ResponseBody<User>(HttpStatus.BAD_GATEWAY.value(), "Error updating profile: "+e, u);
@@ -277,5 +283,11 @@ public class UserServiceImpl implements UserService {
 		catch(Exception e){
 			return new ResponseBody<User>(HttpStatus.BAD_REQUEST.value(), "Did not find user: " + e.getMessage(), new User());
 		}
+	}
+
+
+	@Override
+	public ResponseBody<List<User>> allUsers() {
+		return new ResponseBody<List<User>>(HttpStatus.ACCEPTED.value(), "users", userRepo.findAll());
 	}
 }

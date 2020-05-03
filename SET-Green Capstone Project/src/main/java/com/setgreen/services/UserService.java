@@ -1,5 +1,6 @@
 package com.setgreen.services;
 
+import java.util.List;
 import com.setgreen.model.ResponseBody;
 import com.setgreen.model.SignUpForm;
 import com.setgreen.model.User;
@@ -33,5 +34,7 @@ public interface UserService {
 	ResponseBody<User> getByTmpPwd(String pwd);
 
 	ResponseBody<User> getById(Long id);
+
+	ResponseBody<List<User>> allUsers();
 
 }
