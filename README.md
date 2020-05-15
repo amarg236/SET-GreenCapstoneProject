@@ -2,7 +2,7 @@
 
 4060 Capstone Project
 
-![img](https://gentryartistwriter.files.wordpress.com/2018/10/lookdown.jpg)
+![img](https://i.imgur.com/Jt9SGt6.jpg)
 
 ##About the repo
 _There are 2 folders in github. The first one with name "SET-Green Capstone Project" is for back-end.
