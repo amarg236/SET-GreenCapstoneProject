@@ -17,21 +17,21 @@ was made with the user in mind and provides a user-friendly way to digitally kee
 the schedule.
 
 
-⋅⋅-The system allows for a Scheduling representative to send a game invite directyly to an opponent.
-⋅⋅-The request includes the preferred date, time, and location of the match.
-⋅⋅-The opponent can then choose to accept or decline the match. 
-⋅⋅-If declined, the two parties can work out a better arrangement.
-⋅⋅-If approved, the game is sent to the Referee  Assignor for official apporval.
-⋅⋅-If the assinor is in a position to provide Referees for the match, the game will be approved and
+⋅⋅- The system allows for a Scheduling representative to send a game invite directyly to an opponent.
+⋅⋅- The request includes the preferred date, time, and location of the match.
+⋅⋅- The opponent can then choose to accept or decline the match. 
+⋅⋅- If declined, the two parties can work out a better arrangement.
+⋅⋅- If approved, the game is sent to the Referee  Assignor for official apporval.
+⋅⋅- If the assinor is in a position to provide Referees for the match, the game will be approved and
 added to the master schedule.
-⋅⋅-If not, the two teams must make an arrangement to find a better time. 
+⋅⋅- If not, the two teams must make an arrangement to find a better time. 
 
 ###### Project Participants:
-⋅⋅*Sonam Gurung
-⋅⋅*Brendon Lebaron
-⋅⋅*Marissa Mizell
-⋅⋅*Nischal Dhakal
-⋅⋅*Darius Washington
+⋅⋅* Sonam Gurung
+⋅⋅* Brendon Lebaron
+⋅⋅* Marissa Mizell
+⋅⋅* Nischal Dhakal
+⋅⋅* Darius Washington
 
 
 ##About the repo
