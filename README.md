@@ -7,7 +7,7 @@
 
 Set Green Soccer Scheduling System
 
-	System Link: http://setgscheduling.s3-website.us-east-2.amazonaws.com/
+	System Link: [http://setgscheduling.s3-website.us-east-2.amazonaws.com/]
 
 
 
@@ -27,7 +27,7 @@ added to the master schedule.
 - If not, the two teams must make an arrangement to find a better time. 
 
 ###### Project Participants:
-1. Sonam Gurung  
+1. [Sonam Gurung](https://www.linkedin.com/in/helloiamsonam/)  
 
 2. Brendon Lebaron  
 
