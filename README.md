@@ -2,7 +2,7 @@
 
 4060 Capstone Project
 
-![img](https://drive.google.com/file/d/1VKqi3HM6PjRZGQu3I385A6n2MVb43Lkg/view)
+![img](https://i.imgur.com/Jt9SGt6.jpg)
 
 
 Set Green Soccer Scheduling System
