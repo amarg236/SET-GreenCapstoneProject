@@ -27,15 +27,15 @@ added to the master schedule.
 - If not, the two teams must make an arrangement to find a better time. 
 
 ###### Project Participants:
-⋅⋅* Sonam Gurung  
+1. Sonam Gurung  
 
-⋅⋅* Brendon Lebaron  
+2. Brendon Lebaron  
 
-⋅⋅* Marissa Mizell  
+3. Marissa Mizell  
 
-⋅⋅* Nischal Dhakal  
+4. Nischal Dhakal  
 
-⋅⋅* Darius Washington  
+5. Darius Washington  
 
 
 
