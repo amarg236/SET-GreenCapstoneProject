@@ -19,7 +19,7 @@
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "mdbreact": "^4.25.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "popper.js": "^1.16.1",
     "query-string": "^6.11.1",
     "rc-queue-anim": "^1.8.4",
